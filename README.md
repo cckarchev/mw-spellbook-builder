@@ -27,7 +27,7 @@ To regenerate them, put the community image pack at `raw-input/MW_Card_Image_Pac
 
 The script cuts the white or transparent frame some pack images have and rewrites every image, so a full run takes about a minute.
 
-The mages (`src/data/mages.ts`) are written by hand from each mage's stats card in the module.
+The mages (`src/data/mages.ts`) are written by hand from each mage's stats card in the module. Each one names two cards, the mage picture for the table and the stats card, and the script extracts both images.
 
 ## Rules
 

@@ -201,7 +201,9 @@ const main = async (): Promise<void> => {
 
   assertUniqueCodes(cards);
 
-  const mageCardIds = mages.flatMap((mage) => (mage.imageCardId ? [mage.imageCardId] : []));
+  const mageCardIds = mages
+    .flatMap((mage) => [mage.imageCardId, mage.statsCardId])
+    .filter((id): id is string => id !== null);
   const withImage = await writeImages(new Set([...cards.map((card) => card.id), ...mageCardIds]));
 
   const removed = await removeStaleImages(withImage);

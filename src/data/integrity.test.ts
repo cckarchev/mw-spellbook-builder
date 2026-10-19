@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { cardCode, cardImagePath } from '@/core/catalog/cardImage';
+import { mageStatsImage } from '@/core/catalog/mageImage';
 import { SCHOOLS } from '@/core/rules/types';
 import { cards, cardsByCode, magesById } from './catalog';
 import { mages } from './mages';
@@ -48,6 +49,16 @@ describe('mage data integrity', () => {
       const code = cardCode(mage.imageCardId ?? '');
 
       return !publicFileExists(cardImagePath(code));
+    });
+
+    expect(missing.map((mage) => mage.name)).toEqual([]);
+  });
+
+  it('has an image file for every mage stats card', () => {
+    const missing = mages.filter((mage) => {
+      const image = mageStatsImage(mage);
+
+      return image === null || !publicFileExists(image);
     });
 
     expect(missing.map((mage) => mage.name)).toEqual([]);
