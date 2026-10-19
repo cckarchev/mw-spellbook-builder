@@ -6,6 +6,6 @@
 .actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: space-evenly;
   gap: var(--space-xs);
 }

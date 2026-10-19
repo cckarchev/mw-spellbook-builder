@@ -29,7 +29,7 @@ export const AppHeader = () => {
         open={askingToClear}
         title="Discard this book?"
         body={<BookLossNote book={book} />}
-        confirmLabel="Discard and go home"
+        confirmLabel="Discard"
         onConfirm={confirmHome}
         onCancel={cancelHome}
       />

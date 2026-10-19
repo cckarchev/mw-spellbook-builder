@@ -79,7 +79,7 @@ describe('AppHeader', () => {
 
     await userEvent.type(screen.getByRole('searchbox'), 'fire');
     await clickAppName();
-    await userEvent.click(screen.getByRole('button', { name: 'Discard and go home' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Discard' }));
 
     expect(useBookStore.getState().book).toEqual(EMPTY_BOOK);
     expect(useCatalogFiltersStore.getState().filters.query).toBe('');

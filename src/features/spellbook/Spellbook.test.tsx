@@ -1,20 +1,31 @@
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { cardsById } from '@/data/catalog';
-import { smallBook, tooManyCopiesBook, wizard } from '@/features/shared/testBooks';
+import { FIREBALL, smallBook, tooManyCopiesBook, wizard } from '@/features/shared/testBooks';
 import { Spellbook } from './Spellbook';
 
+const ONE_FIREBALL: Book = { ...smallBook, counts: { ...smallBook.counts, [FIREBALL]: 1 } };
+
 const renderSpellbook = (book: Book = smallBook) => {
+  const onRemove = vi.fn();
+
   render(
     <Spellbook
       book={book}
       mage={wizard}
       summary={summarizeBook(book, wizard, cardsById)}
       onAdd={vi.fn()}
-      onRemove={vi.fn()}
+      onRemove={onRemove}
     />,
   );
+
+  return { onRemove };
+};
+
+const removeOneFireball = async () => {
+  await userEvent.click(screen.getByRole('button', { name: 'Remove one Fireball' }));
 };
 
 describe('Spellbook', () => {
@@ -57,5 +68,39 @@ describe('Spellbook', () => {
     renderSpellbook({ ...smallBook, counts: {} });
 
     expect(screen.getByText('No cards yet. Add some from the Cards tab.')).toBeInTheDocument();
+  });
+
+  it('removes a copy without asking while more copies stay', async () => {
+    const { onRemove } = renderSpellbook();
+
+    await removeOneFireball();
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(onRemove).toHaveBeenCalledWith(FIREBALL);
+  });
+
+  it('asks before removing the last copy, and Cancel keeps it', async () => {
+    const { onRemove } = renderSpellbook(ONE_FIREBALL);
+
+    await removeOneFireball();
+
+    const dialog = screen.getByRole('dialog', { name: 'Remove Fireball?' });
+
+    expect(dialog).toHaveTextContent('It is the last copy, so the card leaves the book.');
+
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(onRemove).not.toHaveBeenCalled();
+  });
+
+  it('removes the last copy when confirmed', async () => {
+    const { onRemove } = renderSpellbook(ONE_FIREBALL);
+
+    await removeOneFireball();
+    await userEvent.click(screen.getByRole('button', { name: 'Remove' }));
+
+    expect(onRemove).toHaveBeenCalledWith(FIREBALL);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });

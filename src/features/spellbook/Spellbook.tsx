@@ -1,3 +1,4 @@
+import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
 import { bookGroups } from '@/core/catalog/bookGroups';
 import { addCopyBlockedReason, type BookSummary } from '@/core/rules/validateBook';
 import { bookProblems, cardProblems } from '@/core/share-link/bookNotes';
@@ -6,6 +7,7 @@ import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { CardRow } from '@/features/shared/card-row/CardRow';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
 import styles from './Spellbook.module.css';
+import { useLastCopyConfirm } from './useLastCopyConfirm';
 
 interface SpellbookProps extends BookPanelProps {
   summary: BookSummary;
@@ -16,6 +18,11 @@ export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookPro
   const groups = bookGroups(book, mage, cardsById);
   const problems = bookProblems(summary.issues, mage, book.counts, cardsById);
   const rowProblems = cardProblems(summary.issues, mage);
+  const { pendingCardId, requestRemove, confirmRemove, cancelRemove } = useLastCopyConfirm(
+    book,
+    onRemove,
+  );
+  const pendingCard = pendingCardId ? cardsById.get(pendingCardId) : undefined;
 
   if (groups.length === 0) {
     return <p className={styles.empty}>No cards yet. Add some from the Cards tab.</p>;
@@ -46,11 +53,19 @@ export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookPro
               blockedReason={addCopyBlockedReason(book, entry.card, mage)}
               problem={rowProblems.get(entry.card.id) ?? null}
               onAdd={onAdd}
-              onRemove={onRemove}
+              onRemove={requestRemove}
             />
           ))}
         </TypeSection>
       ))}
+      <ConfirmDialog
+        open={pendingCard !== undefined}
+        title={`Remove ${pendingCard?.name ?? 'card'}?`}
+        body={<p>It is the last copy, so the card leaves the book.</p>}
+        confirmLabel="Remove"
+        onConfirm={confirmRemove}
+        onCancel={cancelRemove}
+      />
     </div>
   );
 };
