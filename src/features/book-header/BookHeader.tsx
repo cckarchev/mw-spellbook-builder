@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import type { Mage } from '@/core/rules/types';
 import type { BookSummary } from '@/core/rules/validateBook';
 import styles from './BookHeader.module.css';
@@ -54,9 +53,6 @@ export const BookHeader = ({ mage, summary }: BookHeaderProps) => {
     <header className={styles.header} data-state={state}>
       <div className={styles.mage}>
         <span className={styles.mageName}>{mage.name}</span>
-        <Link className={styles.change} to="/">
-          Change mage
-        </Link>
       </div>
       <div className={styles.score}>
         <span className={styles.points}>

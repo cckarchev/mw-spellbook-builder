@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
 import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { cardsById } from '@/data/catalog';
@@ -13,11 +12,7 @@ import {
 import { BookHeader } from './BookHeader';
 
 const renderHeader = (book: Book) => {
-  render(
-    <MemoryRouter>
-      <BookHeader mage={wizard} summary={summarizeBook(book, wizard, cardsById)} />
-    </MemoryRouter>,
-  );
+  render(<BookHeader mage={wizard} summary={summarizeBook(book, wizard, cardsById)} />);
 };
 
 describe('BookHeader', () => {
@@ -49,11 +44,5 @@ describe('BookHeader', () => {
 
     expect(screen.getByText('10 over · 1 problem')).toBeInTheDocument();
     expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'over');
-  });
-
-  it('links back to the mage picker', () => {
-    renderHeader(smallBook);
-
-    expect(screen.getByRole('link', { name: 'Change mage' })).toHaveAttribute('href', '/');
   });
 });

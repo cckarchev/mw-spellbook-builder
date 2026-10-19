@@ -23,11 +23,6 @@
   text-overflow: ellipsis;
 }
 
-.change {
-  color: var(--color-teal-bright);
-  font-size: var(--font-size-xs);
-}
-
 .score {
   display: flex;
   flex-direction: column;

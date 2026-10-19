@@ -2,25 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mageSwitchKind } from '@/core/rules/bookChanges';
 import type { Mage } from '@/core/rules/types';
-import { magesById } from '@/data/catalog';
 import { useBookStore } from '@/store/useBookStore';
 
 const BUILD_PATH = '/build';
 
-/** A switch to another mage that would clear the current book, waiting for a confirm. */
-export interface PendingSwitch {
-  mage: Mage;
-  /** The mage of the book that would be cleared. */
-  currentMage: Mage | undefined;
-  copies: number;
-}
-
-const sumCopies = (counts: Record<string, number>): number =>
-  Object.values(counts).reduce((total, count) => total + count, 0);
-
 /**
  * Switches the book's mage and opens the builder. When the switch would clear the book,
- * it waits in pendingSwitch until it is confirmed.
+ * the new mage waits in pendingSwitch until it is confirmed.
  */
 export const useMageSwitch = () => {
   const navigate = useNavigate();
@@ -28,15 +16,13 @@ export const useMageSwitch = () => {
   const chooseMage = useBookStore((state) => state.chooseMage);
   const loadBook = useBookStore((state) => state.loadBook);
 
-  const [pendingSwitch, setPendingSwitch] = useState<PendingSwitch | null>(null);
+  const [pendingSwitch, setPendingSwitch] = useState<Mage | null>(null);
 
   const requestSwitch = (mage: Mage) => {
     const kind = mageSwitchKind(book, mage.id);
 
     if (kind === 'newBook') {
-      const currentMage = book.mageId === null ? undefined : magesById.get(book.mageId);
-
-      setPendingSwitch({ mage, currentMage, copies: sumCopies(book.counts) });
+      setPendingSwitch(mage);
 
       return;
     }
@@ -53,7 +39,7 @@ export const useMageSwitch = () => {
       return;
     }
 
-    loadBook({ mageId: pendingSwitch.mage.id, counts: {} });
+    loadBook({ mageId: pendingSwitch.id, counts: {} });
     navigate(BUILD_PATH);
   };
 
@@ -61,5 +47,5 @@ export const useMageSwitch = () => {
     setPendingSwitch(null);
   };
 
-  return { currentMageId: book.mageId, pendingSwitch, requestSwitch, confirmSwitch, cancelSwitch };
+  return { book, pendingSwitch, requestSwitch, confirmSwitch, cancelSwitch };
 };

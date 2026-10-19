@@ -3,6 +3,10 @@ import type { Book } from './types';
 /** Whether a book holds at least one card; a book with only a mage counts as empty. */
 export const hasCards = (book: Book): boolean => Object.keys(book.counts).length > 0;
 
+/** Copies of every card in the book. */
+export const copyCount = (book: Book): number =>
+  Object.values(book.counts).reduce((total, count) => total + count, 0);
+
 /** The same mage and copies, in any order. */
 export const sameBook = (first: Book, second: Book): boolean => {
   const firstEntries = Object.entries(first.counts);
