@@ -34,7 +34,7 @@ const GROUPS: { key: FilterGroupKey; title: string; defaultExpanded: boolean }[]
   { key: 'expansions', title: 'Expansion', defaultExpanded: false },
 ];
 
-/** The search box, always shown, and the filter chips, folded away behind a toggle. */
+/** The search box, always shown, and the quick picks and filter chips, folded away behind a toggle. */
 export const FilterBar = ({
   filters,
   options,
@@ -72,17 +72,20 @@ export const FilterBar = ({
           {toggleLabel}
         </Button>
       </div>
-      <Segmented label="Show" options={SCOPES} value={scope} onChange={onScopeChange} />
       {open ? (
         <div id={panelId} className={styles.panel}>
-          <input
-            type="search"
-            className={styles.search}
-            placeholder="Find a filter, such as a subtype"
-            aria-label="Find a filter"
-            value={optionQuery}
-            onChange={(event) => setOptionQuery(event.target.value)}
-          />
+          <Segmented label="Show" options={SCOPES} value={scope} onChange={onScopeChange} />
+          <div className={styles.controls}>
+            <input
+              type="search"
+              className={styles.search}
+              placeholder="Find a filter"
+              aria-label="Find a filter"
+              value={optionQuery}
+              onChange={(event) => setOptionQuery(event.target.value)}
+            />
+            {activeCount > 0 ? <Button onClick={onClearChips}>Clear</Button> : null}
+          </div>
           {GROUPS.map((group) => (
             <FilterGroup
               key={group.key}
@@ -94,11 +97,6 @@ export const FilterBar = ({
               onToggle={(value) => onToggle(group.key, value)}
             />
           ))}
-          {activeCount > 0 ? (
-            <Button className={styles.clear} onClick={onClearChips}>
-              Clear filters
-            </Button>
-          ) : null}
         </div>
       ) : null}
     </div>

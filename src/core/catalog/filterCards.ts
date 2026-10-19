@@ -29,18 +29,21 @@ export const EMPTY_FILTERS: CatalogFilters = {
 export const toggleValue = <T>(selected: T[], value: T): T[] =>
   selected.includes(value) ? selected.filter((item) => item !== value) : [...selected, value];
 
-/** How many chips are selected across the groups. The search query is not counted. */
+/** How many chips are selected across the groups, plus one for the "Only" filter. The search query is not counted. */
 export const activeFilterCount = (filters: CatalogFilters): number => {
-  const { types, schools, subtypes, expansions, levels } = filters;
+  const { types, schools, subtypes, expansions, levels, onlyCards } = filters;
+  const chipCount =
+    types.length + schools.length + subtypes.length + expansions.length + levels.length;
+  const onlyCount = onlyCards ? 1 : 0;
 
-  return types.length + schools.length + subtypes.length + expansions.length + levels.length;
+  return chipCount + onlyCount;
 };
 
-/** Whether the player is searching, has a chip selected or asked for the "Only" cards. */
+/** Whether the player is searching or has any filter set. */
 export const isFiltering = (filters: CatalogFilters): boolean => {
   const hasQuery = filters.query.trim().length > 0;
 
-  return hasQuery || filters.onlyCards || activeFilterCount(filters) > 0;
+  return hasQuery || activeFilterCount(filters) > 0;
 };
 
 const allowsAny = <T>(selected: T[], values: T[]): boolean =>
