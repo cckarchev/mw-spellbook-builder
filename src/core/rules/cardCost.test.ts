@@ -58,7 +58,7 @@ describe('cardCost with school training', () => {
 });
 
 describe('cardCost with special training', () => {
-  it('charges an opposed part of a partly trained "and" card as untrained, as the module does', () => {
+  it('triples an opposed part of a partly trained "and" card, unlike the module', () => {
     const card = makeCard({
       type: 'Creature',
       schoolMode: 'and',
@@ -68,7 +68,7 @@ describe('cardCost with special training', () => {
       ],
     });
 
-    expect(cardCost(card, druid)).toBe(LEVEL_TWO * UNTRAINED + TRAINED);
+    expect(cardCost(card, druid)).toBe(LEVEL_TWO * OPPOSED + TRAINED);
   });
 
   it('charges nothing for Talos, which says it costs no spellpoints', () => {

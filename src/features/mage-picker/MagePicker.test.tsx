@@ -9,7 +9,6 @@ import { MagePicker } from './MagePicker';
 /** A "Warlock Only" card, illegal for every other mage. */
 const ADRAMELECHS_TORMENT = '9e7cbef4-1ad9-46cf-95c0-1aafd656c85d';
 const ONE_COPY = 1;
-const RULES_QUESTION_COUNT = 3;
 
 const renderPicker = () => {
   render(
@@ -53,17 +52,6 @@ describe('MagePicker', () => {
     expect(useBookStore.getState().book.counts).toEqual({ [FIREBALL]: ONE_COPY });
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(buildScreen()).toBeInTheDocument();
-  });
-});
-
-describe('MagePicker rules questions', () => {
-  it('lists the rules still being checked below the mages', () => {
-    renderPicker();
-
-    const box = screen.getByRole('region', { name: 'Rules we are still checking' });
-
-    expect(within(box).getAllByRole('listitem')).toHaveLength(RULES_QUESTION_COUNT);
-    expect(box).toHaveTextContent('Death Ring (Necromancer Only)');
   });
 });
 

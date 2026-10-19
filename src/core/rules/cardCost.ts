@@ -43,8 +43,8 @@ const isWholeCardTrained = (card: Card, mage: Mage): boolean => {
 
 /**
  * Spellbook points for one copy of a card in this mage's book, following the module's
- * SpellbookValidator: Novice, combo and subtype training beat an opposed school, and a card
- * with a part within partial training charges its opposed parts as untrained.
+ * SpellbookValidator: Novice, combo and subtype training beat an opposed school. Unlike the
+ * module, each part of an "and" card is charged its own multiplier, as the players confirmed.
  */
 export const cardCost = (card: Card, mage: Mage): number => {
   if (FREE_CARD_NAMES.has(card.name)) {
@@ -53,7 +53,6 @@ export const cardCost = (card: Card, mage: Mage): number => {
 
   const wholeCardTrained = isWholeCardTrained(card, mage);
   const anyPartTrained = card.schools.some((part) => isPartTrained(part, mage));
-  const anyPartWithinPartial = card.schools.some((part) => isWithinPartialTraining(part, mage));
   const isOpposedType = mage.training.opposedTypes.includes(card.type) && !anyPartTrained;
 
   const multiplierFor = (part: SchoolPart): number => {
@@ -61,7 +60,7 @@ export const cardCost = (card: Card, mage: Mage): number => {
       return TRAINED_MULTIPLIER;
     }
 
-    if (mage.training.opposed.includes(part.school) && !anyPartWithinPartial) {
+    if (mage.training.opposed.includes(part.school)) {
       return OPPOSED_MULTIPLIER;
     }
 

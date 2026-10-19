@@ -31,7 +31,10 @@ The mages (`src/data/mages.ts`) are written by hand from each mage's stats card 
 
 ## Rules
 
-Point costs follow the module's spellbook validator (`SpellbookValidator.py`). "Only" cards follow the card text. The questions where the module and the cards disagree are listed in the app, below the mage picker, for players to confirm.
+Point costs follow the module's spellbook validator (`SpellbookValidator.py`), with two corrections the players confirmed where the module and the cards disagree:
+
+- "X Only" cards follow the card text: only the mage named on the card can use it, so a Warlock cannot take Death Ring (Necromancer Only). "Holy Mage Only" and similar cards go to any mage trained in that school, including partial training, so the Paladin can take Holy and War Mage Only cards (above level 2 they cost double).
+- Each part of an "and" card is charged its own multiplier. An opposed part stays triple even when another part is within partial training, so Gerard Matranga costs the Druid 7 points, not the module's 5.
 
 ## Deploy
 
