@@ -1,4 +1,5 @@
 import { makeCard } from '@/core/rules/fixtures';
+import { cards } from '@/data/catalog';
 import { matchesQuery } from './textSearch';
 
 const fireball = makeCard({ name: 'Fireball', effect: 'Deals damage.' });
@@ -38,5 +39,32 @@ describe('matchesQuery', () => {
   it('matches everything for an empty or blank query', () => {
     expect(search('')).toHaveLength(CARDS.length);
     expect(search('   ')).toHaveLength(CARDS.length);
+  });
+});
+
+describe('matchesQuery: the rest of the printed card', () => {
+  it('matches the attack bar', () => {
+    const card = makeCard({ attackBar: 'Ranged | Flame | 6d6 | d12 4-10 = Burn' });
+
+    expect(matchesQuery(card, 'burn')).toBe(true);
+  });
+
+  it('matches the ability bar', () => {
+    const card = makeCard({ abilityBar: 'Force Pull\nTarget creature is Pushed 1 zone.' });
+
+    expect(matchesQuery(card, 'pushed')).toBe(true);
+  });
+
+  it('matches traits and subtypes', () => {
+    const card = makeCard({ traits: ['Flying'], subtypes: ['Animal', 'Bird'] });
+
+    expect(matchesQuery(card, 'flying')).toBe(true);
+    expect(matchesQuery(card, 'bird')).toBe(true);
+  });
+
+  it('finds Fireball by its Burn effect in the real catalog', () => {
+    const names = cards.filter((card) => matchesQuery(card, 'burn')).map((card) => card.name);
+
+    expect(names).toContain('Fireball');
   });
 });

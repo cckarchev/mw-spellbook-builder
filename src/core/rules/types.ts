@@ -47,6 +47,10 @@ export interface Card {
   range: string;
   target: string;
   effect: string;
+  /** The printed attack lines, such as 'Ranged | Flame | 6d6 | ...'. Empty when none. */
+  attackBar: string;
+  /** The printed ability lines of creatures and conjurations that have them. */
+  abilityBar: string;
   /** Public path such as '/cards/<code>.webp'. */
   image: string | null;
 }

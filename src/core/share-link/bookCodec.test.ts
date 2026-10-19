@@ -23,7 +23,7 @@ describe('bookCodec: round trip', () => {
   it('decodes what it encodes', () => {
     const decoded = decodeBook(encodeBook(wizardFireBook));
 
-    expect(decoded).toEqual({ book: wizardFireBook, unknownCodes: [] });
+    expect(decoded).toEqual({ book: wizardFireBook, unknownCodes: [], unknownMage: null });
   });
 
   it('encodes an empty book', () => {
@@ -40,6 +40,7 @@ describe('bookCodec: links from older data or hand edits', () => {
     expect(decodeBook(encoded)).toEqual({
       book: { mageId: 'warlock', schoolChoice: null, counts: { [firstId]: 2 } },
       unknownCodes: ['zzzzzzzz'],
+      unknownMage: null,
     });
   });
 
@@ -56,10 +57,18 @@ describe('bookCodec: links from older data or hand edits', () => {
     expect(decodeBook(encoded)?.book.counts).toEqual({});
   });
 
-  it('clears an unknown mage', () => {
+  it('clears an unknown mage and reports its id', () => {
     const encoded = encodeWire({ v: 1, m: 'not-a-mage', c: {} });
+    const decoded = decodeBook(encoded);
 
-    expect(decodeBook(encoded)?.book.mageId).toBeNull();
+    expect(decoded?.book.mageId).toBeNull();
+    expect(decoded?.unknownMage).toBe('not-a-mage');
+  });
+
+  it('reports no unknown mage when the link names none', () => {
+    const encoded = encodeWire({ v: 1, c: {} });
+
+    expect(decodeBook(encoded)?.unknownMage).toBeNull();
   });
 
   it('clears a school choice that is not a school', () => {

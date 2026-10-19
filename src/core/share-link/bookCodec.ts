@@ -19,6 +19,8 @@ export interface DecodedBook {
   book: Book;
   /** Codes in the link that match no card, such as cards removed from the data. */
   unknownCodes: string[];
+  /** The mage id the link names when the catalog has no such mage, else null. */
+  unknownMage: string | null;
 }
 
 export const encodeBook = (book: Book): string => {
@@ -94,9 +96,12 @@ export const decodeBook = (encoded: string): DecodedBook | null => {
     return null;
   }
 
-  const mageId = typeof wire.m === 'string' && magesById.has(wire.m) ? wire.m : null;
+  const namedMage = typeof wire.m === 'string' ? wire.m : null;
+  const isKnownMage = namedMage !== null && magesById.has(namedMage);
+  const mageId = isKnownMage ? namedMage : null;
+  const unknownMage = isKnownMage ? null : namedMage;
   const schoolChoice = isSchool(wire.s) ? wire.s : null;
   const { counts, unknownCodes } = decodeCounts(wire.c);
 
-  return { book: { mageId, schoolChoice, counts }, unknownCodes };
+  return { book: { mageId, schoolChoice, counts }, unknownCodes, unknownMage };
 };

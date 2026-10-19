@@ -10,6 +10,7 @@ export const CardDetails = ({ card }: { card: Card }) => {
     ['Mana', card.manaCost],
     ['Expansion', card.expansion],
   ].filter(([, value]) => value !== '');
+  const printedText = [card.attackBar, card.abilityBar, card.effect].filter((text) => text !== '');
 
   return (
     <div className={styles.expanded}>
@@ -25,7 +26,11 @@ export const CardDetails = ({ card }: { card: Card }) => {
             </div>
           ))}
         </dl>
-        {card.effect ? <p className={styles.effect}>{card.effect}</p> : null}
+        {printedText.map((text) => (
+          <p key={text} className={styles.effect}>
+            {text}
+          </p>
+        ))}
       </div>
     </div>
   );

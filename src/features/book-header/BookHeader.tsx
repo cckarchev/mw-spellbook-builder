@@ -23,11 +23,28 @@ const bookState = (summary: BookSummary): BookState => {
   return 'valid';
 };
 
-const STATE_LABELS: Record<BookState, (summary: BookSummary) => string> = {
-  valid: () => 'Valid',
-  over: (summary) => `${summary.overBy} over`,
-  invalid: (summary) =>
-    summary.issues.length === 1 ? '1 problem' : `${summary.issues.length} problems`,
+const VALID_LABEL = 'Valid';
+const LABEL_SEPARATOR = ' · ';
+
+const problemsLabel = (count: number): string => (count === 1 ? '1 problem' : `${count} problems`);
+
+/** What is wrong, all of it: "4 over · 2 problems". */
+const stateLabel = (summary: BookSummary): string => {
+  const parts: string[] = [];
+
+  if (summary.overBy > 0) {
+    parts.push(`${summary.overBy} over`);
+  }
+
+  if (summary.issues.length > 0) {
+    parts.push(problemsLabel(summary.issues.length));
+  }
+
+  if (parts.length === 0) {
+    return VALID_LABEL;
+  }
+
+  return parts.join(LABEL_SEPARATOR);
 };
 
 /** The mage, the points used out of the budget, and whether the book is valid. */
@@ -47,7 +64,7 @@ export const BookHeader = ({ mage, schoolChoice, summary }: BookHeaderProps) => 
         <span className={styles.points}>
           {summary.points} / {summary.budget}
         </span>
-        <span className={styles.state}>{STATE_LABELS[state](summary)}</span>
+        <span className={styles.state}>{stateLabel(summary)}</span>
       </div>
     </header>
   );

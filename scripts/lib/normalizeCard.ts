@@ -111,6 +111,8 @@ export const normalizeCard = (
     range: property('Range'),
     target: property('Target'),
     effect: property('Effect'),
+    attackBar: property('Attack Bar'),
+    abilityBar: property('Ability Bar'),
     image: null,
   };
 };

@@ -13,19 +13,21 @@ interface CardRowProps {
   points: number;
   /** Why + is blocked, or null. */
   blockedReason: string | null;
+  /** What is wrong with this card in the book, or null. */
+  problem?: string | null;
   onAdd: (cardId: string) => void;
   onRemove: (cardId: string) => void;
 }
 
 /** A card with its cost and a stepper. Tapping it opens the card image and text. */
 export const CardRow = memo(
-  ({ card, count, points, blockedReason, onAdd, onRemove }: CardRowProps) => {
+  ({ card, count, points, blockedReason, problem = null, onAdd, onRemove }: CardRowProps) => {
     const [expanded, setExpanded] = useState(false);
 
     const details = [schoolSummary(card), ...card.subtypes].join(' · ');
 
     return (
-      <li className={styles.row} data-in-book={count > 0}>
+      <li className={styles.row} data-in-book={count > 0} data-problem={problem !== null}>
         <div className={styles.main}>
           <button
             type="button"
@@ -37,6 +39,7 @@ export const CardRow = memo(
               {card.name}
             </span>
             <span className={styles.details}>{details}</span>
+            {problem === null ? null : <span className={styles.problem}>{problem}</span>}
           </button>
           <span className={styles.points}>{points} pts</span>
           <Stepper

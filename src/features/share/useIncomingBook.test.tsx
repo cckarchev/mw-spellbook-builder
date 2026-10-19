@@ -5,7 +5,7 @@ import { App } from '@/App';
 import { toBase64Url } from '@/core/share-link/base64Url';
 import { encodeBook } from '@/core/share-link/bookCodec';
 import { cardsById } from '@/data/catalog';
-import { FIREBALL, smallBook } from '@/features/shared/testBooks';
+import { FIREBALL, overBudgetBook, smallBook } from '@/features/shared/testBooks';
 import { useBookStore } from '@/store/useBookStore';
 
 const FIREBALL_CODE = cardsById.get(FIREBALL)?.code ?? '';
@@ -60,5 +60,51 @@ describe('opening a share link', () => {
     expect(screen.getByRole('dialog', { name: 'Check this book' })).toHaveTextContent(
       'This link could not be read',
     );
+  });
+
+  it('names an unknown mage and still reports the cards left out', () => {
+    const wire = { v: 1, m: 'archmage', c: { deadbeef: 1 } };
+
+    renderAt(`/build?b=${toBase64Url(JSON.stringify(wire))}`);
+
+    const dialog = screen.getByRole('dialog', { name: 'Check this book' });
+
+    expect(dialog).toHaveTextContent('The mage in this link (archmage) is not in the catalog.');
+    expect(dialog).toHaveTextContent('1 card in the link is not in the catalog and was left out');
+    expect(screen.getByRole('heading', { name: 'Choose a mage' })).toBeInTheDocument();
+  });
+});
+
+describe('opening a share link over a book in progress', () => {
+  beforeEach(() => {
+    useBookStore.getState().loadBook(overBudgetBook);
+  });
+
+  it('asks before replacing it, and Cancel keeps it', async () => {
+    renderAt(`/build?b=${encodeBook(smallBook)}`);
+
+    const dialog = screen.getByRole('dialog', { name: 'Replace your book?' });
+
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
+
+    expect(useBookStore.getState().book).toEqual(overBudgetBook);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('replaces it when confirmed', async () => {
+    renderAt(`/build?b=${encodeBook(smallBook)}`);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Replace' }));
+
+    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
+  });
+
+  it('opens the same book without asking', () => {
+    useBookStore.getState().loadBook(smallBook);
+
+    renderAt(`/build?b=${encodeBook(smallBook)}`);
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });

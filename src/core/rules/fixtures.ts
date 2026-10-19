@@ -31,6 +31,8 @@ export const makeCard = (overrides: Partial<Card> = {}): Card => ({
   range: '',
   target: '',
   effect: '',
+  attackBar: '',
+  abilityBar: '',
   image: null,
   ...overrides,
 });

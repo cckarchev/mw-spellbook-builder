@@ -21,7 +21,7 @@ interface CatalogProps {
 
 /** Every card the mage can use, filtered and grouped by type, each with its cost and a stepper. */
 export const Catalog = ({ book, mage, onAdd, onRemove }: CatalogProps) => {
-  const { filters, setQuery, toggle, clearChips } = useCatalogFilters();
+  const { filters, setQuery, toggle, clearChips } = useCatalogFilters(mage.id);
   const { schoolChoice } = book;
 
   const options = useMemo(

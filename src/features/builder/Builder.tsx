@@ -65,7 +65,7 @@ export const Builder = () => {
         ) : (
           <>
             <ShareActions book={book} mage={mage} summary={summary} />
-            <Spellbook {...panelProps} />
+            <Spellbook {...panelProps} summary={summary} />
           </>
         )}
       </main>

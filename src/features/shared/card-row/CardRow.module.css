@@ -103,3 +103,12 @@
   color: var(--color-text-body);
   white-space: pre-line;
 }
+
+.row[data-problem='true'] {
+  border-inline-start: var(--border-width-strong) solid var(--color-error);
+}
+
+.problem {
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+}

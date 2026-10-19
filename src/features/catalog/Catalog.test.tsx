@@ -5,8 +5,13 @@ import type { Book } from '@/core/rules/types';
 import { cards } from '@/data/catalog';
 import { LIGHTNING_BOLT, smallBook, wizard } from '@/features/shared/testBooks';
 import { Catalog } from './Catalog';
+import { useCatalogFiltersStore } from './useCatalogFilters';
 
 const BOLT_LIMIT = 4;
+
+beforeEach(() => {
+  useCatalogFiltersStore.getState().reset();
+});
 
 const renderCatalog = (book: Book = smallBook) => {
   const onAdd = vi.fn();

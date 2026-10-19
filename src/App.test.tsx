@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { smallBook } from '@/features/shared/testBooks';
 import { useBookStore } from '@/store/useBookStore';
 import { App } from './App';
@@ -15,6 +16,7 @@ const renderAt = (path: string) => {
 
 beforeEach(() => {
   useBookStore.getState().clear();
+  useCatalogFiltersStore.getState().reset();
 });
 
 describe('App', () => {
@@ -50,5 +52,24 @@ describe('App build screen', () => {
 
     expect(screen.getByRole('tab', { name: 'Cards' })).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
+  });
+
+  it('keeps the search when the player comes back from the Book tab', async () => {
+    renderAt('/build');
+
+    await userEvent.type(screen.getByRole('searchbox', { name: 'Search cards' }), 'fireball');
+    await userEvent.click(screen.getByRole('tab', { name: 'Book' }));
+    await userEvent.click(screen.getByRole('tab', { name: 'Cards' }));
+
+    expect(screen.getByRole('searchbox', { name: 'Search cards' })).toHaveValue('fireball');
+  });
+
+  it('starts with no filters for another mage', async () => {
+    renderAt('/build');
+
+    await userEvent.type(screen.getByRole('searchbox', { name: 'Search cards' }), 'fireball');
+    useBookStore.getState().loadBook({ mageId: 'priest', schoolChoice: null, counts: {} });
+
+    expect(await screen.findByRole('searchbox', { name: 'Search cards' })).toHaveValue('');
   });
 });

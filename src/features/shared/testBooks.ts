@@ -15,6 +15,7 @@ const CRYSTAL_COPIES = 2;
 const BOLT_LIMIT = 4;
 const ALFIYA_COPIES = 4;
 const ELEMENTAL_COPIES = 3;
+const FIREBALL_OVER_LIMIT = 5;
 
 const wizardOrThrow = (): Mage => {
   const wizard = magesById.get('wizard');
@@ -49,3 +50,16 @@ export const overBudgetBook = wizardFireBook({
   [ALFIYA]: ALFIYA_COPIES,
   [WATER_ELEMENTAL]: ELEMENTAL_COPIES,
 });
+
+/** The small book with 5 Fireballs: within budget, one problem (max 4 copies). */
+export const tooManyCopiesBook = wizardFireBook({
+  [FIREBALL]: FIREBALL_OVER_LIMIT,
+  [LIGHTNING_BOLT]: BOLT_COPIES,
+  [MANA_CRYSTAL]: CRYSTAL_COPIES,
+});
+
+/** The over-budget book with 5 Fireballs: 128 / 120 and one problem. */
+export const overWithProblemBook = {
+  ...overBudgetBook,
+  counts: { ...overBudgetBook.counts, [FIREBALL]: FIREBALL_OVER_LIMIT },
+};

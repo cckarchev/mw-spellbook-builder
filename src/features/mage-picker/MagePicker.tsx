@@ -5,7 +5,7 @@ import { mages } from '@/data/catalog';
 import styles from './MagePicker.module.css';
 import { MageTile } from './mage-tile/MageTile';
 import { SchoolChoice } from './school-choice/SchoolChoice';
-import { useMageSwitch } from './useMageSwitch';
+import { type PendingSwitch, useMageSwitch } from './useMageSwitch';
 
 const IllegalCards = ({ mage, cards }: { mage: Mage; cards: Card[] }) => (
   <>
@@ -17,6 +17,30 @@ const IllegalCards = ({ mage, cards }: { mage: Mage; cards: Card[] }) => (
     </ul>
   </>
 );
+
+const NewBook = ({ mageName, copies }: { mageName: string; copies: number }) => (
+  <p>
+    Your {mageName} book has {copies === 1 ? '1 card' : `${copies} cards`}. It will be cleared. To
+    keep it, cancel and copy its link from the Book tab first.
+  </p>
+);
+
+const CURRENT_MAGE_FALLBACK = 'current';
+
+const SWITCH_COPY = {
+  newBook: { title: 'Start a new book?', confirmLabel: 'Clear and switch' },
+  removeCards: { title: 'Remove cards?', confirmLabel: 'Remove and switch' },
+} as const;
+
+const SwitchBody = ({ pending }: { pending: PendingSwitch }) =>
+  pending.kind === 'newBook' ? (
+    <NewBook
+      mageName={pending.currentMage?.name ?? CURRENT_MAGE_FALLBACK}
+      copies={pending.copies}
+    />
+  ) : (
+    <IllegalCards mage={pending.mage} cards={pending.illegalCards} />
+  );
 
 export const MagePicker = () => {
   const { currentMageId, pendingSwitch, requestSwitch, confirmSwitch, cancelSwitch } =
@@ -65,13 +89,9 @@ export const MagePicker = () => {
       />
       <ConfirmDialog
         open={pendingSwitch !== null}
-        title="Remove cards?"
-        body={
-          pendingSwitch ? (
-            <IllegalCards mage={pendingSwitch.mage} cards={pendingSwitch.illegalCards} />
-          ) : null
-        }
-        confirmLabel="Remove and switch"
+        title={SWITCH_COPY[pendingSwitch?.kind ?? 'newBook'].title}
+        body={pendingSwitch ? <SwitchBody pending={pendingSwitch} /> : null}
+        confirmLabel={SWITCH_COPY[pendingSwitch?.kind ?? 'newBook'].confirmLabel}
         onConfirm={confirmSwitch}
         onCancel={cancelSwitch}
       />

@@ -3,7 +3,13 @@ import { MemoryRouter } from 'react-router-dom';
 import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { cardsById } from '@/data/catalog';
-import { overBudgetBook, smallBook, wizard } from '@/features/shared/testBooks';
+import {
+  overBudgetBook,
+  overWithProblemBook,
+  smallBook,
+  tooManyCopiesBook,
+  wizard,
+} from '@/features/shared/testBooks';
 import { BookHeader } from './BookHeader';
 
 const renderHeader = (book: Book) => {
@@ -32,6 +38,20 @@ describe('BookHeader', () => {
 
     expect(screen.getByText('124 / 120')).toBeInTheDocument();
     expect(screen.getByText('4 over')).toBeInTheDocument();
+    expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'over');
+  });
+
+  it('counts the problems of a book within budget', () => {
+    renderHeader(tooManyCopiesBook);
+
+    expect(screen.getByText('1 problem')).toBeInTheDocument();
+    expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'invalid');
+  });
+
+  it('shows both the points over and the problems', () => {
+    renderHeader(overWithProblemBook);
+
+    expect(screen.getByText('8 over · 1 problem')).toBeInTheDocument();
     expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'over');
   });
 

@@ -45,6 +45,15 @@ describe('normalizeCard: what is a spell card', () => {
     });
   });
 
+  it('keeps the attack and ability bars', () => {
+    const raw = makeRaw({ 'Attack Bar': 'Ranged | Flame | 6d6', 'Ability Bar': 'Force Pull' });
+
+    expect(normalizeCard(raw, 'arena', undefined)).toMatchObject({
+      attackBar: 'Ranged | Flame | 6d6',
+      abilityBar: 'Force Pull',
+    });
+  });
+
   it.each(['Magestats', 'Internal', 'Phase', 'DiceRoll'])('drops %s entries', (type) => {
     expect(normalizeCard(makeRaw({ Type: type }), 'arena', undefined)).toBeNull();
   });

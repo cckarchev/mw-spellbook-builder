@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { hasCards, sameBook } from '@/core/rules/bookChanges';
 import { summarizeBook } from '@/core/rules/validateBook';
-import { decodeBook } from '@/core/share-link/bookCodec';
-import { incomingProblems } from '@/core/share-link/bookNotes';
+import { type DecodedBook, decodeBook } from '@/core/share-link/bookCodec';
+import { incomingProblems, noMageProblems } from '@/core/share-link/bookNotes';
 import { BOOK_PARAM } from '@/core/share-link/shareUrl';
 import { cardsById, magesById } from '@/data/catalog';
 import { useBookStore } from '@/store/useBookStore';
@@ -11,11 +12,27 @@ const BOOK_TAB_PATH = '/build?tab=book';
 const PICKER_PATH = '/';
 
 const UNREADABLE = 'This link could not be read. Your current book is unchanged.';
-const NO_MAGE = 'The link names no mage. Choose one to keep building.';
+
+/** Where a book opened from a link goes, and what to tell the player about it. */
+const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
+  const mage = book.mageId === null ? undefined : magesById.get(book.mageId);
+
+  if (!mage) {
+    return { path: PICKER_PATH, problems: noMageProblems(unknownMage, unknownCodes) };
+  }
+
+  const { issues } = summarizeBook(book, mage, cardsById);
+
+  return {
+    path: BOOK_TAB_PATH,
+    problems: incomingProblems(unknownCodes, issues, mage, book.counts, cardsById),
+  };
+};
 
 /**
  * Loads the book from a share link (?b=) once at startup and opens it on the Book tab.
- * Returns the problems found in it, for the player to see, until dismissed.
+ * A book in progress is only replaced once the player confirms it in pendingReplace.
+ * Returns the problems found in the link's book, for the player to see, until dismissed.
  */
 export const useIncomingBook = () => {
   const location = useLocation();
@@ -24,6 +41,15 @@ export const useIncomingBook = () => {
   const handled = useRef(false);
 
   const [problems, setProblems] = useState<string[]>([]);
+  const [pendingReplace, setPendingReplace] = useState<DecodedBook | null>(null);
+
+  const open = (decoded: DecodedBook) => {
+    const { path, problems: found } = openedBook(decoded);
+
+    loadBook(decoded.book);
+    setProblems(found);
+    navigate(path, { replace: true });
+  };
 
   useEffect(() => {
     const encoded = new URLSearchParams(location.search).get(BOOK_PARAM);
@@ -35,6 +61,7 @@ export const useIncomingBook = () => {
     handled.current = true;
 
     const decoded = decodeBook(encoded);
+    const current = useBookStore.getState().book;
 
     if (!decoded) {
       setProblems([UNREADABLE]);
@@ -43,27 +70,31 @@ export const useIncomingBook = () => {
       return;
     }
 
-    const { book, unknownCodes } = decoded;
-    const mage = book.mageId === null ? undefined : magesById.get(book.mageId);
-
-    loadBook(book);
-
-    if (!mage) {
-      setProblems([NO_MAGE]);
-      navigate(PICKER_PATH, { replace: true });
+    if (hasCards(current) && !sameBook(current, decoded.book)) {
+      setPendingReplace(decoded);
+      navigate(location.pathname, { replace: true });
 
       return;
     }
 
-    const { issues } = summarizeBook(book, mage, cardsById);
+    open(decoded);
+  });
 
-    setProblems(incomingProblems(unknownCodes, issues, mage, book.counts, cardsById));
-    navigate(BOOK_TAB_PATH, { replace: true });
-  }, [location, navigate, loadBook]);
+  const confirmReplace = () => {
+    if (pendingReplace) {
+      open(pendingReplace);
+    }
+
+    setPendingReplace(null);
+  };
+
+  const cancelReplace = () => {
+    setPendingReplace(null);
+  };
 
   const dismiss = () => {
     setProblems([]);
   };
 
-  return { problems, dismiss };
+  return { problems, dismiss, pendingReplace, confirmReplace, cancelReplace };
 };
