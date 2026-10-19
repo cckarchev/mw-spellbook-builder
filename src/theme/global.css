@@ -1,0 +1,35 @@
+@import './tokens.css';
+
+@font-face {
+  font-family: 'Big Noodle Titling';
+  src: url('/fonts/big-noodle-titling.woff2') format('woff2');
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-size-md);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-strong);
+  background: var(--color-bg-base);
+  min-height: 100dvh;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
