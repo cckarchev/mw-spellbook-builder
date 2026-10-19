@@ -111,6 +111,14 @@ describe('activeFilterCount', () => {
 
     expect(activeFilterCount(filters)).toBe(SelectedChips);
   });
+
+  it('counts the "Only" filter as one more', () => {
+    const ChipAndOnly = 2;
+
+    expect(activeFilterCount({ ...EMPTY_FILTERS, schools: ['Fire'], onlyCards: true })).toBe(
+      ChipAndOnly,
+    );
+  });
 });
 
 describe('isFiltering', () => {

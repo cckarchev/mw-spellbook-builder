@@ -185,6 +185,8 @@ describe('Catalog quick picks and count', () => {
   const onlyCount = legal.filter((card) => card.onlyFor !== null).length;
 
   const pick = async (label: string) => {
+    await userEvent.click(screen.getByRole('button', { name: /^Filters/ }));
+
     const picks = screen.getByRole('group', { name: 'Show' });
 
     await userEvent.click(within(picks).getByRole('button', { name: label }));
@@ -192,20 +194,30 @@ describe('Catalog quick picks and count', () => {
 
   const count = () => screen.getByText(/^Showing /);
 
-  it('shows no count while nothing is filtered', () => {
+  it('shows no count and keeps the quick picks folded away while nothing is filtered', () => {
     renderCatalog();
 
     expect(screen.queryByText(/^Showing /)).not.toBeInTheDocument();
-    expect(
-      within(screen.getByRole('group', { name: 'Show' })).getByRole('button', { name: 'All' }),
-    ).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByRole('group', { name: 'Show' })).not.toBeInTheDocument();
+  });
+
+  it('counts Mage only on the Filters button, and Clear undoes it', async () => {
+    renderCatalog();
+
+    await pick('Mage only');
+
+    expect(screen.getByRole('button', { name: 'Filters (1)' })).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Clear' }));
+
+    expect(screen.getByRole('button', { name: 'Filters' })).toBeInTheDocument();
+    expect(screen.queryByText(/^Showing /)).not.toBeInTheDocument();
   });
 
   it("fills the school chips with the mage's schools for Trained", async () => {
     renderCatalog();
 
     await pick('Trained');
-    await userEvent.click(screen.getByRole('button', { name: /^Filters/ }));
 
     expect(screen.getByRole('button', { name: 'Arcane' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('button', { name: 'Air' })).toHaveAttribute('aria-pressed', 'true');

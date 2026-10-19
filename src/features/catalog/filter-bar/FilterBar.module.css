@@ -38,7 +38,3 @@
   background: var(--color-bg-surface);
   border: var(--border-default);
 }
-
-.clear {
-  align-self: flex-start;
-}
