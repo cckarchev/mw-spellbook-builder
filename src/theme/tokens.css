@@ -124,6 +124,9 @@
   --card-thumb-width: 40px;
   --card-full-width: 280px;
 
+  /* Narrowest mage tile in the mage picker grid, above phone width. */
+  --mage-tile-min-width: 160px;
+
   --popup-width: 320px;
   --popup-max-width: calc(100vw - 2 * var(--space-xs));
 
