@@ -7,9 +7,9 @@ import sharp from 'sharp';
 import type { Card, Format } from '@/core/rules/types';
 import { mages } from '@/data/mages';
 import { buildExpansionMap, type LegacySet } from './lib/expansions';
+import { frameBox } from './lib/frameBox';
 import { normalizeCard } from './lib/normalizeCard';
 import { parseSetXml, readModuleSets } from './lib/readModule';
-import { whiteFrameBox } from './lib/whiteFrame';
 
 // Reads the OCTGN Mage Wars module and the community image pack from raw-input/ and
 // writes src/data/cards.json and public/cards/<code>.webp. Run with `npm run data`.
@@ -133,16 +133,7 @@ const imagePath = (code: string): string => path.join(IMAGE_DIR, `${code}.webp`)
 
 /** Cuts the white or transparent frame some pack images have, then resizes to webp. */
 const writeFramelessImage = async (data: Uint8Array, target: string): Promise<void> => {
-  const { data: pixels, info } = await sharp(data)
-    .ensureAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
-  const box = whiteFrameBox({
-    data: pixels,
-    width: info.width,
-    height: info.height,
-    channels: info.channels,
-  });
+  const box = await frameBox(data);
 
   await sharp(data)
     .extract(box)
@@ -171,7 +162,11 @@ const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Set<string>>
       continue;
     }
 
-    await writeFramelessImage(data, target);
+    try {
+      await writeFramelessImage(data, target);
+    } catch (error) {
+      throw new Error(`Could not convert the image of card ${id}`, { cause: error });
+    }
 
     written.add(id);
   }

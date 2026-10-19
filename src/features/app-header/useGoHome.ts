@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { hasCards } from '@/core/rules/bookChanges';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { useBookStore } from '@/store/useBookStore';
@@ -12,6 +12,7 @@ const HOME_PATH = '/';
  */
 export const useGoHome = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const book = useBookStore((state) => state.book);
   const clearBook = useBookStore((state) => state.clear);
   const resetFilters = useCatalogFiltersStore((state) => state.reset);
@@ -22,7 +23,8 @@ export const useGoHome = () => {
     clearBook();
     resetFilters();
     setAskingToClear(false);
-    navigate(HOME_PATH);
+    // Already home: replace the entry, so Back does not seem to do nothing.
+    navigate(HOME_PATH, { replace: location.pathname === HOME_PATH });
   };
 
   const requestHome = () => {

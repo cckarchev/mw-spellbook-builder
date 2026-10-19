@@ -82,6 +82,17 @@ describe('whiteFrameBox', () => {
     });
   });
 
+  it('keeps at least one pixel of an image that is all white', () => {
+    const size = 300;
+    const image = paint(size, size, () => WHITE);
+    const box = whiteFrameBox(image);
+
+    expect(box.width).toBeGreaterThanOrEqual(1);
+    expect(box.height).toBeGreaterThanOrEqual(1);
+    expect(box.left + box.width).toBeLessThanOrEqual(size);
+    expect(box.top + box.height).toBeLessThanOrEqual(size);
+  });
+
   it('keeps an edge that only has white corners', () => {
     const isCorner = (x: number, y: number) =>
       (x === 0 || x === SIZE - 1) && (y === 0 || y === SIZE - 1);

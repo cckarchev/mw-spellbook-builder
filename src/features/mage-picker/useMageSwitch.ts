@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mageSwitchKind } from '@/core/rules/bookChanges';
 import type { Mage } from '@/core/rules/types';
+import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { useBookStore } from '@/store/useBookStore';
 
 const BUILD_PATH = '/build';
@@ -15,6 +16,7 @@ export const useMageSwitch = () => {
   const book = useBookStore((state) => state.book);
   const chooseMage = useBookStore((state) => state.chooseMage);
   const loadBook = useBookStore((state) => state.loadBook);
+  const resetFilters = useCatalogFiltersStore((state) => state.reset);
 
   const [pendingSwitch, setPendingSwitch] = useState<Mage | null>(null);
 
@@ -40,6 +42,8 @@ export const useMageSwitch = () => {
     }
 
     loadBook({ mageId: pendingSwitch.id, counts: {} });
+    resetFilters();
+    setPendingSwitch(null);
     navigate(BUILD_PATH);
   };
 

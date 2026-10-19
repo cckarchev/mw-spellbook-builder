@@ -15,13 +15,15 @@ const renderHeader = (book: Book) => {
   render(<BookHeader mage={wizard} summary={summarizeBook(book, wizard, cardsById)} />);
 };
 
+const summaryRegion = () => screen.getByRole('region', { name: 'Book summary' });
+
 describe('BookHeader', () => {
   it('shows the mage and the points used out of the budget', () => {
     renderHeader(smallBook);
 
-    expect(screen.getByText('Wizard')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Wizard' })).toBeInTheDocument();
     expect(screen.getByText('18 / 120')).toBeInTheDocument();
-    expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'valid');
+    expect(summaryRegion()).toHaveAttribute('data-state', 'valid');
   });
 
   it('turns to the error state over budget', () => {
@@ -29,20 +31,20 @@ describe('BookHeader', () => {
 
     expect(screen.getByText('122 / 120')).toBeInTheDocument();
     expect(screen.getByText('2 over')).toBeInTheDocument();
-    expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'over');
+    expect(summaryRegion()).toHaveAttribute('data-state', 'over');
   });
 
   it('counts the problems of a book within budget', () => {
     renderHeader(tooManyCopiesBook);
 
     expect(screen.getByText('1 problem')).toBeInTheDocument();
-    expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'invalid');
+    expect(summaryRegion()).toHaveAttribute('data-state', 'invalid');
   });
 
   it('shows both the points over and the problems', () => {
     renderHeader(overWithProblemBook);
 
     expect(screen.getByText('10 over · 1 problem')).toBeInTheDocument();
-    expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'over');
+    expect(summaryRegion()).toHaveAttribute('data-state', 'over');
   });
 });

@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useLocation, useNavigationType } from 'react-router-dom';
 import { App } from '@/App';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { smallBook } from '@/features/shared/testBooks';
@@ -9,10 +9,19 @@ import { APP_NAME } from './AppHeader';
 
 const EMPTY_BOOK = { mageId: null, counts: {} };
 
+/** Shows how the last navigation changed the history, for the test to read. */
+const NavigationProbe = () => {
+  const location = useLocation();
+  const navigationType = useNavigationType();
+
+  return <output aria-label="Navigation">{`${navigationType} ${location.pathname}`}</output>;
+};
+
 const renderAt = (path: string) => {
   render(
     <MemoryRouter initialEntries={[path]}>
       <App />
+      <NavigationProbe />
     </MemoryRouter>,
   );
 };
@@ -38,6 +47,14 @@ describe('AppHeader', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(useBookStore.getState().book).toEqual(EMPTY_BOOK);
     expect(pickerHeading()).toBeInTheDocument();
+  });
+
+  it('does not add a history entry when the player is already home', async () => {
+    renderAt('/');
+
+    await clickAppName();
+
+    expect(screen.getByRole('status', { name: 'Navigation' })).toHaveTextContent('REPLACE /');
   });
 
   it('asks before discarding a book with cards, and Cancel keeps it', async () => {

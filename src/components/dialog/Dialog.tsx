@@ -9,10 +9,42 @@ interface DialogProps {
   children: ReactNode;
 }
 
-/** A modal panel over a dimmed page. Renders nothing while closed. */
+const FOCUSABLE =
+  'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+/** Moves Tab from the last focusable element to the first, and Shift+Tab the other way. */
+const trapTab = (event: KeyboardEvent, panel: HTMLElement) => {
+  const focusable = [...panel.querySelectorAll<HTMLElement>(FOCUSABLE)];
+  const first = focusable[0];
+  const last = focusable.at(-1);
+  const active = document.activeElement;
+  const isOutside = !panel.contains(active);
+
+  if (!(first && last)) {
+    return;
+  }
+
+  if (event.shiftKey && (active === first || isOutside)) {
+    event.preventDefault();
+    last.focus();
+
+    return;
+  }
+
+  if (!event.shiftKey && (active === last || isOutside)) {
+    event.preventDefault();
+    first.focus();
+  }
+};
+
+/** A modal panel over a dimmed page that keeps the focus inside. Renders nothing while closed. */
 export const Dialog = ({ open, title, onClose, children }: DialogProps) => {
   const titleId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
+  // Read through a ref, so a new onClose from a re-render does not refocus the first button.
+  const onCloseRef = useRef(onClose);
+
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     if (!open) {
@@ -23,7 +55,11 @@ export const Dialog = ({ open, title, onClose, children }: DialogProps) => {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
+      }
+
+      if (event.key === 'Tab' && panelRef.current) {
+        trapTab(event, panelRef.current);
       }
     };
 
@@ -32,7 +68,7 @@ export const Dialog = ({ open, title, onClose, children }: DialogProps) => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) {
     return null;

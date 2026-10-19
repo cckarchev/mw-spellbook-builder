@@ -1,6 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { FIREBALL } from '@/features/shared/testBooks';
 import { useBookStore } from '@/store/useBookStore';
 import { MagePicker } from './MagePicker';
@@ -29,6 +30,7 @@ const chooseWizard = async () => {
 
 beforeEach(() => {
   useBookStore.getState().clear();
+  useCatalogFiltersStore.getState().reset();
 });
 
 describe('MagePicker', () => {
@@ -97,5 +99,17 @@ describe('MagePicker switching to another mage', () => {
 
     expect(useBookStore.getState().book).toEqual({ mageId: 'wizard', counts: {} });
     expect(buildScreen()).toBeInTheDocument();
+  });
+
+  it('starts the new book with no filters left from an earlier book of that mage', async () => {
+    useCatalogFiltersStore
+      .getState()
+      .setFilters('wizard', (filters) => ({ ...filters, query: 'fire' }));
+    renderPicker();
+
+    await chooseWizard();
+    await userEvent.click(screen.getByRole('button', { name: 'Clear and switch' }));
+
+    expect(useCatalogFiltersStore.getState().filters.query).toBe('');
   });
 });

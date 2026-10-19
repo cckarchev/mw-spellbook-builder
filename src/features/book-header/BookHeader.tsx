@@ -50,16 +50,14 @@ export const BookHeader = ({ mage, summary }: BookHeaderProps) => {
   const state = bookState(summary);
 
   return (
-    <header className={styles.header} data-state={state}>
-      <div className={styles.mage}>
-        <span className={styles.mageName}>{mage.name}</span>
-      </div>
+    <section className={styles.header} data-state={state} aria-label="Book summary">
+      <h1 className={styles.mageName}>{mage.name}</h1>
       <div className={styles.score}>
         <span className={styles.points}>
           {summary.points} / {summary.budget}
         </span>
         <span className={styles.state}>{stateLabel(summary)}</span>
       </div>
-    </header>
+    </section>
   );
 };
