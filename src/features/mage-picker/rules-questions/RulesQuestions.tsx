@@ -32,7 +32,7 @@ export const RulesQuestions = () => (
     </h2>
     <p className={styles.intro}>
       Point costs follow the OCTGN module. On these questions the module and the cards disagree. If
-      you know the answer, tell the club.
+      you know the answer, tell Tano or Ele.
     </p>
     <ol className={styles.list}>
       {QUESTIONS.map(({ question, current }) => (

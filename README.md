@@ -2,7 +2,7 @@
 
 A phone-first spellbook builder for Mage Wars Arena, made for the cckarchev club. Pick a mage, build a 120-point spellbook from the full catalog, and share it as a link or as plain text for WhatsApp.
 
-It is a static site with no backend. The book being built is kept in the browser's `localStorage`.
+It is a static site with no backend, live at [mw-spellbook-builder.cckarchev.ar](https://mw-spellbook-builder.cckarchev.ar). The book being built is kept in the browser's `localStorage`.
 
 ## Commands
 
@@ -14,6 +14,7 @@ It is a static site with no backend. The book being built is kept in the browser
 | `npm run typecheck` | Type checks the app and the scripts |
 | `npm run build` | Type checks and builds the site into `dist/` |
 | `npm run data` | Regenerates the card data and images (see below) |
+| `npm run deploy` | Builds and deploys the site to Cloudflare (see below) |
 
 ## Card data
 
@@ -31,6 +32,12 @@ The mages (`src/data/mages.ts`) are written by hand from each mage's stats card 
 ## Rules
 
 Point costs follow the module's spellbook validator (`SpellbookValidator.py`). "Only" cards follow the card text. The questions where the module and the cards disagree are listed in the app, below the mage picker, for players to confirm.
+
+## Deploy
+
+The site runs on Cloudflare Workers as static assets only, with no Worker script. `wrangler.jsonc` serves `dist/`, falls back to `index.html` for the app's routes, and attaches the custom domain `mw-spellbook-builder.cckarchev.ar`.
+
+`npm run deploy` builds and uploads it with the project's own Wrangler. Log in once with `npx wrangler login` on an account that holds the `cckarchev.ar` zone.
 
 ## Embedding
 

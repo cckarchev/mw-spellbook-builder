@@ -12,7 +12,8 @@
     "lint": "biome check",
     "lint:fix": "biome check --write",
     "typecheck": "tsc -b --noEmit",
-    "data": "tsx scripts/buildData.ts"
+    "data": "tsx scripts/buildData.ts",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "react": "^19.3.1",
@@ -36,6 +37,7 @@
     "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vite": "^8.3.4",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "wrangler": "4.151.2"
   }
 }

@@ -38,6 +38,7 @@ npm-debug.log*
 # Deploy
 .netlify
 .vercel
+.wrangler
 
 # Local working docs and raw card inputs
 .superpowers/
