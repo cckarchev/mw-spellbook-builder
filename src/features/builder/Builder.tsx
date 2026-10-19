@@ -4,6 +4,7 @@ import { summarizeBook } from '@/core/rules/validateBook';
 import { cardsById, magesById } from '@/data/catalog';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
+import { ShareActions } from '@/features/share/ShareActions';
 import { Spellbook } from '@/features/spellbook/Spellbook';
 import { useBookStore } from '@/store/useBookStore';
 import styles from './Builder.module.css';
@@ -59,7 +60,14 @@ export const Builder = () => {
         <Tabs tabs={TABS} active={activeTab} onChange={showTab} idPrefix={TAB_ID_PREFIX} />
       </div>
       <main className={styles.panel} {...tabPanelProps(TAB_ID_PREFIX, activeTab)}>
-        {activeTab === 'cards' ? <Catalog {...panelProps} /> : <Spellbook {...panelProps} />}
+        {activeTab === 'cards' ? (
+          <Catalog {...panelProps} />
+        ) : (
+          <>
+            <ShareActions book={book} mage={mage} summary={summary} />
+            <Spellbook {...panelProps} />
+          </>
+        )}
       </main>
     </div>
   );
