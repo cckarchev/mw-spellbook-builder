@@ -15,15 +15,27 @@
   line-height: var(--leading-tight);
 }
 
+/* Flex, not grid, so a last row that does not fill up is centered. */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--mage-tile-min-width), 1fr));
-  gap: var(--space-sm);
+  --grid-gap: var(--space-sm);
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--grid-gap);
+}
+
+.grid > * {
+  flex: 0 0 var(--mage-tile-width);
 }
 
 @media (--phone) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-xs);
+    --grid-gap: var(--space-xs);
+  }
+
+  /* Two columns that fill the width. */
+  .grid > * {
+    flex-basis: calc((100% - var(--grid-gap)) / 2);
   }
 }

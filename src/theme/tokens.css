@@ -120,8 +120,8 @@
   --card-radius: 4.8% / 3.4%;
   --card-full-width: 280px;
 
-  /* Narrowest mage tile in the mage picker grid, above phone width. */
-  --mage-tile-min-width: 160px;
+  /* Width of a mage tile in the mage picker, above phone width. */
+  --mage-tile-width: 180px;
 
   /* Label column of the facts list in an opened card row. */
   --fact-label-width: 5em;
