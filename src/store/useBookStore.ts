@@ -6,7 +6,7 @@ import { decodeBook, encodeBook } from '@/core/share-link/bookCodec';
 import { cardsById, magesById } from '@/data/catalog';
 
 /** The book being built, kept as an encodeBook string so it survives a reload. */
-export const BOOK_STORAGE_KEY = 'mw-deck-builder:current';
+export const BOOK_STORAGE_KEY = 'mw-spellbook-builder:current';
 
 interface BookStore {
   book: Book;

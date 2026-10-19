@@ -6,7 +6,7 @@ import styles from './AppHeader.module.css';
 import { useGoHome } from './useGoHome';
 
 const BRAND = 'Mage Wars';
-const PRODUCT = 'Deck Builder';
+const PRODUCT = 'Spellbook Builder';
 
 export const APP_NAME = `${BRAND} ${PRODUCT}`;
 
