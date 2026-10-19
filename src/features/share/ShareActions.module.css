@@ -1,0 +1,30 @@
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.note {
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--color-text-strong);
+  font-size: var(--font-size-sm);
+  background: var(--color-bg-error);
+  border-inline-start: var(--border-width-strong) solid var(--color-error);
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.buttons > * {
+  flex: 1;
+}
+
+.status {
+  min-height: 1lh;
+  color: var(--color-text-dim);
+  font-size: var(--font-size-xs);
+}

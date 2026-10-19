@@ -1,0 +1,41 @@
+@import '@/theme/breakpoints.css';
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding-block: var(--space-lg);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xxl);
+  font-weight: normal;
+  letter-spacing: var(--tracking-caps);
+  line-height: var(--leading-tight);
+}
+
+/* Flex, not grid, so a last row that does not fill up is centered. */
+.grid {
+  --grid-gap: var(--space-sm);
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--grid-gap);
+}
+
+.grid > * {
+  flex: 0 0 var(--mage-tile-width);
+}
+
+@media (--phone) {
+  .grid {
+    --grid-gap: var(--space-xs);
+  }
+
+  /* Two columns that fill the width. */
+  .grid > * {
+    flex-basis: calc((100% - var(--grid-gap)) / 2);
+  }
+}

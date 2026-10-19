@@ -1,0 +1,42 @@
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+  color: var(--color-text-strong);
+  text-align: start;
+  background: var(--color-bg-surface);
+  border: var(--border-default);
+  border-radius: var(--radius);
+  transition: border-color var(--duration-fast);
+}
+
+.tile:hover {
+  border-color: var(--color-border-hover);
+}
+
+.tile:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.tile[aria-current='true'] {
+  background: var(--color-bg-selected);
+  border-color: var(--color-border-accent);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--card-aspect);
+  object-fit: cover;
+  background: var(--color-bg-tint);
+  border-radius: var(--card-radius);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  letter-spacing: var(--tracking-caps);
+  line-height: var(--leading-tight);
+}

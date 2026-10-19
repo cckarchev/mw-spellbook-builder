@@ -19,7 +19,6 @@
   --color-bg-base: #0b0d0e;
   --color-bg-surface: #121517;
   --color-bg-tint: #1c2124;
-  --color-bg-deep: #060708;
   /* Fill behind active accent controls, such as a selected filter chip. */
   --color-bg-accent-tint: rgb(var(--rgb-accent) / 0.15);
   /* Fainter accent wash behind a whole row that is in the book. */
@@ -34,7 +33,6 @@
   /* Brand */
   --color-accent: #f36b21;
   --color-accent-ink: #0b0d0e;
-  --color-teal-bright: #2bb3c4;
   --color-gold: #d9a441;
 
   --color-text-strong: rgb(var(--rgb-text) / 1);
@@ -84,11 +82,8 @@
 
   --font-display: 'Big Noodle Titling', 'Oswald', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --font-weight-medium: 500;
   --font-weight-semibold: 600;
-  --font-weight-bold: 700;
 
   --tracking-label: 0.2em;
   --tracking-button: 0.12em;
@@ -117,12 +112,21 @@
 
   /* Smallest comfortable touch target. */
   --touch-target: 44px;
+  /* Filter chips come by the dozen, so they are shorter than a touch target. */
+  --chip-height: 32px;
 
-  /* Card art: a thumbnail in a catalog row and the full card when a row opens.
+  /* Card art: the full card when a row opens, and the mage tiles.
      Mage Wars cards are 63 x 88 mm. */
   --card-aspect: 63 / 88;
-  --card-thumb-width: 40px;
+  /* Rounded card corners, 3 mm on 63 x 88 mm, so the corner stays round at any size. */
+  --card-radius: 4.8% / 3.4%;
   --card-full-width: 280px;
+
+  /* Width of a mage tile in the mage picker, above phone width. */
+  --mage-tile-width: 180px;
+
+  /* Label column of the facts list in an opened card row. */
+  --fact-label-width: 5em;
 
   --popup-width: 320px;
   --popup-max-width: calc(100vw - 2 * var(--space-xs));

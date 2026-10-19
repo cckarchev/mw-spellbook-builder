@@ -1,0 +1,42 @@
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-dialog);
+  display: grid;
+  place-items: center;
+  padding: var(--page-gutter);
+  background: var(--color-bg-scrim);
+}
+
+/* Covers the page behind the panel; a tap on it closes the dialog. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  border: none;
+  cursor: default;
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: var(--popup-width);
+  max-width: var(--popup-max-width);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: var(--space-lg);
+  background: var(--color-bg-surface);
+  border: var(--border-default);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-panel);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: normal;
+  letter-spacing: var(--tracking-caps);
+  line-height: var(--leading-tight);
+}
