@@ -92,7 +92,7 @@ export const paladin = makeMage({
   onlyNames: ['Paladin'],
   training: {
     partial: [
-      { school: 'Holy', maxLevel: 2 },
+      { school: 'Holy', maxLevel: 3 },
       { school: 'War', maxLevel: 2 },
     ],
     trainedCombos: [{ school: 'Holy', type: 'Creature' }],

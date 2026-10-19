@@ -17,6 +17,7 @@ const OPPOSED = 3;
 
 const LEVEL_TWO = 2;
 const LEVEL_THREE = 3;
+const LEVEL_FOUR = 4;
 
 const airOrWater = makeCard({
   schoolMode: 'or',
@@ -76,10 +77,10 @@ describe('cardCost with special training', () => {
   it('doubles a combo school outside its type above the partial level', () => {
     const card = makeCard({
       type: 'Incantation',
-      schools: [{ school: 'Holy', level: LEVEL_THREE }],
+      schools: [{ school: 'Holy', level: LEVEL_FOUR }],
     });
 
-    expect(cardCost(card, paladin, null)).toBe(LEVEL_THREE * UNTRAINED);
+    expect(cardCost(card, paladin, null)).toBe(LEVEL_FOUR * UNTRAINED);
   });
 
   it('charges a trained school once even for an opposed type', () => {
