@@ -11,7 +11,7 @@ const firstId = firstCard?.id ?? '';
 const secondId = secondCard?.id ?? '';
 const firstCode = firstCard?.code ?? '';
 
-const wizardFireBook: Book = {
+const wizardBook: Book = {
   mageId: 'wizard',
   counts: { [firstId]: 1, [secondId]: THREE_COPIES },
 };
@@ -20,9 +20,9 @@ const encodeWire = (wire: unknown): string => toBase64Url(JSON.stringify(wire));
 
 describe('bookCodec: round trip', () => {
   it('decodes what it encodes', () => {
-    const decoded = decodeBook(encodeBook(wizardFireBook));
+    const decoded = decodeBook(encodeBook(wizardBook));
 
-    expect(decoded).toEqual({ book: wizardFireBook, unknownCodes: [], unknownMage: null });
+    expect(decoded).toEqual({ book: wizardBook, unknownCodes: [], unknownMage: null });
   });
 
   it('encodes an empty book', () => {

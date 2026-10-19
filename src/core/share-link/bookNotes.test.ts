@@ -52,7 +52,7 @@ describe('incomingProblems', () => {
     const problems = incomingProblems(
       ['deadbeef', 'cafebabe'],
       [
-        { kind: 'unknownCard', code: 'ignored' },
+        { kind: 'unknownCard', cardId: 'ignored' },
         { kind: 'tooManyCopies', cardId: 'fireball', max: LEVEL_TWO_LIMIT },
         { kind: 'illegalCard', cardId: 'warlock-only' },
       ],

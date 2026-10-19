@@ -3,17 +3,16 @@ import type { Card } from '@/core/rules/types';
 // Combining marks left after NFD decomposition, such as the accent in "É".
 const COMBINING_MARKS = /[\u0300-\u036f]/g;
 const WHITESPACE = /\s+/;
+const PART_SEPARATOR = '\n';
 
 /** Lowercases and strips accents so "Éter" and "eter" compare equal. */
-export const foldText = (text: string): string =>
+const foldText = (text: string): string =>
   text.normalize('NFD').replace(COMBINING_MARKS, '').toLowerCase();
 
 const queryWords = (query: string): string[] =>
   foldText(query)
     .split(WHITESPACE)
     .filter((word) => word !== '');
-
-const PART_SEPARATOR = '\n';
 
 /** Everything printed on the card that a player might search for. */
 const searchableText = (card: Card): string =>

@@ -1,6 +1,6 @@
-import { makeCard, warlock, wizard } from './fixtures';
+import { makeCard, wizard } from './fixtures';
 import type { Book, Card } from './types';
-import { addCopyBlockedReason, canAddCopy, cardsIllegalFor, summarizeBook } from './validateBook';
+import { addCopyBlockedReason, canAddCopy, summarizeBook } from './validateBook';
 
 const LEVEL_TWO = 2;
 const LEVEL_TWO_LIMIT = 4;
@@ -9,7 +9,7 @@ const FIRE_COPIES = 3;
 const ARCANE_COPIES = 2;
 const POINTS_OF_FIRE_AND_ARCANE = 14;
 
-// A level 2 Fire card costs 4 points for a Wizard who chose Air.
+// A level 2 Fire card costs 4 points for the Wizard, who is trained in Arcane and Air.
 const UNTRAINED_FIRE_COST = 4;
 const OVER_BUDGET_POINTS = 124;
 const OVER_BY = 4;
@@ -71,7 +71,7 @@ describe('summarizeBook', () => {
   it('reports a card that is not in the catalog', () => {
     const summary = summarizeBook(wizardBook({ missing: 1 }), wizard, cardsById);
 
-    expect(summary.issues).toEqual([{ kind: 'unknownCard', code: 'missing' }]);
+    expect(summary.issues).toEqual([{ kind: 'unknownCard', cardId: 'missing' }]);
   });
 
   it('reports a card the mage cannot use', () => {
@@ -123,16 +123,5 @@ describe('addCopyBlockedReason', () => {
     expect(addCopyBlockedReason(wizardBook({}), warlockOnly, wizard)).toBe(
       'Wizard cannot use this card',
     );
-  });
-});
-
-describe('cardsIllegalFor', () => {
-  it('lists the cards a new mage cannot use', () => {
-    const book: Book = {
-      mageId: warlock.id,
-      counts: { 'warlock-only': 1, fire: 1 },
-    };
-
-    expect(cardsIllegalFor(book, wizard, cardsById)).toEqual([warlockOnly]);
   });
 });

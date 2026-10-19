@@ -5,6 +5,7 @@ import { cardsById, magesById } from '@/data/catalog';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
 import { ShareActions } from '@/features/share/ShareActions';
+import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { Spellbook } from '@/features/spellbook/Spellbook';
 import { useBookStore } from '@/store/useBookStore';
 import styles from './Builder.module.css';
@@ -51,7 +52,7 @@ export const Builder = () => {
     );
   };
 
-  const panelProps = { onAdd: addCopy, onRemove: removeCopy, book, mage };
+  const panelProps: BookPanelProps = { onAdd: addCopy, onRemove: removeCopy, book, mage };
 
   return (
     <div className={styles.builder}>

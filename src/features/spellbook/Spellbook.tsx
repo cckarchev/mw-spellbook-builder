@@ -1,18 +1,14 @@
 import { bookGroups } from '@/core/catalog/bookGroups';
-import type { Book, Mage } from '@/core/rules/types';
 import { addCopyBlockedReason, type BookSummary } from '@/core/rules/validateBook';
 import { bookProblems, cardProblems } from '@/core/share-link/bookNotes';
 import { cardsById } from '@/data/catalog';
+import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { CardRow } from '@/features/shared/card-row/CardRow';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
 import styles from './Spellbook.module.css';
 
-interface SpellbookProps {
-  book: Book;
-  mage: Mage;
+interface SpellbookProps extends BookPanelProps {
   summary: BookSummary;
-  onAdd: (cardId: string) => void;
-  onRemove: (cardId: string) => void;
 }
 
 /** The cards in the book, grouped by type with copies and points per group, and what is wrong. */

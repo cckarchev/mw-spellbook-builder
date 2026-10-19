@@ -4,6 +4,7 @@ import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { unzipSync } from 'fflate';
 import sharp from 'sharp';
+import { cardCode, cardImagePath } from '@/core/catalog/cardImage';
 import type { Card, Format } from '@/core/rules/types';
 import { mages } from '@/data/mages';
 import { buildExpansionMap, type LegacySet } from './lib/expansions';
@@ -26,7 +27,8 @@ const LEGACY_RAW_BASE =
 const IMAGE_PACK_PATH = path.join(RAW_DIR, 'MW_Card_Image_Pack.o8c');
 
 const CARDS_JSON_PATH = path.join('src', 'data', 'cards.json');
-const IMAGE_DIR = path.join('public', 'cards');
+const PUBLIC_DIR = 'public';
+const IMAGE_DIR = path.join(PUBLIC_DIR, 'cards');
 const IMAGE_WIDTH = 480;
 const IMAGE_QUALITY = 80;
 const JSON_INDENT = 2;
@@ -38,7 +40,6 @@ const SETS: { id: string; format: Format }[] = [
 ];
 
 const IMAGE_ENTRY_PATTERN = /\/Cards\/([0-9a-f-]+)\.(jpe?g|png)$/i;
-const CODE_LENGTH = 8;
 
 const log = (message: string): void => {
   process.stdout.write(`${message}\n`);
@@ -129,7 +130,9 @@ const assertUniqueCodes = (cards: readonly Card[]): void => {
   }
 };
 
-const imagePath = (code: string): string => path.join(IMAGE_DIR, `${code}.webp`);
+/** Where the image of a card id is written, under public/. */
+const imageFile = (cardId: string): string =>
+  path.join(PUBLIC_DIR, cardImagePath(cardCode(cardId)));
 
 /** Cuts the white or transparent frame some pack images have, then resizes to webp. */
 const writeFramelessImage = async (data: Uint8Array, target: string): Promise<void> => {
@@ -156,7 +159,7 @@ const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Set<string>>
 
   for (const [name, data] of Object.entries(entries)) {
     const id = IMAGE_ENTRY_PATTERN.exec(name)?.[1] ?? '';
-    const target = imagePath(id.slice(0, CODE_LENGTH));
+    const target = imageFile(id);
 
     if (written.has(id)) {
       continue;
@@ -176,9 +179,7 @@ const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Set<string>>
 
 /** Removes images left from cards that are no longer in the catalog. */
 const removeStaleImages = async (keptIds: ReadonlySet<string>): Promise<number> => {
-  const keptFiles = new Set(
-    [...keptIds].map((id) => path.basename(imagePath(id.slice(0, CODE_LENGTH)))),
-  );
+  const keptFiles = new Set([...keptIds].map((id) => path.basename(imageFile(id))));
   const stale = (await readdir(IMAGE_DIR)).filter((file) => !keptFiles.has(file));
 
   for (const file of stale) {
@@ -206,7 +207,7 @@ const main = async (): Promise<void> => {
   const removed = await removeStaleImages(withImage);
 
   for (const card of cards) {
-    card.image = withImage.has(card.id) ? `/cards/${card.code}.webp` : null;
+    card.image = withImage.has(card.id) ? cardImagePath(card.code) : null;
   }
 
   await writeFile(CARDS_JSON_PATH, `${JSON.stringify(cards, null, JSON_INDENT)}\n`);

@@ -1,9 +1,9 @@
 import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
+import { KEEP_BOOK_HINT } from '@/features/shared/BookLossNote';
 import { IncomingIssues } from './incoming-issues/IncomingIssues';
 import { useIncomingBook } from './useIncomingBook';
 
-const REPLACE_BODY =
-  'This link opens another book. Your current book will be replaced. To keep it, cancel and copy its link from the Book tab first.';
+const REPLACE_BODY = `This link opens another book. Your current book will be replaced. ${KEEP_BOOK_HINT}`;
 
 /** Opens a book from a share link: asks before replacing a book in progress, then lists its problems. */
 export const IncomingLink = () => {

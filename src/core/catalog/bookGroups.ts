@@ -2,7 +2,7 @@ import { cardCost } from '@/core/rules/cardCost';
 import type { Book, Card, CardType, Mage } from '@/core/rules/types';
 import { groupByType } from './groupByType';
 
-export interface BookEntry {
+interface BookEntry {
   card: Card;
   count: number;
   /** Points for all copies of the card. */

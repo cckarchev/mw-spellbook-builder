@@ -5,9 +5,9 @@ import { magesById } from '@/data/catalog';
 
 export const FIREBALL = 'd8562a1d-6a95-4ca4-99aa-91c5ca769a33';
 export const LIGHTNING_BOLT = '9217f8a0-e46d-401e-b8b6-477100eaba54';
-export const MANA_CRYSTAL = '9efdd1ac-d30c-4773-9ccd-f916470f4861';
-export const ALFIYA = '05102a2c-509c-41c1-a751-787f4c499f40';
-export const WATER_ELEMENTAL = 'b9ced997-b7fb-4cef-9f57-7264f3fea633';
+const MANA_CRYSTAL = '9efdd1ac-d30c-4773-9ccd-f916470f4861';
+const ALFIYA = '05102a2c-509c-41c1-a751-787f4c499f40';
+const WATER_ELEMENTAL = 'b9ced997-b7fb-4cef-9f57-7264f3fea633';
 
 const FIREBALL_COPIES = 3;
 const BOLT_COPIES = 2;

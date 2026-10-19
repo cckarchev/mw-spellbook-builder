@@ -1,3 +1,4 @@
+import { cardCode } from '@/core/catalog/cardImage';
 import {
   type Card,
   type CardType,
@@ -8,7 +9,6 @@ import {
 } from '@/core/rules/types';
 import type { RawCard } from './readModule';
 
-const CODE_LENGTH = 8;
 const UNKNOWN_EXPANSION = 'Unknown';
 const MAGE_SUBTYPE = 'Mage';
 
@@ -96,7 +96,7 @@ export const normalizeCard = (
 
   return {
     id: raw.id,
-    code: raw.id.slice(0, CODE_LENGTH),
+    code: cardCode(raw.id),
     name: raw.name,
     type,
     subtypes,

@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { readStored, writeStored } from '@/core/persistence/storage';
 import type { Book } from '@/core/rules/types';
-import { canAddCopy, cardsIllegalFor } from '@/core/rules/validateBook';
+import { canAddCopy } from '@/core/rules/validateBook';
 import { decodeBook, encodeBook } from '@/core/share-link/bookCodec';
 import { cardsById, magesById } from '@/data/catalog';
 
@@ -10,8 +10,6 @@ export const BOOK_STORAGE_KEY = 'mw-spellbook-builder:current';
 
 interface BookStore {
   book: Book;
-  /** Switches mage and drops the cards the new mage cannot use. */
-  chooseMage: (mageId: string) => void;
   /** Adds one copy, unless the + control would be disabled for it. */
   addCopy: (cardId: string) => void;
   removeCopy: (cardId: string) => void;
@@ -28,12 +26,10 @@ const readInitialBook = (): Book => {
   return decoded?.book ?? emptyBook();
 };
 
-const withoutCards = (counts: Book['counts'], cardIds: string[]): Book['counts'] => {
+const withoutCard = (counts: Book['counts'], cardId: string): Book['counts'] => {
   const remaining = { ...counts };
 
-  for (const cardId of cardIds) {
-    delete remaining[cardId];
-  }
+  delete remaining[cardId];
 
   return remaining;
 };
@@ -41,20 +37,6 @@ const withoutCards = (counts: Book['counts'], cardIds: string[]): Book['counts']
 export const createBookStore = () => {
   const store = create<BookStore>()((set, get) => ({
     book: readInitialBook(),
-
-    chooseMage: (mageId) => {
-      const mage = magesById.get(mageId);
-
-      if (!mage) {
-        return;
-      }
-
-      const { book } = get();
-      const illegalIds = cardsIllegalFor(book, mage, cardsById).map((card) => card.id);
-      const counts = withoutCards(book.counts, illegalIds);
-
-      set({ book: { mageId, counts } });
-    },
 
     addCopy: (cardId) => {
       const { book } = get();
@@ -79,7 +61,7 @@ export const createBookStore = () => {
       }
 
       const counts =
-        count === 1 ? withoutCards(book.counts, [cardId]) : { ...book.counts, [cardId]: count - 1 };
+        count === 1 ? withoutCard(book.counts, cardId) : { ...book.counts, [cardId]: count - 1 };
 
       set({ book: { ...book, counts } });
     },

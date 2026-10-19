@@ -1,8 +1,9 @@
 import type { Book, Card, Mage } from '@/core/rules/types';
 import type { BookIssue, BookSummary } from '@/core/rules/validateBook';
+import { plural } from '@/core/text/plural';
 
-const plural = (count: number, singular: string, pluralForm: string): string =>
-  `${count} ${count === 1 ? singular : pluralForm}`;
+const NOTE_SEPARATOR = '. ';
+const CHOOSE_MAGE = 'Choose one to keep building.';
 
 /** The note shown next to the share actions while the book is not legal, or null. */
 export const shareNote = (summary: BookSummary): string | null => {
@@ -88,8 +89,6 @@ export const incomingProblems = (
   return [...unknownLines, ...bookProblems(issues, mage, counts, cardsById)];
 };
 
-const NOTE_SEPARATOR = '. ';
-
 const cardNote = (issue: BookIssue, mage: Mage): { cardId: string; note: string } | null => {
   switch (issue.kind) {
     case 'tooManyCopies': {
@@ -123,8 +122,6 @@ export const cardProblems = (issues: BookIssue[], mage: Mage): Map<string, strin
 
   return notes;
 };
-
-const CHOOSE_MAGE = 'Choose one to keep building.';
 
 /** The problems of a link that opens without a usable mage. */
 export const noMageProblems = (unknownMage: string | null, unknownCodes: string[]): string[] => {

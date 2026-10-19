@@ -4,7 +4,6 @@ import { cards, magesById } from '@/data/catalog';
 import { BOOK_STORAGE_KEY, createBookStore } from './useBookStore';
 
 const WIZARD_ID = 'wizard';
-const NECROMANCER_ID = 'necromancer';
 const ADD_ATTEMPTS = 10;
 const LOADED_COPIES = 2;
 
@@ -21,12 +20,11 @@ const findCard = (onlyFor: string | null) => {
 };
 
 const anyMageCard = findCard(null);
-const wizardOnlyCard = findCard('Wizard');
 
 const createWizardStore = () => {
   const store = createBookStore();
 
-  store.getState().chooseMage(WIZARD_ID);
+  store.getState().loadBook({ mageId: WIZARD_ID, counts: {} });
 
   return store;
 };
@@ -73,19 +71,6 @@ describe('useBookStore copies', () => {
 describe('useBookStore book changes', () => {
   it('starts empty', () => {
     expect(createBookStore().getState().book).toEqual(EMPTY_BOOK);
-  });
-
-  it('chooseMage removes cards illegal for the new mage', () => {
-    const store = createWizardStore();
-
-    store.getState().addCopy(anyMageCard.id);
-    store.getState().addCopy(wizardOnlyCard.id);
-    store.getState().chooseMage(NECROMANCER_ID);
-
-    const { book } = store.getState();
-
-    expect(book.mageId).toBe(NECROMANCER_ID);
-    expect(book.counts).toEqual({ [anyMageCard.id]: 1 });
   });
 
   it('loadBook replaces the book and clear empties it', () => {

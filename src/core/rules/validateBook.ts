@@ -1,10 +1,12 @@
+import { plural } from '@/core/text/plural';
 import { cardCost } from './cardCost';
 import { maxCopies } from './copyLimit';
 import { isLegalFor } from './legality';
 import type { Book, Card, Mage } from './types';
 
 export type BookIssue =
-  | { kind: 'unknownCard'; code: string }
+  /** A card id in the book that the catalog no longer has. */
+  | { kind: 'unknownCard'; cardId: string }
   | { kind: 'illegalCard'; cardId: string }
   | { kind: 'tooManyCopies'; cardId: string; max: number };
 
@@ -49,7 +51,7 @@ export const summarizeBook = (
     const card = cardsById.get(cardId);
 
     if (!card) {
-      issues.push({ kind: 'unknownCard', code: cardId });
+      issues.push({ kind: 'unknownCard', cardId });
       continue;
     }
 
@@ -73,9 +75,7 @@ export const addCopyBlockedReason = (book: Book, card: Card, mage: Mage): string
   }
 
   if (count >= max) {
-    const noun = max === 1 ? 'copy' : 'copies';
-
-    return `Max ${max} ${noun}`;
+    return `Max ${plural(max, 'copy', 'copies')}`;
   }
 
   return null;
@@ -84,16 +84,3 @@ export const addCopyBlockedReason = (book: Book, card: Card, mage: Mage): string
 /** Whether the + control for a card is enabled. */
 export const canAddCopy = (book: Book, card: Card, mage: Mage): boolean =>
   addCopyBlockedReason(book, card, mage) === null;
-
-/** Cards in the book that the mage cannot use. */
-export const cardsIllegalFor = (
-  book: Book,
-  mage: Mage,
-  cardsById: ReadonlyMap<string, Card>,
-): Card[] => {
-  const cardsInBook = entriesInBook(book)
-    .map(([cardId]) => cardsById.get(cardId))
-    .filter((card): card is Card => card !== undefined);
-
-  return cardsInBook.filter((card) => !isLegalFor(card, mage));
-};

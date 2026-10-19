@@ -1,11 +1,11 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
+import { cardCode, cardImagePath } from '@/core/catalog/cardImage';
 import { SCHOOLS } from '@/core/rules/types';
 import { cards, cardsByCode, magesById } from './catalog';
 import { mages } from './mages';
 
 const PUBLIC_DIR = 'public';
-const CODE_LENGTH = 8;
 const PALADIN_HOLY_LEVEL = 2;
 const PALADIN_WAR_LEVEL = 2;
 const SCHOOL_MAGE_NAMES = new Set(SCHOOLS.map((school) => `${school} Mage`));
@@ -45,9 +45,9 @@ describe('mage data integrity', () => {
 
   it('has an image file for every mage card', () => {
     const missing = mages.filter((mage) => {
-      const code = mage.imageCardId?.slice(0, CODE_LENGTH) ?? '';
+      const code = cardCode(mage.imageCardId ?? '');
 
-      return !publicFileExists(`/cards/${code}.webp`);
+      return !publicFileExists(cardImagePath(code));
     });
 
     expect(missing.map((mage) => mage.name)).toEqual([]);

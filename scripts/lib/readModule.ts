@@ -8,7 +8,7 @@ export interface RawCard {
   properties: Record<string, string>;
 }
 
-export interface RawSet {
+interface RawSet {
   id: string;
   name: string;
   cards: RawCard[];

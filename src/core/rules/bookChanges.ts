@@ -20,7 +20,7 @@ export const sameBook = (first: Book, second: Book): boolean => {
  * How picking a mage changes the book: another mage starts a new book (after a confirm
  * when there are cards to lose); the same mage keeps its book.
  */
-export type MageSwitchKind = 'newBook' | 'direct' | 'sameMage';
+type MageSwitchKind = 'newBook' | 'direct' | 'sameMage';
 
 export const mageSwitchKind = (book: Book, mageId: string): MageSwitchKind => {
   if (book.mageId === mageId) {

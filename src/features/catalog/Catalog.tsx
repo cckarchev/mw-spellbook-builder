@@ -3,24 +3,17 @@ import { EMPTY_FILTERS, filterCards } from '@/core/catalog/filterCards';
 import { filterOptions } from '@/core/catalog/filterOptions';
 import { groupByType } from '@/core/catalog/groupByType';
 import { cardCost } from '@/core/rules/cardCost';
-import type { Book, Mage } from '@/core/rules/types';
 import { addCopyBlockedReason } from '@/core/rules/validateBook';
 import { cards } from '@/data/catalog';
+import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { CardRow } from '@/features/shared/card-row/CardRow';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
 import styles from './Catalog.module.css';
 import { FilterBar } from './filter-bar/FilterBar';
 import { useCatalogFilters } from './useCatalogFilters';
 
-interface CatalogProps {
-  book: Book;
-  mage: Mage;
-  onAdd: (cardId: string) => void;
-  onRemove: (cardId: string) => void;
-}
-
 /** Every card the mage can use, filtered and grouped by type, each with its cost and a stepper. */
-export const Catalog = ({ book, mage, onAdd, onRemove }: CatalogProps) => {
+export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
   const { filters, setQuery, toggle, clearChips } = useCatalogFilters(mage.id);
 
   const options = useMemo(() => filterOptions(filterCards(cards, EMPTY_FILTERS, mage)), [mage]);

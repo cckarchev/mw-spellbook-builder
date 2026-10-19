@@ -1,5 +1,6 @@
 import type { Mage } from '@/core/rules/types';
 import type { BookSummary } from '@/core/rules/validateBook';
+import { plural } from '@/core/text/plural';
 import styles from './BookHeader.module.css';
 
 interface BookHeaderProps {
@@ -24,8 +25,6 @@ const bookState = (summary: BookSummary): BookState => {
 const VALID_LABEL = 'Valid';
 const LABEL_SEPARATOR = ' · ';
 
-const problemsLabel = (count: number): string => (count === 1 ? '1 problem' : `${count} problems`);
-
 /** What is wrong, all of it: "4 over · 2 problems". */
 const stateLabel = (summary: BookSummary): string => {
   const parts: string[] = [];
@@ -35,7 +34,7 @@ const stateLabel = (summary: BookSummary): string => {
   }
 
   if (summary.issues.length > 0) {
-    parts.push(problemsLabel(summary.issues.length));
+    parts.push(plural(summary.issues.length, 'problem', 'problems'));
   }
 
   if (parts.length === 0) {

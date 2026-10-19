@@ -14,7 +14,6 @@ const BUILD_PATH = '/build';
 export const useMageSwitch = () => {
   const navigate = useNavigate();
   const book = useBookStore((state) => state.book);
-  const chooseMage = useBookStore((state) => state.chooseMage);
   const loadBook = useBookStore((state) => state.loadBook);
   const resetFilters = useCatalogFiltersStore((state) => state.reset);
 
@@ -30,7 +29,7 @@ export const useMageSwitch = () => {
     }
 
     if (kind === 'direct') {
-      chooseMage(mage.id);
+      loadBook({ mageId: mage.id, counts: {} });
     }
 
     navigate(BUILD_PATH);
