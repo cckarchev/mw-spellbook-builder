@@ -6,8 +6,7 @@ import type { Mage, School, Training } from '@/core/rules/types';
 
 const ARENA_BUDGET = 120;
 const DRUID_WATER_LEVEL = 1;
-const PALADIN_HOLY_LEVEL = 3;
-const PALADIN_WAR_LEVEL = 2;
+const PALADIN_MAX_LEVEL = 2;
 
 const ELEMENTS: School[] = ['Air', 'Earth', 'Fire', 'Water'];
 
@@ -127,8 +126,8 @@ export const mages: Mage[] = [
     training: forcemasterTraining,
   }),
   arenaMage({
-    id: 'pellian-forcemaster',
-    name: 'Pellian Forcemaster',
+    id: 'salenia-forcemaster',
+    name: 'Salenia Forcemaster',
     className: ['Forcemaster'],
     imageCardId: 'd3c7466b-2e15-436b-a6e8-799aa7132136',
     training: forcemasterTraining,
@@ -158,8 +157,8 @@ export const mages: Mage[] = [
     imageCardId: '30a60bad-bf32-46a2-a69e-e949d288b7ac',
     training: {
       partial: [
-        { school: 'Holy', maxLevel: PALADIN_HOLY_LEVEL },
-        { school: 'War', maxLevel: PALADIN_WAR_LEVEL },
+        { school: 'Holy', maxLevel: PALADIN_MAX_LEVEL },
+        { school: 'War', maxLevel: PALADIN_MAX_LEVEL },
       ],
       trainedCombos: [{ school: 'Holy', type: 'Creature' }],
       opposed: ['Dark'],

@@ -6,7 +6,7 @@ import { mages } from './mages';
 
 const PUBLIC_DIR = 'public';
 const CODE_LENGTH = 8;
-const PALADIN_HOLY_LEVEL = 3;
+const PALADIN_HOLY_LEVEL = 2;
 const PALADIN_WAR_LEVEL = 2;
 const SCHOOL_MAGE_NAMES = new Set(SCHOOLS.map((school) => `${school} Mage`));
 const MAGE_ONLY_NAMES = new Set(mages.flatMap((mage) => mage.onlyNames));
@@ -53,12 +53,16 @@ describe('mage data integrity', () => {
     expect(missing.map((mage) => mage.name)).toEqual([]);
   });
 
-  it('trains the Paladin in Holy up to level 3 and War up to level 2', () => {
+  it('trains the Paladin in Holy and War up to level 2, as printed on its stats card', () => {
     const paladin = magesById.get('paladin');
 
     expect(paladin?.training.partial).toEqual([
       { school: 'Holy', maxLevel: PALADIN_HOLY_LEVEL },
       { school: 'War', maxLevel: PALADIN_WAR_LEVEL },
     ]);
+  });
+
+  it('names the Salenia Forcemaster as printed on its stats card, not as OCTGN does', () => {
+    expect(magesById.get('salenia-forcemaster')?.name).toBe('Salenia Forcemaster');
   });
 });
