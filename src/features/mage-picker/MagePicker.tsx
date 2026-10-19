@@ -2,6 +2,7 @@ import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
 import { mages } from '@/data/catalog';
 import styles from './MagePicker.module.css';
 import { MageTile } from './mage-tile/MageTile';
+import { RulesQuestions } from './rules-questions/RulesQuestions';
 import { useMageSwitch } from './useMageSwitch';
 
 const NewBook = ({ mageName, copies }: { mageName: string; copies: number }) => (
@@ -30,6 +31,7 @@ export const MagePicker = () => {
           />
         ))}
       </div>
+      <RulesQuestions />
       <ConfirmDialog
         open={pendingSwitch !== null}
         title="Start a new book?"
