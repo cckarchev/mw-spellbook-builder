@@ -11,6 +11,8 @@ export interface CatalogFilters {
   subtypes: string[];
   expansions: string[];
   levels: number[];
+  /** Only the "X Only" cards, which the mage can use and most others cannot. */
+  onlyCards: boolean;
 }
 
 export const EMPTY_FILTERS: CatalogFilters = {
@@ -20,6 +22,7 @@ export const EMPTY_FILTERS: CatalogFilters = {
   subtypes: [],
   expansions: [],
   levels: [],
+  onlyCards: false,
 };
 
 /** Selects a value that is not selected, and unselects one that is. */
@@ -33,11 +36,11 @@ export const activeFilterCount = (filters: CatalogFilters): number => {
   return types.length + schools.length + subtypes.length + expansions.length + levels.length;
 };
 
-/** Whether the player is searching or has a chip selected. */
+/** Whether the player is searching, has a chip selected or asked for the "Only" cards. */
 export const isFiltering = (filters: CatalogFilters): boolean => {
   const hasQuery = filters.query.trim().length > 0;
 
-  return hasQuery || activeFilterCount(filters) > 0;
+  return hasQuery || filters.onlyCards || activeFilterCount(filters) > 0;
 };
 
 const allowsAny = <T>(selected: T[], values: T[]): boolean =>
@@ -50,6 +53,7 @@ const matchesFilters = (card: Card, filters: CatalogFilters): boolean => {
   const matchesSubtype = allowsAny(filters.subtypes, card.subtypes);
   const matchesExpansion = allowsAny(filters.expansions, [card.expansion]);
   const matchesLevel = allowsAny(filters.levels, [totalLevel(card)]);
+  const matchesOnly = !filters.onlyCards || card.onlyFor !== null;
 
   return (
     matchesType &&
@@ -57,6 +61,7 @@ const matchesFilters = (card: Card, filters: CatalogFilters): boolean => {
     matchesSubtype &&
     matchesExpansion &&
     matchesLevel &&
+    matchesOnly &&
     matchesQuery(card, filters.query)
   );
 };

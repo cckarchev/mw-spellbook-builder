@@ -1,8 +1,10 @@
 import { create } from 'zustand';
 import { type CatalogFilters, EMPTY_FILTERS, toggleValue } from '@/core/catalog/filterCards';
+import { type FilterScope, withScope } from '@/core/catalog/filterScope';
+import type { Mage } from '@/core/rules/types';
 
-/** A chip group in the filter bar: every filter but the search query. */
-export type FilterGroupKey = Exclude<keyof CatalogFilters, 'query'>;
+/** A chip group in the filter bar: every filter but the search query and the "Only" switch. */
+export type FilterGroupKey = Exclude<keyof CatalogFilters, 'query' | 'onlyCards'>;
 
 export type FilterValue = CatalogFilters[FilterGroupKey][number];
 
@@ -33,7 +35,8 @@ export const useCatalogFiltersStore = create<CatalogFiltersStore>()((set, get) =
   },
 }));
 
-export const useCatalogFilters = (mageId: string) => {
+export const useCatalogFilters = (mage: Mage) => {
+  const mageId = mage.id;
   const storedMageId = useCatalogFiltersStore((state) => state.mageId);
   const storedFilters = useCatalogFiltersStore((state) => state.filters);
   const setFilters = useCatalogFiltersStore((state) => state.setFilters);
@@ -52,10 +55,14 @@ export const useCatalogFilters = (mageId: string) => {
     });
   };
 
+  const setScope = (scope: FilterScope) => {
+    setFilters(mageId, (current) => withScope(current, scope, mage));
+  };
+
   /** Clears the chips and keeps the search query. */
   const clearChips = () => {
     setFilters(mageId, (current) => ({ ...EMPTY_FILTERS, query: current.query }));
   };
 
-  return { filters, setQuery, toggle, clearChips };
+  return { filters, setQuery, toggle, setScope, clearChips };
 };

@@ -179,3 +179,55 @@ describe('Catalog filter panel', () => {
     expect(screen.getByRole('button', { name: 'Fire' })).toHaveAttribute('aria-pressed', 'true');
   });
 });
+
+describe('Catalog quick picks and count', () => {
+  const legal = filterCards(cards, EMPTY_FILTERS, wizard);
+  const onlyCount = legal.filter((card) => card.onlyFor !== null).length;
+
+  const pick = async (label: string) => {
+    const picks = screen.getByRole('group', { name: 'Show' });
+
+    await userEvent.click(within(picks).getByRole('button', { name: label }));
+  };
+
+  const count = () => screen.getByText(/^Showing /);
+
+  it('shows no count while nothing is filtered', () => {
+    renderCatalog();
+
+    expect(screen.queryByText(/^Showing /)).not.toBeInTheDocument();
+    expect(
+      within(screen.getByRole('group', { name: 'Show' })).getByRole('button', { name: 'All' }),
+    ).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it("fills the school chips with the mage's schools for Trained", async () => {
+    renderCatalog();
+
+    await pick('Trained');
+    await userEvent.click(screen.getByRole('button', { name: /^Filters/ }));
+
+    expect(screen.getByRole('button', { name: 'Arcane' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Air' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Fire' })).toHaveAttribute('aria-pressed', 'false');
+  });
+
+  it('shows only the "Only" cards of the mage, with how many of all', async () => {
+    renderCatalog();
+
+    await pick('Mage only');
+
+    expect(count()).toHaveTextContent(`Showing ${onlyCount} of ${legal.length} cards`);
+    expect(count()).toHaveAttribute('data-empty', 'false');
+  });
+
+  it('marks the count when nothing matches', async () => {
+    renderCatalog();
+
+    await userEvent.click(screen.getByRole('searchbox', { name: 'Search cards' }));
+    await userEvent.paste('zzzz');
+
+    expect(count()).toHaveTextContent(`Showing 0 of ${legal.length} cards`);
+    expect(count()).toHaveAttribute('data-empty', 'true');
+  });
+});

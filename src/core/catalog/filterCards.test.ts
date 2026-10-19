@@ -1,4 +1,4 @@
-import { makeCard, wizard } from '@/core/rules/fixtures';
+import { makeCard, warlock, wizard } from '@/core/rules/fixtures';
 import type { Card } from '@/core/rules/types';
 import {
   activeFilterCount,
@@ -78,6 +78,12 @@ describe('filterCards', () => {
     expect(ids({ levels: [LEVEL_TWO] })).toEqual(['fire-attack']);
   });
 
+  it('keeps only the "Only" cards of the mage when asked', () => {
+    const onlyCards = filterCards(CARDS, { ...EMPTY_FILTERS, onlyCards: true }, warlock);
+
+    expect(onlyCards.map((card) => card.id)).toEqual(['warlock-only']);
+  });
+
   it('combines the query with the other filters', () => {
     expect(ids({ query: 'fire', types: ['Creature'] })).toEqual(['fire-creature']);
   });
@@ -116,5 +122,9 @@ describe('isFiltering', () => {
   it('is true with a query or a chip', () => {
     expect(isFiltering({ ...EMPTY_FILTERS, query: 'bolt' })).toBe(true);
     expect(isFiltering({ ...EMPTY_FILTERS, types: ['Attack'] })).toBe(true);
+  });
+
+  it('is true when only the "Only" cards are asked for', () => {
+    expect(isFiltering({ ...EMPTY_FILTERS, onlyCards: true })).toBe(true);
   });
 });

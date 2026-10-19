@@ -2,9 +2,11 @@ import { useMemo } from 'react';
 import { type BookGroup, bookGroups } from '@/core/catalog/bookGroups';
 import { EMPTY_FILTERS, filterCards, isFiltering } from '@/core/catalog/filterCards';
 import { filterOptions } from '@/core/catalog/filterOptions';
+import { scopeOf } from '@/core/catalog/filterScope';
 import { groupByType } from '@/core/catalog/groupByType';
 import { cardCost } from '@/core/rules/cardCost';
 import { addCopyBlockedReason } from '@/core/rules/validateBook';
+import { plural } from '@/core/text/plural';
 import { cards, cardsById } from '@/data/catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { CardRow } from '@/features/shared/card-row/CardRow';
@@ -24,10 +26,12 @@ const inBookLabel = (bookGroup: BookGroup | undefined): string | undefined => {
 
 /** Every card the mage can use, filtered and grouped by type, each with its cost and a stepper. */
 export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
-  const { filters, setQuery, toggle, clearChips } = useCatalogFilters(mage.id);
+  const { filters, setQuery, toggle, setScope, clearChips } = useCatalogFilters(mage);
 
-  const options = useMemo(() => filterOptions(filterCards(cards, EMPTY_FILTERS, mage)), [mage]);
-  const groups = useMemo(() => groupByType(filterCards(cards, filters, mage)), [filters, mage]);
+  const legalCards = useMemo(() => filterCards(cards, EMPTY_FILTERS, mage), [mage]);
+  const options = useMemo(() => filterOptions(legalCards), [legalCards]);
+  const shownCards = useMemo(() => filterCards(cards, filters, mage), [filters, mage]);
+  const groups = groupByType(shownCards);
   const bookGroupsByType = new Map(
     bookGroups(book, mage, cardsById).map((bookGroup) => [bookGroup.type, bookGroup]),
   );
@@ -42,9 +46,15 @@ export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
         options={options}
         onQueryChange={setQuery}
         onToggle={toggle}
+        scope={scopeOf(filters, mage)}
+        onScopeChange={setScope}
         onClearChips={clearChips}
       />
-      {groups.length === 0 ? <p className={styles.empty}>No cards match.</p> : null}
+      {filtering ? (
+        <p className={styles.count} data-empty={shownCards.length === 0}>
+          Showing {shownCards.length} of {plural(legalCards.length, 'card', 'cards')}
+        </p>
+      ) : null}
       {groups.map((group) => (
         <TypeSection
           key={`${group.type}:${filtering}`}

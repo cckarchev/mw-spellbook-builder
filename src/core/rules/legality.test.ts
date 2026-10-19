@@ -1,5 +1,5 @@
-import { makeCard, makeMage, paladin, priest, warlock, wizard } from './fixtures';
-import { isLegalFor, isTrainedIn } from './legality';
+import { druid, makeCard, makeMage, paladin, priest, warlock, wizard } from './fixtures';
+import { isLegalFor, isTrainedIn, trainedSchools } from './legality';
 
 describe('isLegalFor', () => {
   it('allows a card with no "Only" restriction', () => {
@@ -56,5 +56,13 @@ describe('isTrainedIn', () => {
 
   it('does not count an untrained school', () => {
     expect(isTrainedIn('Holy', warlock)).toBe(false);
+  });
+});
+
+describe('trainedSchools', () => {
+  it('lists the fully trained schools, then the partially trained ones', () => {
+    expect(trainedSchools(wizard)).toEqual(['Arcane', 'Air']);
+    expect(trainedSchools(druid)).toEqual(['Nature', 'Water']);
+    expect(trainedSchools(paladin)).toEqual(['Holy', 'War']);
   });
 });

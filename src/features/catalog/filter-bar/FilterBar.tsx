@@ -1,7 +1,9 @@
 import { useId, useState } from 'react';
 import { Button } from '@/components/button/Button';
+import { Segmented } from '@/components/segmented/Segmented';
 import { activeFilterCount, type CatalogFilters } from '@/core/catalog/filterCards';
 import type { FilterOptions } from '@/core/catalog/filterOptions';
+import type { FilterScope } from '@/core/catalog/filterScope';
 import type { FilterGroupKey, FilterValue } from '../useCatalogFilters';
 import styles from './FilterBar.module.css';
 import { FilterGroup } from './filter-group/FilterGroup';
@@ -11,8 +13,17 @@ interface FilterBarProps {
   options: FilterOptions;
   onQueryChange: (query: string) => void;
   onToggle: (group: FilterGroupKey, value: FilterValue) => void;
+  /** Null when the school chips were picked by hand. */
+  scope: FilterScope | null;
+  onScopeChange: (scope: FilterScope) => void;
   onClearChips: () => void;
 }
+
+const SCOPES: { value: FilterScope; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'trained', label: 'Trained' },
+  { value: 'only', label: 'Mage only' },
+];
 
 // Subtype and Expansion have the most values, so they start folded away.
 const GROUPS: { key: FilterGroupKey; title: string; defaultExpanded: boolean }[] = [
@@ -29,6 +40,8 @@ export const FilterBar = ({
   options,
   onQueryChange,
   onToggle,
+  scope,
+  onScopeChange,
   onClearChips,
 }: FilterBarProps) => {
   const panelId = useId();
@@ -59,6 +72,7 @@ export const FilterBar = ({
           {toggleLabel}
         </Button>
       </div>
+      <Segmented label="Show" options={SCOPES} value={scope} onChange={onScopeChange} />
       {open ? (
         <div id={panelId} className={styles.panel}>
           <input

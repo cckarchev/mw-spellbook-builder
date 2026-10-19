@@ -4,6 +4,13 @@
   gap: var(--space-md);
 }
 
-.empty {
+.count {
   color: var(--color-text-dim);
+  font-size: var(--font-size-sm);
+}
+
+/* Nothing left to show: the filters went too far. */
+.count[data-empty='true'] {
+  color: var(--color-error);
+  font-weight: var(--font-weight-semibold);
 }

@@ -14,6 +14,13 @@ export const isTrainedIn = (school: School, mage: Mage): boolean => {
   return isFull || isPartial;
 };
 
+/** The schools the mage is trained in: fully trained first, then partially trained. */
+export const trainedSchools = (mage: Mage): School[] => {
+  const partialSchools = mage.training.partial.map((partial) => partial.school);
+
+  return [...mage.training.full, ...partialSchools];
+};
+
 const matchesOnlyFor = (onlyFor: string, mage: Mage): boolean => {
   const schoolMatch = SCHOOL_MAGE_PATTERN.exec(onlyFor);
   const school = schoolMatch ? asSchool(schoolMatch[1]) : undefined;
