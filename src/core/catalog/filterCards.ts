@@ -33,6 +33,13 @@ export const activeFilterCount = (filters: CatalogFilters): number => {
   return types.length + schools.length + subtypes.length + expansions.length + levels.length;
 };
 
+/** Whether the player is searching or has a chip selected. */
+export const isFiltering = (filters: CatalogFilters): boolean => {
+  const hasQuery = filters.query.trim().length > 0;
+
+  return hasQuery || activeFilterCount(filters) > 0;
+};
+
 const allowsAny = <T>(selected: T[], values: T[]): boolean =>
   selected.length === 0 || values.some((value) => selected.includes(value));
 

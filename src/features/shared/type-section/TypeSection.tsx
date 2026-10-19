@@ -6,14 +6,22 @@ interface TypeSectionProps {
   title: string;
   count: number;
   meta?: string;
+  /** Whether the rows start shown. */
+  defaultExpanded?: boolean;
   /** The rows, as list items. */
   children: ReactNode;
 }
 
 /** One card type's rows under a header that collapses them. */
-export const TypeSection = ({ title, count, meta, children }: TypeSectionProps) => {
+export const TypeSection = ({
+  title,
+  count,
+  meta,
+  defaultExpanded = true,
+  children,
+}: TypeSectionProps) => {
   const headingId = useId();
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(defaultExpanded);
 
   return (
     <section className={styles.section} aria-labelledby={headingId}>

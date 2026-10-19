@@ -5,6 +5,7 @@ import {
   type CatalogFilters,
   EMPTY_FILTERS,
   filterCards,
+  isFiltering,
   toggleValue,
 } from './filterCards';
 
@@ -103,5 +104,17 @@ describe('activeFilterCount', () => {
     const SelectedChips = 3;
 
     expect(activeFilterCount(filters)).toBe(SelectedChips);
+  });
+});
+
+describe('isFiltering', () => {
+  it('is false with no query and no chips, even with blank spaces typed', () => {
+    expect(isFiltering(EMPTY_FILTERS)).toBe(false);
+    expect(isFiltering({ ...EMPTY_FILTERS, query: '  ' })).toBe(false);
+  });
+
+  it('is true with a query or a chip', () => {
+    expect(isFiltering({ ...EMPTY_FILTERS, query: 'bolt' })).toBe(true);
+    expect(isFiltering({ ...EMPTY_FILTERS, types: ['Attack'] })).toBe(true);
   });
 });

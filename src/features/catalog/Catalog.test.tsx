@@ -9,6 +9,8 @@ import { useCatalogFiltersStore } from './useCatalogFilters';
 
 const BOLT_LIMIT = 4;
 
+const EMPTY_BOOK: Book = { mageId: wizard.id, counts: {} };
+
 beforeEach(() => {
   useCatalogFiltersStore.getState().reset();
 });
@@ -20,6 +22,15 @@ const renderCatalog = (book: Book = smallBook) => {
   render(<Catalog book={book} mage={wizard} onAdd={onAdd} onRemove={onRemove} />);
 
   return { onAdd, onRemove };
+};
+
+/** The header button of a type section, such as "Attack (52)". */
+const sectionToggle = (type: string): HTMLElement =>
+  screen.getByRole('button', { name: new RegExp(`^${type} \\(`) });
+
+/** Opens a type section by tapping its header. */
+const openSection = async (type: string) => {
+  await userEvent.click(sectionToggle(type));
 };
 
 /** The catalog row of a card, found by its name. */
@@ -37,15 +48,24 @@ const rowNames = (): string[] =>
   Array.from(document.querySelectorAll('[data-card-name]')).map((node) => node.textContent ?? '');
 
 describe('Catalog listing', () => {
-  it('lists only the cards the mage can use', () => {
+  it('starts with every type section collapsed', () => {
     renderCatalog();
+
+    expect(rowNames()).toEqual([]);
+    expect(sectionToggle('Attack')).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('lists only the cards the mage can use', async () => {
+    renderCatalog();
+
+    await openSection('Attack');
 
     expect(rowOf('Fireball')).toBeInTheDocument();
     expect(screen.queryByText("Adramelech's Torment")).not.toBeInTheDocument();
   });
 
   it('groups the cards under type headers with a count', () => {
-    renderCatalog();
+    renderCatalog(EMPTY_BOOK);
 
     const legal = filterCards(cards, EMPTY_FILTERS, wizard);
     const attackCount = legal.filter((card) => card.type === 'Attack').length;
@@ -53,7 +73,14 @@ describe('Catalog listing', () => {
     expect(screen.getByRole('heading', { name: `Attack (${attackCount})` })).toBeInTheDocument();
   });
 
-  it('narrows the list as the player searches', async () => {
+  it('shows how many copies of each type the book has and their points', () => {
+    renderCatalog();
+
+    expect(sectionToggle('Attack')).toHaveTextContent('5 in book · 16 pts');
+    expect(sectionToggle('Creature')).not.toHaveTextContent('in book');
+  });
+
+  it('opens the sections while the player searches, to show the matches', async () => {
     renderCatalog();
 
     await userEvent.click(screen.getByRole('searchbox', { name: 'Search cards' }));
@@ -69,6 +96,9 @@ describe('Catalog rows', () => {
       ...smallBook,
       counts: { ...smallBook.counts, [LIGHTNING_BOLT]: BOLT_LIMIT },
     });
+
+    await openSection('Attack');
+
     const row = rowOf('Lightning Bolt');
     const add = within(row).getByRole('button', { name: 'Add one Lightning Bolt' });
 
@@ -83,6 +113,7 @@ describe('Catalog rows', () => {
   it('adds a copy with +', async () => {
     const { onAdd } = renderCatalog();
 
+    await openSection('Attack');
     await userEvent.click(
       within(rowOf('Fireball')).getByRole('button', { name: 'Add one Fireball' }),
     );
@@ -92,6 +123,8 @@ describe('Catalog rows', () => {
 
   it('opens the card image when the row is tapped', async () => {
     renderCatalog();
+
+    await openSection('Attack');
 
     const row = rowOf('Fireball');
 
