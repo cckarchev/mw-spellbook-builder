@@ -72,8 +72,6 @@ export interface Training {
   subtypes: string[];
   opposedTypes: CardType[];
   trainedCombos: TrainedCombo[];
-  /** Schools the mage picks one of when building, such as the Wizard's element. Empty otherwise. */
-  schoolChoice: School[];
 }
 
 export interface Mage {
@@ -89,7 +87,6 @@ export interface Mage {
 
 export interface Book {
   mageId: string | null;
-  schoolChoice: School | null;
   /** Copies per card id. */
   counts: Record<string, number>;
 }

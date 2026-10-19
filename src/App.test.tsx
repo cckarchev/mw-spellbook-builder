@@ -68,7 +68,7 @@ describe('App build screen', () => {
     renderAt('/build');
 
     await userEvent.type(screen.getByRole('searchbox', { name: 'Search cards' }), 'fireball');
-    useBookStore.getState().loadBook({ mageId: 'priest', schoolChoice: null, counts: {} });
+    useBookStore.getState().loadBook({ mageId: 'priest', counts: {} });
 
     expect(await screen.findByRole('searchbox', { name: 'Search cards' })).toHaveValue('');
   });

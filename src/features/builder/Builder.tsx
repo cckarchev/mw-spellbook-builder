@@ -56,7 +56,7 @@ export const Builder = () => {
   return (
     <div className={styles.builder}>
       <div className={styles.sticky}>
-        <BookHeader mage={mage} schoolChoice={book.schoolChoice} summary={summary} />
+        <BookHeader mage={mage} summary={summary} />
         <Tabs tabs={TABS} active={activeTab} onChange={showTab} idPrefix={TAB_ID_PREFIX} />
       </div>
       <main className={styles.panel} {...tabPanelProps(TAB_ID_PREFIX, activeTab)}>

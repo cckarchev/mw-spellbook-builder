@@ -7,9 +7,9 @@ const FIREBALL_COPIES = 3;
 const BOLT_COPIES = 2;
 const CRYSTAL_COPIES = 2;
 
-// Wizard (Fire): Fireball 3 x 2, Lightning Bolt (untrained Air) 2 x 4, Mana Crystal 2 x 1.
-const FIREBALL_POINTS = 6;
-const ATTACK_POINTS = 14;
+// Wizard (Arcane, Air): Fireball (untrained Fire) 3 x 4, Lightning Bolt 2 x 2, Mana Crystal 2 x 1.
+const FIREBALL_POINTS = 12;
+const ATTACK_POINTS = 16;
 const CONJURATION_POINTS = 2;
 const ATTACK_COPIES = 5;
 
@@ -33,7 +33,6 @@ const cardsById: ReadonlyMap<string, Card> = new Map(
 
 const book: Book = {
   mageId: wizard.id,
-  schoolChoice: 'Fire',
   counts: {
     'mana-crystal': CRYSTAL_COPIES,
     'lightning-bolt': BOLT_COPIES,

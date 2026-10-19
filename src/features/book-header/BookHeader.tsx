@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
-import type { Mage, School } from '@/core/rules/types';
+import type { Mage } from '@/core/rules/types';
 import type { BookSummary } from '@/core/rules/validateBook';
 import styles from './BookHeader.module.css';
 
 interface BookHeaderProps {
   mage: Mage;
-  schoolChoice: School | null;
   summary: BookSummary;
 }
 
@@ -48,14 +47,13 @@ const stateLabel = (summary: BookSummary): string => {
 };
 
 /** The mage, the points used out of the budget, and whether the book is valid. */
-export const BookHeader = ({ mage, schoolChoice, summary }: BookHeaderProps) => {
+export const BookHeader = ({ mage, summary }: BookHeaderProps) => {
   const state = bookState(summary);
-  const mageLabel = schoolChoice === null ? mage.name : `${mage.name} (${schoolChoice})`;
 
   return (
     <header className={styles.header} data-state={state}>
       <div className={styles.mage}>
-        <span className={styles.mageName}>{mageLabel}</span>
+        <span className={styles.mageName}>{mage.name}</span>
         <Link className={styles.change} to="/">
           Change mage
         </Link>

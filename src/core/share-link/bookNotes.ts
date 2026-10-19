@@ -48,9 +48,6 @@ const issueLine = (
 
       return `${mage.name} cannot use ${name}`;
     }
-    case 'missingSchoolChoice': {
-      return `${mage.name} needs a school: choose one in the mage picker`;
-    }
     default: {
       // Unknown cards are reported from the link's unknown codes instead.
       return null;

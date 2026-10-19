@@ -30,7 +30,7 @@ export const bookGroups = (
     const card = cardsById.get(cardId);
 
     if (card && count > 0) {
-      const points = cardCost(card, mage, book.schoolChoice) * count;
+      const points = cardCost(card, mage) * count;
 
       entries.push({ card, count, points, type: card.type, name: card.name });
     }

@@ -29,21 +29,17 @@ const wizardOrThrow = (): Mage => {
 
 export const wizard = wizardOrThrow();
 
-const wizardFireBook = (counts: Book['counts']): Book => ({
-  mageId: wizard.id,
-  schoolChoice: 'Fire',
-  counts,
-});
+const wizardBook = (counts: Book['counts']): Book => ({ mageId: wizard.id, counts });
 
-/** 16 / 120: Fireball 3 x 2, Lightning Bolt 2 x 4, Mana Crystal 2 x 1. */
-export const smallBook = wizardFireBook({
+/** 18 / 120: Fireball 3 x 4 (Fire, untrained), Lightning Bolt 2 x 2, Mana Crystal 2 x 1. */
+export const smallBook = wizardBook({
   [FIREBALL]: FIREBALL_COPIES,
   [LIGHTNING_BOLT]: BOLT_COPIES,
   [MANA_CRYSTAL]: CRYSTAL_COPIES,
 });
 
-/** 124 / 120: the small book with 4 Lightning Bolts, 4 Alfiya (16 each) and 3 Water Elementals (12 each). */
-export const overBudgetBook = wizardFireBook({
+/** 122 / 120: the small book with 4 Lightning Bolts, 4 Alfiya (16 each) and 3 Water Elementals (12 each). */
+export const overBudgetBook = wizardBook({
   [FIREBALL]: FIREBALL_COPIES,
   [LIGHTNING_BOLT]: BOLT_LIMIT,
   [MANA_CRYSTAL]: CRYSTAL_COPIES,
@@ -51,14 +47,14 @@ export const overBudgetBook = wizardFireBook({
   [WATER_ELEMENTAL]: ELEMENTAL_COPIES,
 });
 
-/** The small book with 5 Fireballs: within budget, one problem (max 4 copies). */
-export const tooManyCopiesBook = wizardFireBook({
+/** The small book with 5 Fireballs: 26 / 120, one problem (max 4 copies). */
+export const tooManyCopiesBook = wizardBook({
   [FIREBALL]: FIREBALL_OVER_LIMIT,
   [LIGHTNING_BOLT]: BOLT_COPIES,
   [MANA_CRYSTAL]: CRYSTAL_COPIES,
 });
 
-/** The over-budget book with 5 Fireballs: 128 / 120 and one problem. */
+/** The over-budget book with 5 Fireballs: 130 / 120 and one problem. */
 export const overWithProblemBook = {
   ...overBudgetBook,
   counts: { ...overBudgetBook.counts, [FIREBALL]: FIREBALL_OVER_LIMIT },

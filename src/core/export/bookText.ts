@@ -10,11 +10,10 @@ interface BookLine {
   count: number;
 }
 
-const headerLine = (book: Book, mage: Mage, summary: BookSummary): string => {
-  const choice = book.schoolChoice === null ? '' : ` (${book.schoolChoice})`;
+const headerLine = (mage: Mage, summary: BookSummary): string => {
   const over = summary.overBy > 0 ? ` (${summary.overBy} over)` : '';
 
-  return `${mage.name}${choice} · ${summary.points}/${summary.budget} pts${over}`;
+  return `${mage.name} · ${summary.points}/${summary.budget} pts${over}`;
 };
 
 const bookLines = (book: Book, cardsById: ReadonlyMap<string, Card>): BookLine[] => {
@@ -50,5 +49,5 @@ export const bookText = (
   const groups = groupByType(bookLines(book, cardsById));
   const blocks = groups.map((group) => groupBlock(group.type, group.items));
 
-  return [headerLine(book, mage, summary), ...blocks, shareUrl].join('\n\n');
+  return [headerLine(mage, summary), ...blocks, shareUrl].join('\n\n');
 };

@@ -37,13 +37,12 @@ const arenaMage = (entry: MageEntry): Mage => {
       subtypes: [],
       opposedTypes: [],
       trainedCombos: [],
-      schoolChoice: [],
       ...entry.training,
     },
   };
 };
 
-const wizardTraining: Partial<Training> = { full: ['Arcane'], schoolChoice: ELEMENTS };
+const wizardTraining: Partial<Training> = { full: ['Arcane', 'Air'] };
 const warlockTraining: Partial<Training> = { full: ['Dark', 'Fire'], opposed: ['Holy'] };
 const beastmasterTraining: Partial<Training> = { full: ['Nature'], opposed: ['Fire'] };
 const priestTraining: Partial<Training> = { full: ['Holy'], opposed: ['Dark'] };

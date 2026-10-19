@@ -47,7 +47,7 @@ describe('Catalog listing', () => {
   it('groups the cards under type headers with a count', () => {
     renderCatalog();
 
-    const legal = filterCards(cards, EMPTY_FILTERS, wizard, 'Fire');
+    const legal = filterCards(cards, EMPTY_FILTERS, wizard);
     const attackCount = legal.filter((card) => card.type === 'Attack').length;
 
     expect(screen.getByRole('heading', { name: `Attack (${attackCount})` })).toBeInTheDocument();

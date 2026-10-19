@@ -1,4 +1,4 @@
-import type { Card, Mage, School, SchoolPart } from './types';
+import type { Card, Mage, SchoolPart } from './types';
 
 const TRAINED_MULTIPLIER = 1;
 const UNTRAINED_MULTIPLIER = 2;
@@ -17,15 +17,14 @@ export const totalLevel = (card: Card): number => {
   return levels.reduce((sum, level) => sum + level, 0);
 };
 
-const isPartTrained = (part: SchoolPart, mage: Mage, schoolChoice: School | null): boolean => {
+const isPartTrained = (part: SchoolPart, mage: Mage): boolean => {
   const { training } = mage;
   const isFull = training.full.includes(part.school);
-  const isChosen = schoolChoice === part.school && training.schoolChoice.includes(part.school);
   const isPartial = training.partial.some(
     (partial) => partial.school === part.school && part.level <= partial.maxLevel,
   );
 
-  return isFull || isChosen || isPartial;
+  return isFull || isPartial;
 };
 
 /** Novice, a trained school and type combo, or a trained subtype make the whole card trained. */
@@ -42,9 +41,9 @@ const isWholeCardTrained = (card: Card, mage: Mage): boolean => {
 };
 
 /** Spellbook points for one copy of a card in this mage's book. */
-export const cardCost = (card: Card, mage: Mage, schoolChoice: School | null): number => {
+export const cardCost = (card: Card, mage: Mage): number => {
   const wholeCardTrained = isWholeCardTrained(card, mage);
-  const anyPartTrained = card.schools.some((part) => isPartTrained(part, mage, schoolChoice));
+  const anyPartTrained = card.schools.some((part) => isPartTrained(part, mage));
   const isOpposedType = mage.training.opposedTypes.includes(card.type) && !anyPartTrained;
 
   const multiplierFor = (part: SchoolPart): number => {
@@ -53,7 +52,7 @@ export const cardCost = (card: Card, mage: Mage, schoolChoice: School | null): n
       return OPPOSED_MULTIPLIER;
     }
 
-    if (wholeCardTrained || isPartTrained(part, mage, schoolChoice)) {
+    if (wholeCardTrained || isPartTrained(part, mage)) {
       return TRAINED_MULTIPLIER;
     }
 

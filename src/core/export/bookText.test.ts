@@ -37,7 +37,6 @@ const cardsById = new Map<string, Card>(
 
 const book: Book = {
   mageId: wizard.id,
-  schoolChoice: 'Fire',
   counts: {
     [manaCrystal.id]: CRYSTAL_COPIES,
     [lightningBolt.id]: BOLT_COPIES,
@@ -53,7 +52,7 @@ describe('bookText', () => {
 
     expect(bookText(book, wizard, summary, cardsById, SHARE_URL)).toBe(
       [
-        'Wizard (Fire) · 16/120 pts',
+        'Wizard · 18/120 pts',
         '',
         'ATTACK (5)',
         '3x Fireball',
@@ -75,16 +74,7 @@ describe('bookText', () => {
     };
 
     expect(firstLine(bookText(book, wizard, summary, cardsById, SHARE_URL))).toBe(
-      'Wizard (Fire) · 124/120 pts (4 over)',
-    );
-  });
-
-  it('leaves out the parentheses without a school choice', () => {
-    const noChoice: Book = { ...book, schoolChoice: null };
-    const summary = summarizeBook(noChoice, wizard, cardsById);
-
-    expect(firstLine(bookText(noChoice, wizard, summary, cardsById, SHARE_URL))).toMatch(
-      /^Wizard · \d+\/120 pts$/,
+      'Wizard · 124/120 pts (4 over)',
     );
   });
 

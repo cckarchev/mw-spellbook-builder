@@ -29,29 +29,30 @@ const airOrWater = makeCard({
 
 describe('cardCost with school training', () => {
   const fireAttack = makeCard({ type: 'Attack', schools: [{ school: 'Fire', level: LEVEL_TWO }] });
+  const airAttack = makeCard({ type: 'Attack', schools: [{ school: 'Air', level: LEVEL_TWO }] });
 
-  it('charges a trained chosen school once per level', () => {
-    expect(cardCost(fireAttack, wizard, 'Fire')).toBe(LEVEL_TWO * TRAINED);
+  it('charges a trained school once per level', () => {
+    expect(cardCost(airAttack, wizard)).toBe(LEVEL_TWO * TRAINED);
   });
 
   it('doubles an untrained school', () => {
-    expect(cardCost(fireAttack, wizard, 'Air')).toBe(LEVEL_TWO * UNTRAINED);
+    expect(cardCost(fireAttack, wizard)).toBe(LEVEL_TWO * UNTRAINED);
   });
 
   it('triples an opposed school', () => {
-    expect(cardCost(fireAttack, beastmaster, null)).toBe(LEVEL_TWO * OPPOSED);
+    expect(cardCost(fireAttack, beastmaster)).toBe(LEVEL_TWO * OPPOSED);
   });
 
   it('charges a Novice card once per level', () => {
     const card = makeCard({ traits: ['Novice'], schools: [{ school: 'Nature', level: 1 }] });
 
-    expect(cardCost(card, necromancer, null)).toBe(TRAINED);
+    expect(cardCost(card, necromancer)).toBe(TRAINED);
   });
 
   it('still triples a Novice card in an opposed school', () => {
     const card = makeCard({ traits: ['Novice'], schools: [{ school: 'Holy', level: 1 }] });
 
-    expect(cardCost(card, necromancer, null)).toBe(OPPOSED);
+    expect(cardCost(card, necromancer)).toBe(OPPOSED);
   });
 });
 
@@ -59,19 +60,19 @@ describe('cardCost with special training', () => {
   it('treats partial training as trained up to its level', () => {
     const card = makeCard({ schools: [{ school: 'Water', level: 1 }] });
 
-    expect(cardCost(card, druid, null)).toBe(TRAINED);
+    expect(cardCost(card, druid)).toBe(TRAINED);
   });
 
   it('doubles partial training above its level', () => {
     const card = makeCard({ schools: [{ school: 'Water', level: LEVEL_TWO }] });
 
-    expect(cardCost(card, druid, null)).toBe(LEVEL_TWO * UNTRAINED);
+    expect(cardCost(card, druid)).toBe(LEVEL_TWO * UNTRAINED);
   });
 
   it('treats a trained school and type combo as trained', () => {
     const card = makeCard({ type: 'Creature', schools: [{ school: 'Holy', level: LEVEL_THREE }] });
 
-    expect(cardCost(card, paladin, null)).toBe(LEVEL_THREE * TRAINED);
+    expect(cardCost(card, paladin)).toBe(LEVEL_THREE * TRAINED);
   });
 
   it('doubles a combo school outside its type above the partial level', () => {
@@ -80,19 +81,19 @@ describe('cardCost with special training', () => {
       schools: [{ school: 'Holy', level: LEVEL_FOUR }],
     });
 
-    expect(cardCost(card, paladin, null)).toBe(LEVEL_FOUR * UNTRAINED);
+    expect(cardCost(card, paladin)).toBe(LEVEL_FOUR * UNTRAINED);
   });
 
   it('charges a trained school once even for an opposed type', () => {
     const card = makeCard({ type: 'Creature', schools: [{ school: 'Mind', level: LEVEL_TWO }] });
 
-    expect(cardCost(card, forcemaster, null)).toBe(LEVEL_TWO * TRAINED);
+    expect(cardCost(card, forcemaster)).toBe(LEVEL_TWO * TRAINED);
   });
 
   it('triples an opposed type in an untrained school', () => {
     const card = makeCard({ type: 'Creature', schools: [{ school: 'Nature', level: LEVEL_TWO }] });
 
-    expect(cardCost(card, forcemaster, null)).toBe(LEVEL_TWO * OPPOSED);
+    expect(cardCost(card, forcemaster)).toBe(LEVEL_TWO * OPPOSED);
   });
 
   it('doubles an untrained school of a type that is not opposed', () => {
@@ -101,7 +102,7 @@ describe('cardCost with special training', () => {
       schools: [{ school: 'Nature', level: LEVEL_TWO }],
     });
 
-    expect(cardCost(card, forcemaster, null)).toBe(LEVEL_TWO * UNTRAINED);
+    expect(cardCost(card, forcemaster)).toBe(LEVEL_TWO * UNTRAINED);
   });
 
   it('treats a trained subtype as trained', () => {
@@ -111,7 +112,7 @@ describe('cardCost with special training', () => {
       schools: [{ school: 'Water', level: LEVEL_TWO }],
     });
 
-    expect(cardCost(card, siren, null)).toBe(LEVEL_TWO * TRAINED);
+    expect(cardCost(card, siren)).toBe(LEVEL_TWO * TRAINED);
   });
 
   it('treats a trained subtype in an untrained school as trained', () => {
@@ -120,7 +121,7 @@ describe('cardCost with special training', () => {
       schools: [{ school: 'Arcane', level: LEVEL_TWO }],
     });
 
-    expect(cardCost(card, siren, null)).toBe(LEVEL_TWO * TRAINED);
+    expect(cardCost(card, siren)).toBe(LEVEL_TWO * TRAINED);
   });
 });
 
@@ -134,15 +135,15 @@ describe('cardCost with several schools', () => {
       ],
     });
 
-    expect(cardCost(card, warlock, null)).toBe(UNTRAINED + TRAINED);
+    expect(cardCost(card, warlock)).toBe(UNTRAINED + TRAINED);
   });
 
   it('charges the cheapest part of an "or" card', () => {
-    expect(cardCost(airOrWater, wizard, 'Air')).toBe(LEVEL_TWO * TRAINED);
+    expect(cardCost(airOrWater, wizard)).toBe(LEVEL_TWO * TRAINED);
   });
 
   it('doubles an "or" card when no part is trained', () => {
-    expect(cardCost(airOrWater, wizard, 'Fire')).toBe(LEVEL_TWO * UNTRAINED);
+    expect(cardCost(airOrWater, beastmaster)).toBe(LEVEL_TWO * UNTRAINED);
   });
 });
 

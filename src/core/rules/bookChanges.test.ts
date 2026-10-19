@@ -6,7 +6,6 @@ const THREE_COPIES = 3;
 
 const wizardFire: Book = {
   mageId: 'wizard',
-  schoolChoice: 'Fire',
   counts: { fireball: TWO_COPIES, bolt: 1 },
 };
 
@@ -17,13 +16,12 @@ describe('sameBook', () => {
     expect(sameBook(wizardFire, reordered)).toBe(true);
   });
 
-  it('tells apart a different count, card, mage or school', () => {
+  it('tells apart a different count, card or mage', () => {
     expect(
       sameBook(wizardFire, { ...wizardFire, counts: { fireball: THREE_COPIES, bolt: 1 } }),
     ).toBe(false);
     expect(sameBook(wizardFire, { ...wizardFire, counts: { fireball: TWO_COPIES } })).toBe(false);
     expect(sameBook(wizardFire, { ...wizardFire, mageId: 'warlock' })).toBe(false);
-    expect(sameBook(wizardFire, { ...wizardFire, schoolChoice: 'Air' })).toBe(false);
   });
 });
 

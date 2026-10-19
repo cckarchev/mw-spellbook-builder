@@ -22,7 +22,7 @@ describe('Spellbook', () => {
     renderSpellbook();
 
     // Copies per group, then the group subtotal.
-    const attack = screen.getByRole('region', { name: 'Attack (5) 14 pts' });
+    const attack = screen.getByRole('region', { name: 'Attack (5) 16 pts' });
     const conjuration = screen.getByRole('region', { name: 'Conjuration (2) 2 pts' });
 
     expect(within(attack).getByText('Fireball')).toBeInTheDocument();

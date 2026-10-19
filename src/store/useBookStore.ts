@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { readStored, writeStored } from '@/core/persistence/storage';
-import type { Book, School } from '@/core/rules/types';
+import type { Book } from '@/core/rules/types';
 import { canAddCopy, cardsIllegalFor } from '@/core/rules/validateBook';
 import { decodeBook, encodeBook } from '@/core/share-link/bookCodec';
 import { cardsById, magesById } from '@/data/catalog';
@@ -11,7 +11,7 @@ export const BOOK_STORAGE_KEY = 'mw-deck-builder:current';
 interface BookStore {
   book: Book;
   /** Switches mage and drops the cards the new mage cannot use. */
-  chooseMage: (mageId: string, schoolChoice: School | null) => void;
+  chooseMage: (mageId: string) => void;
   /** Adds one copy, unless the + control would be disabled for it. */
   addCopy: (cardId: string) => void;
   removeCopy: (cardId: string) => void;
@@ -19,7 +19,7 @@ interface BookStore {
   clear: () => void;
 }
 
-const emptyBook = (): Book => ({ mageId: null, schoolChoice: null, counts: {} });
+const emptyBook = (): Book => ({ mageId: null, counts: {} });
 
 const readInitialBook = (): Book => {
   const stored = readStored(BOOK_STORAGE_KEY);
@@ -42,7 +42,7 @@ export const createBookStore = () => {
   const store = create<BookStore>()((set, get) => ({
     book: readInitialBook(),
 
-    chooseMage: (mageId, schoolChoice) => {
+    chooseMage: (mageId) => {
       const mage = magesById.get(mageId);
 
       if (!mage) {
@@ -50,12 +50,10 @@ export const createBookStore = () => {
       }
 
       const { book } = get();
-      const illegalIds = cardsIllegalFor(book, mage, schoolChoice, cardsById).map(
-        (card) => card.id,
-      );
+      const illegalIds = cardsIllegalFor(book, mage, cardsById).map((card) => card.id);
       const counts = withoutCards(book.counts, illegalIds);
 
-      set({ book: { mageId, schoolChoice, counts } });
+      set({ book: { mageId, counts } });
     },
 
     addCopy: (cardId) => {

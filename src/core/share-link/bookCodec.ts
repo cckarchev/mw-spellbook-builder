@@ -1,8 +1,9 @@
-import { type Book, SCHOOLS, type School } from '@/core/rules/types';
+import type { Book } from '@/core/rules/types';
 import { cardsByCode, cardsById, magesById } from '@/data/catalog';
 import { fromBase64Url, toBase64Url } from './base64Url';
 
-// Wire format: base64url JSON of { v: 1, m: mageId, s: schoolChoice, c: { [cardCode]: qty } }.
+// Wire format: base64url JSON of { v: 1, m: mageId, c: { [cardCode]: qty } }.
+// Older links may also carry s (the Wizard's element, no longer chosen); it is ignored.
 // Card codes (8 hex chars) keep links short; quantities are kept as sent so validation
 // can report a hand-edited count above the copy limit.
 
@@ -11,7 +12,6 @@ const WIRE_VERSION = 1;
 interface Wire {
   v: number;
   m?: string;
-  s?: string;
   c: Record<string, number>;
 }
 
@@ -37,7 +37,6 @@ export const encodeBook = (book: Book): string => {
   const wire: Wire = {
     v: WIRE_VERSION,
     m: book.mageId ?? undefined,
-    s: book.schoolChoice ?? undefined,
     c: counts,
   };
 
@@ -56,9 +55,6 @@ const parseWire = (encoded: string): Record<string, unknown> | null => {
     return null;
   }
 };
-
-const isSchool = (value: unknown): value is School =>
-  typeof value === 'string' && (SCHOOLS as readonly string[]).includes(value);
 
 const isQuantity = (value: unknown): value is number =>
   typeof value === 'number' && Number.isInteger(value) && value > 0;
@@ -100,8 +96,7 @@ export const decodeBook = (encoded: string): DecodedBook | null => {
   const isKnownMage = namedMage !== null && magesById.has(namedMage);
   const mageId = isKnownMage ? namedMage : null;
   const unknownMage = isKnownMage ? null : namedMage;
-  const schoolChoice = isSchool(wire.s) ? wire.s : null;
   const { counts, unknownCodes } = decodeCounts(wire.c);
 
-  return { book: { mageId, schoolChoice, counts }, unknownCodes, unknownMage };
+  return { book: { mageId, counts }, unknownCodes, unknownMage };
 };

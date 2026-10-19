@@ -44,7 +44,7 @@ describe('ShareActions copying', () => {
   it('still copies an over-budget book, with a note', async () => {
     const { user } = renderActions(overBudgetBook);
 
-    expect(screen.getByText('Not a legal book yet: 4 points over')).toBeInTheDocument();
+    expect(screen.getByText('Not a legal book yet: 2 points over')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Copy link' }));
 
@@ -52,7 +52,7 @@ describe('ShareActions copying', () => {
 
     await user.click(screen.getByRole('button', { name: 'Copy text' }));
 
-    expect(await navigator.clipboard.readText()).toContain('124/120 pts (4 over)');
+    expect(await navigator.clipboard.readText()).toContain('122/120 pts (2 over)');
   });
 });
 

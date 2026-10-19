@@ -53,7 +53,7 @@ describe('mage data integrity', () => {
     expect(missing.map((mage) => mage.name)).toEqual([]);
   });
 
-  it('trains the Paladin in Holy and War up to level 2, as printed on its stats card', () => {
+  it('trains the Paladin in Holy and War up to level 2, as the current module does', () => {
     const paladin = magesById.get('paladin');
 
     expect(paladin?.training.partial).toEqual([
@@ -62,7 +62,16 @@ describe('mage data integrity', () => {
     ]);
   });
 
-  it('names the Salenia Forcemaster as printed on its stats card, not as OCTGN does', () => {
+  it.each(['wizard', 'sistarran-wizard'])(
+    'trains %s in Arcane and Air, as the current module does',
+    (mageId) => {
+      const training = magesById.get(mageId)?.training;
+
+      expect(training?.full).toEqual(['Arcane', 'Air']);
+    },
+  );
+
+  it('names the Salenia Forcemaster as the current module does, not the legacy sets', () => {
     expect(magesById.get('salenia-forcemaster')?.name).toBe('Salenia Forcemaster');
   });
 });

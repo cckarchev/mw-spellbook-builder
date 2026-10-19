@@ -7,7 +7,7 @@ const LEVEL_TWO_LIMIT = 4;
 const OVER_LIMIT = 5;
 const FIRE_COPIES = 3;
 const ARCANE_COPIES = 2;
-const POINTS_OF_FIRE_AND_ARCANE = 8;
+const POINTS_OF_FIRE_AND_ARCANE = 14;
 
 // A level 2 Fire card costs 4 points for a Wizard who chose Air.
 const UNTRAINED_FIRE_COST = 4;
@@ -25,7 +25,6 @@ const cardsById = indexCards([fire, arcane, warlockOnly]);
 
 const wizardBook = (counts: Record<string, number>): Book => ({
   mageId: wizard.id,
-  schoolChoice: 'Fire',
   counts,
 });
 
@@ -53,7 +52,7 @@ describe('summarizeBook', () => {
       makeCard({ id: `fire-${index}`, schools: [{ school: 'Fire', level: LEVEL_TWO }] }),
     );
     const counts = Object.fromEntries(cards.map((card) => [card.id, 1]));
-    const book: Book = { mageId: wizard.id, schoolChoice: 'Air', counts };
+    const book: Book = { mageId: wizard.id, counts };
     const summary = summarizeBook(book, wizard, indexCards(cards));
 
     expect(summary.points).toBe(OVER_BUDGET_POINTS);
@@ -79,13 +78,6 @@ describe('summarizeBook', () => {
     const summary = summarizeBook(wizardBook({ 'warlock-only': 1 }), wizard, cardsById);
 
     expect(summary.issues).toEqual([{ kind: 'illegalCard', cardId: 'warlock-only' }]);
-  });
-
-  it('reports a missing school choice', () => {
-    const book: Book = { mageId: wizard.id, schoolChoice: null, counts: {} };
-    const summary = summarizeBook(book, wizard, cardsById);
-
-    expect(summary.issues).toEqual([{ kind: 'missingSchoolChoice' }]);
   });
 });
 
@@ -138,10 +130,9 @@ describe('cardsIllegalFor', () => {
   it('lists the cards a new mage cannot use', () => {
     const book: Book = {
       mageId: warlock.id,
-      schoolChoice: null,
       counts: { 'warlock-only': 1, fire: 1 },
     };
 
-    expect(cardsIllegalFor(book, wizard, 'Fire', cardsById)).toEqual([warlockOnly]);
+    expect(cardsIllegalFor(book, wizard, cardsById)).toEqual([warlockOnly]);
   });
 });

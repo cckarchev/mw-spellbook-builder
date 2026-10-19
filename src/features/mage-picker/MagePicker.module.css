@@ -27,8 +27,3 @@
     gap: var(--space-xs);
   }
 }
-
-.cardList {
-  margin-top: var(--space-xs);
-  padding-inline-start: var(--space-lg);
-}

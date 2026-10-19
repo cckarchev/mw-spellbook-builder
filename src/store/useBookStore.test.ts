@@ -8,7 +8,7 @@ const NECROMANCER_ID = 'necromancer';
 const ADD_ATTEMPTS = 10;
 const LOADED_COPIES = 2;
 
-const EMPTY_BOOK: Book = { mageId: null, schoolChoice: null, counts: {} };
+const EMPTY_BOOK: Book = { mageId: null, counts: {} };
 
 const findCard = (onlyFor: string | null) => {
   const card = cards.find((candidate) => candidate.onlyFor === onlyFor);
@@ -26,7 +26,7 @@ const wizardOnlyCard = findCard('Wizard');
 const createWizardStore = () => {
   const store = createBookStore();
 
-  store.getState().chooseMage(WIZARD_ID, 'Fire');
+  store.getState().chooseMage(WIZARD_ID);
 
   return store;
 };
@@ -80,7 +80,7 @@ describe('useBookStore book changes', () => {
 
     store.getState().addCopy(anyMageCard.id);
     store.getState().addCopy(wizardOnlyCard.id);
-    store.getState().chooseMage(NECROMANCER_ID, null);
+    store.getState().chooseMage(NECROMANCER_ID);
 
     const { book } = store.getState();
 
@@ -92,7 +92,6 @@ describe('useBookStore book changes', () => {
     const store = createBookStore();
     const loaded: Book = {
       mageId: WIZARD_ID,
-      schoolChoice: 'Water',
       counts: { [anyMageCard.id]: LOADED_COPIES },
     };
 

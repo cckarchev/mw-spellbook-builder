@@ -1,13 +1,12 @@
 import { cardCost } from './cardCost';
 import { maxCopies } from './copyLimit';
 import { isLegalFor } from './legality';
-import type { Book, Card, Mage, School } from './types';
+import type { Book, Card, Mage } from './types';
 
 export type BookIssue =
   | { kind: 'unknownCard'; code: string }
   | { kind: 'illegalCard'; cardId: string }
-  | { kind: 'tooManyCopies'; cardId: string; max: number }
-  | { kind: 'missingSchoolChoice' };
+  | { kind: 'tooManyCopies'; cardId: string; max: number };
 
 export interface BookSummary {
   points: number;
@@ -21,11 +20,11 @@ export interface BookSummary {
 const entriesInBook = (book: Book): [string, number][] =>
   Object.entries(book.counts).filter(([, count]) => count > 0);
 
-const issuesForCard = (card: Card, count: number, book: Book, mage: Mage): BookIssue[] => {
+const issuesForCard = (card: Card, count: number, mage: Mage): BookIssue[] => {
   const issues: BookIssue[] = [];
   const max = maxCopies(card);
 
-  if (!isLegalFor(card, mage, book.schoolChoice)) {
+  if (!isLegalFor(card, mage)) {
     issues.push({ kind: 'illegalCard', cardId: card.id });
   }
 
@@ -43,13 +42,8 @@ export const summarizeBook = (
   cardsById: ReadonlyMap<string, Card>,
 ): BookSummary => {
   const issues: BookIssue[] = [];
-  const needsSchoolChoice = mage.training.schoolChoice.length > 0 && book.schoolChoice === null;
   let points = 0;
   let cardCount = 0;
-
-  if (needsSchoolChoice) {
-    issues.push({ kind: 'missingSchoolChoice' });
-  }
 
   for (const [cardId, count] of entriesInBook(book)) {
     const card = cardsById.get(cardId);
@@ -59,9 +53,9 @@ export const summarizeBook = (
       continue;
     }
 
-    points += cardCost(card, mage, book.schoolChoice) * count;
+    points += cardCost(card, mage) * count;
     cardCount += count;
-    issues.push(...issuesForCard(card, count, book, mage));
+    issues.push(...issuesForCard(card, count, mage));
   }
 
   const overBy = Math.max(0, points - mage.budget);
@@ -74,7 +68,7 @@ export const addCopyBlockedReason = (book: Book, card: Card, mage: Mage): string
   const count = book.counts[card.id] ?? 0;
   const max = maxCopies(card);
 
-  if (!isLegalFor(card, mage, book.schoolChoice)) {
+  if (!isLegalFor(card, mage)) {
     return `${mage.name} cannot use this card`;
   }
 
@@ -91,16 +85,15 @@ export const addCopyBlockedReason = (book: Book, card: Card, mage: Mage): string
 export const canAddCopy = (book: Book, card: Card, mage: Mage): boolean =>
   addCopyBlockedReason(book, card, mage) === null;
 
-/** Cards in the book that the mage (with this school choice) cannot use. */
+/** Cards in the book that the mage cannot use. */
 export const cardsIllegalFor = (
   book: Book,
   mage: Mage,
-  schoolChoice: School | null,
   cardsById: ReadonlyMap<string, Card>,
 ): Card[] => {
   const cardsInBook = entriesInBook(book)
     .map(([cardId]) => cardsById.get(cardId))
     .filter((card): card is Card => card !== undefined);
 
-  return cardsInBook.filter((card) => !isLegalFor(card, mage, schoolChoice));
+  return cardsInBook.filter((card) => !isLegalFor(card, mage));
 };

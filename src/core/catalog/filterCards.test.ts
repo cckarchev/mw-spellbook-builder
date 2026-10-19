@@ -43,7 +43,7 @@ const warlockOnly = makeCard({
 const CARDS: Card[] = [fireAttack, waterAttack, fireCreature, warlockOnly];
 
 const ids = (filters: Partial<CatalogFilters>) =>
-  filterCards(CARDS, { ...EMPTY_FILTERS, ...filters }, wizard, 'Fire').map((card) => card.id);
+  filterCards(CARDS, { ...EMPTY_FILTERS, ...filters }, wizard).map((card) => card.id);
 
 describe('filterCards', () => {
   it('returns every legal card for empty filters', () => {

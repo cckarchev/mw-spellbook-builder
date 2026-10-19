@@ -11,7 +11,6 @@ const emptyTraining = (): Training => ({
   subtypes: [],
   opposedTypes: [],
   trainedCombos: [],
-  schoolChoice: [],
 });
 
 export const makeCard = (overrides: Partial<Card> = {}): Card => ({
@@ -58,7 +57,7 @@ export const wizard = makeMage({
   id: 'wizard',
   name: 'Wizard',
   onlyNames: ['Wizard'],
-  training: { full: ['Arcane'], schoolChoice: ['Air', 'Earth', 'Fire', 'Water'] },
+  training: { full: ['Arcane', 'Air'] },
 });
 
 export const beastmaster = makeMage({

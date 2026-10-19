@@ -22,16 +22,9 @@ interface CatalogProps {
 /** Every card the mage can use, filtered and grouped by type, each with its cost and a stepper. */
 export const Catalog = ({ book, mage, onAdd, onRemove }: CatalogProps) => {
   const { filters, setQuery, toggle, clearChips } = useCatalogFilters(mage.id);
-  const { schoolChoice } = book;
 
-  const options = useMemo(
-    () => filterOptions(filterCards(cards, EMPTY_FILTERS, mage, schoolChoice)),
-    [mage, schoolChoice],
-  );
-  const groups = useMemo(
-    () => groupByType(filterCards(cards, filters, mage, schoolChoice)),
-    [filters, mage, schoolChoice],
-  );
+  const options = useMemo(() => filterOptions(filterCards(cards, EMPTY_FILTERS, mage)), [mage]);
+  const groups = useMemo(() => groupByType(filterCards(cards, filters, mage)), [filters, mage]);
 
   return (
     <div className={styles.catalog}>
@@ -50,7 +43,7 @@ export const Catalog = ({ book, mage, onAdd, onRemove }: CatalogProps) => {
               key={card.id}
               card={card}
               count={book.counts[card.id] ?? 0}
-              points={cardCost(card, mage, schoolChoice)}
+              points={cardCost(card, mage)}
               blockedReason={addCopyBlockedReason(book, card, mage)}
               onAdd={onAdd}
               onRemove={onRemove}

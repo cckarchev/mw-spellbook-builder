@@ -15,29 +15,25 @@ import { BookHeader } from './BookHeader';
 const renderHeader = (book: Book) => {
   render(
     <MemoryRouter>
-      <BookHeader
-        mage={wizard}
-        schoolChoice={book.schoolChoice}
-        summary={summarizeBook(book, wizard, cardsById)}
-      />
+      <BookHeader mage={wizard} summary={summarizeBook(book, wizard, cardsById)} />
     </MemoryRouter>,
   );
 };
 
 describe('BookHeader', () => {
-  it('shows the mage, its school and the points used out of the budget', () => {
+  it('shows the mage and the points used out of the budget', () => {
     renderHeader(smallBook);
 
-    expect(screen.getByText('Wizard (Fire)')).toBeInTheDocument();
-    expect(screen.getByText('16 / 120')).toBeInTheDocument();
+    expect(screen.getByText('Wizard')).toBeInTheDocument();
+    expect(screen.getByText('18 / 120')).toBeInTheDocument();
     expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'valid');
   });
 
   it('turns to the error state over budget', () => {
     renderHeader(overBudgetBook);
 
-    expect(screen.getByText('124 / 120')).toBeInTheDocument();
-    expect(screen.getByText('4 over')).toBeInTheDocument();
+    expect(screen.getByText('122 / 120')).toBeInTheDocument();
+    expect(screen.getByText('2 over')).toBeInTheDocument();
     expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'over');
   });
 
@@ -51,7 +47,7 @@ describe('BookHeader', () => {
   it('shows both the points over and the problems', () => {
     renderHeader(overWithProblemBook);
 
-    expect(screen.getByText('8 over · 1 problem')).toBeInTheDocument();
+    expect(screen.getByText('10 over · 1 problem')).toBeInTheDocument();
     expect(screen.getByRole('banner')).toHaveAttribute('data-state', 'over');
   });
 

@@ -48,14 +48,13 @@ describe('shareNote', () => {
 });
 
 describe('incomingProblems', () => {
-  it('describes unknown cards, extra copies, illegal cards and a missing school', () => {
+  it('describes unknown cards, extra copies and illegal cards', () => {
     const problems = incomingProblems(
       ['deadbeef', 'cafebabe'],
       [
         { kind: 'unknownCard', code: 'ignored' },
         { kind: 'tooManyCopies', cardId: 'fireball', max: LEVEL_TWO_LIMIT },
         { kind: 'illegalCard', cardId: 'warlock-only' },
-        { kind: 'missingSchoolChoice' },
       ],
       wizard,
       { fireball: 5 },
@@ -66,7 +65,6 @@ describe('incomingProblems', () => {
       '2 cards in the link are not in the catalog and were left out',
       'Fireball: 5 copies, max 4',
       "Wizard cannot use Adramelech's Torment",
-      'Wizard needs a school: choose one in the mage picker',
     ]);
   });
 
@@ -103,7 +101,7 @@ describe('bookProblems', () => {
     const problems = bookProblems(
       [
         { kind: 'tooManyCopies', cardId: 'fireball', max: LEVEL_TWO_LIMIT },
-        { kind: 'missingSchoolChoice' },
+        { kind: 'illegalCard', cardId: 'warlock-only' },
       ],
       wizard,
       { fireball: 5 },
@@ -112,7 +110,7 @@ describe('bookProblems', () => {
 
     expect(problems).toEqual([
       'Fireball: 5 copies, max 4',
-      'Wizard needs a school: choose one in the mage picker',
+      "Wizard cannot use Adramelech's Torment",
     ]);
   });
 });
@@ -123,7 +121,6 @@ describe('cardProblems', () => {
       [
         { kind: 'tooManyCopies', cardId: 'fireball', max: LEVEL_TWO_LIMIT },
         { kind: 'illegalCard', cardId: 'warlock-only' },
-        { kind: 'missingSchoolChoice' },
       ],
       wizard,
     );

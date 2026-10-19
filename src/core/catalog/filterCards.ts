@@ -55,13 +55,8 @@ const matchesFilters = (card: Card, filters: CatalogFilters): boolean => {
 };
 
 /** The catalog cards the mage can use that match the filters, in input order. */
-export const filterCards = (
-  cards: Card[],
-  filters: CatalogFilters,
-  mage: Mage,
-  schoolChoice: School | null,
-): Card[] => {
-  const legalCards = cards.filter((card) => isLegalFor(card, mage, schoolChoice));
+export const filterCards = (cards: Card[], filters: CatalogFilters, mage: Mage): Card[] => {
+  const legalCards = cards.filter((card) => isLegalFor(card, mage));
 
   return legalCards.filter((card) => matchesFilters(card, filters));
 };

@@ -13,7 +13,6 @@ const firstCode = firstCard?.code ?? '';
 
 const wizardFireBook: Book = {
   mageId: 'wizard',
-  schoolChoice: 'Fire',
   counts: { [firstId]: 1, [secondId]: THREE_COPIES },
 };
 
@@ -27,7 +26,7 @@ describe('bookCodec: round trip', () => {
   });
 
   it('encodes an empty book', () => {
-    const empty: Book = { mageId: null, schoolChoice: null, counts: {} };
+    const empty: Book = { mageId: null, counts: {} };
 
     expect(decodeBook(encodeBook(empty))?.book).toEqual(empty);
   });
@@ -38,7 +37,7 @@ describe('bookCodec: links from older data or hand edits', () => {
     const encoded = encodeWire({ v: 1, m: 'warlock', c: { [firstCode]: 2, zzzzzzzz: 1 } });
 
     expect(decodeBook(encoded)).toEqual({
-      book: { mageId: 'warlock', schoolChoice: null, counts: { [firstId]: 2 } },
+      book: { mageId: 'warlock', counts: { [firstId]: 2 } },
       unknownCodes: ['zzzzzzzz'],
       unknownMage: null,
     });
@@ -71,10 +70,10 @@ describe('bookCodec: links from older data or hand edits', () => {
     expect(decodeBook(encoded)?.unknownMage).toBeNull();
   });
 
-  it('clears a school choice that is not a school', () => {
-    const encoded = encodeWire({ v: 1, m: 'wizard', s: 'Lava', c: {} });
+  it('ignores the school of a link made when the Wizard chose an element', () => {
+    const encoded = encodeWire({ v: 1, m: 'wizard', s: 'Fire', c: {} });
 
-    expect(decodeBook(encoded)?.book.schoolChoice).toBeNull();
+    expect(decodeBook(encoded)?.book).toEqual({ mageId: 'wizard', counts: {} });
   });
 });
 
