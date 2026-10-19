@@ -1,6 +1,6 @@
 import { makeCard } from '@/core/rules/fixtures';
 import { cards } from '@/data/catalog';
-import { matchesQuery } from './textSearch';
+import { matchesQuery, matchesText } from './textSearch';
 
 const fireball = makeCard({ name: 'Fireball', effect: 'Deals damage.' });
 const firewall = makeCard({
@@ -66,5 +66,17 @@ describe('matchesQuery: the rest of the printed card', () => {
     const names = cards.filter((card) => matchesQuery(card, 'burn')).map((card) => card.name);
 
     expect(names).toContain('Fireball');
+  });
+});
+
+describe('matchesText', () => {
+  it('matches every word of the query, ignoring case and accents', () => {
+    expect(matchesText('Forcemaster vs Warlord', 'warl force')).toBe(true);
+    expect(matchesText('Éter', 'eter')).toBe(true);
+    expect(matchesText('Core Set', 'core tome')).toBe(false);
+  });
+
+  it('matches anything with an empty query', () => {
+    expect(matchesText('Lightning', '  ')).toBe(true);
   });
 });

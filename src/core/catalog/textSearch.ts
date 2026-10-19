@@ -20,10 +20,14 @@ const searchableText = (card: Card): string =>
     PART_SEPARATOR,
   );
 
-/** Whether every word of the query appears somewhere in the card's printed text. */
-export const matchesQuery = (card: Card, query: string): boolean => {
+/** Whether every word of the query appears somewhere in the text. An empty query matches. */
+export const matchesText = (text: string, query: string): boolean => {
   const words = queryWords(query);
-  const searchable = foldText(searchableText(card));
+  const searchable = foldText(text);
 
   return words.every((word) => searchable.includes(word));
 };
+
+/** Whether every word of the query appears somewhere in the card's printed text. */
+export const matchesQuery = (card: Card, query: string): boolean =>
+  matchesText(searchableText(card), query);

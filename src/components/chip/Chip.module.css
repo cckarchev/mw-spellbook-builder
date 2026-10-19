@@ -1,5 +1,5 @@
 .chip {
-  min-height: var(--touch-target);
+  min-height: var(--chip-height);
   padding-inline: var(--space-sm);
   color: var(--color-text-body);
   background: transparent;

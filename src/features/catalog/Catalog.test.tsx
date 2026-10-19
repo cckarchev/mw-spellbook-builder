@@ -138,3 +138,44 @@ describe('Catalog rows', () => {
     );
   });
 });
+
+describe('Catalog filter panel', () => {
+  const openFilters = async () => {
+    await userEvent.click(screen.getByRole('button', { name: 'Filters' }));
+  };
+
+  const groupToggle = (title: string): HTMLElement =>
+    screen.getByRole('button', { name: new RegExp(`^${title}`) });
+
+  it('starts with Subtype and Expansion folded away and the other groups open', async () => {
+    renderCatalog();
+
+    await openFilters();
+
+    expect(groupToggle('Subtype')).toHaveAttribute('aria-expanded', 'false');
+    expect(groupToggle('Expansion')).toHaveAttribute('aria-expanded', 'false');
+    expect(groupToggle('School')).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.queryByRole('button', { name: 'Lightning' })).not.toBeInTheDocument();
+  });
+
+  it('narrows the chips to the values that match the filter search', async () => {
+    renderCatalog();
+
+    await openFilters();
+    await userEvent.type(screen.getByRole('searchbox', { name: 'Find a filter' }), 'light');
+
+    expect(screen.getByRole('button', { name: 'Lightning' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Fire' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /^Expansion/ })).not.toBeInTheDocument();
+  });
+
+  it('keeps a selected chip shown when the filter search does not match it', async () => {
+    renderCatalog();
+
+    await openFilters();
+    await userEvent.click(screen.getByRole('button', { name: 'Fire' }));
+    await userEvent.type(screen.getByRole('searchbox', { name: 'Find a filter' }), 'light');
+
+    expect(screen.getByRole('button', { name: 'Fire' })).toHaveAttribute('aria-pressed', 'true');
+  });
+});

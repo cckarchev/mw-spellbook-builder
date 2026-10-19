@@ -6,11 +6,44 @@
   border: none;
 }
 
-.title {
+.legend {
+  /* A legend does not stretch on its own. */
+  width: 100%;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--chip-height);
+  padding: 0;
   color: var(--color-text-dim);
+  text-align: start;
+  background: none;
+  border: none;
   font-size: var(--font-size-xs);
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
+}
+
+.toggle::before {
+  content: '▾';
+  display: inline-block;
+  margin-inline-end: var(--space-xxs);
+  transition: transform var(--duration-fast);
+}
+
+.toggle[aria-expanded='false']::before {
+  transform: rotate(-90deg);
+}
+
+.toggle:hover {
+  color: var(--color-text-body);
+}
+
+.toggle:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .chips {

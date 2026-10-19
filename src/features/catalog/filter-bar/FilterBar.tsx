@@ -14,12 +14,13 @@ interface FilterBarProps {
   onClearChips: () => void;
 }
 
-const GROUPS: { key: FilterGroupKey; title: string }[] = [
-  { key: 'types', title: 'Type' },
-  { key: 'schools', title: 'School' },
-  { key: 'levels', title: 'Level' },
-  { key: 'subtypes', title: 'Subtype' },
-  { key: 'expansions', title: 'Expansion' },
+// Subtype and Expansion have the most values, so they start folded away.
+const GROUPS: { key: FilterGroupKey; title: string; defaultExpanded: boolean }[] = [
+  { key: 'types', title: 'Type', defaultExpanded: true },
+  { key: 'schools', title: 'School', defaultExpanded: true },
+  { key: 'levels', title: 'Level', defaultExpanded: true },
+  { key: 'subtypes', title: 'Subtype', defaultExpanded: false },
+  { key: 'expansions', title: 'Expansion', defaultExpanded: false },
 ];
 
 /** The search box, always shown, and the filter chips, folded away behind a toggle. */
@@ -32,9 +33,16 @@ export const FilterBar = ({
 }: FilterBarProps) => {
   const panelId = useId();
   const [open, setOpen] = useState(false);
+  const [optionQuery, setOptionQuery] = useState('');
 
   const activeCount = activeFilterCount(filters);
   const toggleLabel = activeCount > 0 ? `Filters (${activeCount})` : 'Filters';
+
+  // A closed panel forgets its filter search.
+  const togglePanel = () => {
+    setOpen(!open);
+    setOptionQuery('');
+  };
 
   return (
     <div className={styles.bar}>
@@ -47,18 +55,28 @@ export const FilterBar = ({
           value={filters.query}
           onChange={(event) => onQueryChange(event.target.value)}
         />
-        <Button aria-expanded={open} aria-controls={panelId} onClick={() => setOpen(!open)}>
+        <Button aria-expanded={open} aria-controls={panelId} onClick={togglePanel}>
           {toggleLabel}
         </Button>
       </div>
       {open ? (
         <div id={panelId} className={styles.panel}>
+          <input
+            type="search"
+            className={styles.search}
+            placeholder="Find a filter, such as a subtype"
+            aria-label="Find a filter"
+            value={optionQuery}
+            onChange={(event) => setOptionQuery(event.target.value)}
+          />
           {GROUPS.map((group) => (
             <FilterGroup
               key={group.key}
               title={group.title}
               options={options[group.key]}
               selected={filters[group.key]}
+              query={optionQuery}
+              defaultExpanded={group.defaultExpanded}
               onToggle={(value) => onToggle(group.key, value)}
             />
           ))}

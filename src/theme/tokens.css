@@ -112,6 +112,8 @@
 
   /* Smallest comfortable touch target. */
   --touch-target: 44px;
+  /* Filter chips come by the dozen, so they are shorter than a touch target. */
+  --chip-height: 32px;
 
   /* Card art: the full card when a row opens, and the mage tiles.
      Mage Wars cards are 63 x 88 mm. */
