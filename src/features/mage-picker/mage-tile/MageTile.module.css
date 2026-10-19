@@ -31,6 +31,7 @@
   aspect-ratio: var(--card-aspect);
   object-fit: cover;
   background: var(--color-bg-tint);
+  border-radius: var(--card-radius);
 }
 
 .name {

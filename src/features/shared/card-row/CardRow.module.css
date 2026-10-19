@@ -73,7 +73,9 @@
   max-width: 100%;
   aspect-ratio: var(--card-aspect);
   flex-shrink: 0;
+  object-fit: cover;
   background: var(--color-bg-tint);
+  border-radius: var(--card-radius);
 }
 
 .text {

@@ -9,6 +9,7 @@ import { mages } from '@/data/mages';
 import { buildExpansionMap, type LegacySet } from './lib/expansions';
 import { normalizeCard } from './lib/normalizeCard';
 import { parseSetXml, readModuleSets } from './lib/readModule';
+import { whiteFrameBox } from './lib/whiteFrame';
 
 // Reads the OCTGN Mage Wars module and the community image pack from raw-input/ and
 // writes src/data/cards.json and public/cards/<code>.webp. Run with `npm run data`.
@@ -130,7 +131,30 @@ const assertUniqueCodes = (cards: readonly Card[]): void => {
 
 const imagePath = (code: string): string => path.join(IMAGE_DIR, `${code}.webp`);
 
-/** Converts the pack image of every wanted card id. Returns the ids that got an image. */
+/** Cuts the white or transparent frame some pack images have, then resizes to webp. */
+const writeFramelessImage = async (data: Uint8Array, target: string): Promise<void> => {
+  const { data: pixels, info } = await sharp(data)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const box = whiteFrameBox({
+    data: pixels,
+    width: info.width,
+    height: info.height,
+    channels: info.channels,
+  });
+
+  await sharp(data)
+    .extract(box)
+    .resize({ width: IMAGE_WIDTH })
+    .webp({ quality: IMAGE_QUALITY })
+    .toFile(target);
+};
+
+/**
+ * Converts the pack image of every wanted card id, rewriting existing ones so a change in
+ * the conversion reaches them all. Returns the ids that got an image.
+ */
 const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Set<string>> => {
   await mkdir(IMAGE_DIR, { recursive: true });
 
@@ -147,12 +171,7 @@ const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Set<string>>
       continue;
     }
 
-    if (!existsSync(target)) {
-      await sharp(data)
-        .resize({ width: IMAGE_WIDTH })
-        .webp({ quality: IMAGE_QUALITY })
-        .toFile(target);
-    }
+    await writeFramelessImage(data, target);
 
     written.add(id);
   }

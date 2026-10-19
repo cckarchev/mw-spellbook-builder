@@ -121,6 +121,8 @@
   /* Card art: a thumbnail in a catalog row and the full card when a row opens.
      Mage Wars cards are 63 x 88 mm. */
   --card-aspect: 63 / 88;
+  /* Rounded card corners, 3 mm on 63 x 88 mm, so the corner stays round at any size. */
+  --card-radius: 4.8% / 3.4%;
   --card-thumb-width: 40px;
   --card-full-width: 280px;
 
