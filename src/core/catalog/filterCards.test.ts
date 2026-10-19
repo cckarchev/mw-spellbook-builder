@@ -1,6 +1,12 @@
 import { makeCard, wizard } from '@/core/rules/fixtures';
 import type { Card } from '@/core/rules/types';
-import { type CatalogFilters, EMPTY_FILTERS, filterCards } from './filterCards';
+import {
+  activeFilterCount,
+  type CatalogFilters,
+  EMPTY_FILTERS,
+  filterCards,
+  toggleValue,
+} from './filterCards';
 
 const LEVEL_TWO = 2;
 
@@ -73,5 +79,29 @@ describe('filterCards', () => {
 
   it('combines the query with the other filters', () => {
     expect(ids({ query: 'fire', types: ['Creature'] })).toEqual(['fire-creature']);
+  });
+});
+
+describe('toggleValue', () => {
+  it('adds a value that is not selected', () => {
+    expect(toggleValue(['Fire'], 'Air')).toEqual(['Fire', 'Air']);
+  });
+
+  it('removes a value that is selected', () => {
+    expect(toggleValue(['Fire', 'Air'], 'Fire')).toEqual(['Air']);
+  });
+});
+
+describe('activeFilterCount', () => {
+  it('counts selected chips, not the query', () => {
+    const filters: CatalogFilters = {
+      ...EMPTY_FILTERS,
+      query: 'bolt',
+      types: ['Attack'],
+      schools: ['Fire', 'Air'],
+    };
+    const SelectedChips = 3;
+
+    expect(activeFilterCount(filters)).toBe(SelectedChips);
   });
 });

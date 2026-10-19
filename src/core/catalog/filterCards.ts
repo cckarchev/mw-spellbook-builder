@@ -22,6 +22,17 @@ export const EMPTY_FILTERS: CatalogFilters = {
   levels: [],
 };
 
+/** Selects a value that is not selected, and unselects one that is. */
+export const toggleValue = <T>(selected: T[], value: T): T[] =>
+  selected.includes(value) ? selected.filter((item) => item !== value) : [...selected, value];
+
+/** How many chips are selected across the groups. The search query is not counted. */
+export const activeFilterCount = (filters: CatalogFilters): number => {
+  const { types, schools, subtypes, expansions, levels } = filters;
+
+  return types.length + schools.length + subtypes.length + expansions.length + levels.length;
+};
+
 const allowsAny = <T>(selected: T[], values: T[]): boolean =>
   selected.length === 0 || values.some((value) => selected.includes(value));
 

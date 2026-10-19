@@ -1,0 +1,18 @@
+.builder {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header and tabs stay on screen while the list scrolls under them. */
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  margin-inline: calc(-1 * var(--page-gutter));
+  padding-inline: var(--page-gutter);
+  background: var(--color-bg-base);
+}
+
+.panel {
+  padding-block: var(--space-md) var(--space-xl);
+}

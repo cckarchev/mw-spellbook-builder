@@ -127,6 +127,9 @@
   /* Narrowest mage tile in the mage picker grid, above phone width. */
   --mage-tile-min-width: 160px;
 
+  /* Label column of the facts list in an opened card row. */
+  --fact-label-width: 5em;
+
   --popup-width: 320px;
   --popup-max-width: calc(100vw - 2 * var(--space-xs));
 

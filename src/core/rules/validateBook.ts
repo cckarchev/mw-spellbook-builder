@@ -69,13 +69,27 @@ export const summarizeBook = (
   return { points, budget: mage.budget, overBy, cardCount, issues };
 };
 
-/** Whether the + control for a card is enabled. Going over budget does not block it. */
-export const canAddCopy = (book: Book, card: Card, mage: Mage): boolean => {
+/** Why the + control for a card is blocked, or null when it is not. Going over budget does not block it. */
+export const addCopyBlockedReason = (book: Book, card: Card, mage: Mage): string | null => {
   const count = book.counts[card.id] ?? 0;
-  const isLegal = isLegalFor(card, mage, book.schoolChoice);
+  const max = maxCopies(card);
 
-  return isLegal && count < maxCopies(card);
+  if (!isLegalFor(card, mage, book.schoolChoice)) {
+    return `${mage.name} cannot use this card`;
+  }
+
+  if (count >= max) {
+    const noun = max === 1 ? 'copy' : 'copies';
+
+    return `Max ${max} ${noun}`;
+  }
+
+  return null;
 };
+
+/** Whether the + control for a card is enabled. */
+export const canAddCopy = (book: Book, card: Card, mage: Mage): boolean =>
+  addCopyBlockedReason(book, card, mage) === null;
 
 /** Cards in the book that the mage (with this school choice) cannot use. */
 export const cardsIllegalFor = (

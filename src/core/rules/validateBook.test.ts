@@ -1,6 +1,6 @@
 import { makeCard, warlock, wizard } from './fixtures';
 import type { Book, Card } from './types';
-import { canAddCopy, cardsIllegalFor, summarizeBook } from './validateBook';
+import { addCopyBlockedReason, canAddCopy, cardsIllegalFor, summarizeBook } from './validateBook';
 
 const LEVEL_TWO = 2;
 const LEVEL_TWO_LIMIT = 4;
@@ -107,6 +107,30 @@ describe('canAddCopy', () => {
     const overBudgetMage = { ...wizard, budget: 0 };
 
     expect(canAddCopy(book, fire, overBudgetMage)).toBe(true);
+  });
+});
+
+describe('addCopyBlockedReason', () => {
+  it('is null when a copy can be added', () => {
+    expect(addCopyBlockedReason(wizardBook({ fire: 1 }), fire, wizard)).toBeNull();
+  });
+
+  it('names the copy limit', () => {
+    const book = wizardBook({ fire: LEVEL_TWO_LIMIT });
+
+    expect(addCopyBlockedReason(book, fire, wizard)).toBe('Max 4 copies');
+  });
+
+  it('uses the singular for an Epic card', () => {
+    const epic = makeCard({ id: 'epic', traits: ['Epic'] });
+
+    expect(addCopyBlockedReason(wizardBook({ epic: 1 }), epic, wizard)).toBe('Max 1 copy');
+  });
+
+  it('names a card the mage cannot use', () => {
+    expect(addCopyBlockedReason(wizardBook({}), warlockOnly, wizard)).toBe(
+      'Wizard cannot use this card',
+    );
   });
 });
 
