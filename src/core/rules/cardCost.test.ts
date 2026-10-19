@@ -18,6 +18,7 @@ const OPPOSED = 3;
 const LEVEL_TWO = 2;
 const LEVEL_THREE = 3;
 const LEVEL_FOUR = 4;
+const LEVEL_SEVEN = 7;
 
 const airOrWater = makeCard({
   schoolMode: 'or',
@@ -49,14 +50,33 @@ describe('cardCost with school training', () => {
     expect(cardCost(card, necromancer)).toBe(TRAINED);
   });
 
-  it('still triples a Novice card in an opposed school', () => {
+  it('charges a Novice card once per level even in an opposed school, as the module does', () => {
     const card = makeCard({ traits: ['Novice'], schools: [{ school: 'Holy', level: 1 }] });
 
-    expect(cardCost(card, necromancer)).toBe(OPPOSED);
+    expect(cardCost(card, necromancer)).toBe(TRAINED);
   });
 });
 
 describe('cardCost with special training', () => {
+  it('charges an opposed part of a partly trained "and" card as untrained, as the module does', () => {
+    const card = makeCard({
+      type: 'Creature',
+      schoolMode: 'and',
+      schools: [
+        { school: 'War', level: LEVEL_TWO },
+        { school: 'Water', level: 1 },
+      ],
+    });
+
+    expect(cardCost(card, druid)).toBe(LEVEL_TWO * UNTRAINED + TRAINED);
+  });
+
+  it('charges nothing for Talos, which says it costs no spellpoints', () => {
+    const talos = makeCard({ name: 'Talos', schools: [{ school: 'War', level: LEVEL_SEVEN }] });
+
+    expect(cardCost(talos, warlock)).toBe(0);
+  });
+
   it('treats partial training as trained up to its level', () => {
     const card = makeCard({ schools: [{ school: 'Water', level: 1 }] });
 

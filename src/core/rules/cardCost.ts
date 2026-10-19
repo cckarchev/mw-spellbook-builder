@@ -6,6 +6,9 @@ const OPPOSED_MULTIPLIER = 3;
 
 const NOVICE_TRAIT = 'Novice';
 
+// Talos says it costs no spellpoints; the module matches it by name too.
+const FREE_CARD_NAMES = new Set(['Talos']);
+
 /** Total level of a card: "and" cards add their parts, "or" cards use the highest. */
 export const totalLevel = (card: Card): number => {
   const levels = card.schools.map((part) => part.level);
@@ -17,15 +20,13 @@ export const totalLevel = (card: Card): number => {
   return levels.reduce((sum, level) => sum + level, 0);
 };
 
-const isPartTrained = (part: SchoolPart, mage: Mage): boolean => {
-  const { training } = mage;
-  const isFull = training.full.includes(part.school);
-  const isPartial = training.partial.some(
+const isWithinPartialTraining = (part: SchoolPart, mage: Mage): boolean =>
+  mage.training.partial.some(
     (partial) => partial.school === part.school && part.level <= partial.maxLevel,
   );
 
-  return isFull || isPartial;
-};
+const isPartTrained = (part: SchoolPart, mage: Mage): boolean =>
+  mage.training.full.includes(part.school) || isWithinPartialTraining(part, mage);
 
 /** Novice, a trained school and type combo, or a trained subtype make the whole card trained. */
 const isWholeCardTrained = (card: Card, mage: Mage): boolean => {
@@ -40,20 +41,28 @@ const isWholeCardTrained = (card: Card, mage: Mage): boolean => {
   return isNovice || matchesCombo || matchesSubtype;
 };
 
-/** Spellbook points for one copy of a card in this mage's book. */
+/**
+ * Spellbook points for one copy of a card in this mage's book, following the module's
+ * SpellbookValidator: Novice, combo and subtype training beat an opposed school, and a card
+ * with a part within partial training charges its opposed parts as untrained.
+ */
 export const cardCost = (card: Card, mage: Mage): number => {
+  if (FREE_CARD_NAMES.has(card.name)) {
+    return 0;
+  }
+
   const wholeCardTrained = isWholeCardTrained(card, mage);
   const anyPartTrained = card.schools.some((part) => isPartTrained(part, mage));
+  const anyPartWithinPartial = card.schools.some((part) => isWithinPartialTraining(part, mage));
   const isOpposedType = mage.training.opposedTypes.includes(card.type) && !anyPartTrained;
 
   const multiplierFor = (part: SchoolPart): number => {
-    // An opposed school costs triple even on a Novice card.
-    if (mage.training.opposed.includes(part.school)) {
-      return OPPOSED_MULTIPLIER;
-    }
-
     if (wholeCardTrained || isPartTrained(part, mage)) {
       return TRAINED_MULTIPLIER;
+    }
+
+    if (mage.training.opposed.includes(part.school) && !anyPartWithinPartial) {
+      return OPPOSED_MULTIPLIER;
     }
 
     if (isOpposedType) {
