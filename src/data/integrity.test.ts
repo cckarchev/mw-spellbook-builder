@@ -169,6 +169,12 @@ describe('glossary data integrity', () => {
   it('has an entry for Stance, which the Codex leaves out', () => {
     expect(termsIn('Monk Only, Stance')).toContainEqual(['Stance', 'Stance']);
   });
+
+  it('says a Pest cannot Hinder, as the official Codex does', () => {
+    const pest = glossary.find((entry) => entry.term === 'Pest');
+
+    expect(pest?.definition).toMatch(/cannot Hinder enemies\.$/);
+  });
 });
 
 const OFFICIAL_MAGE_IDS = [

@@ -13,7 +13,9 @@
   border-top: var(--border-divider);
 }
 
-.about {
+.link {
+  display: inline-flex;
+  align-items: center;
   min-height: var(--touch-target);
   padding-inline: var(--space-xs);
   color: inherit;
@@ -25,11 +27,11 @@
   transition: color var(--duration-fast);
 }
 
-.about:hover {
+.link:hover {
   color: var(--color-accent);
 }
 
-.about:focus-visible {
+.link:focus-visible {
   outline: var(--focus-ring);
   outline-offset: calc(-1 * var(--focus-ring-offset));
 }
