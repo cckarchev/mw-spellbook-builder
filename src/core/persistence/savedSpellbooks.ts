@@ -30,16 +30,17 @@ const readSavedMap = (mageId: string): Map<string, string> => {
   return new Map(textEntries);
 };
 
-const writeSavedMap = (mageId: string, saved: Map<string, string>): void => {
+/** Stores the saved spellbooks; false when storage is unavailable. */
+const writeSavedMap = (mageId: string, saved: Map<string, string>): boolean => {
   const key = SAVED_PREFIX + mageId;
 
   if (saved.size === 0) {
     removeStored(key);
 
-    return;
+    return true;
   }
 
-  writeStored(key, JSON.stringify(Object.fromEntries(saved)));
+  return writeStored(key, JSON.stringify(Object.fromEntries(saved)));
 };
 
 /** The spellbook an encodeSpellbook string holds, when it decodes to a spellbook of this mage. */
@@ -93,18 +94,22 @@ export const savedCopy = (spellbook: Spellbook, name: string | null): Spellbook 
   return loadSavedSpellbook(mageId, name);
 };
 
-/** Saves the spellbook under the name for its mage, replacing a spellbook with the same name. */
-export const saveSpellbook = (name: string, spellbook: Spellbook): void => {
+/**
+ * Saves the spellbook under the name for its mage, replacing a spellbook with the same name.
+ * False when it was not stored: the spellbook has no mage, or storage is unavailable.
+ */
+export const saveSpellbook = (name: string, spellbook: Spellbook): boolean => {
   const { mageId } = spellbook;
 
   if (mageId === null) {
-    return;
+    return false;
   }
 
   const saved = readSavedMap(mageId);
 
   saved.set(name, encodeSpellbook(spellbook));
-  writeSavedMap(mageId, saved);
+
+  return writeSavedMap(mageId, saved);
 };
 
 export const deleteSavedSpellbook = (mageId: string, name: string): void => {

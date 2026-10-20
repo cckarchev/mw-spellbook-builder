@@ -35,6 +35,18 @@ describe('savedSpellbooks', () => {
     expect(loaded && sameSpellbook(loaded, wizardSpellbook(1))).toBe(true);
   });
 
+  it('saveSpellbook reports whether the spellbook was stored', () => {
+    expect(saveSpellbook(NAME, wizardSpellbook(1))).toBe(true);
+
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('quota');
+    });
+
+    expect(saveSpellbook(NAME, wizardSpellbook(2))).toBe(false);
+
+    vi.restoreAllMocks();
+  });
+
   it('loadSavedSpellbook is null for an unknown name', () => {
     expect(loadSavedSpellbook(WIZARD_ID, NAME)).toBeNull();
   });

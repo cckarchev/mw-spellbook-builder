@@ -1,5 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useToastStore } from '@/components/toast/useToastStore';
 import { savedSpellbooks, saveSpellbook } from '@/core/persistence/savedSpellbooks';
 import { FIREBALL, resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
 import { useSpellbookStatus } from '@/store/useSpellbookStatus';
@@ -60,6 +61,22 @@ describe('SpellbookActions Save', () => {
 
     expect(savedNames()).toEqual([NAME]);
     expect(useSpellbookStore.getState().name).toBe(NAME);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('says so when the browser will not store the spellbook, and leaves it unnamed', async () => {
+    render(<SpellbookActions />);
+
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('quota');
+    });
+
+    await saveAs(NAME);
+
+    vi.restoreAllMocks();
+
+    expect(useToastStore.getState().message).toMatch(/could not save/i);
+    expect(useSpellbookStore.getState().name).toBeNull();
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 

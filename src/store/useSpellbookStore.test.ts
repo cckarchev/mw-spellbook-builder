@@ -109,6 +109,26 @@ describe('useSpellbookStore spellbook changes', () => {
     expect(store.getState().savedRevision).toBe(savedRevision + 1);
   });
 
+  it('save reports a failed write and leaves the name and saved revision alone', () => {
+    const store = createWizardStore();
+
+    store.getState().addCopy(anyMageCard.id);
+
+    const { savedRevision } = store.getState();
+
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('quota');
+    });
+
+    const saved = store.getState().save(NAME);
+
+    vi.restoreAllMocks();
+
+    expect(saved).toBe(false);
+    expect(store.getState().name).toBeNull();
+    expect(store.getState().savedRevision).toBe(savedRevision);
+  });
+
   it('clear empties the spellbook, keeps the mage and drops the name', () => {
     const store = createWizardStore();
 

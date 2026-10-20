@@ -10,12 +10,15 @@ export const readStored = (key: string): string | null => {
   }
 };
 
-/** Stores the string, silently doing nothing when storage is unavailable. */
-export const writeStored = (key: string, value: string): void => {
+/** Stores the string; false when storage is unavailable, for callers that tell the player. */
+export const writeStored = (key: string, value: string): boolean => {
   try {
     localStorage.setItem(key, value);
+
+    return true;
   } catch {
     // Persistence is a convenience; the spellbook still lives in memory.
+    return false;
   }
 };
 

@@ -26,14 +26,16 @@ describe('storage', () => {
     expect(readStored(KEY)).toBeNull();
   });
 
-  it('does not throw when localStorage.setItem throws', () => {
+  it('reports a write that worked', () => {
+    expect(writeStored(KEY, 'hello')).toBe(true);
+  });
+
+  it('does not throw when localStorage.setItem throws, and reports the failure', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new Error('quota');
     });
 
-    expect(() => {
-      writeStored(KEY, 'hello');
-    }).not.toThrow();
+    expect(writeStored(KEY, 'hello')).toBe(false);
   });
 });
 

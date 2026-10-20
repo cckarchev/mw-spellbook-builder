@@ -28,8 +28,11 @@ interface SpellbookStore {
   /** Switches to the mage's draft, or a new spellbook for it; the current spellbook stays as its draft. */
   openMage: (mageId: string) => void;
   loadSpellbook: (spellbook: Spellbook, name?: string | null) => void;
-  /** Saves the spellbook under the name, replacing a saved spellbook with that name, and names it. */
-  save: (name: string) => void;
+  /**
+   * Saves the spellbook under the name, replacing a saved spellbook with that name, and names it.
+   * False, with nothing changed, when storage would not keep it.
+   */
+  save: (name: string) => boolean;
   /** Empties the spellbook and drops its name; the mage stays. */
   clear: () => void;
 }
@@ -110,8 +113,15 @@ export const createSpellbookStore = () => {
     save: (name) => {
       const { spellbook, savedRevision } = get();
 
-      saveSpellbook(name, spellbook);
+      const stored = saveSpellbook(name, spellbook);
+
+      if (!stored) {
+        return false;
+      }
+
       set({ name, savedRevision: savedRevision + 1 });
+
+      return true;
     },
 
     clear: () => {
