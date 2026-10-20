@@ -35,7 +35,7 @@ export const SpellbookStats = ({ spellbook, mage }: SpellbookStatsProps) => {
   return (
     <div className={styles.stats}>
       <StatSection title="Mana curve">
-        <ManaCurve curve={stats.manaCurve} mageName={mage.name} sources={stats.manaSources} />
+        <ManaCurve curve={stats.manaCurve} sources={stats.manaSources} />
       </StatSection>
       <StatSection title="By type">
         <BarList rows={countBars(stats.types)} label="Cards by type" />

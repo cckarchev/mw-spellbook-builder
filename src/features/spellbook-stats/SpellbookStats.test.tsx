@@ -34,21 +34,19 @@ describe('SpellbookStats', () => {
   it('shows the curve sentence', () => {
     renderStats(withCounts({ [LIGHTNING_BOLT]: 2 }));
 
-    expect(
-      screen.getByText('Wizard channels 10 per round. 2 cards cost 10 or less, 0 cost more.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Channeling 10: 2 cards fit, 0 cost more.')).toBeInTheDocument();
   });
 
   it('lists mana sources', () => {
     renderStats(withCounts({ [MANA_CRYSTAL]: 2 }));
 
-    expect(screen.getByText('Mana sources in book: Mana Crystal ×2: up to +2')).toBeInTheDocument();
+    expect(screen.getByText('Mana sources: Mana Crystal ×2, up to +2.')).toBeInTheDocument();
   });
 
   it('hides the mana sources line when the book has none', () => {
     renderStats(withCounts({ [LIGHTNING_BOLT]: 2 }));
 
-    expect(screen.queryByText(/Mana sources in book/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Mana sources/)).not.toBeInTheDocument();
   });
 
   it('notes untrained points', () => {

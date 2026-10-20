@@ -4,7 +4,6 @@ import styles from './ManaCurve.module.css';
 
 interface ManaCurveProps {
   curve: ManaCurveStats;
-  mageName: string;
   sources: ManaSources;
 }
 
@@ -27,17 +26,17 @@ const fillOf = (count: number, largest: number): number => {
 const sourcesLine = (sources: ManaSources): string => {
   const cards = sources.cards.map((source) => `${source.name} ×${source.count}`).join(', ');
 
-  return `Mana sources in book: ${cards}: up to +${sources.total}`;
+  return `Mana sources: ${cards}, up to +${sources.total}.`;
 };
 
-const channelingSentence = (curve: ManaCurveStats, mageName: string): string => {
+const channelingSentence = (curve: ManaCurveStats): string => {
   const { channeling, atOrBelow, above } = curve;
 
-  return `${mageName} channels ${channeling} per round. ${atOrBelow} cards cost ${channeling} or less, ${above} cost more.`;
+  return `Channeling ${channeling}: ${atOrBelow} cards fit, ${above} cost more.`;
 };
 
 /** Copies per mana cost, with a dashed mark after the column the mage's channeling falls in. */
-export const ManaCurve = ({ curve, mageName, sources }: ManaCurveProps) => {
+export const ManaCurve = ({ curve, sources }: ManaCurveProps) => {
   const columns: CurveColumn[] = [
     ...curve.buckets.map((bucket) => ({ ...bucket, variable: false })),
     { label: VARIABLE_LABEL, count: curve.variable, variable: true },
@@ -72,7 +71,7 @@ export const ManaCurve = ({ curve, mageName, sources }: ManaCurveProps) => {
         <span className={styles.channeling} aria-hidden="true" />
       </div>
       <p className={styles.note}>
-        <span className={styles.legend} aria-hidden="true" /> {channelingSentence(curve, mageName)}
+        <span className={styles.legend} aria-hidden="true" /> {channelingSentence(curve)}
       </p>
       {sources.total > 0 ? <p className={styles.note}>{sourcesLine(sources)}</p> : null}
     </div>
