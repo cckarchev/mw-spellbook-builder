@@ -4,13 +4,15 @@ import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { cardsById } from '@/data/catalog';
 import { FIREBALL, smallBook, tooManyCopiesBook, wizard } from '@/features/shared/testBooks';
-import type { ViewMode } from '@/features/shared/view-switch/useViewMode';
+import { type ViewMode, viewModeStorageKey } from '@/features/shared/view-switch/useViewMode';
 import { Spellbook } from './Spellbook';
 
 const ONE_FIREBALL: Book = { ...smallBook, counts: { ...smallBook.counts, [FIREBALL]: 1 } };
 
 const renderSpellbook = (book: Book = smallBook, view: ViewMode = 'list') => {
   const onRemove = vi.fn();
+
+  localStorage.setItem(viewModeStorageKey('book'), view);
 
   render(
     <Spellbook
@@ -19,7 +21,6 @@ const renderSpellbook = (book: Book = smallBook, view: ViewMode = 'list') => {
       summary={summarizeBook(book, wizard, cardsById)}
       onAdd={vi.fn()}
       onRemove={onRemove}
-      view={view}
     />,
   );
 
@@ -70,6 +71,7 @@ describe('Spellbook', () => {
     renderSpellbook({ ...smallBook, counts: {} });
 
     expect(screen.getByText('No cards yet. Add some from the Cards tab.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Grid' })).not.toBeInTheDocument();
   });
 
   it('removes a copy without asking while more copies stay', async () => {

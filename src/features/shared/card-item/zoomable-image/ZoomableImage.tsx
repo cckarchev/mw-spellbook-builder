@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CardZoom } from '../card-zoom/CardZoom';
+import { CardZoom } from '../../card-zoom/CardZoom';
 import styles from './ZoomableImage.module.css';
 
 interface ZoomableImageProps {

@@ -164,7 +164,7 @@ describe('Catalog grid', () => {
     expect(screen.getByRole('button', { name: 'List' })).toHaveAttribute('aria-pressed', 'true');
   });
 
-  it('shows the cards as images with their cost', async () => {
+  it('shows the cards as images with their points', async () => {
     renderCatalog();
 
     await showGrid();

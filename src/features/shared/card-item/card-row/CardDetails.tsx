@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Card } from '@/core/rules/types';
 import { GlossaryText } from '@/features/shared/glossary-text/GlossaryText';
-import { ZoomableImage } from '@/features/shared/zoomable-image/ZoomableImage';
+import { ZoomableImage } from '../zoomable-image/ZoomableImage';
 import styles from './CardRow.module.css';
 
 const TRAIT_SEPARATOR = ', ';

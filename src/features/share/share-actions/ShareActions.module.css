@@ -4,7 +4,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  margin-bottom: var(--space-md);
 }
 
 .note {
@@ -15,8 +14,7 @@
   border-inline-start: var(--border-width-strong) solid var(--color-error);
 }
 
-/* One row: the buttons at their own width, extra controls at the end. */
-.row,
+/* The buttons at their own width, in one row. */
 .buttons {
   display: flex;
   flex-wrap: wrap;
@@ -24,17 +22,13 @@
   gap: var(--space-xs);
 }
 
-.buttons {
-  min-width: 0;
-  border: none;
-}
-
-.trailing {
-  margin-inline-start: auto;
-}
-
-/* On a phone the buttons show their icons only; the name stays on the button for screen readers. */
+/* On a phone the buttons show their icons only, each a touch target wide; the name stays on
+   the button for screen readers. */
 @media (--phone) {
+  .action {
+    min-width: var(--touch-target);
+  }
+
   .label {
     display: none;
   }

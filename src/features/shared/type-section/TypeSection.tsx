@@ -1,5 +1,6 @@
 import { type ReactNode, useId, useState } from 'react';
 import { SectionHeader } from '@/components/section-header/SectionHeader';
+import type { ViewMode } from '../view-switch/useViewMode';
 import styles from './TypeSection.module.css';
 
 interface TypeSectionProps {
@@ -9,7 +10,7 @@ interface TypeSectionProps {
   /** Whether the rows start shown. */
   defaultExpanded?: boolean;
   /** Rows one under another, or card tiles side by side. */
-  layout: 'list' | 'grid';
+  layout: ViewMode;
   /** The rows, as list items. */
   children: ReactNode;
 }

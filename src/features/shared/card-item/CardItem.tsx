@@ -1,11 +1,11 @@
-import type { ComponentProps } from 'react';
+import type { ViewMode } from '../view-switch/useViewMode';
 import { CardRow } from './card-row/CardRow';
 import { CardTile } from './card-tile/CardTile';
-import type { ViewMode } from './view-switch/useViewMode';
+import type { CardEntryProps } from './cardEntryProps';
 
-type CardItemProps = ComponentProps<typeof CardRow> & {
+interface CardItemProps extends CardEntryProps {
   view: ViewMode;
-};
+}
 
 /** A card as a row in the list view, or as a tile in the grid view. */
 export const CardItem = ({ view, ...props }: CardItemProps) => {

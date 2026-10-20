@@ -9,7 +9,7 @@ import { addCopyBlockedReason } from '@/core/rules/validateBook';
 import { plural } from '@/core/text/plural';
 import { cards, cardsById } from '@/data/catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
-import { CardItem } from '@/features/shared/CardItem';
+import { CardItem } from '@/features/shared/card-item/CardItem';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
 import { useViewMode } from '@/features/shared/view-switch/useViewMode';
 import { ViewSwitch } from '@/features/shared/view-switch/ViewSwitch';

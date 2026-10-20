@@ -9,15 +9,13 @@ import { shareNote } from '@/core/share-link/bookNotes';
 import { getEmbedBase } from '@/core/share-link/embed';
 import { buildShareUrl } from '@/core/share-link/shareUrl';
 import { cardsById } from '@/data/catalog';
+import { CopyIcon, LinkIcon, ShareIcon } from './Icons';
 import styles from './ShareActions.module.css';
-import { CopyIcon, LinkIcon, ShareIcon } from './ShareIcons';
 
 interface ShareActionsProps {
   book: Book;
   mage: Mage;
   summary: BookSummary;
-  /** More controls at the end of the button row, such as the view switch. */
-  children?: ReactNode;
 }
 
 const COPY_FAILED = 'Could not copy. Try again, or copy the link from the address bar.';
@@ -44,6 +42,7 @@ const ActionButton = ({ icon, label, primary, onClick }: ActionButtonProps) => (
   <Button
     variant={primary ? 'primary' : 'ghost'}
     size="small"
+    className={styles.action}
     aria-label={label}
     title={label}
     onClick={onClick}
@@ -54,7 +53,7 @@ const ActionButton = ({ icon, label, primary, onClick }: ActionButtonProps) => (
 );
 
 /** The share sheet on phones that have one; the copy buttons work everywhere. */
-export const ShareActions = ({ book, mage, summary, children }: ShareActionsProps) => {
+export const ShareActions = ({ book, mage, summary }: ShareActionsProps) => {
   const showToast = useToastStore((state) => state.show);
 
   const url = buildShareUrl({
@@ -86,29 +85,25 @@ export const ShareActions = ({ book, mage, summary, children }: ShareActionsProp
   };
 
   return (
-    <div className={styles.actions}>
+    <section className={styles.actions} aria-label="Share">
       {note ? <p className={styles.note}>{note}</p> : null}
-      <div className={styles.row}>
-        {/* Only the share buttons are the Share group; extra controls sit beside it. */}
-        <fieldset className={styles.buttons} aria-label="Share">
-          {canShare ? (
-            <ActionButton icon={<ShareIcon />} label="Share" primary={true} onClick={share} />
-          ) : null}
-          <ActionButton
-            icon={<LinkIcon />}
-            label="Copy link"
-            primary={!canShare}
-            onClick={() => copy(url, 'Link copied')}
-          />
-          <ActionButton
-            icon={<CopyIcon />}
-            label="Copy text"
-            primary={false}
-            onClick={() => copy(bookText(book, mage, summary, cardsById, url), 'Text copied')}
-          />
-        </fieldset>
-        {children ? <div className={styles.trailing}>{children}</div> : null}
+      <div className={styles.buttons}>
+        {canShare ? (
+          <ActionButton icon={<ShareIcon />} label="Share" primary={true} onClick={share} />
+        ) : null}
+        <ActionButton
+          icon={<LinkIcon />}
+          label="Copy link"
+          primary={!canShare}
+          onClick={() => copy(url, 'Link copied')}
+        />
+        <ActionButton
+          icon={<CopyIcon />}
+          label="Copy text"
+          primary={false}
+          onClick={() => copy(bookText(book, mage, summary, cardsById, url), 'Text copied')}
+        />
       </div>
-    </div>
+    </section>
   );
 };
