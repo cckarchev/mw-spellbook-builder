@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Dialog } from '@/components/dialog/Dialog';
 import { mageStatsImage } from '@/core/catalog/mageImage';
 import type { Mage } from '@/core/rules/types';
+import { CardZoom } from '@/features/shared/card-zoom/CardZoom';
 import styles from './MageStats.module.css';
 import { StatsIcon } from './StatsIcon';
 
@@ -43,15 +43,13 @@ export const MageStats = ({ mage, label, className }: MageStatsProps) => {
         {label ? <span className={styles.label}>{label}</span> : null}
         <StatsIcon />
       </button>
-      <Dialog
+      <CardZoom
         open={open}
         title={title}
+        image={image}
+        alt={`${mage.name} stats card`}
         onClose={closeStats}
-        closeButton={true}
-        className={styles.dialog}
-      >
-        <img className={styles.image} src={image} alt={`${mage.name} stats card`} />
-      </Dialog>
+      />
     </>
   );
 };

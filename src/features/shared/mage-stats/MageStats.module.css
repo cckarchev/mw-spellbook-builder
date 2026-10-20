@@ -26,16 +26,3 @@
   outline: var(--focus-ring);
   outline-offset: var(--focus-ring-offset);
 }
-
-/* Wide enough for the card at the full width of its image, plus the panel padding. */
-.dialog {
-  --dialog-width: calc(var(--card-zoom-width) + 2 * var(--space-lg));
-}
-
-.image {
-  display: block;
-  width: 100%;
-  aspect-ratio: var(--card-aspect);
-  background: var(--color-bg-tint);
-  border-radius: var(--card-radius);
-}
