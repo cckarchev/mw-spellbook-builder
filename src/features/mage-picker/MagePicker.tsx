@@ -1,22 +1,11 @@
-import { useNavigate } from 'react-router-dom';
-import { builderPath } from '@/core/routing/paths';
-import type { Mage } from '@/core/rules/types';
 import { mages } from '@/data/catalog';
-import { useBookStore } from '@/store/useBookStore';
+import { NewBookDialog } from '@/features/mage-switch/NewBookDialog';
+import { useMageSwitch } from '@/features/mage-switch/useMageSwitch';
 import styles from './MagePicker.module.css';
 import { MageTile } from './mage-tile/MageTile';
 
-/**
- * Every mage, to start or go back to a book. Picking one opens its builder, which switches
- * the book to that mage, asking first when that would clear a book with cards.
- */
 export const MagePicker = () => {
-  const navigate = useNavigate();
-  const currentMageId = useBookStore((state) => state.book.mageId);
-
-  const openMage = (mage: Mage) => {
-    navigate(builderPath(mage.name, 'cards'));
-  };
+  const { book, pendingSwitch, requestSwitch, confirmSwitch, cancelSwitch } = useMageSwitch();
 
   return (
     <main className={styles.picker}>
@@ -26,11 +15,17 @@ export const MagePicker = () => {
           <MageTile
             key={mage.id}
             mage={mage}
-            current={mage.id === currentMageId}
-            onSelect={openMage}
+            current={mage.id === book.mageId}
+            onSelect={requestSwitch}
           />
         ))}
       </div>
+      <NewBookDialog
+        open={pendingSwitch !== null}
+        book={book}
+        onConfirm={confirmSwitch}
+        onCancel={cancelSwitch}
+      />
     </main>
   );
 };

@@ -1,25 +1,27 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
-import { App } from '@/App';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { FIREBALL } from '@/features/shared/testBooks';
 import { useBookStore } from '@/store/useBookStore';
+import { MagePicker } from './MagePicker';
 
 /** A "Warlock Only" card, illegal for every other mage. */
 const ADRAMELECHS_TORMENT = '9e7cbef4-1ad9-46cf-95c0-1aafd656c85d';
 const ONE_COPY = 1;
 
-// The whole app, since the builder's URL is what switches the book.
 const renderPicker = () => {
   render(
     <MemoryRouter initialEntries={['/']}>
-      <App />
+      <Routes>
+        <Route index={true} element={<MagePicker />} />
+        <Route path=":mageSlug" element={<h1>Build screen</h1>} />
+      </Routes>
     </MemoryRouter>,
   );
 };
 
-const buildScreen = () => screen.queryByRole('searchbox', { name: 'Search cards' });
+const buildScreen = () => screen.queryByRole('heading', { name: 'Build screen' });
 
 const chooseWizard = async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Wizard' }));
@@ -86,7 +88,7 @@ describe('MagePicker switching to another mage', () => {
     });
   });
 
-  it('asks before starting a new book, and Cancel goes back to the old one', async () => {
+  it('asks before starting a new book, and Cancel keeps the old one', async () => {
     renderPicker();
 
     await chooseWizard();
@@ -99,7 +101,7 @@ describe('MagePicker switching to another mage', () => {
 
     expect(useBookStore.getState().book.mageId).toBe('warlock');
     expect(useBookStore.getState().book.counts).toEqual({ [ADRAMELECHS_TORMENT]: ONE_COPY });
-    expect(screen.getByRole('heading', { name: /Warlock/ })).toBeInTheDocument();
+    expect(buildScreen()).not.toBeInTheDocument();
   });
 
   it('clears the book and switches when confirmed', async () => {

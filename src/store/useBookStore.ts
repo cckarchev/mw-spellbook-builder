@@ -3,7 +3,7 @@ import { readStored, writeStored } from '@/core/persistence/storage';
 import type { Book } from '@/core/rules/types';
 import { canAddCopy } from '@/core/rules/validateBook';
 import { decodeBook, encodeBook } from '@/core/share-link/bookCodec';
-import { bookMage, cardsById } from '@/data/catalog';
+import { cardsById, magesById } from '@/data/catalog';
 
 /** The book being built, kept as an encodeBook string so it survives a reload. */
 export const BOOK_STORAGE_KEY = 'mw-spellbook-builder:current';
@@ -17,13 +17,13 @@ interface BookStore {
   clear: () => void;
 }
 
-const noBook = (): Book => ({ mageId: null, counts: {} });
+const emptyBook = (): Book => ({ mageId: null, counts: {} });
 
 const readInitialBook = (): Book => {
   const stored = readStored(BOOK_STORAGE_KEY);
   const decoded = stored === null ? null : decodeBook(stored);
 
-  return decoded?.book ?? noBook();
+  return decoded?.book ?? emptyBook();
 };
 
 const withoutCard = (counts: Book['counts'], cardId: string): Book['counts'] => {
@@ -41,7 +41,7 @@ export const createBookStore = () => {
     addCopy: (cardId) => {
       const { book } = get();
       const card = cardsById.get(cardId);
-      const mage = bookMage(book);
+      const mage = book.mageId === null ? undefined : magesById.get(book.mageId);
 
       if (!(card && mage && canAddCopy(book, card, mage))) {
         return;
@@ -71,7 +71,7 @@ export const createBookStore = () => {
     },
 
     clear: () => {
-      set({ book: noBook() });
+      set({ book: emptyBook() });
     },
   }));
 

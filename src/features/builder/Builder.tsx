@@ -1,14 +1,14 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { type Tab, Tabs, tabPanelProps } from '@/components/tabs/Tabs';
-import { type BuilderTab, builderPath } from '@/core/routing/paths';
-import { mageSwitchKind } from '@/core/rules/bookChanges';
+import { type BuilderTab, builderPath } from '@/core/routing/builderPath';
 import { summarizeBook } from '@/core/rules/validateBook';
-import { bookMage, cardsById, magesBySlug } from '@/data/catalog';
+import { cardsById, magesById, magesBySlug } from '@/data/catalog';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
+import { NewBookDialog } from '@/features/mage-switch/NewBookDialog';
+import { useRouteMage } from '@/features/mage-switch/useRouteMage';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { Spellbook } from '@/features/spellbook/Spellbook';
-import { ToPicker } from '@/layout/ToPicker';
 import { useBookStore } from '@/store/useBookStore';
 import styles from './Builder.module.css';
 
@@ -19,10 +19,7 @@ const TABS: Tab<BuilderTab>[] = [
   { id: 'book', label: 'Book' },
 ];
 
-/**
- * The build screen of the mage in the URL: a sticky header and tabs over the catalog or the book.
- * Until the book follows that mage, it shows the current book.
- */
+/** The build screen of the mage in the URL: a sticky header and tabs over the catalog or the book. */
 export const Builder = ({ tab }: { tab: BuilderTab }) => {
   const { mageSlug = '' } = useParams();
   const navigate = useNavigate();
@@ -31,15 +28,16 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
   const removeCopy = useBookStore((state) => state.removeCopy);
 
   const routeMage = magesBySlug.get(mageSlug);
-  const mage = bookMage(book);
+  const { isPending, confirm, cancel } = useRouteMage(routeMage, tab);
+  const mage = book.mageId === null ? undefined : magesById.get(book.mageId);
 
   if (!routeMage) {
-    return <ToPicker />;
+    return <Navigate to="/" replace={true} />;
   }
 
-  // A book with no cards is about to switch to the URL's mage, so the old mage is not drawn first.
-  if (!mage || mageSwitchKind(book, routeMage.id) === 'direct') {
-    return null;
+  // Until the book follows the URL's mage, there is only the confirm, if the switch needs one.
+  if (mage?.id !== routeMage.id) {
+    return <NewBookDialog open={isPending} book={book} onConfirm={confirm} onCancel={cancel} />;
   }
 
   const summary = summarizeBook(book, mage, cardsById);

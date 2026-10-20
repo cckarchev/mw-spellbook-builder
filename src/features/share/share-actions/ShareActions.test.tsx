@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { Toast } from '@/components/toast/Toast';
 import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
 import { bookText } from '@/core/export/bookText';
-import { builderPath } from '@/core/routing/paths';
+import { builderPath } from '@/core/routing/builderPath';
 import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { encodeBook } from '@/core/share-link/bookCodec';

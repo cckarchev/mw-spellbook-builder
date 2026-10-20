@@ -100,8 +100,6 @@ describe('App opened at another mage', () => {
     renderAt('/warlock/book');
 
     expect(screen.getByRole('dialog', { name: 'Start a new book?' })).toBeInTheDocument();
-    // The current book stays on screen behind the question.
-    expect(screen.getByText('Mana Crystal')).toBeInTheDocument();
 
     await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
