@@ -1,8 +1,7 @@
 import { memo, useState } from 'react';
-import { Stepper } from '@/components/stepper/Stepper';
 import { schoolSummary } from '@/core/catalog/schoolSummary';
-import { maxCopies } from '@/core/rules/copyLimit';
 import type { Card } from '@/core/rules/types';
+import { CardStepper } from '../CardStepper';
 import { CardDetails } from './CardDetails';
 import styles from './CardRow.module.css';
 
@@ -42,13 +41,12 @@ export const CardRow = memo(
             {problem === null ? null : <span className={styles.problem}>{problem}</span>}
           </button>
           <span className={styles.points}>{points} pts</span>
-          <Stepper
-            value={count}
-            max={maxCopies(card)}
-            label={card.name}
-            disabledReason={blockedReason}
-            onIncrement={() => onAdd(card.id)}
-            onDecrement={() => onRemove(card.id)}
+          <CardStepper
+            card={card}
+            count={count}
+            blockedReason={blockedReason}
+            onAdd={onAdd}
+            onRemove={onRemove}
           />
         </div>
         {expanded ? <CardDetails card={card} /> : null}

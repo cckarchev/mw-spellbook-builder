@@ -9,7 +9,7 @@ interface TypeSectionProps {
   /** Whether the rows start shown. */
   defaultExpanded?: boolean;
   /** Rows one under another, or card tiles side by side. */
-  layout?: 'list' | 'grid';
+  layout: 'list' | 'grid';
   /** The rows, as list items. */
   children: ReactNode;
 }
@@ -20,7 +20,7 @@ export const TypeSection = ({
   count,
   meta,
   defaultExpanded = true,
-  layout = 'list',
+  layout,
   children,
 }: TypeSectionProps) => {
   const headingId = useId();

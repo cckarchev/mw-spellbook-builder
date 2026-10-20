@@ -1,6 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
-import { TOAST_DURATION_MS, Toast } from './Toast';
-import { useToastStore } from './useToastStore';
+import { Toast } from './Toast';
+import { LONG_TOAST_DURATION_MS, TOAST_DURATION_MS, useToastStore } from './useToastStore';
 
 const HALF_DURATION_MS = TOAST_DURATION_MS / 2;
 
@@ -13,9 +13,9 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-const show = (message: string) => {
+const show = (message: string, durationMs?: number) => {
   act(() => {
-    useToastStore.getState().show(message);
+    useToastStore.getState().show(message, durationMs);
   });
 };
 
@@ -55,6 +55,19 @@ describe('Toast', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Link copied');
 
     wait(HALF_DURATION_MS);
+
+    expect(screen.getByRole('status')).toBeEmptyDOMElement();
+  });
+
+  it('keeps a long message up for the longer time', () => {
+    render(<Toast />);
+
+    show('Could not copy', LONG_TOAST_DURATION_MS);
+    wait(TOAST_DURATION_MS);
+
+    expect(screen.getByRole('status')).toHaveTextContent('Could not copy');
+
+    wait(LONG_TOAST_DURATION_MS - TOAST_DURATION_MS);
 
     expect(screen.getByRole('status')).toBeEmptyDOMElement();
   });

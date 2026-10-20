@@ -1,3 +1,5 @@
+@import '@/theme/breakpoints.css';
+
 .tile {
   display: flex;
   flex-direction: column;
@@ -5,6 +7,13 @@
   gap: var(--space-xxs);
   padding: var(--space-xxs);
   border: var(--border-width-strong) solid transparent;
+}
+
+/* On a phone the stepper needs the whole tile width. */
+@media (--phone) {
+  .tile {
+    padding: 0;
+  }
 }
 
 .tile[data-in-book='true'] {

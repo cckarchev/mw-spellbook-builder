@@ -1,9 +1,8 @@
-import type { ReactNode } from 'react';
-import { Segmented } from '@/components/segmented/Segmented';
+import { Segmented, type SegmentedOption } from '@/components/segmented/Segmented';
 import type { ViewMode } from './useViewMode';
 import { GridIcon, ListIcon } from './ViewIcons';
 
-const VIEWS: { value: ViewMode; label: string; icon: ReactNode }[] = [
+const VIEWS: SegmentedOption<ViewMode>[] = [
   { value: 'list', label: 'List', icon: <ListIcon /> },
   { value: 'grid', label: 'Grid', icon: <GridIcon /> },
 ];

@@ -16,11 +16,17 @@
 }
 
 /* One row: the buttons at their own width, extra controls at the end. */
+.row,
 .buttons {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-xs);
+}
+
+.buttons {
+  min-width: 0;
+  border: none;
 }
 
 .trailing {

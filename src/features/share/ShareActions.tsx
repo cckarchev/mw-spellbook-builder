@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Button } from '@/components/button/Button';
-import { useToastStore } from '@/components/toast/useToastStore';
+import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
 import { bookText } from '@/core/export/bookText';
 import type { Book, Mage } from '@/core/rules/types';
 import type { BookSummary } from '@/core/rules/validateBook';
@@ -68,7 +68,13 @@ export const ShareActions = ({ book, mage, summary, children }: ShareActionsProp
   const copy = async (text: string, doneMessage: string) => {
     const copied = await copyText(text);
 
-    showToast(copied ? doneMessage : COPY_FAILED);
+    if (!copied) {
+      showToast(COPY_FAILED, LONG_TOAST_DURATION_MS);
+
+      return;
+    }
+
+    showToast(doneMessage);
   };
 
   const share = async () => {
@@ -80,26 +86,29 @@ export const ShareActions = ({ book, mage, summary, children }: ShareActionsProp
   };
 
   return (
-    <section className={styles.actions} aria-label="Share">
+    <div className={styles.actions}>
       {note ? <p className={styles.note}>{note}</p> : null}
-      <div className={styles.buttons}>
-        {canShare ? (
-          <ActionButton icon={<ShareIcon />} label="Share" primary={true} onClick={share} />
-        ) : null}
-        <ActionButton
-          icon={<LinkIcon />}
-          label="Copy link"
-          primary={!canShare}
-          onClick={() => copy(url, 'Link copied')}
-        />
-        <ActionButton
-          icon={<CopyIcon />}
-          label="Copy text"
-          primary={false}
-          onClick={() => copy(bookText(book, mage, summary, cardsById, url), 'Text copied')}
-        />
+      <div className={styles.row}>
+        {/* Only the share buttons are the Share group; extra controls sit beside it. */}
+        <fieldset className={styles.buttons} aria-label="Share">
+          {canShare ? (
+            <ActionButton icon={<ShareIcon />} label="Share" primary={true} onClick={share} />
+          ) : null}
+          <ActionButton
+            icon={<LinkIcon />}
+            label="Copy link"
+            primary={!canShare}
+            onClick={() => copy(url, 'Link copied')}
+          />
+          <ActionButton
+            icon={<CopyIcon />}
+            label="Copy text"
+            primary={false}
+            onClick={() => copy(bookText(book, mage, summary, cardsById, url), 'Text copied')}
+          />
+        </fieldset>
         {children ? <div className={styles.trailing}>{children}</div> : null}
       </div>
-    </section>
+    </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import type { Book } from '@/core/rules/types';
 
 const LAST_COPY = 1;
@@ -9,16 +9,26 @@ const LAST_COPY = 1;
  */
 export const useLastCopyConfirm = (book: Book, onRemove: (cardId: string) => void) => {
   const [pendingCardId, setPendingCardId] = useState<string | null>(null);
+  const bookRef = useRef(book);
 
-  const requestRemove = (cardId: string) => {
-    if (book.counts[cardId] === LAST_COPY) {
-      setPendingCardId(cardId);
+  useLayoutEffect(() => {
+    bookRef.current = book;
+  }, [book]);
 
-      return;
-    }
+  // Reads the book through a ref, so it stays the same function and memoized card rows skip
+  // re-rendering when the book changes elsewhere.
+  const requestRemove = useCallback(
+    (cardId: string) => {
+      if (bookRef.current.counts[cardId] === LAST_COPY) {
+        setPendingCardId(cardId);
 
-    onRemove(cardId);
-  };
+        return;
+      }
+
+      onRemove(cardId);
+    },
+    [onRemove],
+  );
 
   const confirmRemove = () => {
     if (pendingCardId) {

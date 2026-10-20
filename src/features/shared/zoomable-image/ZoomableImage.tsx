@@ -1,25 +1,23 @@
 import { useState } from 'react';
-import { CardZoom } from './CardZoom';
+import { CardZoom } from '../card-zoom/CardZoom';
 import styles from './ZoomableImage.module.css';
 
 interface ZoomableImageProps {
   name: string;
   image: string;
   /** Sets the width; the image fills it. */
-  className?: string;
+  className: string;
 }
 
 /** A card image; tapping it shows the image full size. */
 export const ZoomableImage = ({ name, image, className }: ZoomableImageProps) => {
   const [open, setOpen] = useState(false);
 
-  const buttonClassName = className ? `${styles.button} ${className}` : styles.button;
-
   return (
     <>
       <button
         type="button"
-        className={buttonClassName}
+        className={`${styles.button} ${className}`}
         aria-label={`Enlarge ${name}`}
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}

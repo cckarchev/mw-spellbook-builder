@@ -114,7 +114,8 @@ describe('Spellbook grid', () => {
     const attack = screen.getByRole('region', { name: 'Attack (5) 16 pts' });
     const tile = within(attack).getByRole('img', { name: 'Fireball' }).closest('li');
 
-    expect(tile).toHaveTextContent(/\d+ pts/);
+    // Three copies at 4 points each.
+    expect(tile).toHaveTextContent('12 pts');
     expect(
       within(tile as HTMLElement).getByRole('button', { name: 'Add one Fireball' }),
     ).toBeInTheDocument();

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import styles from './Segmented.module.css';
 
-interface SegmentedOption<T extends string> {
+export interface SegmentedOption<T extends string> {
   value: T;
   label: string;
   /** Shown in place of the label, which becomes the name and the tooltip. */

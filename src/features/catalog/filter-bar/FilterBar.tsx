@@ -1,6 +1,6 @@
 import { type ReactNode, useId, useState } from 'react';
 import { Button } from '@/components/button/Button';
-import { Segmented } from '@/components/segmented/Segmented';
+import { Segmented, type SegmentedOption } from '@/components/segmented/Segmented';
 import { activeFilterCount, type CatalogFilters } from '@/core/catalog/filterCards';
 import type { FilterOptions } from '@/core/catalog/filterOptions';
 import type { FilterScope } from '@/core/catalog/filterScope';
@@ -21,7 +21,7 @@ interface FilterBarProps {
   children?: ReactNode;
 }
 
-const SCOPES: { value: FilterScope; label: string }[] = [
+const SCOPES: SegmentedOption<FilterScope>[] = [
   { value: 'all', label: 'All' },
   { value: 'trained', label: 'Trained' },
   { value: 'only', label: 'Mage only' },
@@ -71,7 +71,7 @@ export const FilterBar = ({
           value={filters.query}
           onChange={(event) => onQueryChange(event.target.value)}
         />
-        <Button aria-expanded={open} aria-controls={panelId} onClick={togglePanel}>
+        <Button size="small" aria-expanded={open} aria-controls={panelId} onClick={togglePanel}>
           {toggleLabel}
         </Button>
         {children}

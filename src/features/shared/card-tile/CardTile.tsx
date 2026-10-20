@@ -1,8 +1,7 @@
 import { memo } from 'react';
-import { Stepper } from '@/components/stepper/Stepper';
-import { maxCopies } from '@/core/rules/copyLimit';
 import type { Card } from '@/core/rules/types';
-import { ZoomableImage } from '@/features/shared/card-zoom/ZoomableImage';
+import { ZoomableImage } from '@/features/shared/zoomable-image/ZoomableImage';
+import { CardStepper } from '../CardStepper';
 import styles from './CardTile.module.css';
 
 interface CardTileProps {
@@ -30,13 +29,12 @@ export const CardTile = memo(
         )}
         <span className={styles.points}>{points} pts</span>
       </div>
-      <Stepper
-        value={count}
-        max={maxCopies(card)}
-        label={card.name}
-        disabledReason={blockedReason}
-        onIncrement={() => onAdd(card.id)}
-        onDecrement={() => onRemove(card.id)}
+      <CardStepper
+        card={card}
+        count={count}
+        blockedReason={blockedReason}
+        onAdd={onAdd}
+        onRemove={onRemove}
       />
       {problem === null ? null : <span className={styles.problem}>{problem}</span>}
     </li>

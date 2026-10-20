@@ -4,8 +4,7 @@ import { addCopyBlockedReason, type BookSummary } from '@/core/rules/validateBoo
 import { bookProblems, cardProblems } from '@/core/share-link/bookNotes';
 import { cardsById } from '@/data/catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
-import { CardRow } from '@/features/shared/card-row/CardRow';
-import { CardTile } from '@/features/shared/card-tile/CardTile';
+import { CardItem } from '@/features/shared/CardItem';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
 import type { ViewMode } from '@/features/shared/view-switch/useViewMode';
 import styles from './Spellbook.module.css';
@@ -48,23 +47,19 @@ export const Spellbook = ({ book, mage, summary, view, onAdd, onRemove }: Spellb
           meta={`${group.points} pts`}
           layout={view}
         >
-          {group.entries.map((entry) => {
-            const itemProps = {
-              card: entry.card,
-              count: entry.count,
-              points: entry.points,
-              blockedReason: addCopyBlockedReason(book, entry.card, mage),
-              problem: rowProblems.get(entry.card.id) ?? null,
-              onAdd,
-              onRemove: requestRemove,
-            };
-
-            if (view === 'grid') {
-              return <CardTile key={entry.card.id} {...itemProps} />;
-            }
-
-            return <CardRow key={entry.card.id} {...itemProps} />;
-          })}
+          {group.entries.map((entry) => (
+            <CardItem
+              key={entry.card.id}
+              view={view}
+              card={entry.card}
+              count={entry.count}
+              points={entry.points}
+              blockedReason={addCopyBlockedReason(book, entry.card, mage)}
+              problem={rowProblems.get(entry.card.id) ?? null}
+              onAdd={onAdd}
+              onRemove={requestRemove}
+            />
+          ))}
         </TypeSection>
       ))}
       <ConfirmDialog

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Card } from '@/core/rules/types';
-import { ZoomableImage } from '@/features/shared/card-zoom/ZoomableImage';
 import { GlossaryText } from '@/features/shared/glossary-text/GlossaryText';
+import { ZoomableImage } from '@/features/shared/zoomable-image/ZoomableImage';
 import styles from './CardRow.module.css';
 
 const TRAIT_SEPARATOR = ', ';
@@ -36,7 +36,7 @@ export const CardDetails = ({ card }: { card: Card }) => {
   return (
     <div className={styles.expanded}>
       {card.image ? (
-        <ZoomableImage name={card.name} image={card.image} className={styles.image} />
+        <ZoomableImage name={card.name} image={card.image} className={styles.imageButton} />
       ) : null}
       <div className={styles.text}>
         <dl className={styles.facts}>

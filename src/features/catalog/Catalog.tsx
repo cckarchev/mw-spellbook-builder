@@ -9,8 +9,7 @@ import { addCopyBlockedReason } from '@/core/rules/validateBook';
 import { plural } from '@/core/text/plural';
 import { cards, cardsById } from '@/data/catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
-import { CardRow } from '@/features/shared/card-row/CardRow';
-import { CardTile } from '@/features/shared/card-tile/CardTile';
+import { CardItem } from '@/features/shared/CardItem';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
 import { useViewMode } from '@/features/shared/view-switch/useViewMode';
 import { ViewSwitch } from '@/features/shared/view-switch/ViewSwitch';
@@ -70,22 +69,18 @@ export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
           defaultExpanded={filtering}
           layout={view}
         >
-          {group.items.map((card) => {
-            const itemProps = {
-              card,
-              count: book.counts[card.id] ?? 0,
-              points: cardCost(card, mage),
-              blockedReason: addCopyBlockedReason(book, card, mage),
-              onAdd,
-              onRemove,
-            };
-
-            if (view === 'grid') {
-              return <CardTile key={card.id} {...itemProps} />;
-            }
-
-            return <CardRow key={card.id} {...itemProps} />;
-          })}
+          {group.items.map((card) => (
+            <CardItem
+              key={card.id}
+              view={view}
+              card={card}
+              count={book.counts[card.id] ?? 0}
+              points={cardCost(card, mage)}
+              blockedReason={addCopyBlockedReason(book, card, mage)}
+              onAdd={onAdd}
+              onRemove={onRemove}
+            />
+          ))}
         </TypeSection>
       ))}
     </div>
