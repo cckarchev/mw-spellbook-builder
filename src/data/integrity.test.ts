@@ -2,8 +2,10 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { cardCode, cardImagePath } from '@/core/catalog/cardImage';
 import { mageStatsImage } from '@/core/catalog/mageImage';
+import { splitByTerms } from '@/core/glossary/findTerms';
 import { SCHOOLS } from '@/core/rules/types';
 import { cards, cardsByCode, magesById } from './catalog';
+import { glossary, glossaryIndex } from './glossary';
 import { mages } from './mages';
 
 const PUBLIC_DIR = 'public';
@@ -84,5 +86,41 @@ describe('mage data integrity', () => {
 
   it('names the Salenia Forcemaster as the current module does, not the legacy sets', () => {
     expect(magesById.get('salenia-forcemaster')?.name).toBe('Salenia Forcemaster');
+  });
+});
+
+describe('glossary data integrity', () => {
+  /** The term each word of a text points at, leaving out plain text. */
+  const termsIn = (text: string) =>
+    splitByTerms(text, glossaryIndex).flatMap((segment) =>
+      segment.entry ? [[segment.text, segment.entry.term]] : [],
+    );
+
+  it('has a definition for every term', () => {
+    const empty = glossary.filter((entry) => entry.definition === '');
+
+    expect(empty.map((entry) => entry.term)).toEqual([]);
+  });
+
+  it('explains the words of an attack bar', () => {
+    expect(termsIn('d12 7-8 = Daze, 9+ = Stun | Ethereal, Unavoidable')).toEqual([
+      ['Daze', 'Daze'],
+      ['Stun', 'Stun'],
+      ['Ethereal', 'Ethereal'],
+      ['Unavoidable', 'Unavoidable'],
+    ]);
+  });
+
+  it('points damage types, immunities and "Only" traits at their generic entries', () => {
+    expect(termsIn('Flame +2, Hydro Immunity, Forcemaster Only, Holy Mage Only')).toEqual([
+      ['Flame +2', 'Damage Type +/- X'],
+      ['Hydro Immunity', 'Immunity'],
+      ['Forcemaster Only', 'Mage Only'],
+      ['Holy Mage Only', 'Mage Only'],
+    ]);
+  });
+
+  it('explains Attack only as the spell type', () => {
+    expect(termsIn('an Attack spell that attacks')).toEqual([['Attack', 'Attack']]);
   });
 });
