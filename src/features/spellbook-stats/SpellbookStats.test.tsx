@@ -37,6 +37,12 @@ describe('SpellbookStats', () => {
     expect(screen.getByText('Channeling 10: 2 cards fit, 0 cost more.')).toBeInTheDocument();
   });
 
+  it('says card for a single card', () => {
+    renderStats(withCounts({ [LIGHTNING_BOLT]: 1 }));
+
+    expect(screen.getByText('Channeling 10: 1 card fits, 0 cost more.')).toBeInTheDocument();
+  });
+
   it('lists mana sources', () => {
     renderStats(withCounts({ [MANA_CRYSTAL]: 2 }));
 

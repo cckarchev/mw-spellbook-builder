@@ -32,7 +32,10 @@ const sourcesLine = (sources: ManaSources): string => {
 const channelingSentence = (curve: ManaCurveStats): string => {
   const { channeling, atOrBelow, above } = curve;
 
-  return `Channeling ${channeling}: ${atOrBelow} cards fit, ${above} cost more.`;
+  const fitting = atOrBelow === 1 ? 'card fits' : 'cards fit';
+  const costing = above === 1 ? 'costs' : 'cost';
+
+  return `Channeling ${channeling}: ${atOrBelow} ${fitting}, ${above} ${costing} more.`;
 };
 
 /** Copies per mana cost, with a dashed mark after the column the mage's channeling falls in. */

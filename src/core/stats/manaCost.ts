@@ -1,10 +1,11 @@
 export type ManaCost = number | 'X';
 
 const VARIABLE_MARK = 'X';
-const COMPOUND_SEPARATOR = '+';
+// Sentinel of V'Tar prints "2+3": cast for 2, reveal for 3. The curve counts the casting cost.
+const REVEAL_SEPARATOR = '+';
 const DIGITS = /^\d+$/;
 
-/** A card's printed mana cost: a number, 'X' for a variable cost, or null when it has none. */
+/** A card's mana cost to cast it: a number, 'X' for a variable cost, or null when it has none. */
 export const parseManaCost = (cost: string): ManaCost | null => {
   const trimmed = cost.trim();
 
@@ -12,11 +13,11 @@ export const parseManaCost = (cost: string): ManaCost | null => {
     return VARIABLE_MARK;
   }
 
-  const parts = trimmed.split(COMPOUND_SEPARATOR).map((part) => part.trim());
+  const [castingCost = ''] = trimmed.split(REVEAL_SEPARATOR).map((part) => part.trim());
 
-  if (!parts.every((part) => DIGITS.test(part))) {
+  if (!DIGITS.test(castingCost)) {
     return null;
   }
 
-  return parts.reduce((sum, part) => sum + Number(part), 0);
+  return Number(castingCost);
 };
