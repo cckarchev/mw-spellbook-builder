@@ -33,6 +33,8 @@ The glossary (`src/data/glossary.json`) comes from the Mage Wars Codex: put it a
 
 The mages (`src/data/mages.ts`) are written by hand from each mage's stats card in the module. Each one names two cards, the mage picture for the table and the stats card, and the script extracts both images.
 
+The official spellbooks (`src/data/officialSpellbooks.json`) come from the module's `def/Decks/Official Spellbooks/` folder, one per mage, as card id to copies. Some decks list a card under the id of another printing, so the script matches each card by id first and then by its exact name among the Arena cards. It stops, naming the deck and the card, when a card or a mage does not match.
+
 ## Rules
 
 Point costs follow the module's spellbook validator (`SpellbookValidator.py`), with two corrections the players confirmed where the module and the cards disagree:
