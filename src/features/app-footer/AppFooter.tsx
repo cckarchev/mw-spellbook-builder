@@ -1,0 +1,41 @@
+import { useState } from 'react';
+import { Dialog } from '@/components/dialog/Dialog';
+import styles from './AppFooter.module.css';
+
+/** The disclaimer at the bottom of every page, with the full notice one tap away. */
+export const AppFooter = () => {
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
+
+  const openAbout = () => {
+    setIsAboutOpen(true);
+  };
+
+  const closeAbout = () => {
+    setIsAboutOpen(false);
+  };
+
+  return (
+    <footer className={styles.footer}>
+      <p>Unofficial fan project. Not affiliated with Arcane Wonders.</p>
+      <button type="button" className={styles.about} onClick={openAbout}>
+        About
+      </button>
+      <Dialog open={isAboutOpen} title="About this site" onClose={closeAbout} closeButton={true}>
+        <div className={styles.notice}>
+          <p>
+            Mage Wars Spellbook Builder is an unofficial, free fan project. It is not affiliated
+            with, endorsed, sponsored or approved by Arcane Wonders.
+          </p>
+          <p>
+            Mage Wars, the card names, card text and card images are trademarks and copyrights of
+            Arcane Wonders, used here only to help players build their spellbooks.
+          </p>
+          <p>
+            The card data and images come from the community OCTGN Mage Wars module and card image
+            pack. The glossary comes from the Mage Wars Codex.
+          </p>
+        </div>
+      </Dialog>
+    </footer>
+  );
+};
