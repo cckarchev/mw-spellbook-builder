@@ -42,6 +42,14 @@ describe('AppFooter', () => {
     expect(dialog).toHaveTextContent('not affiliated with, endorsed, sponsored or approved by');
     expect(dialog).toHaveTextContent('trademarks and copyrights of Arcane Wonders');
     expect(dialog).toHaveTextContent('published by Arcane Wonders on its own site');
+    expect(within(dialog).getByRole('link', { name: 'Arcane Wonders' })).toHaveAttribute(
+      'href',
+      'https://www.arcanewonders.com/',
+    );
+    expect(within(dialog).getByRole('link', { name: 'Mage Wars Arena' })).toHaveAttribute(
+      'href',
+      'https://www.arcanewonders.com/product/mage-wars-arena/',
+    );
 
     await userEvent.click(within(dialog).getByRole('button', { name: 'Close' }));
 

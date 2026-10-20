@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { Dialog } from '@/components/dialog/Dialog';
+import { ExternalLink } from '@/components/external-link/ExternalLink';
 import { RULES_DOCUMENTS } from '@/data/rulesDocuments';
 import styles from './AppFooter.module.css';
+
+const ARCANE_WONDERS_URL = 'https://www.arcanewonders.com/';
+const MAGE_WARS_ARENA_URL = 'https://www.arcanewonders.com/product/mage-wars-arena/';
 
 /** The disclaimer at the bottom of every page, with the full notice one tap away. */
 export const AppFooter = () => {
@@ -19,15 +23,9 @@ export const AppFooter = () => {
     <footer className={styles.footer}>
       <p>Unofficial fan project. Not affiliated with Arcane Wonders.</p>
       {RULES_DOCUMENTS.map((rulesDocument) => (
-        <a
-          key={rulesDocument.url}
-          className={styles.link}
-          href={rulesDocument.url}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <ExternalLink key={rulesDocument.url} className={styles.link} href={rulesDocument.url}>
           {rulesDocument.label}
-        </a>
+        </ExternalLink>
       ))}
       <button type="button" className={styles.link} onClick={openAbout}>
         About
@@ -50,6 +48,11 @@ export const AppFooter = () => {
           <p>
             The rulebook and rules supplement are published by Arcane Wonders on its own site; the
             links open them there.
+          </p>
+          <p>
+            More about the game at{' '}
+            <ExternalLink href={MAGE_WARS_ARENA_URL}>Mage Wars Arena</ExternalLink> on the{' '}
+            <ExternalLink href={ARCANE_WONDERS_URL}>Arcane Wonders</ExternalLink> site.
           </p>
         </div>
       </Dialog>
