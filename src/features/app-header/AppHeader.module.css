@@ -1,18 +1,27 @@
+@import '@/theme/breakpoints.css';
+
 .header {
   display: flex;
   align-items: center;
   min-height: var(--touch-target);
-  padding-block: var(--space-xs);
+  padding-block: var(--space-sm);
   border-bottom: var(--border-divider);
 }
 
 .name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
   font-family: var(--font-display);
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-xl);
   letter-spacing: var(--tracking-caps);
   line-height: var(--leading-tight);
   text-decoration: none;
   text-transform: uppercase;
+}
+
+.logo {
+  height: var(--font-size-xxl);
 }
 
 .brand {
@@ -31,4 +40,14 @@
 .name:focus-visible {
   outline: var(--focus-ring);
   outline-offset: var(--focus-ring-offset);
+}
+
+@media (--phone) {
+  .name {
+    font-size: var(--font-size-lg);
+  }
+
+  .logo {
+    height: var(--font-size-xl);
+  }
 }

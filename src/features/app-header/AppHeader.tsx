@@ -22,8 +22,11 @@ export const AppHeader = () => {
   return (
     <header className={styles.header}>
       <Link className={styles.name} to="/" onClick={handleClick}>
-        <span className={styles.brand}>{BRAND}</span>{' '}
-        <span className={styles.product}>{PRODUCT}</span>
+        <img className={styles.logo} src="/favicon.svg" alt="" />
+        <span>
+          <span className={styles.brand}>{BRAND}</span>{' '}
+          <span className={styles.product}>{PRODUCT}</span>
+        </span>
       </Link>
       <ConfirmDialog
         open={askingToClear}
