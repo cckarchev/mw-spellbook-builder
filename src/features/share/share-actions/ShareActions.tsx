@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react';
-import { Button } from '@/components/button/Button';
 import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
 import { bookText } from '@/core/export/bookText';
 import { builderPath } from '@/core/routing/builderPath';
@@ -10,6 +8,7 @@ import { shareNote } from '@/core/share-link/bookNotes';
 import { getEmbedBase } from '@/core/share-link/embed';
 import { buildShareUrl } from '@/core/share-link/shareUrl';
 import { cardsById } from '@/data/catalog';
+import { ActionButton } from '@/features/shared/action-button/ActionButton';
 import { CopyIcon, LinkIcon, ShareIcon } from './Icons';
 import styles from './ShareActions.module.css';
 
@@ -30,28 +29,6 @@ const copyText = async (text: string): Promise<boolean> => {
     return false;
   }
 };
-
-interface ActionButtonProps {
-  icon: ReactNode;
-  label: string;
-  primary: boolean;
-  onClick: () => void;
-}
-
-/** A small icon button; the label shows beside the icon above phone width, and as a tooltip. */
-const ActionButton = ({ icon, label, primary, onClick }: ActionButtonProps) => (
-  <Button
-    variant={primary ? 'primary' : 'ghost'}
-    size="small"
-    className={styles.action}
-    aria-label={label}
-    title={label}
-    onClick={onClick}
-  >
-    {icon}
-    <span className={styles.label}>{label}</span>
-  </Button>
-);
 
 /** The share sheet on phones that have one; the copy buttons work everywhere. */
 export const ShareActions = ({ book, mage, summary }: ShareActionsProps) => {

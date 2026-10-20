@@ -3,6 +3,7 @@ import { type BookGroup, bookGroups } from '@/core/catalog/bookGroups';
 import { addCopyBlockedReason, type BookSummary } from '@/core/rules/validateBook';
 import { bookProblems, cardProblems } from '@/core/share-link/bookNotes';
 import { cardsById } from '@/data/catalog';
+import { BookActions } from '@/features/book-actions/BookActions';
 import { ShareActions } from '@/features/share/share-actions/ShareActions';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { CardItem } from '@/features/shared/card-item/CardItem';
@@ -51,7 +52,7 @@ const Groups = ({ groups, book, mage, summary, view, onAdd, onRemove }: GroupsPr
   ));
 };
 
-/** The book's share buttons and cards, grouped by type with copies and points per group, and what is wrong. */
+/** The book's save and share buttons and cards, grouped by type with copies and points per group, and what is wrong. */
 export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookProps) => {
   const { view, setView } = useViewMode('book');
   const groups = bookGroups(book, mage, cardsById);
@@ -67,6 +68,7 @@ export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookPro
 
   return (
     <div className={styles.spellbook}>
+      <BookActions />
       <div className={styles.toolbar}>
         <ShareActions book={book} mage={mage} summary={summary} />
         {isEmpty ? null : <ViewSwitch view={view} onChange={setView} />}

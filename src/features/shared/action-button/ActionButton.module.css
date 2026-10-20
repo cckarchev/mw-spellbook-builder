@@ -1,0 +1,13 @@
+@import '@/theme/breakpoints.css';
+
+/* On a phone the button shows its icon only, a touch target wide; the name stays on the
+   button for screen readers. */
+@media (--phone) {
+  .action {
+    min-width: var(--touch-target);
+  }
+
+  .label {
+    display: none;
+  }
+}

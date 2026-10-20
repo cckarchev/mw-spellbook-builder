@@ -1,5 +1,3 @@
-@import '@/theme/breakpoints.css';
-
 .actions {
   display: flex;
   flex-direction: column;
@@ -20,16 +18,4 @@
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-xs);
-}
-
-/* On a phone the buttons show their icons only, each a touch target wide; the name stays on
-   the button for screen readers. */
-@media (--phone) {
-  .action {
-    min-width: var(--touch-target);
-  }
-
-  .label {
-    display: none;
-  }
 }
