@@ -1,0 +1,42 @@
+/* Pushed to the bottom of the full-height shell when the page is short. */
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  column-gap: var(--space-xs);
+  margin-top: auto;
+  padding-block: var(--space-md);
+  color: var(--color-text-dim);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  border-top: var(--border-divider);
+}
+
+.about {
+  min-height: var(--touch-target);
+  padding-inline: var(--space-xs);
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--duration-fast);
+}
+
+.about:hover {
+  color: var(--color-accent);
+}
+
+.about:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: calc(-1 * var(--focus-ring-offset));
+}
+
+.notice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  color: var(--color-text-body);
+}

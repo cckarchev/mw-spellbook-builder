@@ -50,6 +50,10 @@ The site runs on Cloudflare Workers as static assets only, with no Worker script
 
 The club site shows the builder in an iframe and passes its own page as `?embed=<url-encoded page>`. Share links then point back at that page. Only `cckarchev.ar` (and `localhost` for local work) are accepted as embedding pages.
 
+## Legal
+
+This is an unofficial fan project, not affiliated with or endorsed by Arcane Wonders. Mage Wars and its card content belong to their owners. See [NOTICE](NOTICE) for the full notice and the sources of the card data; the app shows the same notice from the About link in its footer.
+
 ## Code layout
 
 - `src/core/`: pure logic with its tests (rules, catalog search, share link, text export).
