@@ -1,4 +1,4 @@
-import { readStored, writeStored } from './storage';
+import { readStored, removeStored, writeStored } from './storage';
 
 const KEY = 'test:key';
 
@@ -33,6 +33,31 @@ describe('storage', () => {
 
     expect(() => {
       writeStored(KEY, 'hello');
+    }).not.toThrow();
+  });
+});
+
+describe('removeStored', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+    localStorage.clear();
+  });
+
+  it('removes the key', () => {
+    writeStored(KEY, 'hello');
+
+    removeStored(KEY);
+
+    expect(readStored(KEY)).toBeNull();
+  });
+
+  it('does not throw when localStorage.removeItem throws', () => {
+    vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {
+      throw new Error('blocked');
+    });
+
+    expect(() => {
+      removeStored(KEY);
     }).not.toThrow();
   });
 });

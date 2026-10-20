@@ -18,3 +18,12 @@ export const writeStored = (key: string, value: string): void => {
     // Persistence is a convenience; the book still lives in memory.
   }
 };
+
+/** Removes the key, silently doing nothing when storage is unavailable. */
+export const removeStored = (key: string): void => {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Nothing to clean up when storage is unavailable.
+  }
+};
