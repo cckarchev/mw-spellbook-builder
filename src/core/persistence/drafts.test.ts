@@ -1,6 +1,7 @@
 import { sameSpellbook } from '@/core/rules/spellbookChanges';
 import type { Spellbook } from '@/core/rules/types';
 import { encodeSpellbook } from '@/core/share-link/spellbookCodec';
+import { officialSpellbook } from '@/data/officialSpellbooks';
 import {
   CURRENT_MAGE_KEY,
   DRAFT_PREFIX,
@@ -108,6 +109,18 @@ describe('hasUnsavedDraft', () => {
     writeDraft({ spellbook: wizardSpellbook, name: NAME });
 
     expect(hasUnsavedDraft(WIZARD_ID)).toBe(true);
+  });
+
+  it("is false for an unnamed draft equal to the mage's official spellbook", () => {
+    const official = officialSpellbook(WIZARD_ID);
+
+    if (official === null) {
+      throw new Error('The Wizard has no official spellbook');
+    }
+
+    writeDraft({ spellbook: official, name: null });
+
+    expect(hasUnsavedDraft(WIZARD_ID)).toBe(false);
   });
 });
 

@@ -1,5 +1,6 @@
 import { savedCopy } from '@/core/persistence/savedSpellbooks';
 import { hasUnsavedChanges } from '@/core/rules/spellbookChanges';
+import { officialSpellbook } from '@/data/officialSpellbooks';
 import { useSpellbookStore } from './useSpellbookStore';
 
 interface SpellbookStatus {
@@ -9,7 +10,7 @@ interface SpellbookStatus {
 }
 
 /**
- * The spellbook's name and whether it differs from its saved copy. Reads storage on each render,
+ * The spellbook's name and whether it differs from its saved copy and its mage's official one. Reads storage on each render,
  * which is cheap for spellbooks this small and picks up a save or a delete right away.
  */
 export const useSpellbookStatus = (): SpellbookStatus => {
@@ -20,6 +21,7 @@ export const useSpellbookStatus = (): SpellbookStatus => {
 
   const saved = savedCopy(spellbook, storedName);
   const name = saved === null ? null : storedName;
+  const official = spellbook.mageId === null ? null : officialSpellbook(spellbook.mageId);
 
-  return { name, unsaved: hasUnsavedChanges(spellbook, saved) };
+  return { name, unsaved: hasUnsavedChanges(spellbook, saved, official) };
 };
