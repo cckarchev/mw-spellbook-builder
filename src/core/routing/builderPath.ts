@@ -1,5 +1,8 @@
 export type BuilderTab = 'cards' | 'book';
 
+/** The mage picker, at the root of the app. */
+export const PICKER_PATH = '/';
+
 /** The path segment that opens the Book tab under a mage's path. */
 export const BOOK_SEGMENT = 'book';
 
@@ -11,10 +14,13 @@ const EDGE_DASHES = /^-|-$/g;
 
 /** A mage name as a URL segment, such as "anvil-throne-warlord". */
 export const mageSlug = (name: string): string => {
-  const plain = name.normalize('NFD').replace(COMBINING_MARKS, '').toLowerCase();
-  const withoutApostrophes = plain.replace(APOSTROPHES, '');
+  const decomposed = name.normalize('NFD');
+  const withoutAccents = decomposed.replace(COMBINING_MARKS, '');
+  const lowercase = withoutAccents.toLowerCase();
+  const withoutApostrophes = lowercase.replace(APOSTROPHES, '');
+  const dashed = withoutApostrophes.replace(NON_ALPHANUMERIC_RUNS, '-');
 
-  return withoutApostrophes.replace(NON_ALPHANUMERIC_RUNS, '-').replace(EDGE_DASHES, '');
+  return dashed.replace(EDGE_DASHES, '');
 };
 
 /** Where the builder shows a mage's book on a tab, such as "/wizard/book". */

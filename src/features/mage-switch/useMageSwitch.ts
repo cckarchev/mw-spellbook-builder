@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { builderPath } from '@/core/routing/builderPath';
-import { mageSwitchKind } from '@/core/rules/bookChanges';
+import { emptyBook, mageSwitchKind } from '@/core/rules/bookChanges';
 import type { Mage } from '@/core/rules/types';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { useBookStore } from '@/store/useBookStore';
@@ -28,7 +28,7 @@ export const useMageSwitch = () => {
     }
 
     if (kind === 'direct') {
-      loadBook({ mageId: mage.id, counts: {} });
+      loadBook(emptyBook(mage.id));
     }
 
     navigate(builderPath(mage.name, 'cards'));
@@ -39,7 +39,7 @@ export const useMageSwitch = () => {
       return;
     }
 
-    loadBook({ mageId: pendingSwitch.id, counts: {} });
+    loadBook(emptyBook(pendingSwitch.id));
     resetFilters();
     setPendingSwitch(null);
     navigate(builderPath(pendingSwitch.name, 'cards'));

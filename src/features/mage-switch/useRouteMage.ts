@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { BuilderTab } from '@/core/routing/builderPath';
-import { mageSwitchKind } from '@/core/rules/bookChanges';
+import { emptyBook, mageSwitchKind } from '@/core/rules/bookChanges';
 import type { Mage } from '@/core/rules/types';
 import { BOOK_PARAM } from '@/core/share-link/shareUrl';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
@@ -34,7 +34,7 @@ export const useRouteMage = (routeMage: Mage | undefined, tab: BuilderTab) => {
     const current = useBookStore.getState().book;
 
     if (mageSwitchKind(current, routeMage.id) === 'direct') {
-      loadBook({ mageId: routeMage.id, counts: {} });
+      loadBook(emptyBook(routeMage.id));
     }
   }, [routeMage, opensShareLink, loadBook]);
 
@@ -43,7 +43,7 @@ export const useRouteMage = (routeMage: Mage | undefined, tab: BuilderTab) => {
       return;
     }
 
-    loadBook({ mageId: routeMage.id, counts: {} });
+    loadBook(emptyBook(routeMage.id));
     resetFilters();
   };
 

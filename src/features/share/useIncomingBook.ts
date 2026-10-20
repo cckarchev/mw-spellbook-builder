@@ -1,21 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { PICKER_PATH } from '@/core/routing/builderPath';
 import { hasCards, sameBook } from '@/core/rules/bookChanges';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { type DecodedBook, decodeBook } from '@/core/share-link/bookCodec';
 import { incomingProblems, noMageProblems } from '@/core/share-link/bookNotes';
 import { BOOK_PARAM } from '@/core/share-link/shareUrl';
-import { cardsById, magesById } from '@/data/catalog';
+import { bookMage, cardsById } from '@/data/catalog';
 import { currentBookPath } from '@/features/mage-switch/currentBookPath';
 import { useBookStore } from '@/store/useBookStore';
-
-const PICKER_PATH = '/';
 
 const UNREADABLE = 'This link could not be read. Your current book is unchanged.';
 
 /** Where a book opened from a link goes, and what to tell the player about it. */
 const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
-  const mage = book.mageId === null ? undefined : magesById.get(book.mageId);
+  const mage = bookMage(book);
 
   if (!mage) {
     return { path: PICKER_PATH, problems: noMageProblems(unknownMage, unknownCodes) };

@@ -1,8 +1,8 @@
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { type Tab, Tabs, tabPanelProps } from '@/components/tabs/Tabs';
-import { type BuilderTab, builderPath } from '@/core/routing/builderPath';
+import { type BuilderTab, builderPath, PICKER_PATH } from '@/core/routing/builderPath';
 import { summarizeBook } from '@/core/rules/validateBook';
-import { cardsById, magesById, magesBySlug } from '@/data/catalog';
+import { bookMage, cardsById, magesBySlug } from '@/data/catalog';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
 import { NewBookDialog } from '@/features/mage-switch/NewBookDialog';
@@ -29,10 +29,10 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
 
   const routeMage = magesBySlug.get(mageSlug);
   const { isPending, confirm, cancel } = useRouteMage(routeMage, tab);
-  const mage = book.mageId === null ? undefined : magesById.get(book.mageId);
+  const mage = bookMage(book);
 
   if (!routeMage) {
-    return <Navigate to="/" replace={true} />;
+    return <Navigate to={PICKER_PATH} replace={true} />;
   }
 
   // Until the book follows the URL's mage, there is only the confirm, if the switch needs one.
