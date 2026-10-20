@@ -68,11 +68,15 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
   return (
     <div className={styles.builder} style={stickyStyle}>
       <div className={styles.sticky} ref={stickyRef}>
-        <SpellbookHeader mage={mage} summary={summary} name={name} unsaved={unsaved} />
-        <div className={styles.actions}>
-          <SpellbookActions />
-          <span className={styles.divider} aria-hidden="true" />
-          <ShareActions spellbook={spellbook} mage={mage} summary={summary} />
+        <div className={styles.topBar}>
+          <div className={styles.summary}>
+            <SpellbookHeader mage={mage} summary={summary} name={name} unsaved={unsaved} />
+          </div>
+          <div className={styles.actions}>
+            <SpellbookActions />
+            <span className={styles.divider} aria-hidden="true" />
+            <ShareActions spellbook={spellbook} mage={mage} summary={summary} />
+          </div>
         </div>
         {isDesktop ? null : (
           <Tabs tabs={TABS} active={tab} onChange={showTab} idPrefix={TAB_ID_PREFIX} />
