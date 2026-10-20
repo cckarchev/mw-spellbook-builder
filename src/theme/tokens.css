@@ -130,6 +130,7 @@
   --bar-value-width: 2.5em;
   --curve-height: 120px;
   --curve-gap: var(--space-xxs);
+  --curve-count-height: 1.5em;
 
   /* Card art: the full card when a row opens, and the mage tiles.
      Mage Wars cards are 63 x 88 mm. */

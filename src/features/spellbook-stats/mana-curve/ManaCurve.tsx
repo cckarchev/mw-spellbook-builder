@@ -15,14 +15,13 @@ interface CurveColumn {
 }
 
 const VARIABLE_LABEL = 'X';
-const FULL_HEIGHT_PERCENT = 100;
-
-const heightOf = (count: number, largest: number): string => {
+/** The bar's share of the tallest bar, from 0 to 1. */
+const fillOf = (count: number, largest: number): number => {
   if (largest === 0) {
-    return '0%';
+    return 0;
   }
 
-  return `${(count / largest) * FULL_HEIGHT_PERCENT}%`;
+  return count / largest;
 };
 
 const sourcesLine = (sources: ManaSources): string => {
@@ -59,8 +58,13 @@ export const ManaCurve = ({ curve, mageName, sources }: ManaCurveProps) => {
               className={column.variable ? styles.variableColumn : styles.column}
               aria-label={`${column.label}: ${column.count}`}
             >
-              <span className={styles.count}>{column.count}</span>
-              <span className={styles.bar} style={{ height: heightOf(column.count, largest) }} />
+              <span className={styles.stack}>
+                <span className={styles.count}>{column.count}</span>
+                <span
+                  className={styles.bar}
+                  style={{ '--fill': fillOf(column.count, largest) } as CSSProperties}
+                />
+              </span>
               <span className={styles.label}>{column.label}</span>
             </li>
           ))}

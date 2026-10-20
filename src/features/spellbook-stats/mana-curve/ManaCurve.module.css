@@ -18,23 +18,32 @@
   list-style: none;
 }
 
-/* Count on top, bar growing up from the baseline, cost under it. */
+/* Bar growing up from the baseline with its count right on top, cost under it. */
 .column,
 .variableColumn {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  justify-items: stretch;
+  grid-template-rows: minmax(0, 1fr) auto;
   font-size: var(--font-size-sm);
   text-align: center;
 }
 
+.stack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 0;
+}
+
 .count {
+  height: var(--curve-count-height);
   color: var(--color-text-strong);
+  line-height: var(--curve-count-height);
   font-variant-numeric: tabular-nums;
 }
 
+/* The tallest bar fills what the count leaves free. */
 .bar {
-  align-self: end;
+  height: calc((100% - var(--curve-count-height)) * var(--fill));
   background: var(--color-bar);
 }
 
