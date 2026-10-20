@@ -13,18 +13,19 @@
   border-inline-start: var(--border-width-strong) solid var(--color-error);
 }
 
+/* One row: the buttons at their own width, the copy result after them, extra controls at the end. */
 .buttons {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-xs);
 }
 
-.buttons > * {
-  flex: 1;
-}
-
 .status {
-  min-height: 1lh;
   color: var(--color-text-dim);
   font-size: var(--font-size-sm);
+}
+
+.trailing {
+  margin-inline-start: auto;
 }

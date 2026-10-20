@@ -4,11 +4,12 @@ import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { cardsById } from '@/data/catalog';
 import { FIREBALL, smallBook, tooManyCopiesBook, wizard } from '@/features/shared/testBooks';
+import type { ViewMode } from '@/features/shared/view-switch/useViewMode';
 import { Spellbook } from './Spellbook';
 
 const ONE_FIREBALL: Book = { ...smallBook, counts: { ...smallBook.counts, [FIREBALL]: 1 } };
 
-const renderSpellbook = (book: Book = smallBook) => {
+const renderSpellbook = (book: Book = smallBook, view: ViewMode = 'list') => {
   const onRemove = vi.fn();
 
   render(
@@ -18,15 +19,12 @@ const renderSpellbook = (book: Book = smallBook) => {
       summary={summarizeBook(book, wizard, cardsById)}
       onAdd={vi.fn()}
       onRemove={onRemove}
+      view={view}
     />,
   );
 
   return { onRemove };
 };
-
-beforeEach(() => {
-  localStorage.clear();
-});
 
 const removeOneFireball = async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Remove one Fireball' }));
@@ -110,14 +108,8 @@ describe('Spellbook', () => {
 });
 
 describe('Spellbook grid', () => {
-  const showGrid = async () => {
-    await userEvent.click(screen.getByRole('button', { name: 'Grid' }));
-  };
-
-  it('shows the cards as images with the points of every copy', async () => {
-    renderSpellbook();
-
-    await showGrid();
+  it('shows the cards as images with the points of every copy', () => {
+    renderSpellbook(smallBook, 'grid');
 
     const attack = screen.getByRole('region', { name: 'Attack (5) 16 pts' });
     const tile = within(attack).getByRole('img', { name: 'Fireball' }).closest('li');
@@ -128,10 +120,8 @@ describe('Spellbook grid', () => {
     ).toBeInTheDocument();
   });
 
-  it('marks the card that has a problem', async () => {
-    renderSpellbook(tooManyCopiesBook);
-
-    await showGrid();
+  it('marks the card that has a problem', () => {
+    renderSpellbook(tooManyCopiesBook, 'grid');
 
     const tile = screen.getByText('Too many copies: max 4').closest('li');
 

@@ -6,6 +6,8 @@ import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
 import { ShareActions } from '@/features/share/ShareActions';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
+import { useViewMode } from '@/features/shared/view-switch/useViewMode';
+import { ViewSwitch } from '@/features/shared/view-switch/ViewSwitch';
 import { Spellbook } from '@/features/spellbook/Spellbook';
 import { useBookStore } from '@/store/useBookStore';
 import styles from './Builder.module.css';
@@ -26,6 +28,7 @@ export const Builder = () => {
   const addCopy = useBookStore((state) => state.addCopy);
   const removeCopy = useBookStore((state) => state.removeCopy);
   const [searchParams, setSearchParams] = useSearchParams();
+  const { view: bookView, setView: setBookView } = useViewMode('book');
 
   const mage = book.mageId === null ? undefined : magesById.get(book.mageId);
 
@@ -65,8 +68,10 @@ export const Builder = () => {
           <Catalog {...panelProps} />
         ) : (
           <>
-            <ShareActions book={book} mage={mage} summary={summary} />
-            <Spellbook {...panelProps} summary={summary} />
+            <ShareActions book={book} mage={mage} summary={summary}>
+              <ViewSwitch view={bookView} onChange={setBookView} />
+            </ShareActions>
+            <Spellbook {...panelProps} summary={summary} view={bookView} />
           </>
         )}
       </main>

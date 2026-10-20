@@ -7,17 +7,17 @@ import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { CardRow } from '@/features/shared/card-row/CardRow';
 import { CardTile } from '@/features/shared/card-tile/CardTile';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
-import { useViewMode } from '@/features/shared/view-switch/useViewMode';
-import { ViewSwitch } from '@/features/shared/view-switch/ViewSwitch';
+import type { ViewMode } from '@/features/shared/view-switch/useViewMode';
 import styles from './Spellbook.module.css';
 import { useLastCopyConfirm } from './useLastCopyConfirm';
 
 interface SpellbookProps extends BookPanelProps {
   summary: BookSummary;
+  view: ViewMode;
 }
 
 /** The cards in the book, grouped by type with copies and points per group, and what is wrong. */
-export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookProps) => {
+export const Spellbook = ({ book, mage, summary, view, onAdd, onRemove }: SpellbookProps) => {
   const groups = bookGroups(book, mage, cardsById);
   const problems = bookProblems(summary.issues, mage, book.counts, cardsById);
   const rowProblems = cardProblems(summary.issues, mage);
@@ -26,7 +26,6 @@ export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookPro
     onRemove,
   );
   const pendingCard = pendingCardId ? cardsById.get(pendingCardId) : undefined;
-  const { view, setView } = useViewMode('book');
 
   if (groups.length === 0) {
     return <p className={styles.empty}>No cards yet. Add some from the Cards tab.</p>;
@@ -34,9 +33,6 @@ export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookPro
 
   return (
     <div className={styles.spellbook}>
-      <div className={styles.tools}>
-        <ViewSwitch view={view} onChange={setView} />
-      </div>
       {problems.length > 0 ? (
         <ul className={styles.problems} aria-label="Problems">
           {problems.map((problem) => (

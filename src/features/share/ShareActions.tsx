@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { Button } from '@/components/button/Button';
 import { bookText } from '@/core/export/bookText';
 import type { Book, Mage } from '@/core/rules/types';
@@ -14,6 +14,8 @@ interface ShareActionsProps {
   book: Book;
   mage: Mage;
   summary: BookSummary;
+  /** More controls at the end of the button row, such as the view switch. */
+  children?: ReactNode;
 }
 
 const COPY_FAILED = 'Could not copy. Try again, or copy the link from the address bar.';
@@ -29,7 +31,7 @@ const copyText = async (text: string): Promise<boolean> => {
 };
 
 /** The share sheet on phones that have one; the copy buttons work everywhere. */
-export const ShareActions = ({ book, mage, summary }: ShareActionsProps) => {
+export const ShareActions = ({ book, mage, summary, children }: ShareActionsProps) => {
   const [status, setStatus] = useState<string | null>(null);
 
   const url = buildShareUrl({
@@ -69,10 +71,11 @@ export const ShareActions = ({ book, mage, summary }: ShareActionsProps) => {
         <Button onClick={() => copy(bookText(book, mage, summary, cardsById, url), 'Text copied')}>
           Copy text
         </Button>
+        <p className={styles.status} role="status">
+          {status}
+        </p>
+        {children ? <div className={styles.trailing}>{children}</div> : null}
       </div>
-      <p className={styles.status} role="status">
-        {status}
-      </p>
     </section>
   );
 };
