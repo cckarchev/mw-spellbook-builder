@@ -5,8 +5,6 @@ import { summarizeBook } from '@/core/rules/validateBook';
 import { bookMage, cardsById, magesBySlug } from '@/data/catalog';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
-import { NewBookDialog } from '@/features/mage-switch/NewBookDialog';
-import { useRouteMage } from '@/features/mage-switch/useRouteMage';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { Spellbook } from '@/features/spellbook/Spellbook';
 import { useBookStore } from '@/store/useBookStore';
@@ -31,7 +29,6 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
   const removeCopy = useBookStore((state) => state.removeCopy);
 
   const routeMage = magesBySlug.get(mageSlug);
-  const { isPending, confirm, cancel } = useRouteMage(routeMage, tab);
   const mage = bookMage(book);
 
   if (!routeMage) {
@@ -64,8 +61,6 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
           <Spellbook {...panelProps} summary={summary} />
         )}
       </main>
-      {/* Over the current book, which stays on screen until the player decides. */}
-      <NewBookDialog open={isPending} book={book} onConfirm={confirm} onCancel={cancel} />
     </div>
   );
 };

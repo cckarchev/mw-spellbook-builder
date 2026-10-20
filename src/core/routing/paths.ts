@@ -42,3 +42,22 @@ export const bookPath = (mage: { name: string } | undefined, tab: BuilderTab): s
 
   return builderPath(mage.name, tab);
 };
+
+const PATH_SEPARATOR = '/';
+
+const pathSegments = (pathname: string): string[] =>
+  pathname.split(PATH_SEPARATOR).filter((segment) => segment !== '');
+
+/** The mage slug a path starts with, such as "wizard" for "/wizard/book", or null on the picker. */
+export const slugFromPath = (pathname: string): string | null => {
+  const [firstSegment] = pathSegments(pathname);
+
+  return firstSegment ?? null;
+};
+
+/** The builder tab a path opens: Book under its segment, Cards otherwise. */
+export const tabFromPath = (pathname: string): BuilderTab => {
+  const [, tabSegment] = pathSegments(pathname);
+
+  return tabSegment === BOOK_SEGMENT ? 'book' : 'cards';
+};

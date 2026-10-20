@@ -1,4 +1,4 @@
-import { bookPath, builderPath, mageSlug, PICKER_PATH } from './paths';
+import { bookPath, builderPath, mageSlug, PICKER_PATH, slugFromPath, tabFromPath } from './paths';
 
 const WIZARD = { name: 'Sistarran Wizard' };
 
@@ -34,5 +34,26 @@ describe('bookPath', () => {
 
   it('goes to the mage picker when the book has no mage', () => {
     expect(bookPath(undefined, 'book')).toBe(PICKER_PATH);
+  });
+});
+
+describe('slugFromPath', () => {
+  it('reads the mage slug of a builder path', () => {
+    expect(slugFromPath('/sistarran-wizard')).toBe('sistarran-wizard');
+    expect(slugFromPath('/sistarran-wizard/book')).toBe('sistarran-wizard');
+  });
+
+  it('has no slug on the mage picker', () => {
+    expect(slugFromPath(PICKER_PATH)).toBeNull();
+  });
+});
+
+describe('tabFromPath', () => {
+  it('reads the Book tab from its segment', () => {
+    expect(tabFromPath('/wizard/book')).toBe('book');
+  });
+
+  it('reads the Cards tab from a bare mage path', () => {
+    expect(tabFromPath('/wizard')).toBe('cards');
   });
 });

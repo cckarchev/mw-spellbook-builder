@@ -3,7 +3,7 @@ import { Toast } from '@/components/toast/Toast';
 import { BOOK_SEGMENT, PICKER_PATH } from '@/core/routing/paths';
 import { Builder } from '@/features/builder/Builder';
 import { MagePicker } from '@/features/mage-picker/MagePicker';
-import { IncomingLink } from '@/features/share/IncomingLink';
+import { UrlBook } from '@/features/url-book/UrlBook';
 import { Layout } from '@/layout/Layout';
 
 export const App = () => (
@@ -16,7 +16,7 @@ export const App = () => (
         <Route path="*" element={<Navigate to={PICKER_PATH} replace={true} />} />
       </Route>
     </Routes>
-    <IncomingLink />
+    <UrlBook />
     <Toast />
   </>
 );
