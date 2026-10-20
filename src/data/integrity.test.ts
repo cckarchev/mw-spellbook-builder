@@ -82,6 +82,12 @@ describe('mage data integrity', () => {
     expect(magesById.size).toBe(mages.length);
   });
 
+  it('gives every mage a channeling', () => {
+    const arenaChanneling = 10;
+
+    expect(mages.every((mage) => mage.channeling === arenaChanneling)).toBe(true);
+  });
+
   it('has an image file for every mage card', () => {
     const missing = mages.filter((mage) => {
       const code = cardCode(mage.imageCardId ?? '');

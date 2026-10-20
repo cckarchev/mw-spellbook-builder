@@ -1,0 +1,22 @@
+/* Sticks right under the header and scrolls on its own. */
+.column {
+  position: sticky;
+  top: var(--builder-sticky-height);
+  max-height: calc(100dvh - var(--builder-sticky-height));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-block-end: var(--space-xl);
+}
+
+/* The tab bar stays at the top of the column while it scrolls. */
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  padding-block-start: var(--space-md);
+  background: var(--color-bg-base);
+}
+
+.panel {
+  padding-block-start: var(--space-md);
+}

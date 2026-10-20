@@ -5,6 +5,7 @@ import { cardProblems, spellbookProblems } from '@/core/share-link/spellbookNote
 import { cardsById } from '@/data/catalog';
 import type { BuilderPanelProps } from '@/features/shared/builderPanelProps';
 import { CardItem } from '@/features/shared/card-item/CardItem';
+import { EmptyMessage } from '@/features/shared/empty-message/EmptyMessage';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
 import { useViewMode, type ViewMode } from '@/features/shared/view-switch/useViewMode';
 import { ViewSwitch } from '@/features/shared/view-switch/ViewSwitch';
@@ -89,7 +90,7 @@ export const SpellbookPanel = ({
 
   return (
     <div className={styles.spellbook}>
-      {isEmpty ? <p className={styles.empty}>{EMPTY_TEXT[variant]}</p> : null}
+      {isEmpty ? <EmptyMessage>{EMPTY_TEXT[variant]}</EmptyMessage> : null}
       {showViewSwitch ? (
         <div className={styles.toolbar}>
           <ViewSwitch view={view} onChange={setView} />

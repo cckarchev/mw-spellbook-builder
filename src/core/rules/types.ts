@@ -79,6 +79,8 @@ export interface Mage {
   name: string;
   format: Format;
   budget: number;
+  /** Mana the mage gains each round, from its stats card. */
+  channeling: number;
   /** Names an "X Only" card can match, such as ['Priest', 'Priestess']. */
   onlyNames: string[];
   training: Training;

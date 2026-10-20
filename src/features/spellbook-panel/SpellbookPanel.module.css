@@ -4,12 +4,6 @@
   gap: var(--space-md);
 }
 
-.empty {
-  padding-block: var(--space-lg);
-  color: var(--color-text-dim);
-  text-align: center;
-}
-
 .problems {
   display: flex;
   flex-direction: column;
