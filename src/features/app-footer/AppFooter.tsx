@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Dialog } from '@/components/dialog/Dialog';
+import { RULES_DOCUMENTS } from '@/data/rulesDocuments';
 import styles from './AppFooter.module.css';
 
 /** The disclaimer at the bottom of every page, with the full notice one tap away. */
@@ -17,7 +18,18 @@ export const AppFooter = () => {
   return (
     <footer className={styles.footer}>
       <p>Unofficial fan project. Not affiliated with Arcane Wonders.</p>
-      <button type="button" className={styles.about} onClick={openAbout}>
+      {RULES_DOCUMENTS.map((rulesDocument) => (
+        <a
+          key={rulesDocument.url}
+          className={styles.link}
+          href={rulesDocument.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {rulesDocument.label}
+        </a>
+      ))}
+      <button type="button" className={styles.link} onClick={openAbout}>
         About
       </button>
       <Dialog open={isAboutOpen} title="About this site" onClose={closeAbout} closeButton={true}>
@@ -34,6 +46,10 @@ export const AppFooter = () => {
             The card data and images come from the community OCTGN Mage Wars module and card image
             pack, and the expansion names from the sIKE23/Mage-Wars set files. The glossary comes
             from the Mage Wars Codex.
+          </p>
+          <p>
+            The rulebook and rules supplement are published by Arcane Wonders on its own site; the
+            links open them there.
           </p>
         </div>
       </Dialog>
