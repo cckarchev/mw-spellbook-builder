@@ -26,5 +26,5 @@
 .status {
   min-height: 1lh;
   color: var(--color-text-dim);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
 }

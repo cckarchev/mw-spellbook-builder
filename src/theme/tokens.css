@@ -23,6 +23,8 @@
   --color-bg-accent-tint: rgb(var(--rgb-accent) / 0.15);
   /* Fainter accent wash behind a whole row that is in the book. */
   --color-bg-selected: rgb(var(--rgb-accent) / 0.06);
+  /* Faint wash on every other row of a list, so long lists are easier to follow. */
+  --color-bg-stripe: rgb(var(--rgb-white) / 0.06);
   /* Recessed well that frames a block inside a row, such as card details. */
   --color-bg-inset: rgb(var(--rgb-black) / 0.25);
   /* Backdrop that dims the page behind a modal dialog. */
@@ -73,7 +75,6 @@
   /* Sharp corners everywhere, to match the parent site. */
   --radius: 0;
 
-  --font-size-xs: 12px;
   --font-size-sm: 14px;
   --font-size-md: 16px;
   --font-size-lg: 20px;

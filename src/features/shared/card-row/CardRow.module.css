@@ -4,6 +4,11 @@
   border-bottom: var(--border-divider);
 }
 
+/* Before the in-book wash, which wins on the same specificity. */
+.row:nth-child(even) {
+  background: var(--color-bg-stripe);
+}
+
 .row[data-in-book='true'] {
   background: var(--color-bg-selected);
 }
@@ -34,14 +39,16 @@
   outline-offset: calc(-1 * var(--focus-ring-offset));
 }
 
+/* Set here: a button does not inherit the font size. */
 .name {
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-semibold);
 }
 
 .details {
   overflow: hidden;
   color: var(--color-text-dim);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   white-space: nowrap;
   text-overflow: ellipsis;
 }
