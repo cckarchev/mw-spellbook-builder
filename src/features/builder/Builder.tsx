@@ -7,6 +7,7 @@ import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { Spellbook } from '@/features/spellbook/Spellbook';
+import { useBookStatus } from '@/store/useBookStatus';
 import { useBookStore } from '@/store/useBookStore';
 import styles from './Builder.module.css';
 import { useRouteMage } from './useRouteMage';
@@ -30,6 +31,8 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
 
   useRouteMage(routeMage);
 
+  const { name, unsaved } = useBookStatus();
+
   const mage = bookMage(book);
 
   if (!routeMage) {
@@ -52,7 +55,7 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
   return (
     <div className={styles.builder}>
       <div className={styles.sticky}>
-        <BookHeader mage={mage} summary={summary} />
+        <BookHeader mage={mage} summary={summary} name={name} unsaved={unsaved} />
         <Tabs tabs={TABS} active={tab} onChange={showTab} idPrefix={TAB_ID_PREFIX} />
       </div>
       <main className={styles.panel} {...tabPanelProps(TAB_ID_PREFIX, tab)}>

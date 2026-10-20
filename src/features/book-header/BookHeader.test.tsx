@@ -12,8 +12,15 @@ import {
 } from '@/features/shared/testBooks';
 import { BookHeader } from './BookHeader';
 
-const renderHeader = (book: Book) => {
-  render(<BookHeader mage={wizard} summary={summarizeBook(book, wizard, cardsById)} />);
+const renderHeader = (book: Book, name: string | null = null, unsaved = false) => {
+  render(
+    <BookHeader
+      mage={wizard}
+      summary={summarizeBook(book, wizard, cardsById)}
+      name={name}
+      unsaved={unsaved}
+    />,
+  );
 };
 
 const summaryRegion = () => screen.getByRole('region', { name: 'Book summary' });
@@ -59,5 +66,27 @@ describe('BookHeader stats card', () => {
     const dialog = screen.getByRole('dialog', { name: 'Wizard stats' });
 
     expect(within(dialog).getByRole('img', { name: 'Wizard stats card' })).toBeInTheDocument();
+  });
+});
+
+describe('BookHeader book name', () => {
+  it('shows the name of a saved book', () => {
+    renderHeader(smallBook, 'Tourney');
+
+    expect(screen.getByText('Tourney')).toBeInTheDocument();
+    expect(screen.queryByText('unsaved')).not.toBeInTheDocument();
+  });
+
+  it('marks unsaved changes', () => {
+    renderHeader(smallBook, 'Tourney', true);
+
+    expect(screen.getByText('unsaved')).toBeInTheDocument();
+  });
+
+  it('shows neither for a book with no name', () => {
+    renderHeader(smallBook, null, true);
+
+    expect(screen.queryByText('unsaved')).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/^Wizard$/);
   });
 });

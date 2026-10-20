@@ -7,6 +7,9 @@ import styles from './BookHeader.module.css';
 interface BookHeaderProps {
   mage: Mage;
   summary: BookSummary;
+  /** The saved book's name, null for a book never saved. */
+  name: string | null;
+  unsaved: boolean;
 }
 
 type BookState = 'valid' | 'over' | 'invalid';
@@ -45,15 +48,25 @@ const stateLabel = (summary: BookSummary): string => {
   return parts.join(LABEL_SEPARATOR);
 };
 
-/** The mage, the points used out of the budget, and whether the book is valid. */
-export const BookHeader = ({ mage, summary }: BookHeaderProps) => {
+const UNSAVED_LABEL = 'unsaved';
+
+/** The mage, the saved book's name, the points used out of the budget, and whether the book is valid. */
+export const BookHeader = ({ mage, summary, name, unsaved }: BookHeaderProps) => {
   const state = bookState(summary);
 
   return (
     <section className={styles.header} data-state={state} aria-label="Book summary">
-      <h1 className={styles.mageName}>
-        <MageStats mage={mage} label={mage.name} className={styles.mageButton} />
-      </h1>
+      <div className={styles.titles}>
+        <h1 className={styles.mageName}>
+          <MageStats mage={mage} label={mage.name} className={styles.mageButton} />
+        </h1>
+        {name === null ? null : (
+          <p className={styles.bookName}>
+            <span className={styles.nameText}>{name}</span>
+            {unsaved ? <span className={styles.unsaved}>{UNSAVED_LABEL}</span> : null}
+          </p>
+        )}
+      </div>
       <div className={styles.score}>
         <span className={styles.points}>
           {summary.points} / {summary.budget}
