@@ -150,4 +150,8 @@ describe('glossary data integrity', () => {
   it('explains Attack only as the spell type', () => {
     expect(termsIn('an Attack spell that attacks')).toEqual([['Attack', 'Attack']]);
   });
+
+  it('has an entry for Stance, which the Codex leaves out', () => {
+    expect(termsIn('Monk Only, Stance')).toContainEqual(['Stance', 'Stance']);
+  });
 });
