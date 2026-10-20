@@ -1,0 +1,838 @@
+[
+  {
+    "term": "Action Phase",
+    "definition": "Phase of the game where each mage (or team) takes turns Activating Creatures back and forth in Initiative order."
+  },
+  {
+    "term": "Activate",
+    "definition": "When you choose to take an Action Phase with a Creature you Activate it. Flip its Action marker over, and remove any Guard marker on it. Enchantments can be Activated by paying their Reveal Cost turning them face-up and following their effects."
+  },
+  {
+    "term": "Aegis X",
+    "definition": "All attacks made against this Object remove X attack dice before rolling (minimum 1 die). Aegis does not stack, taking only the highest number."
+  },
+  {
+    "term": "Anchored",
+    "definition": "Objects with this trait cannot be Teleported."
+  },
+  {
+    "term": "Arena",
+    "definition": "The Arena is the play area the battle is fought in. It consists of a single Zone."
+  },
+  {
+    "term": "Armor",
+    "definition": "During an attack, Armor is subtracted from the normal damage rolled on the attack dice. It does not reduce Critical Damage. If an Object’s Armor icon has a red slash across it, that Object cannot have Armor at any time."
+  },
+  {
+    "term": "Armor +/- X",
+    "definition": "Modifies an Armor attribute by +/- X. Armor cannot be reduced below 0."
+  },
+  {
+    "term": "Attack",
+    "definition": "A spell type that is usually used once and then Discarded. These are generally offensive, damaging spells."
+  },
+  {
+    "term": "Attack Action",
+    "definition": "An Attack Action is a Creature’s action (Quick or Full) used to make an attack. An Attack Action might make Multiple separate attacks against the same defender (see Doublestrike and Triplestrike) or against different defenders (see Sweeping and Zone Attacks) All of these Multiple Attacks are still considered one Attack Action."
+  },
+  {
+    "term": "Autonomous",
+    "definition": "This Equipment is attached to a Creature, and functions independently from that Creature. It does not take up an Equipment location. It is unaffected by, and cannot be modified by; traits, abilities, or Conditions of the Creature it is attached to. However, it can be affected by other sources and Objects. If the Equipment provides an attack, that attack may be used once per round, as a free action, at the end of the Creature’s Action Phase. If the attack is a melee attack, it must follow the normal rules for Guarding; however, it will not trigger a Counterstrike or Damage Barrier, and will not remove a Guard marker from its target."
+  },
+  {
+    "term": "Bashed",
+    "definition": "When a Creature is Pushed into a Wall with the Passage Blocked trait it is Bashed. It receives an Unavoidable attack of 3 attack dice of damage. The Walls around the outside of the Arena have the Passage Blocked trait."
+  },
+  {
+    "term": "Bleed",
+    "definition": "This Creature has suffered a deep Bleeding wound. Bleed can only affect Living non-plant Creatures. Each Upkeep Phase, place 1 Direct Damage on this Creature. Whenever this Creature is not affected by the Finite Life trait and Heals or Regenerates, you may remove 1 Bleed Condition for each point of Healing you Cancel. The marker has a Removal Cost of 2."
+  },
+  {
+    "term": "Blocks LoS",
+    "definition": "This Wall blocks Line of Sight. You cannot target an Object or a Zone if the Line of Sight is blocked."
+  },
+  {
+    "term": "Bloodreaper (Warlock)",
+    "definition": "When a Friendly Demon Creature is Summoned, the Warlock can make it his Bloodreaper. He does this by placing his special “Bloodreaper” marker on the Demon, and losing Life equal to the Demon’s Level+1. This is done immediately at the time the Demon is Summoned. The Warlock moves his Life status marker down on his Mage status board to record the amount of Life he has lost. The Bloodreaper gains the Bloodthirsty +2 trait. The first time each round that the Bloodreaper attacks and successfully damages a Living Creature, the Warlock may Heal up to 2 damage from himself. The Warlock can only have one Bloodreaper at a time and thus has only one Bloodreaper marker. The Bloodreaper marker stays with the Demon until it is Destroyed. At this point, the Bloodreaper marker returns to the Warlock, allowing him to assign it to a new Demon later. Note that each new Bloodreaper reduces the Warlock’s Life further - and while the Warlock has many ways to Heal, it is much harder for him to gain Life."
+  },
+  {
+    "term": "Bloodthirsty +X",
+    "definition": "This Creature is a savage predator with a lust for blood. This Creature gains +X attack dice when it makes a melee attack against a Living Creature with 1 or more damage. If the attack makes Multiple Attacks during the same Attack Action, it gains this bonus only for the first attack it can make with this bonus. If there is a damaged Living enemy Creature in the Bloodthirsty Creature’s Zone during its Action Phase, it must melee attack that Creature (if possible). If there is more than one choice, or it has also been Taunted, it can choose which Creature to attack."
+  },
+  {
+    "term": "Burn",
+    "definition": "Object is on fire. This is a Flame Condition. Each Upkeep Phase, roll 1 attack die of Direct Damage or each Burn marker on each Object. On a roll of “0,” remove that Burn marker. Burn markers have a Removal Cost of 2."
+  },
+  {
+    "term": "Burnproof",
+    "definition": "Cannot have the Burn Condition. May be vulnerable to Flame damage, but cannot “Burn”. All Incorporeal Objects are Burnproof."
+  },
+  {
+    "term": "Cancel",
+    "definition": "If a spell, attack, or effect is Cancelled, it stops and has no further effect."
+  },
+  {
+    "term": "Cantrip",
+    "definition": "Whenever this spell is Destroyed or Discarded, return it to the owner’s spell book instead of their Discard pile. Obliterate overrides this and removes it from the game."
+  },
+  {
+    "term": "Challenge (Paladin)",
+    "definition": "During the Upkeep Phase, the Paladin my place his Challenge marker on a target enemy Creature up to 2 Zones away. Once per round, the Paladin and his Challenged enemy may reroll any number of their attack dice while making a melee attack against each other. If the Challenged enemy attacks any other Object except for the Paladin, the Paladin gains 1 Valor. When a Challenged enemy is Destroyed, return the Challenge marker to the Paladin. During the Upkeep Phase, the Paladin my pay 2 Valor to return the Challenge token to himself and place it again, or Hold onto it for later."
+  },
+  {
+    "term": "Channeling",
+    "definition": "Some Objects have a Channeling attribute, which is how much mana they collect each round during the Channeling Phase."
+  },
+  {
+    "term": "Channeling +/- X",
+    "definition": "Modifies a Creature’s Channeling attribute by +/- X. Channeling cannot be reduced below 0. Modifies only existing Channeling, it has no effect an Object without a Channeling attribute."
+  },
+  {
+    "term": "Charge +X",
+    "definition": "Creature gains +X attack dice for its very next melee attack, if it makes that attack immediately after it takes a Move Action, and moves at least 1 Zone."
+  },
+  {
+    "term": "Climbing",
+    "definition": "Creature may take a special Full Action to Climb over any Corporeal Wall and move into the adjacent Zone. If the Wall has the Passage Attacks trait, it attacks the Creature before it moves."
+  },
+  {
+    "term": "Condition",
+    "definition": "Conditions are various states that can occur for Objects, and are indicated with markers placed on the Object. All Conditions stack and their effects are cumulative."
+  },
+  {
+    "term": "Conjuration",
+    "definition": "All Conjurations have these traits; NonLiving, Pyschic Immunity, and Unmovable."
+  },
+  {
+    "term": "Conjuration Attack Actions",
+    "definition": "If a Conjuration has an attack bar, then once per round, before or after any Friendly Creature’s Action Phase, it can make that attack. Use a Ready Marker to keep track of making that attack. Unless the spell teXt says otherwise, you can make the attack once per round, and the Conjuration can make its attack the same round it comes into play."
+  },
+  {
+    "term": "Controller",
+    "definition": "Each spell or Object in the game is controlled by the player who cast it. The controller may use and act with that Object, and makes all decisions and choices for that spell or any abilities that Object may have. Exception: Equipment is controlled by the Mage it is attached to."
+  },
+  {
+    "term": "Corporeal",
+    "definition": "Corporeal Objects are normal, physical Objects. All Creatures and Conjurations are Corporeal, unless they have the Incorporeal trait."
+  },
+  {
+    "term": "Corrode",
+    "definition": "An acid Condition which wears away Armor. For each Corrode Condition marker on a Creature or Conjuration, it receives Armor -1. Objects can never have Corrode markers on them which would reduce their Armor to below zero (any eXtra markers are immediately Destroyed). If an Object would receive Corrode Condition markers that would reduce its Armor to less than zero, instead it receives only enough Corrode markers to reduce its Armor to zero, and takes one point of direct acid damage for each excess marker. Corrode has no effect on Incorporeal Objects. Replacement Armor can be cast which will first Discard the old, worn Armor (and Corrode tokens) and replace with the new one. The marker has a Removal Cost of 2."
+  },
+  {
+    "term": "Counter",
+    "definition": "A spell which has been Countered does not resolve. It is Destroyed and goes to the Discard pile. All costs and actions spent to cast the spell are lost, unless otherwise noted."
+  },
+  {
+    "term": "Counterstrike",
+    "definition": "If a Creature is the defender of a melee attack, and it has a Quick Action melee attack with the Counterstrike trait, it may use that attack against the attacker during the Counterstrike Step of the attack."
+  },
+  {
+    "term": "Creature",
+    "definition": "A Creature is an Object in the game which can take actions and has an action marker. All Creatures are Living (unless they have the NonLiving trait)."
+  },
+  {
+    "term": "Cripple",
+    "definition": "This is a poison Condition. Creature is Restrained. At the end of each of its Action Phases, Crippled Creature may attempt an Escape Roll: on a roll of 7 or higher, remove Cripple. Cripple has a Removal Cost of 4. Cannot affect Conjurations."
+  },
+  {
+    "term": "Critical Damage",
+    "definition": "Critical Damage bypasses Armor (Armor does not reduce the damage dealt). Critical Damage is shown as numbers inside a starburst on the attack dice."
+  },
+  {
+    "term": "Damage Barrier",
+    "definition": "A Damage Barrier surrounds an Object and makes an automatic attack against each enemy which makes a melee attack against the Object it surrounds. Defender can only use a Damage Barrier is successful, as in the attacker was able to roll dice and their attack wasn’t avoided through Defense or missed through Daze. Damage Barriers only work on each Creature once per round, regardless if they have Multiple Attacks. Damage Barrier attacks are always Unavoidable. They count as neither melee or ranged attacks. Damage Barriers don’t trigger other Damage Barriers. Traits, spells, and Conditions that modify that Creature’s attacks, including Stun, Daze, Weak, etc. have no effect on Damage Barriers. Traits on the defending Creature (the Creature the Damage Barrier is attacking) can modify the Damage Barrier attack (such as Aegis 1 or Flame +2). If Objects have multiple Damage Barriers, only the first one can be used (no stacking)."
+  },
+  {
+    "term": "Damage Type",
+    "definition": "Damage can belong to a certain type - such as Flame or Lightning."
+  },
+  {
+    "term": "Damage Type +/- X",
+    "definition": "Attacks against this Object, which match this Damage Type, modify the number of attack dice rolled by X, and modify the effect die roll by X. Damage Type modifiers are cumulative. An attack cannot be reduced below 1 die."
+  },
+  {
+    "term": "Daze",
+    "definition": "Whenever this Creature makes an attack, roll the effect die at the end of the Declare Attack Step. If the attack skips that step, then roll as soon as the attack starts. If the result is 7 or higher, the attack is resolved normally. If the result is 6 or less, the attack “misses” its target and is considered to have been avoided (even if the attack is Unavoidable). If it makes a Zone Attack, only check once: the entire attack either fails or succeeds. If a Creature has more than one Daze on it, roll only one time to see if the Creature misses. In addition, the Dazed Creature suffers a -2 penalty to all Defense rolls for each Daze marker it has. All Daze markers are removed at the end of the Creature’s Action Phase. Daze has a Removal Cost of 2. Conjurations cannot be Dazed."
+  },
+  {
+    "term": "Defender",
+    "definition": "A Creature or Conjuration which is being attacked. They may not necessarily be the target of that attack (see Zone Attack)."
+  },
+  {
+    "term": "Defense",
+    "definition": "Some Objects have a Defense attribute, which represents an ability to avoid an attack. The number on the Defense is what the defender must roll, or higher, on 1d12, to successfully avoid an attack. The 1X or ∞ below indicates how many attacks per round that Defense can be used. Use a Ready Markers to keep track of this ability if it is not unlimited. Some Defenses do not work against a particular attack and will have either a ranged or melee icon with a slash through it. If The defender has multiple forms of Defense (Enchantments, Armor, etc) the defender chooses only one per attack."
+  },
+  {
+    "term": "Deflect (Forcemaster)",
+    "definition": "The Forcemaster can use telekinesis to deflect attacks, which gives her a powerful “built-in” Defense. Her Defense is used just like any other Defense printed on a Creature card. It can avoid either a melee or a ranged attack on a roll of 7+, and can be used once per round. Remember, you can only use one Defense per attack. Her Deflect Defense requires her to pay 1 mana each time it is used. This is paid at the beginning of the Avoid Attack Step, before she rolls the d12 to see if the Defense is successful or not."
+  },
+  {
+    "term": "Defrost",
+    "definition": "This is a trait of Flame attacks. It will be defined in a future eXpansion of the game in which frost damage is introduced."
+  },
+  {
+    "term": "Destroyed",
+    "definition": "When an Object is Destroyed, everything attached to it is Destroyed and Discarded. This includes damage, Condition markers, tokens, Enchantments, and Conjurations. Ability markers are returned to the Mage. Then, the Object is placed in its owner’s Discard pile. The Object may then resolve a “Destroyed” effect. For example, a Plague Zombie will eXplode. Some effects replace being Discarded such as Cantrip or Obliterate."
+  },
+  {
+    "term": "Deployment Phase",
+    "definition": "A phase in the game where certain Objects a Mage controls can cast spells that are prepared during the Planning Phase."
+  },
+  {
+    "term": "Devour",
+    "definition": "This Creature eats other Creatures! If an attack with Devour would Destroy a Corporeal Creature, Obliterate that Creature instead."
+  },
+  {
+    "term": "Direct Damage",
+    "definition": "Damage that is put directly on a Creature. The damage is critical (bypasses Armor). It is not considered an attack, and the Creature cannot use a Defense to avoid the damage."
+  },
+  {
+    "term": "Disable",
+    "definition": "Prevents an Object from functioning. If an Object has one or more Disable markers on it, it is Disabled. Disabled Objects lose all attack bars, action bars, and non-trait abilities. (An ability is anything in the card’s teXt boX, except what defines “X” for cards that have an attribute or mana cost dependent on X.) It does not lose any of its attributes or it’s subtypes (attributes include Life, Armor, Defenses and Channeling). Each Reset Phase, remove one Disable marker from each Object, unless that Disable marker was placed during that Ready Phase. For Objects with multiple Disable markers on them, remove only one each Reset Phase. Disable does not have a Removal Cost and cannot be removed by spells or abilities which remove Condition markers."
+  },
+  {
+    "term": "Discard Pile",
+    "definition": "Each player has his own Discard pile where he places Destroyed Objects or Discarded spells after they are cast."
+  },
+  {
+    "term": "Dissipate X",
+    "definition": "This Object only lasts a short time before dispersing. When an Object with Dissipate X comes into play or is revealed, place “X” Dissipate tokens on it. During the Upkeep Phase, remove one Dissipate token. When the last token is removed, Destroy the Object."
+  },
+  {
+    "term": "Divine Auras (Paladin)",
+    "definition": "Three different aura tokens which are double sided (6 different auras total). Uses a Quick Action to cast and pays its cost in Valor noted on the token. These powers last for the rest of the game. Once played, they can never be removed which means the Paladin loses access to the reverse side of that token. Paladin may have three divine auras Activated at any one time. List of powers and both sides of tokens below. • Retribution Aura: When an enemy Creature casts an Enchantment or Incantation targeting a Friendly Creature in the Paladin’s Zone, it receives 1 direct Light damage, regardless of range or Line of Sight • Martyrs Aura: When a Friendly Creature in the Paladin’s Zone receives damage from an enemy controlled attack or effect, you may transfer up to 2 of that damage to the Paladin instead. • Resolute Aura: Friendly Creatures in the Paladin’s Zone gain the Tough -2 trait. Other Friendly Creatures in the Paladin’s Zone gain Armor +2. • Vengeful Aura: Friendly Creatures in the Paladin’s Zone gain Melee +1 and Piercing +2. • Cleansing Aura: As a quick Healing spell action, the Paladin may pay 1 Valor and Heal a target Friendly Creature in his Zone 2 damage. He may also remove a poison Condition marker from them by paying its Removal Cost. • Solar Aura: When a Friendly Creature in the Paladin’s Zone makes a Light attack, he may pay 1 Valor. If he does, the attack adds +2 to its effect roll. If it deals damage, the defender also receives 1 direct Light damage."
+  },
+  {
+    "term": "Doublestrike",
+    "definition": "This attack makes a second attack against the same target as part of the same Attack Action. The additional attack occurs during the Additional Strikes Step. If the attack has Melee +X traits, they only apply to one of the attacks."
+  },
+  {
+    "term": "Effect Die",
+    "definition": "The 12-sided die is called the effect die, and it is used to roll for additional effects for attacks, as well as Escape Rolls, or other rolls."
+  },
+  {
+    "term": "Elemental Glyphs (Elementalist)",
+    "definition": "When casting a spell with one of the below card types, he may flip over and Activate the matching Glyph. • Air: Once per round, when a Creature you control attacks, you may pay 1 mana to deactivate this Glyph add +4 to that creature’s attack roll • Earth: Once per round, when a Creature you control is attacked, you may pay 1 mana to deactivate this Glyph and gain +2 armor for that attack • Fire: Once per round, when a Creature you control makes an attack, you may pay 1 mana to deactivate this Glyph and roll 2 additional dice • Water: Once per round, during the upkeep phase, you may pay 1 mana to deactivate this Glyph and heal 2 damage from your Mage"
+  },
+  {
+    "term": "Elusive",
+    "definition": "This Creature is quick and slippery. Enemy Creatures cannot Hinder its movement. It is not required to attack enemy Guards when making a melee attack."
+  },
+  {
+    "term": "Enemy",
+    "definition": "An enemy Object is one which is currently controlled by your opponent(s)."
+  },
+  {
+    "term": "Enchantment",
+    "definition": "A spell type that can be initially cast face-down under an Object. Has a Reveal Cost which can be paid at any time (even immediately) to Activate the spell. Some enchantments have triggering mandatory reveal conditions. When this occurs, the controller must reveal but may choose to pay and Activate the Enchantment, or to discard it without payment and effect."
+  },
+  {
+    "term": "Epic",
+    "definition": "Only 1 copy of this spell can be in a Mage’s spell book."
+  },
+  {
+    "term": "Equipment",
+    "definition": "Spell cards that are attached to Mage’s and provide benefits, usually Armor, weapons or jewelry."
+  },
+  {
+    "term": "Escape Roll",
+    "definition": "Some Conditions or Enchantments require an Escape Roll, using the effect die, to see if you can remove them from the Creature they are attached to."
+  },
+  {
+    "term": "Eternal Servant (Necromancer)",
+    "definition": "When Summoning a non-Legendary, non-Epic undead Creature, the Necromancer can make it his Eternal Servant and places the Eternal Servant marker on it. All of the Creature’s attacks gain the Piercing +1 trait. Then, should the servant be Destroyed, the Necromancer may Reanimate the Creature by paying its casting cost. The servant returns to play at the end of the round (“Reanimate). You can assign the Eternal Servant marker to it, or hold the marker to place on another undead Creature later."
+  },
+  {
+    "term": "Ethereal",
+    "definition": "This attack is magically enhanced. It deals full damage to Incorporeal Objects (count all the numbers on the dice, not just the 1’s). Incorporeal Objects can receive effects and Conditions from this attack."
+  },
+  {
+    "term": "Extendable",
+    "definition": "When you cast this Wall, you may pay an additional cost equal to the mana cost of the Wall, plus the Wall’s Level, as part of the cost of casting the spell. If you do, when this spell resolves, you may take an additional Wall of the same name out of your spell book and place it on any Zone border connected to the first Wall. The second Wall must be placed within LoS, but does not have to be in range."
+  },
+  {
+    "term": "Extinguish",
+    "definition": "This attack will extinguish fires. During the Roll Dice Step of this attack, reduce the number of attack dice rolled by X (to a minimum of 1), and subtract X from the effect die roll, where X = the # of Burn Conditions on the Defender. Then, remove all Burn Conditions on the Defender."
+  },
+  {
+    "term": "Familiar",
+    "definition": "This Object can cast spells. If you control a Familiar during the Planning phase, you may select a spell for it to cast during the round. The Familiar may have restrictions on the types of spells you may choose. Place the spell face down near your Familiar during the planning phase and and tell your opponent that it is the Familiar’s spell. Only your Familiar may cast that spell during the round. When your Familiar takes its Action Phase, you may have it cast that spell.The Familiar must spend any mana that it has towards the casting cost first, with you making up the difference from your mana supply. The Familiar is treated as the spell caster for all purposes, such as range, etc. You control all spells your Familiar casts. If your Familiar does not cast its prepared spell, the spell returns to your spell book at the beginning of the next planning phase. If your Familiar is Destroyed before it casts the spell you assigned to it, the spell is also Destroyed."
+  },
+  {
+    "term": "Fast",
+    "definition": "This Creature may take 2 Move Actions before taking a Quick Action. It may take a maximum of 2 Move Actions during its Action Phase. If a Fast Creature gains the Slow trait, both traits are Cancelled out."
+  },
+  {
+    "term": "Fermata (Siren)",
+    "definition": "When the Siren removes the final Dissipate token from a Song spell she controls, she may pay mana equal to that spells Level to Extend that Song. She places one of her Fermata tokens on the spell with the “1” side face up. During the Upkeep Phase, if there is a Fermata token on the “1” side she may let that spell be Destroyed (and reclaim her Fermata token) or may pay mana equal to the spells Level to Extend it an additional round. If she does, flip the token to the “2” side. If during the Upkeep Phase a Song spell has the “2” side of a Fermata token, it is Destroyed and she gains her Fermata token back. The Siren may affect two different Song spells this way at the same time."
+  },
+  {
+    "term": "Finite Life",
+    "definition": "This Creature cannot Heal, Regenerate, or gain Life. If the Creature gained Life before it gained this trait, it keeps that Life but cannot gain additional Life. All NonLiving Objects have Finite Life."
+  },
+  {
+    "term": "Flying",
+    "definition": "Creatures with the Flying trait ignore Walls and all non-Flying enemy Creatures when moving. Flying and non-Flying Creatures do not Hinder each other’s movement. Non-Flying Creatures cannot make a melee attack against a Flying Creature unless they have the Reach trait. Ranged attacks can target a Flying Creature normally. Any ranged attack can always target a Flying Creature in the same Zone, even if the minimum range for that attack is greater than 0. A Creature cannot gain or lose the Flying trait in the middle of an Attack Action. For example, if a Creature gains Flying in the middle of an Attack Action, the entire Attack Action is resolved as if the Creature did not have Flying, and the Flying trait is gained after that Attack Action is complete. A Flying Creature is affected by Guards when it makes a melee attack, but only if it is attacking a non-Flying Object in the Guard’s Zone. If a Flying Creature Guards, it loses, and cannot gain, the Flying trait for as long as it has the Guard marker. All Creatures always have Line of Sight to all Flying Creatures, and vice versa"
+  },
+  {
+    "term": "Formation",
+    "definition": "A Formation can only be revealed when the attached Creature activates. There may only be one revealed friendly Formation in a Zone. If there is more than one friendly revealed Formation in a Zone, all but one must be turned face down immediately. If its Controller chooses, a Formation may be turned down when the creature it is attached to activates. Any time a Formation would be revealed, its reveal cost must be still be paid normally. When a Formation would be destroyed, it is returned to its owner’s spellbook instead."
+  },
+  {
+    "term": "Freeze",
+    "definition": "Affected Creatures that are Frozen roll 1 less die per non-spell attack and are also considered Lumbering. At the end of affected Creatures activation, remove 1 Freeze condition. Each Freeze condition is also considered 2 damage that cannot be healed. If a Freeze condition and Burn condition are ever on a Creature at the same time, remove pairs of each (they cancel each other out). Has a removal cost of 2."
+  },
+  {
+    "term": "Friendly",
+    "definition": "A Friendly Object is one which is currently Controlled by the player, or players on his team (in a multiplayer game)."
+  },
+  {
+    "term": "Full Action",
+    "definition": "During their Action Phase, if a Creature does not take a Move Action, it can take a Full Action. Full Actions include casting full spells, or making Full Action attacks (which are marked on the Creature card with a special Full Action (hourglass) icon). See “Full Actions” on page 11."
+  },
+  {
+    "term": "Full Spell",
+    "definition": "A full spell requires a Full Action to cast it. It has the Full Action (hourglass) icon on its casting line, just to the right of its casting cost."
+  },
+  {
+    "term": "Grapple",
+    "definition": "The Creature initiating the Grapple is the Grappler, while the Creature being Grappled is the prey. If a Grapple is successful, put both Grappler and prey next to each other and a Grapple Condition on the prey. Both Creatures share the Condition. Both Creatures are Restrained and Unmovable. They cannot Guard and ignore Guards when attacking each other. A Creature can only be Grappled by one Creature at a time. If another tries to Grapple it while it’s already Grappled, the 2nd Grapple fails. If a Grappler has multiple attack bars with the Grapple Condition, it can Grapple multiple preys. Otherwise, if it has Grappled prey equal to its amount of Grapple actions, it cannot use that attack bar and must use others. Prey can attack the Grappler but only with melee attacks and with a -2 dice penalty (to a minimum of 1) Uncontainable Creatures cannot be Grappled. Damaged Barriers on either the Grappler or prey will Activate (attack) the other regardless if either Creature attacked another. Basically, they’re tangled up with another and its inevitable. The Grappler may release its prey at any time, except in the middle of an attack. If either Creature is teleported, the Condition is removed. If the Grappler becomes Incapacitated, all Grapple Conditions it is causing are removed. Prey may attempt an escape by rolling the effect die on a 9+ at the end of its activation, with an additional +1 per damage inflicted by the prey this round."
+  },
+  {
+    "term": "Growth",
+    "definition": "A Creature with a Growth Condition marker has grown in size. Each Growth marker provides Melee +1 and Innate Life +3. This marker has no Removal Cost, and cannot be removed by spells or effects which remove Condition markers."
+  },
+  {
+    "term": "Guard",
+    "definition": "As a Quick Action a Creature can choose to Guard, protecting all Friendly Objects in the same Zone, gaining Counterstrike (as a reminder, you can only Counterstrike with quick attacks, not full). Only melee attacks are affected by Guards. Guard markers are removed at the beginning of a Creatures Action Phase, or when he is the target of a melee attack, after Counterstriking. A Restrained or Pest Guard can be ignored. Incapacitated immediately removes Guard tokens. Elusive Creatures ignore Guards. Sweeping attacks target Guards first."
+  },
+  {
+    "term": "Heal",
+    "definition": "Healing removes damage from Living Creatures and Conjurations."
+  },
+  {
+    "term": "Hidden Enchantment",
+    "definition": "All Enchantments are cast face-down and are kept hidden from your opponent. Enchantments all have a casting cost of 2 mana, printed next to the hidden (closed eye) icon on their spell card. When they are revealed (turned face-up), their controller pays their reveal cost."
+  },
+  {
+    "term": "Hinder",
+    "definition": "If a Creature moves out of a Zone with enemy Creatures in it, or if it moves into a Zone with enemy Creatures in it, it is Hindered. A Hindered Creature must stop moving and cannot take any more Move Actions this Action Phase. Incapacitated, Restrained, or Pest Creatures cannot Hinder movement. Flying Creatures cannot Hinder the movement of non-Flying Creatures, and visaversa. Elusive Creatures cannot be Hindered by other Creatures."
+  },
+  {
+    "term": "Hit",
+    "definition": "If an attack Reaches the Damage & Effects Step then it is considered to have “hit” its target. If this step is skipped (for example, the attack misses due to a Daze Condition or is avoided by a Defense) or if the attack is Cancelled before this step can occur (for example, the target uses Divine Intervention to Teleport away), then the attack does not “hit.”"
+  },
+  {
+    "term": "Holy Avenger (Priest of Malaki)",
+    "definition": "When a Friendly non-Legendary Holy Creature comes into play, you may make it your Holy Avenger. Pay mana equal to its Level +1, and place the Holy Avenger marker on that Creature. Holy Avenger is blessed with divine strength and it gains +5 Life. The Holy Avenger seeks retribution. The first time each round that the Holy Avenger makes a melee attack against an enemy Creature, if that enemy Creature attacked and damaged a Friendly Creature (other than the Holy Avenger) or Holy Conjuration this round, the Holy Avenger gains Melee +2, and his attack gains Piercing +1, until the end of that attack. You may only have one Holy Avenger in play at a time, and a new one cannot be assigned until the first one is Destroyed. If Holy Avenger is Destroyed, the marker is returned to the Priest, and he can then assign it to a new Creature in the same manner."
+  },
+  {
+    "term": "Ichthellid Larva",
+    "definition": "A Creature with this Condition marker has been impregnated with an Ichthellid Larva. Ichthellid Larva is a poison Condition with a Removal Cost of 5. The Ichthellid Larva marker is controlled by the controller of the Ichthellid that placed the marker. A Creature can have only one Ichthellid Larva marker on it. When this Creature is Destroyed, the controller of the Ichthellid Larva marker may choose an Ichthellid Creature from his spell book or Discard pile, and place it face down in the Zone the Creature was in when it was Destroyed. This Ichthellid comes into play at the end of the round for no mana cost, similar to how the Reanimate effect works."
+  },
+  {
+    "term": "Ignore",
+    "definition": "An ignored enemy Creature cannot Hinder movement of Friendly Creatures. An ignored enemy Creature that is Guarding does not have to be attacked when making a melee attack."
+  },
+  {
+    "term": "Immunity",
+    "definition": "This Object is Immune to all attacks, damage, Conditions, and effects of the specified Damage Type, including Critical Damage and Direct Damage. It cannot be targeted or affected by spells or attacks of the specified type."
+  },
+  {
+    "term": "Incantation",
+    "definition": "A type of spell that is usually used once and then Discarded. These have varying effects such as Conditions, Healing and temporary benefits."
+  },
+  {
+    "term": "Incapacitated",
+    "definition": "An Incapacitated Creature cannot take any actions, including moving, attacking, Guarding, or casting spells. It cannot make a Counterstrike. It cannot use any Defenses, except for mandatory-reveal Enchantments that count as a Defense. It cannot Guard; remove any Guard marker on it. A Flying Creature loses, and cannot gain, the Flying trait as long as it is Incapacitated. Any Damage Barrier on an Incapacitated Creature continues to function normally. Other Creatures may ignore an Incapacitated Creature, and it cannot Hinder the movement of enemies. An Incapacitated Creature still takes an Action Phase during the round, but it cannot perform any actions during its Action Phase (normally, the action marker is simply flipped over). Conjurations cannot be Incapacitated. Mage’s are affected by Incapacitation differently. A Mage’s mind is so powerful that even if he is Incapacitated he can still work his magic! An Incapacitated Mage can still use actions to cast Quick non-attack spells. He cannot cast Full spells or Attack spells."
+  },
+  {
+    "term": "Incorporeal",
+    "definition": "An insubstantial or amorphous Object that is very resistant to damage. All attack dice rolled to damage this Object only count the “1’s” on the dice (ignore all 2’s), unless the attack has the Ethereal trait. Cannot receive effects or Conditions from attacks that are not Ethereal. All Incorporeal Objects also have the NonLiving, Burnproof, and Uncontainable traits. Incorporeal Objects do not have an Armor attribute, and cannot gain Armor."
+  },
+  {
+    "term": "Indestructible",
+    "definition": "This Object cannot be damaged, and cannot be Destroyed by damage. It can be Destroyed by other effects or abilities which may Destroy it without dealing damage."
+  },
+  {
+    "term": "Indirect",
+    "definition": "This ranged attack does not have its Line of Sight blocked by any Walls."
+  },
+  {
+    "term": "Initiative",
+    "definition": "Players take turns having the Initiative, which is noted with an Initiative marker. Whoever has the Initiative gets to use their Quickcast Action first during a Quickcast Phase, and gets to take the first Action Phase during the Action Stage. Also, it is used to resolve any timing issues."
+  },
+  {
+    "term": "Innate Life +X",
+    "definition": "This Creature has an increase to its Life, which usually represents an increase to size or mass, and bypasses the Finite Life trait."
+  },
+  {
+    "term": "Intercept",
+    "definition": "If this Creature is Guarding, and if a ranged attack targets a non-Flying Object in the same Zone, this Creature may redirect that ranged attack to itself, as long as it can be a legal target for that attack. The Intercept is announced and occurs immediately after the Declare Attack Step (and before the Avoid Attack Step). It loses its Guard marker at the end of the attack which it Intercepts. Cannot Intercept a Zone Attack.Cannot Intercept if Restrained or Incapacitated."
+  },
+  {
+    "term": "Invisible",
+    "definition": "This Object is Invisible and cannot be targeted (there is no Line of Sight to it). However, it can be affected by attacks, spells, or abilities which do not target it directly, such as Zone Attacks and spells. It can also be attacked by Damage Barriers and Counterstrikes. As long as it has the Invisible trait, it also gains the Pest and Elusive traits."
+  },
+  {
+    "term": "Ki",
+    "definition": "Ki is a resource that a player can spend to add additional powers on other cards. The monk has natural Ki income. Other classes must use cards to gain it."
+  },
+  {
+    "term": "Legendary",
+    "definition": "Only 1 copy of this Object can be in play at a time. You may not cast a Legendary spell if an Object with the same name is already in play, until the first copy is Destroyed. Legendary Objects cannot be brought back into play from the Discard pile if another copy is already in play."
+  },
+  {
+    "term": "Level",
+    "definition": "All spells have a Level, printed as a small number next to the spell school it belongs to. The Level represents the approximate power of that spell. The Level is sometimes used as a way to determine the cost of a spell, and is also important when building a spell book. If a spell is from multiple schools and uses an “&” symbol, it is considered to be the combined Level total. For example, Adramelech is 2 Flame, 4 dark, but is considered a Level 6 Creature."
+  },
+  {
+    "term": "Life",
+    "definition": "Creatures and Conjurations have a Life attribute. Life is the maximum damage they can receive before being Destroyed."
+  },
+  {
+    "term": "Life +/- X",
+    "definition": "Object gains or loses X Life. Gaining Life is not Healing; and losing Life is not taking damage. Adjustments to Life is adjusting the maximum amount of damage an Object can receive before being Destroyed. If a Creature receives Life –X or loses a Life +X, and the difference is enough to kill it, it dies without triggering “Destroyed by damage.”"
+  },
+  {
+    "term": "Lifebond +X",
+    "definition": "During the Upkeep Phase, choose one: you may transfer up to X damage from your Mage onto this Object, or you may transfer up to X damage from this Object to your Mage, regardless of range or Line of Sight. This ability is not affected by the Finite Life trait."
+  },
+  {
+    "term": "Lifelink +X",
+    "definition": "This is a Mage trait which can be used in team games. During the Upkeep Phase, a Mage with this trait may transfer up to X damage to or from another Mage on his team."
+  },
+  {
+    "term": "Line of Sight (LoS)",
+    "definition": "You cannot target an Object or Zone if Line of Sight is blocked. Some Walls have the Blocks LoS trait."
+  },
+  {
+    "term": "Living",
+    "definition": "Living Objects may Heal, Regenerate, and gain Life. All Creatures are Living, unless they have the NonLiving trait. All Conjurations are NonLiving, unless they have the Living trait. Most Conjurations are NonLiving, unless stated otherwise."
+  },
+  {
+    "term": "Lumbering",
+    "definition": "This Creature is always Hindered, and thus it can only take up to 1 Move Action during its Action Phase, even if it gains the Fast trait."
+  },
+  {
+    "term": "Mage",
+    "definition": "This Creature is a Mage, and represents the player in the game. The Mage can channel, cast spells, and has a special Quickcast Action each round. The Mage is a Level 6 Creature. Academy Mage’s are considered Level 4 Creatures."
+  },
+  {
+    "term": "Magebind +X",
+    "definition": "If this Enchantment is attached to a Mage, the reveal cost is increased by X. This adjusted reveal cost is used for all purposes in spells, abilities, or effects which refer to the reveal cost of this spell."
+  },
+  {
+    "term": "Magecast",
+    "definition": "This spell can only be cast by a Mage. It cannot be cast by other Objects which can cast spells."
+  },
+  {
+    "term": "Mage Only",
+    "definition": "Some spells are restricted to particular Mage classes. For example, a spell may have the “Warlock Only” or “Holy Mage Only” trait."
+  },
+  {
+    "term": "Major",
+    "definition": "A spell Level of 3 or higher."
+  },
+  {
+    "term": "Mana Drain +X",
+    "definition": "If this attack damages an enemy Creature, that Creature’s controller loses X mana from his mana supply (if he has any). If the attack makes Multiple Attacks during the same Attack Action, it gains this bonus only for the first attack it can make with this bonus."
+  },
+  {
+    "term": "Mana Transfer +X",
+    "definition": "Exactly as Mana Drain +X, with this change: The controller of this attack gains mana equal to the amount of mana lost."
+  },
+  {
+    "term": "Melee +X",
+    "definition": "This Creature gains +X attack dice when it makes a melee attack. If the attack makes Multiple Attacks during the same Attack Action, it gains this bonus only for the first attack it can make with this bonus. Does not grant a melee attack if this Creature does not have one. Does not affect ranged attacks, Damage Barriers, or other non-melee attacks."
+  },
+  {
+    "term": "Melee Attack",
+    "definition": "This is a close-in attack which can only attack targets in the same Zone. It can trigger a Damage Barrier or a Counterstrike. When making a melee attack you must attack an enemy Guard if there is one in your Zone. A melee attack will remove a Guard marker from a Guarding Creature."
+  },
+  {
+    "term": "Melting",
+    "definition": "This object is slowly deteriorating and receives X direct damage during the Upkeep Phase."
+  },
+  {
+    "term": "Minor",
+    "definition": "A Level 1 or 2 spell."
+  },
+  {
+    "term": "Move Action",
+    "definition": "During its Action Phase a Creature can take a Move Action, which allows it to move one Zone to an adjacent Zone. Afterwards it may take a Quick Action."
+  },
+  {
+    "term": "Moving Conjurations",
+    "definition": "Conjurations are attached to the Zone they occupy, but some Conjurations can move (such as Raincloud). A Conjuration can only move into a Zone that it could legally be attached to. You cannot move a Conjuration into a Zone that already has a Conjuration with the same name attached to it (each Zone can only have one Conjuration of a given name attached to it at a time)."
+  },
+  {
+    "term": "Multiple Attacks",
+    "definition": "Some Attack Actions consist of multiple separate attacks against the same or different targets. Multiple Attacks include those with the Doublestrike, Triplestrike, or Sweeping traits. If the attacker has Melee +X, it only applies to one of the attacks."
+  },
+  {
+    "term": "NonLiving",
+    "definition": "All NonLiving Objects have the Poison Immunity and Finite Life traits. All Creatures are Living, unless they have the NonLiving trait. All Conjurations are NonLiving, unless they have the Living trait. Incorporeal Objects are always NonLiving."
+  },
+  {
+    "term": "Novice",
+    "definition": "Basic apprentice spells. All Mage’s may add Novice spells to their spell books for 1 Spell Point, even if they are not trained in, or are opposed to, that spell’s school of magic."
+  },
+  {
+    "term": "Object",
+    "definition": "Enchantments, Equipment, Creatures, and Conjurations are spells which become Objects in the game, remaining in play after they are cast. The Mage is also considered an Object. Incantation and attack spells do not become Objects."
+  },
+  {
+    "term": "Obliterate",
+    "definition": "When you Obliterate an Object, it is utterly Destroyed, leaving no trace. The Object is Destroyed, then it is Removed from the game. It does not become Discarded or get returned to a spell book. Any ability or effect printed on that Object, or attached to it (such as a marker or Enchantment), which triggers on destruction, is Cancelled. Other destruction effects, not attached to or part of the Obliterated Object, can still occur."
+  },
+  {
+    "term": "Obscured",
+    "definition": "This Object is difficult to see. It cannot be targeted from more than one Zone away (this is for all purposes - ranged attacks, spells, abilities, etc.). Any Enchantments or Equipment attached to the Object also gain the Obscured trait, but attached Conjurations do not."
+  },
+  {
+    "term": "OR attacks",
+    "definition": "Some attacks have an “OR” in their attack bar. For example, Ludwig Boltstorm’s attack bar presents 2 alternatives; the attack can either have the Sweeping trait or be a Zone Attack with the Unavoidable trait. When the attack is declared, the controller decides which of these alternatives will apply for the attack."
+  },
+  {
+    "term": "Owner",
+    "definition": "The owner of a spell is the player who started with that spell in his spell book at the beginning of the game."
+  },
+  {
+    "term": "Passage Attacks",
+    "definition": "All Creatures that move through this Wall are automatically attacked by the Wall. The attack occurs before the Creature moves. See"
+  },
+  {
+    "term": "Passage Blocked",
+    "definition": "Creatures may not move through this Wall. If a Creature is Pushed into this Wall, it is Bashed. The Walls around the outside of the Arena all have the Passage Blocked trait, and affect Flying Creatures."
+  },
+  {
+    "term": "Pest",
+    "definition": "A small nuisance Creature. Creatures can ignore enemy Pests, who are Guarding, to melee attack other targets. If a Pest makes a melee attack against a Guarding Creature, the Guard can choose to ignore the Pest. If it does, the Pest attacks as normal, but the Guard does not lose its Guard marker and the Guard cannot make a Counterstrike against the Pest."
+  },
+  {
+    "term": "Pet (Beastmaster)",
+    "definition": "When a Friendly Animal Creature is Summoned, Beastmaster may pay additional mana equal to the Creatures Level +1 and placing his special “Pet” marker on that Creature. This is done immediately when the Creature is Summoned. A Creature with the Pet marker gains Melee +1, Armor +1 and Life +3. If the Pet is in the same Zone with the Beastmaster it gains an additional Melee +1 (for a total of +2). The Beastmaster can only have one Pet at a time, and thus has only one Pet marker. The Pet marker stays with the Animal, until the Animal is Destroyed, at which point the Pet marker returns to the Beastmaster, where it can be used to assign to a new Animal later. The Pet marker can only be assigned to a non-Legendary Animal Creature."
+  },
+  {
+    "term": "Piercing +X",
+    "definition": "This attack subtracts X from the target’s Armor when determining the amount of damage dealt. It cannot reduce the target’s Armor below 0."
+  },
+  {
+    "term": "Planning Phase",
+    "definition": "A phase in the game where each Mage chooses two spells that they would like to potentially cast during this round. Additional spells may be prepared for Owners of Familiars and Spawnpoints."
+  },
+  {
+    "term": "Poison",
+    "definition": "Some attacks may have the poison Damage Type. Note that many attacks, while not having the poison Damage Type, may still cause poison Conditions."
+  },
+  {
+    "term": "Poison Immunity",
+    "definition": "NonLiving Objects have Poison Immunity. See “Immunity.”"
+  },
+  {
+    "term": "Prevention",
+    "definition": "Some spells may prevent an event from taking place unless a cost is paid. Examples are Armor Ward and Enchanter’s Wardstone. This cost must be paid for each Object that would be affected, or the effect is Cancelled for that Object. You can choose which Objects to pay the cost for."
+  },
+  {
+    "term": "Priority",
+    "definition": "Simplified version of “before or after a friendly creature’s action.” It simply means it can only be done on your turn."
+  },
+  {
+    "term": "Psychic Immunity",
+    "definition": "This Object has a very powerful mind, or no mind at all. All Conjurations have Psychic Immunity. See Immunity."
+  },
+  {
+    "term": "Push",
+    "definition": "Push is an effect caused by some spells and attacks that moves the target into an adjacent Zone. Unless the effect says otherwise, the Pushed Creature must move one Zone away in the opposite direction from the source of the Push. If there is a choice of direction (such as Pushing a Creature diagonally opposite, or if the source of the Push is in the same Zone as the target), the source of the Push chooses the direction. Some spells may Push in a random direction (use the compass token). A Creature may be Pushed through a Wall, but only if the Wall does not have the Passage Blocked trait. The Pushed Creature suffers any attack from the Wall if the Wall has the Passage Attacks trait. If a Creature is Pushed into a Wall with the Passage Blocked trait, it is Bashed against the Wall and suffers an Unavoidable attack of 3 attack dice. Note the Walls around the outside of the Arena all have the Passage Blocked trait. Note that Flying Creatures ignore Walls, except for the ones around the outside of the Arena. Some Creatures and all Conjurations have the Unmovable trait. They cannot be Pushed and ignore all Push effects."
+  },
+  {
+    "term": "Quick Action",
+    "definition": "During their Action Phase, Creatures can take a Move Action, followed by a Quick Action. Quick Actions include Guarding, casting a Quick Spell, taking a second Move Action, or making a Quick Action attack."
+  },
+  {
+    "term": "Quickcast Action",
+    "definition": "Each Mage can take a special additional action each round called the Quickcast Action. This allows him to cast one Quick Spell, in addition to any other actions he may choose to take that round. The Quickcast Action can be used before or after any Friendly Action Phase, or during a Quickcast Phase, and a Quickcast marker is used to track using this action."
+  },
+  {
+    "term": "Quickcast Phase",
+    "definition": "There is a Quickcast Phase at the beginning and end of each Action Stage. This is an opportunity for either player to use their Quickcast Action to cast one Quick Spell, in order of Initiative."
+  },
+  {
+    "term": "Quick Spell",
+    "definition": "A Quick Spell requires a Quick Action to cast it. It has the Quick Action (Lightning bolt) icon on its casting line, just to the right of its casting cost."
+  },
+  {
+    "term": "Rage +X",
+    "definition": "When wounded, this Creature becomes extremely vicious and aggressive. Each time it is attacked and damaged by an enemy Creature, place a Rage token on it. It cannot have more than X Rage tokens on it. It gains the Melee +1 trait for each Rage token on it. Each time it Heals or Regenerates, remove 1 Rage token. If it has no damage on it, remove all Rage tokens."
+  },
+  {
+    "term": "Ranged +X",
+    "definition": "This Creature gains + X attack dice when it makes a ranged attack. If the attack makes Multiple Attacks during the same Attack Action, it gains this bonus only for the first attack it can make with this bonus. Has no effect on Zone Attacks. Does not grant a ranged attack if this Creature does not have one."
+  },
+  {
+    "term": "Ranged Attack",
+    "definition": "This attack can be used on targets within its minimum and maximum range, and within Line of Sight. A ranged attack can always be made against a Flying Creature in the same Zone, even below its minimum range. Ranged attacks do not trigger Damage Barriers or Counterstrikes. Ranged attacks ignore Guards, and do not remove Guard markers from Guarding Creatures."
+  },
+  {
+    "term": "Reach",
+    "definition": "This melee attack can target and attack Flying Creatures in the same Zone."
+  },
+  {
+    "term": "Ready Marker",
+    "definition": "Ready Markers are used to keep track of when abilities are used. For example, if a Creature has a Defense, it will use a Ready Marker to keep track of when it is used (flip marker to the gray “used” side), and when the Defense is ready again (flip marker to the green “ready” side). Ready Markers all reset to their green “ready” side during the Reset Phase."
+  },
+  {
+    "term": "Reanimate",
+    "definition": "This Creature Reanimates upon death. If this Creature is Destroyed, it is moved from the Discard pile to the Zone it was just Destroyed in, and placed face down in that Zone, with a face-down action marker on it. This Creature is considered temporarily out of play. At the end of the round, the Creature card is flipped face up and is Summoned into play. Reanimate does not occur if the Creature is Removed from the game when it is Destroyed. See Obliterate."
+  },
+  {
+    "term": "Reconstruct",
+    "definition": "An effect that removes damage from Nonliving Objects. It is not Regeneration or Healing, and is not affected by the Finite Life trait."
+  },
+  {
+    "term": "Regenerate X",
+    "definition": "This Object Heals (removes) X damage each Upkeep Phase. The Regenerate trait does not stack or combine with other Regenerate traits. If an Object acquires more than one Regenerate trait, use only the highest one. The Finite Life trait prevents regeneration."
+  },
+  {
+    "term": "Removal Cost",
+    "definition": "Most Conditions have a Removal Cost, printed on the Condition as a small number in a gray circle. Certain spells or abilities may permit you to remove the Condition by paying this cost in mana."
+  },
+  {
+    "term": "Removed from the game",
+    "definition": "When an Object is Removed from the game, unless an ability or effect specifically says otherwise, it is beyond the reach of any effect or ability in the game, and has no effect on anything in the game. It cannot be cast again."
+  },
+  {
+    "term": "Resilient",
+    "definition": "This Object is incredibly resistant to damage. This Object ignores all non-Critical Damage from Attacks. Direct Damage, and attack effects, occur normally."
+  },
+  {
+    "term": "Restrained",
+    "definition": "If a Creature is Restrained, it cannot take any Move Actions. It can still be Pushed or Teleported. Aside from movement, a Restrained Creature may take any quick or Full Actions during its Action Phase. A Restrained Creature cannot Hinder the movement of enemies. A Restrained Creature may Guard, but attacking Creatures may ignore it (they do not have to attack it). The only advantage a Restrained Guard receives is the Counterstrike trait. Flying Creatures lose, and cannot gain, the Flying trait for as long as they are Restrained. A Restrained Creature suffers a -2 penalty to all Defense rolls. Uncontainable Creatures and all Conjurations cannot be Restrained."
+  },
+  {
+    "term": "Reveal Cost",
+    "definition": "When you reveal a hidden Enchantment, turn it face up. The controller pays the reveal mana cost, if any (noted on the open eye symbol on the card), or else the Enchantment is Destroyed."
+  },
+  {
+    "term": "Rooted",
+    "definition": "This Creature is rooted to the ground. It cannot take Move Actions, and it has the Unmovable trait. It is not Restrained, so it can still Guard, Hinder, and Intercept as normal."
+  },
+  {
+    "term": "Rot",
+    "definition": "This is a poison Condition. This Object receives 1 Direct Damage during the Upkeep Phase each round. Rot has a Removal Cost of 2."
+  },
+  {
+    "term": "Runesmithing (Anvil Throne Warlord)",
+    "definition": "The Warlord has 5 special Rune markers. When an Equipment comes into play attached to this Mage, he may pay 1 mana to assign one Rune to it. Each Rune may only be assigned once per game, and each Equipment can only have one Rune assigned to it. Each Rune imbues a special power to the Equipment Object it is assigned to. When an Equipment with a Rune would be Destroyed by a spell or ability an opponent controls, prevent that destruction unless that opponent pays 2 mana. If an Equipment Object is Destroyed, Removed from the game, or returned to your spell book, the Rune is permanently Destroyed. • Rune of Fortification: If this Equipment gives an Armor +X bonus to the Mage, it gives an additional Armor +1. • Rune of Power: Once per round, you may pay 1 less mana when casting a spell bound, or using a spell action provided by this Equipment. • Rune of Precision: This Equipment’s non-spell attacks gain the Piercing +1 trait. • Rune of Reforging: This Equipment gains the Cantrip trait. • Rune of Shielding: If this Equipment gives your Mage a Defense, the first time each round that Defense is used, add +2 to the Defense roll."
+  },
+  {
+    "term": "Siren’s Call",
+    "definition": "As a Psychic Song Quick Spell, the Siren may pay 1 mana to place her Siren’s Call marker on a target non-Mage Creature within 2 Zones. During that Creatures Action Phase, it must move at least 1 Zone closer to the Siren, if possible, and may not attack her. If used on a Friendly aquatic Creature, they also gain Melee +2 while they have the Siren’s Call marker. Return the Siren’s Call marker to the Siren at the end of the affected Creatures activation. This action is Psychic and doesn’t effect Creatures with Psychic Immunity. If a Creature is under the effects of multiple mandatory actions, then its controller chooses which effect a Creature will obey."
+  },
+  {
+    "term": "Slam",
+    "definition": "Creature is Incapacitated. When this Creature is Activated remove Slam and replace with a Daze Condition. Unmovable Creatures receive a Daze Condition instead of Slam. Has a Removal Cost of 3."
+  },
+  {
+    "term": "Sleep",
+    "definition": "This is a Psychic Condition. This Creature is in a deep Sleep and is Incapacitated. If this Creature receives any damage (such as an attack from a Friendly Creature), remove Sleep and replace it with a Daze marker (which is conveniently printed on the other side of the Sleep marker). Sleep has a Removal Cost equal to the Sleeping Creature’s Level."
+  },
+  {
+    "term": "Slow",
+    "definition": "This Creature is very Slow. If this Creature takes a Move Action, its Action Phase immediately ends. It does not get to take a Quick Action after moving. If a Slow Creature gains the Fast trait, both traits are Cancelled out."
+  },
+  {
+    "term": "Snatch",
+    "definition": "This attack can grab and pull Creatures into its Zone. Snatch is a Push effect, where the Object is Pushed one Zone closer towards the source of the Push. Uncontainable or Unmovable Creatures cannot be affected."
+  },
+  {
+    "term": "Spawnpoint",
+    "definition": "This Object can cast spells during the Deployment Phase. If you control a Spawnpoint during the Planning phase, you may select a spell for it to cast during the Deployment Phase. The Spawnpoint may have restrictions on the types of spells you may choose. Place the spell face down near your Spawnpoint during the planning phase and and tell your opponent that it is the Spawnpoint’s spell. Only your Spawnpoint may cast that spell during the Deployment Phase. The Spawnpoint must spend any mana that it has towards the casting cost first, with you making up the difference from your mana supply. The Spawnpoint is treated as the spell caster for all purposes, such as range, etc. You control all spells your Spawnpoint casts. If your Spawnpoint does not cast its prepared spell, the spell returns to your spell book at the end of the Deployment Phase."
+  },
+  {
+    "term": "Spellbind",
+    "definition": "When you cast a spell with the Spellbind trait, you may immediately bind a spell to it. You can choose any spell from your spell book that fulfills the limitations on the Spellbind Object. The bound spell can be cast as if it was one of the spells you prepared during the Planning phase. You may only cast it once per round. When you cast the bound spell, reveal the spell to your opponent, and thereafter leave it face up and partially exposed from underneath the Object it is bound to. You must use the appropriate action to cast the spell, pay the full mana cost, and check range, target, and LoS, just like normal. Incantations and Attack cards are not Discarded when used. When Spellbind spells are Countered, the card is also not Discarded. If the spellbound Object is Destroyed, its attached spell is also Destroyed. Some Spellbind Objects allow you to change the bound spell; return the old one to your spell book. If you replace a Spellbind Object, return it and its attached spell to your spell book."
+  },
+  {
+    "term": "Stagger",
+    "definition": "a Condition that disorients or knocks a Creature off balance. Minor Creatures cannot attack or Guard while Staggered. If they have a Guard marker they lose it, and they cannot choose the Guard action. Major Creatures roll 2 less dice when they make any attack for each Stagger Condition on them (but never less than 1 die). Remove all Stagger Conditions at the end of the Creature’s next activation. If a Creature receives Stagger during its current activation, it must wait until the end of its next activation to remove it. Stagger has a Removal Cost of 2."
+  },
+  {
+    "term": "Strongest",
+    "definition": "The Creature that has the highest cost in mana printed on the card. A Mage is considered Strongest if it has no other Friendly Creatures."
+  },
+  {
+    "term": "Stuck",
+    "definition": "Creature is Restrained and Unmovable. At the end of each of its Action Phases, a Stuck Creature may attempt an Escape Roll: on a roll of 7 or higher, remove Stuck. If this Creature is Teleported, Destroy all Stuck Conditions on it. Stuck has no effect on Conjurations and Uncontainable Objects. Stuck has a Removal Cost of 4."
+  },
+  {
+    "term": "Stun",
+    "definition": "Creature is Incapacitated. All Stun markers are removed at the end of the Creature’s Action Phase. Stun has a Removal Cost of 4. Cannot affect Conjurations."
+  },
+  {
+    "term": "Successful",
+    "definition": "An attack is considered successful, and to have “hit” its target, if it did not “miss” due to a Daze Condition, nor was avoided by a Defense."
+  },
+  {
+    "term": "Suffocate",
+    "definition": "A Creature being strangled, drowned or choked and unable to breathe. For each Suffocate token, the Creature has Life -2. Only affects Living Creatures. Each Suffocate token has a Removal Cost of 2."
+  },
+  {
+    "term": "Summon",
+    "definition": "When a Creature comes into play and is placed in the Arena it is Summoned. Usually this occurs when a Creature spell has been cast and successfully resolves."
+  },
+  {
+    "term": "Swarm",
+    "definition": "This Creature is made up of countless small Creatures. Swarm Creatures cannot Guard and cannot be targeted by non-attack spells that specifically target Swarm creatures. When attacking, Swarm Creatures make additional strikes equal to their remaining health. Swarm Creatures are immune to conditions and have the Finite Life trait. Non-zone attacks do a maximum of 1 damage to them per instance. • Spells that help Swarms - Etherian Life Tree, Straywood Scout, Dorseus, Hand of Bim Shalla, Marked for Death Sacrificial Altar, Bloodwave Warlord Veteran Marker, Symbiotic Orb, Rolling Fog, Azurean Genie, Summoning Circle. • Spells that are strong against Swarms – Gravikor (if flying), Defenses, especially those that attack back (Force Sword, Cobra Reflex, Spiked Buckler, Dodge, Force Field, Block, Mass Cowardice, Alluring Orchid, Altar of Infernia, Reupulse. Zone attacks, Double/Triple attacks, Push attack spells into walls (basically two attacks) Tsunami, Swell, Jet Stream, Windstorm, Sandstorm, Gravikor+Surging Wave."
+  },
+  {
+    "term": "Sweeping",
+    "definition": "This attack has a wide Sweeping arc. A Sweeping attack is one Attack Action, which comprises 2 attacks against different targets in the same Zone. After the first attack, start a new attack sequence (beginning with the Declare Attack Step) targeting a different Object in the same Zone. Note: The second attack cannot be made against the same target as the first attack. If there is not a different valid target for the second attack, then the Sweeping trait has no effect this round. When a Flying Creature uses Sweeping, if it first targets a Flying Creature, the 2nd attack must also be a Flying Creature. If the attacker has Reach or Sweeping, then it may attack Flying and non-Flying interchangeably without the above restriction."
+  },
+  {
+    "term": "Tainted",
+    "definition": "This is a Poison Condition. This cursed or venomous attack creates a Tainted or infected wound that will not Heal. The marker counts as 3 damage, and this damage cannot be Healed or Regenerated. The marker has a Removal Cost of 3, and can be removed normally by spells or abilities which remove Conditions, even if the Tainted Object has the Finite Life trait. Tainted does NOT count as damage dealt by an attack."
+  },
+  {
+    "term": "Taunt",
+    "definition": "This is a special Condition that can be caused by the attack of certain Creatures. Place a Taunt marker on the Creature. Taunted Creature must make a melee attack against that Creature during its next Action Phase, if able. If it is required to make an attack on a different target from a competing effect (such as Bloodthirsty), the controller may choose which target to attack. Remove Taunt at end of its Action Phase or whenever the Creature is Activated, whichever comes first. Taunt is a Psychic effect, so it does not work on Creatures with Psychic Immunity. It also cannot affect Mage’s. Taunt will not force a Creature to move through a Wall with the Passage Attacks trait."
+  },
+  {
+    "term": "Teleport",
+    "definition": "An effect that moves an Object directly to another Zone, bypassing Walls and Objects."
+  },
+  {
+    "term": "Terrain",
+    "definition": "Conjurations that change the landscape of a Zone. If you cast a terrain spell into a Zone where a terrain already exists, you must pay mana equal to the existing terrain cost plus any Conjurations attached to it in addition to the new terrain cost. For example, if you wish to cast an elephant grass (8) into a Zone that has shallow sea (5) and whirlpool (12), you must pay 25 total mana!"
+  },
+  {
+    "term": "Treebond (Druid)",
+    "definition": "When a Friendly Tree Conjuration comes into play she may bond with it, placing her Treebond marker on it. This bonding makes both the Tree and the Druid stronger. The Druid gains Innate Life +4 and Channel +1. The Tree gains Innate Life +4, Armor +1, and Lifebond +2. This allows the Druid to constantly transfer damage between herself and her bonded Tree. When the Tree is Destroyed the bond is lost along with all benefits, and the marker is permanently Destroyed."
+  },
+  {
+    "term": "Token",
+    "definition": "A token is a small marker used to keep track of something."
+  },
+  {
+    "term": "Tough -X",
+    "definition": "This Creature is Tough and resistant to effects from attacks. Whenever the effect die is rolled for additional effects from an attack made against this Creature, modify the roll by X."
+  },
+  {
+    "term": "Traps",
+    "definition": "An Enchantment subtype that triggers when an enemy enters a Zone."
+  },
+  {
+    "term": "Triplestrike",
+    "definition": "This attack makes two additional attacks against the same target as part of the same Attack Action. The additional attacks occur during the Additional Strikes Step. If the attacker has melee +X, it applies to only one of the attacks."
+  },
+  {
+    "term": "Unavoidable",
+    "definition": "Defenses cannot be used to avoid this attack."
+  },
+  {
+    "term": "Uncontainable",
+    "definition": "Some spells, Conditions, and effects will not work against an Uncontainable Creature. All Incorporeal Creatures have the Uncontainable trait."
+  },
+  {
+    "term": "Unique",
+    "definition": "Each player may only have 1 copy of this Object in play at a time. Similar to Legendary, but each player is allowed to have his own copy in play."
+  },
+  {
+    "term": "Unmovable",
+    "definition": "Object cannot be Pushed. All Conjurations are Unmovable."
+  },
+  {
+    "term": "Unstoppable",
+    "definition": "This Creature cannot be Hindered. It also has both the Unmovable and Uncontainable traits."
+  },
+  {
+    "term": "Upkeep +X",
+    "definition": "This Object’s controller pays X mana during each Upkeep Phase or this Object is Destroyed."
+  },
+  {
+    "term": "Upkeep Phase",
+    "definition": "A phase in which every mage pays upkeep costs for certain abilities or spells, or discard them without paying for no effect."
+  },
+  {
+    "term": "Uproot X",
+    "definition": "This Creature can uproot itself from the ground and move freely. When this Creature is Activated, you may pay X mana. If you do, it loses the Rooted trait until the end of its Action Phase."
+  },
+  {
+    "term": "Valor (Paladin)",
+    "definition": "This is a resource specific to the Paladin and is collected through his various spells and abilities."
+  },
+  {
+    "term": "V’Tar",
+    "definition": "This is the raw and unrefined power of the plane of Voltari. It has a myriad of uses, including powering up the V’Torrak to achieve victory in Domination. During the Upkeep Phase, you gain 1 V’Tar for each V’Tar Orb you control. Also, the controlling Mage Heals 1 damage or gains 1 mana point per, V’Tar gained this round, split their choice."
+  },
+  {
+    "term": "V’Tar Orb",
+    "definition": "The V’Tar Orbs are the key to powering the ancient V’Torrak artifact. Mage’s fight for control of these Orbs in the Domination scenario. Start off and neutral but when hit with a melee attack they Activate and are under control of the color of attacker. Once melee attacked and Activated, any other enemy Mage that hits the orb will change control and color to that attacker. The first time a V’Tar orb is melee attacked and Activated, it grants the attacker 2 points of Healing, or mana, or 1 of each (which can be transferred to the Mage)."
+  },
+  {
+    "term": "V’Torrak Artifact",
+    "definition": "This Zone contains a Legendary V’Torrak artifact capable of breaking down the Barriers between worlds and providing nearly limitless mana to its controller."
+  },
+  {
+    "term": "Vampiric",
+    "definition": "When this attack causes damage to a Living Creature, the attacker Heals (removes) up to half the damage caused (round up). If the attack does more damage than the target’s Life total, the excess damage does not count for Healing. If the attack makes Multiple Attacks during the same Attack Action, it gains this bonus only for the first attack it makes. The Vampiric trait does not stack."
+  },
+  {
+    "term": "Veteran",
+    "definition": "The Warlord’s troops gain battle experience as the battle progresses. Whenever a Friendly non-Mage Creature makes a melee attack on an enemy Creature, which Destroys that Creature, you may place a Veteran marker on that Creature. Each Creature may only have one Veteran marker on it. The Veteran marker gives the Creature Melee +1 and Armor +1."
+  },
+  {
+    "term": "Vigilant",
+    "definition": "This Creature is constantly Guarding, protecting, or sheltering Friendly Objects. At the end of its Action Phase you may place a Guard marker on this Creature, if it does not already have one."
+  },
+  {
+    "term": "Vine Markers (Druid)",
+    "definition": "Vine Markers are a Living Conjuration with 1 Life, no Armor, and they cannot gain Armor. Vine Markers Hinder enemy non-Flying Creatures. Any amount of damage will Destroy a Vine Marker, regardless of its total Life. They can’t be targeted by ranged attacks. Any number of Vine Markers can occupy a Zone. As the Druid, or any Object she controls, casts a vine spell, you can Destroy a target Vine Marker she controls as an additional cost to cast that spell. If you do, you may target that Vine Markers Zone, an Object in that Vine Markers Zone, or a border of that Vine Markers Zone, ignoring range. If two or more Druids are playing, each should use a different side of the Vine Markers to distinguish ownership."
+  },
+  {
+    "term": "Voltaric Shield (Wizard)",
+    "definition": "A mana shield that protects from damage. The Voltaric Shield can be Activated (turned on) by paying 2 mana during the Upkeep Phase at the beginning of each game round. The Shield prevents up to 3 damage from the very first attack which deals damage to the Mage each round. As soon as that attack is complete, the shield is “used up” and is flipped to its “off” side. The attack has to deal at least one point of damage to the Wizard in order to trigger and use the shield, and this damage is counted after Armor has already taken effect. Unused points of damage reduction do not carry over into a future attacks. Note that Voltaric Shield only protects against attacks, not from Direct Damage. Whether the shield is used or not that round, it is always turned off at the end of the round. The Mage will still have to spend 2 mana to re-Activate it for the next round."
+  },
+  {
+    "term": "Wall",
+    "definition": "A Wall is a subtype of a Conjuration spell. It is placed on a Zone border (the line between 2 Zones)."
+  },
+  {
+    "term": "Warded",
+    "definition": "This Object is protected from hostile magic. It cannot be targeted by an enemy controlled Incantation or Enchantment spell. It can still be affected by enemy Incantations or Enchantments which do not directly target it, such as a Zone effect."
+  },
+  {
+    "term": "Weak",
+    "definition": "This is a poison Condition which Weakens a Creature. For each Weak Condition on it, the Creature loses 1 attack die from all non-spell attacks it makes. Cannot reduce an attack to zero dice. Has no effect on Damage Barriers or attack spells. Weak has a Removal Cost of 2."
+  },
+  {
+    "term": "Wounded Prey (Johktari Beastmaster)",
+    "definition": "Once per round, before or after any Friendly Creature Action Phase, she may place her Wounded Prey marker on an enemy damaged non-Mage Living Creature. She, and all Friendly Animal Creatures, gain the Melee +1 trait when attacking this Creature. They gain the trait the first time they attack the Wounded Prey Creature that round, and retain it until the end of that Attack Action. Once Wounded Prey has been marked, the marker cannot be moved to a different Creature. If the Creature is Destroyed, or has no damage on it, the marker is returned to the Beastmaster, and she can then assign it to a new Creature in the same manner."
+  },
+  {
+    "term": "Zombie",
+    "definition": "This Creature has been raised from the dead. It gains the undead and Zombie subtypes. It gains the Psychic Immunity, Slow, NonLiving, and Bloodthirsty +0 traits. The Zombie marker has no Removal Cost and cannot be removed by spells or effects which remove Condition markers. If this Creature would be Destroyed, Obliterate it. If a Creature already has the Slow trait at the time it received this marker, then it also receives a Stun Condition marker."
+  },
+  {
+    "term": "Zone",
+    "definition": "A Zone is a square region on the Arena game board, used to regulate movement, the placement of Objects, and for counting range."
+  },
+  {
+    "term": "Zone Attack or Spell",
+    "definition": "This attack or spell affects all Creatures and Conjurations in the target Zone, without actually targeting them individually. Does not affect Walls on the Zone’s border. Zone Attacks have the Unavoidable trait and make a separate attack against each Object in the Zone."
+  },
+  {
+    "term": "Zone Border",
+    "definition": "This is the line or intersection between two adjacent Zones. Walls are always placed on Zone borders."
+  },
+  {
+    "term": "Zone Control",
+    "definition": "A player controls a Zone if they control a Creature in that Zone and their opponent(s) do(es) not. Do not count Pests or Incapacitated Creatures."
+  },
+  {
+    "term": "Zone Exclusive",
+    "definition": "There can be only 1 Zone Exclusive Conjuration at a time in each Zone."
+  }
+]
