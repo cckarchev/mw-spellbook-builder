@@ -93,7 +93,7 @@ describe('readOfficialDecks', () => {
   });
 });
 
-describe('resolveOfficialSpellbook', () => {
+describe('resolveOfficialSpellbook cards', () => {
   it('resolves a card by id', () => {
     const deck = deckWith({ cards: [{ id: BOLT_ID, name: 'Lightning Bolt', count: BOLT_COPIES }] });
 
@@ -118,6 +118,14 @@ describe('resolveOfficialSpellbook', () => {
     );
   });
 
+  it('does not resolve an id that belongs to an Academy card', () => {
+    const deck = deckWith({ cards: [{ id: 'heal-academy', name: 'Heal', count: 1 }] });
+
+    expect(() => resolveOfficialSpellbook(deck, FILE_NAME, cards, mages)).toThrow(
+      `${FILE_NAME}: no card matches "Heal"`,
+    );
+  });
+
   it('adds up two printings of the same card', () => {
     const deck = deckWith({
       cards: [
@@ -129,27 +137,6 @@ describe('resolveOfficialSpellbook', () => {
     const spellbook = resolveOfficialSpellbook(deck, FILE_NAME, cards, mages);
 
     expect(spellbook.counts).toEqual({ [DISPEL_ID]: 1 + DISPEL_COPIES });
-  });
-
-  it('resolves the mage by its stats card id', () => {
-    const deck = deckWith({
-      mageCards: [{ id: WIZARD_STATS_ID, name: 'Renamed Stats', count: 1 }],
-    });
-
-    expect(resolveOfficialSpellbook(deck, FILE_NAME, cards, mages).mageId).toBe('wizard');
-  });
-
-  it('resolves the mage by name when the ids are unknown', () => {
-    const deck = deckWith({
-      mageCards: [
-        { id: 'unknown-card', name: 'Adramelech Warlock', count: 1 },
-        { id: 'unknown-stats', name: 'Adramelech Warlock Stats', count: 1 },
-      ],
-    });
-
-    expect(resolveOfficialSpellbook(deck, FILE_NAME, cards, mages).mageId).toBe(
-      'adramelech-warlock',
-    );
   });
 
   it('throws naming the file and the card when a card does not resolve', () => {
@@ -169,6 +156,29 @@ describe('resolveOfficialSpellbook', () => {
 
     expect(() => resolveOfficialSpellbook(deck, FILE_NAME, twoBolts, mages)).toThrow(
       `${FILE_NAME}: "Lightning Bolt" matches more than one card`,
+    );
+  });
+});
+
+describe('resolveOfficialSpellbook mage', () => {
+  it('resolves the mage by its stats card id', () => {
+    const deck = deckWith({
+      mageCards: [{ id: WIZARD_STATS_ID, name: 'Renamed Stats', count: 1 }],
+    });
+
+    expect(resolveOfficialSpellbook(deck, FILE_NAME, cards, mages).mageId).toBe('wizard');
+  });
+
+  it('resolves the mage by name when the ids are unknown', () => {
+    const deck = deckWith({
+      mageCards: [
+        { id: 'unknown-card', name: 'Adramelech Warlock', count: 1 },
+        { id: 'unknown-stats', name: 'Adramelech Warlock Stats', count: 1 },
+      ],
+    });
+
+    expect(resolveOfficialSpellbook(deck, FILE_NAME, cards, mages).mageId).toBe(
+      'adramelech-warlock',
     );
   });
 

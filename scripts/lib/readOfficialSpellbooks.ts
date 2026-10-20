@@ -104,15 +104,16 @@ const resolveMage = (deck: RawDeck, fileName: string, mages: readonly Mage[]): M
   return mage;
 };
 
-/** The catalog card for a deck card: by id, else by exact name among Arena cards. */
+/** The Arena catalog card for a deck card: by id, else by exact name. */
 const resolveCard = (deckCard: DeckCard, fileName: string, cards: readonly Card[]): Card => {
-  const byId = cards.find((card) => card.id === deckCard.id);
+  const arenaCards = cards.filter((card) => card.format === 'arena');
+  const byId = arenaCards.find((card) => card.id === deckCard.id);
 
   if (byId) {
     return byId;
   }
 
-  const byName = cards.filter((card) => card.format === 'arena' && card.name === deckCard.name);
+  const byName = arenaCards.filter((card) => card.name === deckCard.name);
 
   if (byName.length > 1) {
     throw new Error(`${fileName}: "${deckCard.name}" matches more than one card`);
