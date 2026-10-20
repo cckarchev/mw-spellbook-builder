@@ -193,3 +193,51 @@ describe('BookActions Delete', () => {
     expect(useBookStore.getState().book).toEqual(smallBook);
   });
 });
+
+describe('BookActions Clear', () => {
+  const clearButton = () => screen.getByRole('button', { name: 'Clear' });
+
+  it('asks before clearing a book with cards, and keeps the mage and the saved books', async () => {
+    saveBook(NAME, smallBook);
+    useBookStore.getState().loadBook(smallBook, NAME);
+    render(<BookActions />);
+
+    await userEvent.click(clearButton());
+
+    const confirm = screen.getByRole('dialog', { name: 'Clear this book?' });
+
+    expect(confirm).toHaveTextContent('Your Wizard book has 7 cards. It will be cleared.');
+
+    await userEvent.click(within(confirm).getByRole('button', { name: 'Clear' }));
+
+    expect(useBookStore.getState().book).toEqual(EMPTY_WIZARD_BOOK);
+    expect(useBookStore.getState().name).toBeNull();
+    expect(savedNames()).toEqual([NAME]);
+  });
+
+  it('keeps the book when the clear is cancelled', async () => {
+    render(<BookActions />);
+
+    await userEvent.click(clearButton());
+    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+
+    expect(useBookStore.getState().book).toEqual(smallBook);
+  });
+
+  it('clears an empty named book without asking', async () => {
+    useBookStore.getState().loadBook(EMPTY_WIZARD_BOOK, NAME);
+    render(<BookActions />);
+
+    await userEvent.click(clearButton());
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(useBookStore.getState().name).toBeNull();
+  });
+
+  it('is disabled for an empty book with no name', () => {
+    useBookStore.getState().loadBook(EMPTY_WIZARD_BOOK);
+    render(<BookActions />);
+
+    expect(clearButton()).toBeDisabled();
+  });
+});
