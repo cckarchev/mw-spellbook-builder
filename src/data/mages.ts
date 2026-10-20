@@ -5,6 +5,8 @@ import type { Mage, School, Training } from '@/core/rules/types';
 // MageSubtypeTraining, MageTypeOpposed, MageComboTraining). Apprentice variants are left out.
 
 const ARENA_BUDGET = 120;
+// Every arena stats card in the module prints Channeling=10.
+const ARENA_CHANNELING = 10;
 const DRUID_WATER_LEVEL = 1;
 const PALADIN_MAX_LEVEL = 2;
 
@@ -29,6 +31,7 @@ const arenaMage = (entry: MageEntry): Mage => {
     name: entry.name,
     format: 'arena',
     budget: ARENA_BUDGET,
+    channeling: ARENA_CHANNELING,
     onlyNames,
     imageCardId: entry.imageCardId,
     statsCardId: entry.statsCardId,

@@ -3,6 +3,7 @@ import type { Card, Mage, Training } from './types';
 // Test fixtures for the rules modules. Training values follow the OCTGN module.
 
 const ARENA_BUDGET = 120;
+const ARENA_CHANNELING = 10;
 
 const emptyTraining = (): Training => ({
   full: [],
@@ -46,6 +47,7 @@ export const makeMage = (
     name: 'Test Mage',
     format: 'arena',
     budget: ARENA_BUDGET,
+    channeling: ARENA_CHANNELING,
     onlyNames: [],
     imageCardId: null,
     statsCardId: null,
