@@ -2,7 +2,7 @@
 
 A phone-first spellbook builder for Mage Wars Arena, made for the cckarchev club. Pick a mage, build a 120-point spellbook from the full catalog, and share it as a link or as plain text for WhatsApp.
 
-It is a static site with no backend, live at [mw-spellbook-builder.cckarchev.ar](https://mw-spellbook-builder.cckarchev.ar). Everything is kept in the browser's `localStorage`: each mage has its own draft, saved on every change, and its own named books, saved from the Book tab.
+It is a static site with no backend, live at [mw-spellbook-builder.cckarchev.ar](https://mw-spellbook-builder.cckarchev.ar). Everything is kept in the browser's `localStorage`: each mage has its own draft, saved on every change, and its own named books, saved from the actions under the book header.
 
 ## Commands
 

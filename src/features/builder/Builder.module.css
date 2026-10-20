@@ -16,3 +16,17 @@
 .panel {
   padding-block: var(--space-md) var(--space-xl);
 }
+
+/* Save, load and clear, then share, in one row on every tab. */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding-block-end: var(--space-sm);
+}
+
+.divider {
+  align-self: stretch;
+  margin-inline: var(--space-xxs);
+  border-inline-start: var(--border-default);
+}

@@ -3,8 +3,10 @@ import { type Tab, Tabs, tabPanelProps } from '@/components/tabs/Tabs';
 import { type BuilderTab, builderPath, PICKER_PATH } from '@/core/routing/builderPath';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { bookMage, cardsById, magesBySlug } from '@/data/catalog';
+import { BookActions } from '@/features/book-actions/BookActions';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
+import { ShareActions } from '@/features/share/share-actions/ShareActions';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { Spellbook } from '@/features/spellbook/Spellbook';
 import { useBookStatus } from '@/store/useBookStatus';
@@ -19,7 +21,7 @@ const TABS: Tab<BuilderTab>[] = [
   { id: 'book', label: 'Book' },
 ];
 
-/** The build screen of the mage in the URL: a sticky header and tabs over the catalog or the book. */
+/** The build screen of the mage in the URL: a sticky header, book actions and tabs over the catalog or the book. */
 export const Builder = ({ tab }: { tab: BuilderTab }) => {
   const { mageSlug = '' } = useParams();
   const navigate = useNavigate();
@@ -56,6 +58,11 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
     <div className={styles.builder}>
       <div className={styles.sticky}>
         <BookHeader mage={mage} summary={summary} name={name} unsaved={unsaved} />
+        <div className={styles.actions}>
+          <BookActions />
+          <span className={styles.divider} aria-hidden="true" />
+          <ShareActions book={book} mage={mage} summary={summary} />
+        </div>
         <Tabs tabs={TABS} active={tab} onChange={showTab} idPrefix={TAB_ID_PREFIX} />
       </div>
       <main className={styles.panel} {...tabPanelProps(TAB_ID_PREFIX, tab)}>

@@ -1,28 +1,9 @@
 import type { Book, Card, Mage } from '@/core/rules/types';
-import type { BookIssue, BookSummary } from '@/core/rules/validateBook';
+import type { BookIssue } from '@/core/rules/validateBook';
 import { plural } from '@/core/text/plural';
 
 const NOTE_SEPARATOR = '. ';
 const CHOOSE_MAGE = 'Choose one to keep building.';
-
-/** The note shown next to the share actions while the book is not legal, or null. */
-export const shareNote = (summary: BookSummary): string | null => {
-  const parts: string[] = [];
-
-  if (summary.overBy > 0) {
-    parts.push(`${plural(summary.overBy, 'point', 'points')} over`);
-  }
-
-  if (summary.issues.length > 0) {
-    parts.push(plural(summary.issues.length, 'problem', 'problems'));
-  }
-
-  if (parts.length === 0) {
-    return null;
-  }
-
-  return `Not a legal book yet: ${parts.join(', ')}`;
-};
 
 const unknownCardsLine = (count: number): string => {
   const cards = plural(count, 'card', 'cards');

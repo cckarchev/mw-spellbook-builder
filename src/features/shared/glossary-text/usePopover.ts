@@ -1,4 +1,4 @@
-import { type RefObject, useEffect, useLayoutEffect, useState } from 'react';
+import { type RefObject, useLayoutEffect, useState } from 'react';
 import { type Placement, placePopover } from '@/core/layout/placePopover';
 
 // In px, matching --space-xs and --space-xxs.
@@ -54,42 +54,4 @@ export const usePlacement = (
   }, [isOpen, termRef, popoverRef]);
 
   return placement;
-};
-
-/** Closes the open popover on a tap outside it and its term, or on Escape, which refocuses the term. */
-export const useDismiss = (
-  isOpen: boolean,
-  { termRef, popoverRef }: PopoverRefs,
-  onClose: () => void,
-): void => {
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    // A tap on another term closes this one here, then opens the other with its own click.
-    const handlePointerDown = (event: PointerEvent) => {
-      const target = event.target as Node;
-      const isInside = termRef.current?.contains(target) || popoverRef.current?.contains(target);
-
-      if (!isInside) {
-        onClose();
-      }
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-        termRef.current?.focus();
-      }
-    };
-
-    document.addEventListener('pointerdown', handlePointerDown);
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('pointerdown', handlePointerDown);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen, termRef, popoverRef, onClose]);
 };

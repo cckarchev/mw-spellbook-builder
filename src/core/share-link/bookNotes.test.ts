@@ -1,16 +1,7 @@
 import { makeCard, wizard } from '@/core/rules/fixtures';
 import type { Card } from '@/core/rules/types';
-import type { BookSummary } from '@/core/rules/validateBook';
-import {
-  bookProblems,
-  cardProblems,
-  incomingProblems,
-  noMageProblems,
-  shareNote,
-} from './bookNotes';
+import { bookProblems, cardProblems, incomingProblems, noMageProblems } from './bookNotes';
 
-const BUDGET = 120;
-const OVER_BY = 4;
 const LEVEL_TWO_LIMIT = 4;
 
 const fireball = makeCard({ id: 'fireball', name: 'Fireball' });
@@ -19,33 +10,6 @@ const warlockOnly = makeCard({ id: 'warlock-only', name: "Adramelech's Torment" 
 const cardsById: ReadonlyMap<string, Card> = new Map(
   [fireball, warlockOnly].map((card) => [card.id, card]),
 );
-
-const summary = (overrides: Partial<BookSummary> = {}): BookSummary => ({
-  points: BUDGET,
-  budget: BUDGET,
-  overBy: 0,
-  cardCount: 1,
-  issues: [],
-  ...overrides,
-});
-
-describe('shareNote', () => {
-  it('is null for a legal book', () => {
-    expect(shareNote(summary())).toBeNull();
-  });
-
-  it('names the points over budget', () => {
-    expect(shareNote(summary({ overBy: OVER_BY }))).toBe('Not a legal book yet: 4 points over');
-  });
-
-  it('counts the other problems', () => {
-    const note = shareNote(
-      summary({ overBy: 1, issues: [{ kind: 'illegalCard', cardId: 'warlock-only' }] }),
-    );
-
-    expect(note).toBe('Not a legal book yet: 1 point over, 1 problem');
-  });
-});
 
 describe('incomingProblems', () => {
   it('describes unknown cards, extra copies and illegal cards', () => {

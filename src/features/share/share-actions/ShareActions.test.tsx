@@ -25,6 +25,12 @@ beforeEach(() => {
   useToastStore.getState().hide();
 });
 
+/** Opens the Share menu and picks the item. */
+const pick = async (user: ReturnType<typeof userEvent.setup>, item: string) => {
+  await user.click(screen.getByRole('button', { name: 'Share' }));
+  await user.click(screen.getByRole('menuitem', { name: item }));
+};
+
 const renderActions = (book: Book) => {
   const user = userEvent.setup();
   const summary = summarizeBook(book, wizard, cardsById);
@@ -43,7 +49,7 @@ describe('ShareActions copying', () => {
   it('copies the share link', async () => {
     const { user } = renderActions(smallBook);
 
-    await user.click(screen.getByRole('button', { name: 'Copy link' }));
+    await pick(user, 'Copy link');
 
     expect(await navigator.clipboard.readText()).toBe(shareUrlOf(smallBook));
     expect(screen.getByRole('status')).toHaveTextContent('Link copied');
@@ -52,7 +58,7 @@ describe('ShareActions copying', () => {
   it('copies the book as text', async () => {
     const { user, summary } = renderActions(smallBook);
 
-    await user.click(screen.getByRole('button', { name: 'Copy text' }));
+    await pick(user, 'Copy text');
 
     const expected = bookText(smallBook, wizard, summary, cardsById, shareUrlOf(smallBook));
 
@@ -65,22 +71,20 @@ describe('ShareActions copying', () => {
 
     vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('denied'));
 
-    await user.click(screen.getByRole('button', { name: 'Copy link' }));
+    await pick(user, 'Copy link');
 
     expect(screen.getByRole('status')).toHaveTextContent('copy the link from the address bar');
     expect(useToastStore.getState().durationMs).toBe(LONG_TOAST_DURATION_MS);
   });
 
-  it('still copies an over-budget book, with a note', async () => {
+  it('still copies an over-budget book', async () => {
     const { user } = renderActions(overBudgetBook);
 
-    expect(screen.getByText('Not a legal book yet: 2 points over')).toBeInTheDocument();
-
-    await user.click(screen.getByRole('button', { name: 'Copy link' }));
+    await pick(user, 'Copy link');
 
     expect(await navigator.clipboard.readText()).toBe(shareUrlOf(overBudgetBook));
 
-    await user.click(screen.getByRole('button', { name: 'Copy text' }));
+    await pick(user, 'Copy text');
 
     expect(await navigator.clipboard.readText()).toContain('122/120 pts (2 over)');
   });
@@ -98,16 +102,18 @@ describe('ShareActions with the Web Share API', () => {
 
     const { user } = renderActions(smallBook);
 
-    await user.click(screen.getByRole('button', { name: 'Share' }));
+    await pick(user, 'Share…');
 
     expect(share).toHaveBeenCalledWith(
       expect.objectContaining({ title: 'Wizard spellbook', url: shareUrlOf(smallBook) }),
     );
   });
 
-  it('has no Share button without the API', () => {
-    renderActions(smallBook);
+  it('has no share sheet item without the API', async () => {
+    const { user } = renderActions(smallBook);
 
-    expect(screen.queryByRole('button', { name: 'Share' })).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Share' }));
+
+    expect(screen.queryByRole('menuitem', { name: 'Share…' })).not.toBeInTheDocument();
   });
 });

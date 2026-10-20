@@ -1,13 +1,14 @@
-import type { ReactNode } from 'react';
+import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 import { Button } from '@/components/button/Button';
 import styles from './ActionButton.module.css';
 
-interface ActionButtonProps {
+interface ActionButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   icon: ReactNode;
   label: string;
   primary?: boolean;
-  disabled?: boolean;
-  onClick: () => void;
+  /** Drawn after the label, such as the arrow of a button that opens a menu. */
+  trailingIcon?: ReactNode;
+  ref?: Ref<HTMLButtonElement>;
 }
 
 /** A small icon button; the label shows beside the icon above phone width, and as a tooltip. */
@@ -15,8 +16,8 @@ export const ActionButton = ({
   icon,
   label,
   primary = false,
-  disabled = false,
-  onClick,
+  trailingIcon,
+  ...rest
 }: ActionButtonProps) => (
   <Button
     variant={primary ? 'primary' : 'ghost'}
@@ -24,10 +25,10 @@ export const ActionButton = ({
     className={styles.action}
     aria-label={label}
     title={label}
-    disabled={disabled}
-    onClick={onClick}
+    {...rest}
   >
     {icon}
     <span className={styles.label}>{label}</span>
+    {trailingIcon}
   </Button>
 );

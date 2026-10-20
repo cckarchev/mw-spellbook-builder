@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes, Ref } from 'react';
 import styles from './Button.module.css';
 
 type ButtonVariant = 'primary' | 'ghost' | 'danger';
@@ -9,6 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   /** Small buttons are as tall as a chip, for toolbars. */
   size?: ButtonSize;
+  ref?: Ref<HTMLButtonElement>;
 }
 
 export const Button = ({
