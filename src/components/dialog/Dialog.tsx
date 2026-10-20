@@ -1,4 +1,5 @@
 import { type ReactNode, useEffect, useId, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { CloseIcon } from './CloseIcon';
 import styles from './Dialog.module.css';
 
@@ -107,7 +108,8 @@ export const Dialog = ({
 
   const panelClasses = [styles.panel, className].filter(Boolean).join(' ');
 
-  return (
+  // On the body, so a sticky or positioned parent cannot trap the scrim under the sticky header.
+  return createPortal(
     <div className={styles.scrim}>
       <button
         type="button"
@@ -135,6 +137,7 @@ export const Dialog = ({
         </div>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };

@@ -1,11 +1,12 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { readDraft } from '@/core/persistence/drafts';
 import { sameSpellbook } from '@/core/rules/spellbookChanges';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
-import { resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
+import { FIREBALL, resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
 import { useSpellbookStore } from '@/store/useSpellbookStore';
+import { stubMatchMedia } from '@/test/stubMatchMedia';
 import { App } from './App';
 
 const renderAt = (path: string) => {
@@ -117,5 +118,74 @@ describe('App opened at another mage', () => {
 
     expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Mana Crystal');
+  });
+});
+
+describe('App build screen on desktop', () => {
+  const spellbookColumn = () => screen.getByRole('complementary', { name: 'Spellbook' });
+  const catalogColumn = () => screen.getByRole('region', { name: 'Catalog' });
+
+  const searchCards = async (text: string) => {
+    await userEvent.type(screen.getByRole('searchbox', { name: 'Search cards' }), text);
+  };
+
+  beforeEach(() => {
+    stubMatchMedia(true);
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('shows the catalog and the spellbook without tabs', () => {
+    renderAt('/wizard');
+
+    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+    expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
+    expect(spellbookColumn()).toHaveTextContent('Mana Crystal');
+  });
+
+  it('shows the same screen at the spellbook path', () => {
+    renderAt('/wizard/spellbook');
+
+    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+    expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
+    expect(spellbookColumn()).toHaveTextContent('Mana Crystal');
+  });
+
+  it('adds a card from the catalog to the spellbook column', async () => {
+    renderAt('/wizard');
+
+    await searchCards('dispel');
+    await userEvent.click(within(catalogColumn()).getByRole('button', { name: 'Add one Dispel' }));
+
+    expect(spellbookColumn()).toHaveTextContent('Dispel');
+  });
+
+  it('removes the last copy from the catalog without asking', async () => {
+    useSpellbookStore.getState().loadSpellbook({ ...smallSpellbook, counts: { [FIREBALL]: 1 } });
+    renderAt('/wizard');
+
+    await searchCards('fireball');
+    await userEvent.click(
+      within(catalogColumn()).getByRole('button', { name: 'Remove one Fireball' }),
+    );
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(spellbookColumn()).not.toHaveTextContent('Fireball');
+  });
+
+  it('goes back to tabs when the window narrows', () => {
+    vi.unstubAllGlobals();
+    const { setMatches } = stubMatchMedia(true);
+    renderAt('/wizard');
+
+    act(() => {
+      setMatches(false);
+    });
+
+    expect(screen.getByRole('tab', { name: 'Cards' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.queryByRole('complementary', { name: 'Spellbook' })).not.toBeInTheDocument();
   });
 });

@@ -80,4 +80,17 @@ describe('Dialog close button', () => {
 
     expect(within(dialog).queryByRole('button', { name: 'Close' })).not.toBeInTheDocument();
   });
+
+  it('renders over the whole page, outside the element that opened it', () => {
+    const { container } = render(
+      <div style={{ position: 'sticky' }}>
+        <Dialog open={true} title="Pick one" onClose={() => undefined}>
+          <button type="button">First</button>
+        </Dialog>
+      </div>,
+    );
+
+    // A positioned parent would trap the scrim under the sticky header.
+    expect(container).not.toContainElement(screen.getByRole('dialog'));
+  });
 });
