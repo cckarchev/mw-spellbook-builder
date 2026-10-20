@@ -46,8 +46,8 @@ export const AppFooter = () => {
             from the Mage Wars Codex.
           </p>
           <p>
-            The rulebook and rules supplement are published by Arcane Wonders on its own site; the
-            links open them there.
+            The rulebook, Codex and rules supplement are published by Arcane Wonders on its own
+            site; the links open them there.
           </p>
           <p>
             More about the game at{' '}

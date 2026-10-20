@@ -11,25 +11,21 @@ describe('AppFooter', () => {
     );
   });
 
-  it('links to the official rulebook and rules supplement in a new tab', () => {
+  it.each([
+    ['Rulebook', 'Mage_Wars_Arena_Rulebook.pdf'],
+    ['Codex', 'Mage_Wars_Arena_Codex3.1.pdf'],
+    ['Rules supplement', 'Mage_Wars_Rules_Supplement.pdf'],
+  ])('links to the official %s in a new tab', (name, file) => {
     render(<AppFooter />);
 
-    const rulebook = screen.getByRole('link', { name: 'Rulebook' });
-    const supplement = screen.getByRole('link', { name: 'Rules supplement' });
+    const link = screen.getByRole('link', { name });
 
-    expect(rulebook).toHaveAttribute(
+    expect(link).toHaveAttribute(
       'href',
-      'https://www.arcanewonders.com/wp-content/uploads/2021/05/Mage_Wars_Arena_Rulebook.pdf',
+      `https://www.arcanewonders.com/wp-content/uploads/2021/05/${file}`,
     );
-    expect(supplement).toHaveAttribute(
-      'href',
-      'https://www.arcanewonders.com/wp-content/uploads/2021/05/Mage_Wars_Rules_Supplement.pdf',
-    );
-
-    for (const link of [rulebook, supplement]) {
-      expect(link).toHaveAttribute('target', '_blank');
-      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
-    }
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it('opens the full notice from About, and the X closes it', async () => {
