@@ -1,0 +1,56 @@
+.row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: var(--border-divider);
+}
+
+.load,
+.delete {
+  min-height: var(--touch-target);
+  color: inherit;
+  font: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--duration-fast);
+}
+
+.load {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  min-width: 0;
+  padding-inline: var(--space-xs);
+  text-align: start;
+}
+
+.name {
+  overflow: hidden;
+  color: var(--color-text-strong);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.points {
+  flex-shrink: 0;
+  color: var(--color-text-dim);
+  font-size: var(--font-size-sm);
+}
+
+.delete {
+  min-width: var(--touch-target);
+  color: var(--color-text-dim);
+}
+
+.load:hover .name,
+.delete:hover {
+  color: var(--color-accent);
+}
+
+.load:focus-visible,
+.delete:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: calc(-1 * var(--focus-ring-offset));
+}
