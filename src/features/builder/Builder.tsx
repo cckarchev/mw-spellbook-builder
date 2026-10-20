@@ -5,12 +5,12 @@ import { summarizeBook } from '@/core/rules/validateBook';
 import { bookMage, cardsById, magesBySlug } from '@/data/catalog';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
-import { NewBookDialog } from '@/features/mage-switch/NewBookDialog';
-import { useRouteMage } from '@/features/mage-switch/useRouteMage';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
+import { NewBookDialog } from '@/features/shared/NewBookDialog';
 import { Spellbook } from '@/features/spellbook/Spellbook';
 import { useBookStore } from '@/store/useBookStore';
 import styles from './Builder.module.css';
+import { useRouteMage } from './useRouteMage';
 
 const TAB_ID_PREFIX = 'builder-tab';
 

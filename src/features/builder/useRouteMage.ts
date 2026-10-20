@@ -5,8 +5,8 @@ import { emptyBook, mageSwitchKind } from '@/core/rules/bookChanges';
 import type { Mage } from '@/core/rules/types';
 import { BOOK_PARAM } from '@/core/share-link/shareUrl';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
+import { currentBookPath } from '@/features/shared/currentBookPath';
 import { useBookStore } from '@/store/useBookStore';
-import { currentBookPath } from './currentBookPath';
 
 /**
  * Makes the book follow the mage in the URL, as picking that mage would: a book with no

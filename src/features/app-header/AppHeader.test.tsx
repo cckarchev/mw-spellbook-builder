@@ -49,6 +49,16 @@ describe('AppHeader', () => {
     expect(pickerHeading()).toBeInTheDocument();
   });
 
+  // Back must not return to a mage URL, which would switch the next book to that mage.
+  it('replaces the builder in the history instead of adding the picker after it', async () => {
+    useBookStore.getState().loadBook({ mageId: 'wizard', counts: {} });
+    renderAt('/wizard');
+
+    await clickAppName();
+
+    expect(screen.getByRole('status', { name: 'Navigation' })).toHaveTextContent('REPLACE /');
+  });
+
   it('does not add a history entry when the player is already home', async () => {
     renderAt('/');
 

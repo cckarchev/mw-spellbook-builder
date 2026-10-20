@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { PICKER_PATH } from '@/core/routing/builderPath';
+import { builderPath, PICKER_PATH } from '@/core/routing/builderPath';
 import { hasCards, sameBook } from '@/core/rules/bookChanges';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { type DecodedBook, decodeBook } from '@/core/share-link/bookCodec';
 import { incomingProblems, noMageProblems } from '@/core/share-link/bookNotes';
 import { BOOK_PARAM } from '@/core/share-link/shareUrl';
 import { bookMage, cardsById } from '@/data/catalog';
-import { currentBookPath } from '@/features/mage-switch/currentBookPath';
+import { currentBookPath } from '@/features/shared/currentBookPath';
 import { useBookStore } from '@/store/useBookStore';
 
 const UNREADABLE = 'This link could not be read. Your current book is unchanged.';
@@ -23,7 +23,7 @@ const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
   const { issues } = summarizeBook(book, mage, cardsById);
 
   return {
-    path: currentBookPath(book, 'book'),
+    path: builderPath(mage.name, 'book'),
     problems: incomingProblems(unknownCodes, issues, mage, book.counts, cardsById),
   };
 };

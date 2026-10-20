@@ -1,8 +1,8 @@
 import { mages } from '@/data/catalog';
-import { NewBookDialog } from '@/features/mage-switch/NewBookDialog';
-import { useMageSwitch } from '@/features/mage-switch/useMageSwitch';
+import { NewBookDialog } from '@/features/shared/NewBookDialog';
 import styles from './MagePicker.module.css';
 import { MageTile } from './mage-tile/MageTile';
+import { useMageSwitch } from './useMageSwitch';
 
 export const MagePicker = () => {
   const { book, pendingSwitch, requestSwitch, confirmSwitch, cancelSwitch } = useMageSwitch();
