@@ -1,4 +1,4 @@
-import { cardCost, totalLevel } from './cardCost';
+import { cardCost, schoolCharges, totalLevel } from './cardCost';
 import {
   beastmaster,
   druid,
@@ -182,5 +182,63 @@ describe('totalLevel', () => {
 
   it('takes the highest part of an "or" card', () => {
     expect(totalLevel(airOrWater)).toBe(LEVEL_TWO);
+  });
+});
+
+describe('schoolCharges', () => {
+  const darkAndHoly = makeCard({
+    schoolMode: 'and',
+    schools: [
+      { school: 'Dark', level: LEVEL_TWO },
+      { school: 'Holy', level: 1 },
+    ],
+  });
+  const waterOne = makeCard({ schools: [{ school: 'Water', level: 1 }] });
+  const waterTwo = makeCard({ schools: [{ school: 'Water', level: LEVEL_TWO }] });
+  const talos = makeCard({ name: 'Talos' });
+
+  it('charges each part of an and card at its own rate', () => {
+    expect(schoolCharges(darkAndHoly, warlock)).toEqual([
+      { school: 'Dark', level: LEVEL_TWO, multiplier: TRAINED, points: LEVEL_TWO * TRAINED },
+      { school: 'Holy', level: 1, multiplier: OPPOSED, points: OPPOSED },
+    ]);
+  });
+
+  it('charges an or card at its cheapest school only', () => {
+    expect(schoolCharges(airOrWater, wizard)).toEqual([
+      { school: 'Air', level: LEVEL_TWO, multiplier: TRAINED, points: LEVEL_TWO * TRAINED },
+    ]);
+  });
+
+  it('picks the first listed school when an or card ties', () => {
+    const charges = schoolCharges(airOrWater, necromancer);
+
+    expect(charges).toHaveLength(1);
+    expect(charges[0]).toMatchObject({ school: 'Air', multiplier: UNTRAINED });
+  });
+
+  it('charges partial training per level', () => {
+    expect(schoolCharges(waterOne, druid)[0]?.multiplier).toBe(TRAINED);
+    expect(schoolCharges(waterTwo, druid)[0]?.multiplier).toBe(UNTRAINED);
+  });
+
+  it('charges nothing for free cards', () => {
+    expect(schoolCharges(talos, warlock)).toEqual([]);
+  });
+
+  it('adds up to cardCost', () => {
+    const cards = [darkAndHoly, airOrWater, waterOne, waterTwo, talos];
+    const mages = [wizard, beastmaster, necromancer, druid, paladin, warlock, siren, forcemaster];
+
+    for (const card of cards) {
+      for (const mage of mages) {
+        const chargedPoints = schoolCharges(card, mage).reduce(
+          (sum, charge) => sum + charge.points,
+          0,
+        );
+
+        expect(chargedPoints).toBe(cardCost(card, mage));
+      }
+    }
   });
 });

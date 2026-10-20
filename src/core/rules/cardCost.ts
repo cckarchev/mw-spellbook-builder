@@ -1,6 +1,6 @@
-import type { Card, Mage, SchoolPart } from './types';
+import type { Card, Mage, School, SchoolPart } from './types';
 
-const TRAINED_MULTIPLIER = 1;
+export const TRAINED_MULTIPLIER = 1;
 const UNTRAINED_MULTIPLIER = 2;
 const OPPOSED_MULTIPLIER = 3;
 
@@ -41,14 +41,23 @@ const isWholeCardTrained = (card: Card, mage: Mage): boolean => {
   return isNovice || matchesCombo || matchesSubtype;
 };
 
+/** Points one school part of a card is charged: its level times the mage's rate for it. */
+export interface SchoolCharge {
+  school: School;
+  level: number;
+  multiplier: number;
+  points: number;
+}
+
 /**
- * Spellbook points for one copy of a card in this mage's spellbook, following the module's
- * SpellbookValidator: Novice, combo and subtype training beat an opposed school. Unlike the
- * module, each part of an "and" card is charged its own multiplier, as the players confirmed.
+ * The school parts a card is charged for, following the module's SpellbookValidator: Novice,
+ * combo and subtype training beat an opposed school. Unlike the module, each part of an "and"
+ * card is charged its own multiplier, as the players confirmed. An "or" card is charged only
+ * at its cheapest part, the first listed on a tie.
  */
-export const cardCost = (card: Card, mage: Mage): number => {
+export const schoolCharges = (card: Card, mage: Mage): SchoolCharge[] => {
   if (FREE_CARD_NAMES.has(card.name)) {
-    return 0;
+    return [];
   }
 
   const wholeCardTrained = isWholeCardTrained(card, mage);
@@ -71,11 +80,23 @@ export const cardCost = (card: Card, mage: Mage): number => {
     return UNTRAINED_MULTIPLIER;
   };
 
-  const partCosts = card.schools.map((part) => part.level * multiplierFor(part));
+  const charges = card.schools.map((part): SchoolCharge => {
+    const multiplier = multiplierFor(part);
+
+    return { school: part.school, level: part.level, multiplier, points: part.level * multiplier };
+  });
 
   if (card.schoolMode === 'or') {
-    return Math.min(...partCosts);
+    const cheapest = charges.reduce((best, charge) =>
+      charge.points < best.points ? charge : best,
+    );
+
+    return [cheapest];
   }
 
-  return partCosts.reduce((sum, cost) => sum + cost, 0);
+  return charges;
 };
+
+/** Spellbook points for one copy of a card in this mage's spellbook. */
+export const cardCost = (card: Card, mage: Mage): number =>
+  schoolCharges(card, mage).reduce((sum, charge) => sum + charge.points, 0);
