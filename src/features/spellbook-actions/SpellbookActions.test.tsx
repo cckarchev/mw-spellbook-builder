@@ -2,7 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useToastStore } from '@/components/toast/useToastStore';
 import { savedSpellbooks, saveSpellbook } from '@/core/persistence/savedSpellbooks';
-import { officialSpellbook } from '@/data/officialSpellbooks';
+import { officialWizardSpellbook } from '@/data/fixtures';
 import { FIREBALL, resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
 import { useSpellbookStatus } from '@/store/useSpellbookStatus';
 import { useSpellbookStore } from '@/store/useSpellbookStore';
@@ -245,16 +245,6 @@ describe('SpellbookActions Load', () => {
 });
 
 describe('SpellbookActions Load official', () => {
-  const officialWizardSpellbook = () => {
-    const official = officialSpellbook('wizard');
-
-    if (official === null) {
-      throw new Error('The Wizard has no official spellbook');
-    }
-
-    return official;
-  };
-
   const officialRow = (dialog: HTMLElement) => {
     const officialSection = within(dialog).getByRole('region', { name: 'Official' });
 

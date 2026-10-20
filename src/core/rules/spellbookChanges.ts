@@ -27,7 +27,7 @@ export const emptySpellbook = (mageId: string): Spellbook => ({ mageId, counts: 
 export const hasUnsavedChanges = (
   spellbook: Spellbook,
   saved: Spellbook | null,
-  official: Spellbook | null = null,
+  official: Spellbook | null,
 ): boolean => {
   const isOfficial = official !== null && sameSpellbook(spellbook, official);
 

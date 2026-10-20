@@ -212,4 +212,8 @@ describe('official spellbook data integrity', () => {
   it('has no official spellbook for a mage without one', () => {
     expect(officialSpellbook('sistarran-wizard')).toBeNull();
   });
+
+  it('has no official spellbook when there is no mage', () => {
+    expect(officialSpellbook(null)).toBeNull();
+  });
 });

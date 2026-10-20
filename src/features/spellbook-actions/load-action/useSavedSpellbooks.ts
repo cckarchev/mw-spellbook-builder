@@ -34,7 +34,7 @@ export const useSavedSpellbooks = (onLoaded: () => void) => {
   /** Re-reads the saved and official spellbooks and drops any pending confirm. */
   const refresh = () => {
     readSaved();
-    setOfficial(spellbook.mageId === null ? null : officialSpellbook(spellbook.mageId));
+    setOfficial(officialSpellbook(spellbook.mageId));
     setPendingLoad(null);
     deletion.cancelDelete();
   };
