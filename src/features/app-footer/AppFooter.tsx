@@ -32,7 +32,8 @@ export const AppFooter = () => {
           </p>
           <p>
             The card data and images come from the community OCTGN Mage Wars module and card image
-            pack. The glossary comes from the Mage Wars Codex.
+            pack, and the expansion names from the sIKE23/Mage-Wars set files. The glossary comes
+            from the Mage Wars Codex.
           </p>
         </div>
       </Dialog>
