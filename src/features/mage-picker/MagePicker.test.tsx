@@ -1,9 +1,10 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { readDraft } from '@/core/persistence/drafts';
+import { readDraft, writeDraft } from '@/core/persistence/drafts';
+import { saveBook } from '@/core/persistence/savedBooks';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
-import { FIREBALL, resetBookStore } from '@/features/shared/testBooks';
+import { FIREBALL, resetBookStore, smallBook } from '@/features/shared/testBooks';
 import { useBookStore } from '@/store/useBookStore';
 import { MagePicker } from './MagePicker';
 
@@ -100,5 +101,23 @@ describe('MagePicker switching to another mage', () => {
     expect(useBookStore.getState().book).toEqual({ mageId: 'wizard', counts: {} });
     expect(warlockDraft?.book.counts).toEqual({ [ADRAMELECHS_TORMENT]: ONE_COPY });
     expect(buildScreen()).toBeInTheDocument();
+  });
+});
+
+describe('MagePicker tile notes', () => {
+  const tile = (name: string) => screen.getByRole('button', { name });
+
+  it("tells each mage's draft and saved books", () => {
+    useBookStore.getState().loadBook(smallBook);
+    writeDraft({ book: { mageId: 'priest', counts: { [FIREBALL]: ONE_COPY } }, name: null });
+    saveBook('One', { mageId: 'warlock', counts: {} });
+    saveBook('Two', { mageId: 'warlock', counts: {} });
+
+    renderPicker();
+
+    expect(tile('Wizard')).toHaveAccessibleDescription('Draft · 18 pts');
+    expect(tile('Priest')).toHaveAccessibleDescription(/^Draft · \d+ pts$/);
+    expect(tile('Warlock')).toHaveAccessibleDescription('2 saved');
+    expect(tile('Druid')).toHaveAccessibleDescription('');
   });
 });

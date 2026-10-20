@@ -1,6 +1,7 @@
 import { mages } from '@/data/catalog';
 import styles from './MagePicker.module.css';
 import { MageTile } from './mage-tile/MageTile';
+import { mageNoteFor } from './mageNoteFor';
 import { useMageSwitch } from './useMageSwitch';
 
 export const MagePicker = () => {
@@ -15,6 +16,7 @@ export const MagePicker = () => {
             key={mage.id}
             mage={mage}
             current={mage.id === book.mageId}
+            note={mageNoteFor(mage, book)}
             onSelect={selectMage}
           />
         ))}
