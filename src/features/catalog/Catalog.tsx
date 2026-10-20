@@ -10,13 +10,13 @@ import { plural } from '@/core/text/plural';
 import { cards, cardsById } from '@/data/catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { CardRow } from '@/features/shared/card-row/CardRow';
+import { CardTile } from '@/features/shared/card-tile/CardTile';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
+import { useViewMode } from '@/features/shared/view-switch/useViewMode';
+import { ViewSwitch } from '@/features/shared/view-switch/ViewSwitch';
 import styles from './Catalog.module.css';
-import { CardTile } from './card-tile/CardTile';
 import { FilterBar } from './filter-bar/FilterBar';
 import { useCatalogFilters } from './useCatalogFilters';
-import { useCatalogView } from './view-switch/useCatalogView';
-import { ViewSwitch } from './view-switch/ViewSwitch';
 
 /** What the book already has of one type, such as "5 in book · 16 pts". Nothing when it has none. */
 const inBookLabel = (bookGroup: BookGroup | undefined): string | undefined => {
@@ -30,7 +30,7 @@ const inBookLabel = (bookGroup: BookGroup | undefined): string | undefined => {
 /** Every card the mage can use, filtered and grouped by type, each with its cost and a stepper. */
 export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
   const { filters, setQuery, toggle, setScope, clearChips } = useCatalogFilters(mage);
-  const { view, setView } = useCatalogView();
+  const { view, setView } = useViewMode('catalog');
 
   const legalCards = useMemo(() => filterCards(cards, EMPTY_FILTERS, mage), [mage]);
   const options = useMemo(() => filterOptions(legalCards), [legalCards]);

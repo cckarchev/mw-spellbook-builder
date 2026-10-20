@@ -20,3 +20,8 @@
   background: var(--color-bg-error);
   border-inline-start: var(--border-width-strong) solid var(--color-error);
 }
+
+.tools {
+  display: flex;
+  justify-content: flex-end;
+}

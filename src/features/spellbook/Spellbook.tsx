@@ -5,7 +5,10 @@ import { bookProblems, cardProblems } from '@/core/share-link/bookNotes';
 import { cardsById } from '@/data/catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { CardRow } from '@/features/shared/card-row/CardRow';
+import { CardTile } from '@/features/shared/card-tile/CardTile';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
+import { useViewMode } from '@/features/shared/view-switch/useViewMode';
+import { ViewSwitch } from '@/features/shared/view-switch/ViewSwitch';
 import styles from './Spellbook.module.css';
 import { useLastCopyConfirm } from './useLastCopyConfirm';
 
@@ -23,6 +26,7 @@ export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookPro
     onRemove,
   );
   const pendingCard = pendingCardId ? cardsById.get(pendingCardId) : undefined;
+  const { view, setView } = useViewMode('book');
 
   if (groups.length === 0) {
     return <p className={styles.empty}>No cards yet. Add some from the Cards tab.</p>;
@@ -30,6 +34,9 @@ export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookPro
 
   return (
     <div className={styles.spellbook}>
+      <div className={styles.tools}>
+        <ViewSwitch view={view} onChange={setView} />
+      </div>
       {problems.length > 0 ? (
         <ul className={styles.problems} aria-label="Problems">
           {problems.map((problem) => (
@@ -43,19 +50,25 @@ export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookPro
           title={group.type}
           count={group.copies}
           meta={`${group.points} pts`}
+          layout={view}
         >
-          {group.entries.map((entry) => (
-            <CardRow
-              key={entry.card.id}
-              card={entry.card}
-              count={entry.count}
-              points={entry.points}
-              blockedReason={addCopyBlockedReason(book, entry.card, mage)}
-              problem={rowProblems.get(entry.card.id) ?? null}
-              onAdd={onAdd}
-              onRemove={requestRemove}
-            />
-          ))}
+          {group.entries.map((entry) => {
+            const itemProps = {
+              card: entry.card,
+              count: entry.count,
+              points: entry.points,
+              blockedReason: addCopyBlockedReason(book, entry.card, mage),
+              problem: rowProblems.get(entry.card.id) ?? null,
+              onAdd,
+              onRemove: requestRemove,
+            };
+
+            if (view === 'grid') {
+              return <CardTile key={entry.card.id} {...itemProps} />;
+            }
+
+            return <CardRow key={entry.card.id} {...itemProps} />;
+          })}
         </TypeSection>
       ))}
       <ConfirmDialog

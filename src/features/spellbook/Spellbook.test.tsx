@@ -24,6 +24,10 @@ const renderSpellbook = (book: Book = smallBook) => {
   return { onRemove };
 };
 
+beforeEach(() => {
+  localStorage.clear();
+});
+
 const removeOneFireball = async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Remove one Fireball' }));
 };
@@ -102,5 +106,36 @@ describe('Spellbook', () => {
 
     expect(onRemove).toHaveBeenCalledWith(FIREBALL);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+});
+
+describe('Spellbook grid', () => {
+  const showGrid = async () => {
+    await userEvent.click(screen.getByRole('button', { name: 'Grid' }));
+  };
+
+  it('shows the cards as images with the points of every copy', async () => {
+    renderSpellbook();
+
+    await showGrid();
+
+    const attack = screen.getByRole('region', { name: 'Attack (5) 16 pts' });
+    const tile = within(attack).getByRole('img', { name: 'Fireball' }).closest('li');
+
+    expect(tile).toHaveTextContent(/\d+ pts/);
+    expect(
+      within(tile as HTMLElement).getByRole('button', { name: 'Add one Fireball' }),
+    ).toBeInTheDocument();
+  });
+
+  it('marks the card that has a problem', async () => {
+    renderSpellbook(tooManyCopiesBook);
+
+    await showGrid();
+
+    const tile = screen.getByText('Too many copies: max 4').closest('li');
+
+    expect(tile).toHaveAttribute('data-problem', 'true');
+    expect(within(tile as HTMLElement).getByRole('img', { name: 'Fireball' })).toBeInTheDocument();
   });
 });

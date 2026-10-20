@@ -46,3 +46,14 @@
   background: var(--color-bg-scrim);
   pointer-events: none;
 }
+
+/* After the in-book border, so a problem shows over it. */
+.tile[data-problem='true'] {
+  border-color: var(--color-error);
+}
+
+.problem {
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
