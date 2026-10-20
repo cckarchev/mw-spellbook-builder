@@ -82,6 +82,16 @@ describe('SpellbookActions Save', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
+  it('says the spellbook is saved in this browser only', async () => {
+    render(<SpellbookActions />);
+
+    const dialog = await openSave();
+
+    expect(dialog).toHaveTextContent(
+      'Saved in this browser only. To use it on another device, share its link.',
+    );
+  });
+
   it('starts the field from the current name', async () => {
     useSpellbookStore.getState().save(NAME);
     useSpellbookStore.getState().removeCopy(FIREBALL);

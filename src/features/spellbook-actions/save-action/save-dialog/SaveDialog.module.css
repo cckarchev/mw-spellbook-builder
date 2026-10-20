@@ -33,3 +33,8 @@
   align-self: flex-end;
   margin-top: var(--space-xs);
 }
+
+.note {
+  color: var(--color-text-dim);
+  font-size: var(--font-size-sm);
+}
