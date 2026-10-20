@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Toast } from '@/components/toast/Toast';
 import { bookText } from '@/core/export/bookText';
 import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
@@ -16,7 +17,12 @@ const renderActions = (book: Book) => {
   const user = userEvent.setup();
   const summary = summarizeBook(book, wizard, cardsById);
 
-  render(<ShareActions book={book} mage={wizard} summary={summary} />);
+  render(
+    <>
+      <ShareActions book={book} mage={wizard} summary={summary} />
+      <Toast />
+    </>,
+  );
 
   return { user, summary };
 };

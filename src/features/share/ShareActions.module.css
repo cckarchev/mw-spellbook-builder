@@ -1,3 +1,5 @@
+@import '@/theme/breakpoints.css';
+
 .actions {
   display: flex;
   flex-direction: column;
@@ -13,7 +15,7 @@
   border-inline-start: var(--border-width-strong) solid var(--color-error);
 }
 
-/* One row: the buttons at their own width, the copy result after them, extra controls at the end. */
+/* One row: the buttons at their own width, extra controls at the end. */
 .buttons {
   display: flex;
   flex-wrap: wrap;
@@ -21,11 +23,13 @@
   gap: var(--space-xs);
 }
 
-.status {
-  color: var(--color-text-dim);
-  font-size: var(--font-size-sm);
-}
-
 .trailing {
   margin-inline-start: auto;
+}
+
+/* On a phone the buttons show their icons only; the name stays on the button for screen readers. */
+@media (--phone) {
+  .label {
+    display: none;
+  }
 }
