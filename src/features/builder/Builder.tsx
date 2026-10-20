@@ -6,7 +6,6 @@ import { bookMage, cardsById, magesBySlug } from '@/data/catalog';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
-import { NewBookDialog } from '@/features/shared/NewBookDialog';
 import { Spellbook } from '@/features/spellbook/Spellbook';
 import { useBookStore } from '@/store/useBookStore';
 import styles from './Builder.module.css';
@@ -28,16 +27,18 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
   const removeCopy = useBookStore((state) => state.removeCopy);
 
   const routeMage = magesBySlug.get(mageSlug);
-  const { isPending, confirm, cancel } = useRouteMage(routeMage, tab);
+
+  useRouteMage(routeMage);
+
   const mage = bookMage(book);
 
   if (!routeMage) {
     return <Navigate to={PICKER_PATH} replace={true} />;
   }
 
-  // Until the book follows the URL's mage, there is only the confirm, if the switch needs one.
+  // The book follows the URL's mage in an effect, so for one render it is still the old mage's.
   if (mage?.id !== routeMage.id) {
-    return <NewBookDialog open={isPending} book={book} onConfirm={confirm} onCancel={cancel} />;
+    return null;
   }
 
   const summary = summarizeBook(book, mage, cardsById);

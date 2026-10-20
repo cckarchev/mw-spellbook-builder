@@ -5,7 +5,7 @@ import { App } from '@/App';
 import { toBase64Url } from '@/core/share-link/base64Url';
 import { encodeBook } from '@/core/share-link/bookCodec';
 import { cardsById } from '@/data/catalog';
-import { FIREBALL, overBudgetBook, smallBook } from '@/features/shared/testBooks';
+import { FIREBALL, overBudgetBook, resetBookStore, smallBook } from '@/features/shared/testBooks';
 import { useBookStore } from '@/store/useBookStore';
 
 const FIREBALL_CODE = cardsById.get(FIREBALL)?.code ?? '';
@@ -20,7 +20,7 @@ const renderAt = (path: string) => {
 };
 
 beforeEach(() => {
-  useBookStore.getState().clear();
+  resetBookStore();
 });
 
 describe('opening a share link', () => {

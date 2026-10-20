@@ -1,8 +1,9 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { readDraft } from '@/core/persistence/drafts';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
-import { FIREBALL } from '@/features/shared/testBooks';
+import { FIREBALL, resetBookStore } from '@/features/shared/testBooks';
 import { useBookStore } from '@/store/useBookStore';
 import { MagePicker } from './MagePicker';
 
@@ -28,7 +29,7 @@ const chooseWizard = async () => {
 };
 
 beforeEach(() => {
-  useBookStore.getState().clear();
+  resetBookStore();
   useCatalogFiltersStore.getState().reset();
 });
 
@@ -88,41 +89,16 @@ describe('MagePicker switching to another mage', () => {
     });
   });
 
-  it('asks before starting a new book, and Cancel keeps the old one', async () => {
+  it('opens the other mage without asking and keeps the old book as its draft', async () => {
     renderPicker();
 
     await chooseWizard();
 
-    const dialog = screen.getByRole('dialog', { name: 'Start a new book?' });
+    const warlockDraft = readDraft('warlock');
 
-    expect(dialog).toHaveTextContent('Your Warlock book has 1 card. It will be cleared.');
-
-    await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
-
-    expect(useBookStore.getState().book.mageId).toBe('warlock');
-    expect(useBookStore.getState().book.counts).toEqual({ [ADRAMELECHS_TORMENT]: ONE_COPY });
-    expect(buildScreen()).not.toBeInTheDocument();
-  });
-
-  it('clears the book and switches when confirmed', async () => {
-    renderPicker();
-
-    await chooseWizard();
-    await userEvent.click(screen.getByRole('button', { name: 'Clear and switch' }));
-
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(useBookStore.getState().book).toEqual({ mageId: 'wizard', counts: {} });
+    expect(warlockDraft?.book.counts).toEqual({ [ADRAMELECHS_TORMENT]: ONE_COPY });
     expect(buildScreen()).toBeInTheDocument();
-  });
-
-  it('starts the new book with no filters left from an earlier book of that mage', async () => {
-    useCatalogFiltersStore
-      .getState()
-      .setFilters('wizard', (filters) => ({ ...filters, query: 'fire' }));
-    renderPicker();
-
-    await chooseWizard();
-    await userEvent.click(screen.getByRole('button', { name: 'Clear and switch' }));
-
-    expect(useCatalogFiltersStore.getState().filters.query).toBe('');
   });
 });

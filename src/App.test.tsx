@@ -1,8 +1,10 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { readDraft } from '@/core/persistence/drafts';
+import { sameBook } from '@/core/rules/bookChanges';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
-import { smallBook } from '@/features/shared/testBooks';
+import { resetBookStore, smallBook } from '@/features/shared/testBooks';
 import { useBookStore } from '@/store/useBookStore';
 import { App } from './App';
 
@@ -15,7 +17,7 @@ const renderAt = (path: string) => {
 };
 
 beforeEach(() => {
-  useBookStore.getState().clear();
+  resetBookStore();
   useCatalogFiltersStore.getState().reset();
 });
 
@@ -94,28 +96,26 @@ describe('App opened at another mage', () => {
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
   });
 
-  it('asks before clearing a book with cards, and Cancel goes back to its mage', async () => {
+  it('opens the mage without asking and keeps the old book as its draft', () => {
     useBookStore.getState().loadBook(smallBook);
 
     renderAt('/warlock/book');
 
-    expect(screen.getByRole('dialog', { name: 'Start a new book?' })).toBeInTheDocument();
+    const wizardDraft = readDraft('wizard');
 
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-
-    expect(currentMage()).toBe('wizard');
-    expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByRole('tabpanel')).toHaveTextContent('Mana Crystal');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(currentMage()).toBe('warlock');
+    expect(wizardDraft && sameBook(wizardDraft.book, smallBook)).toBe(true);
   });
 
-  it('starts a new book for the mage when confirmed', async () => {
+  it('brings the old book back on its mage URL', () => {
     useBookStore.getState().loadBook(smallBook);
-
     renderAt('/warlock');
+    cleanup();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Clear and switch' }));
+    renderAt('/wizard/book');
 
-    expect(useBookStore.getState().book).toEqual({ mageId: 'warlock', counts: {} });
-    expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
+    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('Mana Crystal');
   });
 });

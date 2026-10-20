@@ -1,5 +1,6 @@
 import type { Book, Mage } from '@/core/rules/types';
 import { magesById } from '@/data/catalog';
+import { useBookStore } from '@/store/useBookStore';
 
 // Test fixtures for the builder screens, built on the real catalog.
 
@@ -58,4 +59,10 @@ export const tooManyCopiesBook = wizardBook({
 export const overWithProblemBook = {
   ...overBudgetBook,
   counts: { ...overBudgetBook.counts, [FIREBALL]: FIREBALL_OVER_LIMIT },
+};
+
+/** Empties the app's book store and its storage, for a test to start from no book. */
+export const resetBookStore = () => {
+  localStorage.clear();
+  useBookStore.setState({ book: { mageId: null, counts: {} }, name: null });
 };

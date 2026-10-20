@@ -1,29 +1,46 @@
 import { create } from 'zustand';
-import { readStored, writeStored } from '@/core/persistence/storage';
+import {
+  migrateLegacyBook,
+  readCurrentMageId,
+  readDraft,
+  writeCurrentMageId,
+  writeDraft,
+} from '@/core/persistence/drafts';
+import { emptyBook } from '@/core/rules/bookChanges';
 import type { Book } from '@/core/rules/types';
 import { canAddCopy } from '@/core/rules/validateBook';
-import { decodeBook, encodeBook } from '@/core/share-link/bookCodec';
 import { bookMage, cardsById } from '@/data/catalog';
 
-/** The book being built, kept as an encodeBook string so it survives a reload. */
-export const BOOK_STORAGE_KEY = 'mw-spellbook-builder:current';
-
 interface BookStore {
+  /** The book being built, kept as its mage's draft so it survives a reload and a mage switch. */
   book: Book;
+  /** The name of the saved book this one was saved as or loaded from, null for none. */
+  name: string | null;
   /** Adds one copy, unless the + control would be disabled for it. */
   addCopy: (cardId: string) => void;
   removeCopy: (cardId: string) => void;
-  loadBook: (book: Book) => void;
+  /** Switches to the mage's draft, or a new book for it; the current book stays as its draft. */
+  openMage: (mageId: string) => void;
+  loadBook: (book: Book, name?: string | null) => void;
+  setName: (name: string) => void;
+  /** Empties the book and drops its name; the mage stays. */
   clear: () => void;
 }
 
 const noBook = (): Book => ({ mageId: null, counts: {} });
 
-const readInitialBook = (): Book => {
-  const stored = readStored(BOOK_STORAGE_KEY);
-  const decoded = stored === null ? null : decodeBook(stored);
+interface InitialState {
+  book: Book;
+  name: string | null;
+}
 
-  return decoded?.book ?? noBook();
+const readInitialState = (): InitialState => {
+  migrateLegacyBook();
+
+  const mageId = readCurrentMageId();
+  const draft = mageId === null ? null : readDraft(mageId);
+
+  return draft ?? { book: noBook(), name: null };
 };
 
 const withoutCard = (counts: Book['counts'], cardId: string): Book['counts'] => {
@@ -36,7 +53,7 @@ const withoutCard = (counts: Book['counts'], cardId: string): Book['counts'] => 
 
 export const createBookStore = () => {
   const store = create<BookStore>()((set, get) => ({
-    book: readInitialBook(),
+    ...readInitialState(),
 
     addCopy: (cardId) => {
       const { book } = get();
@@ -66,17 +83,38 @@ export const createBookStore = () => {
       set({ book: { ...book, counts } });
     },
 
-    loadBook: (book) => {
-      set({ book });
+    openMage: (mageId) => {
+      if (get().book.mageId === mageId) {
+        return;
+      }
+
+      const draft = readDraft(mageId);
+
+      set(draft ?? { book: emptyBook(mageId), name: null });
+    },
+
+    loadBook: (book, name = null) => {
+      set({ book, name });
+    },
+
+    setName: (name) => {
+      set({ name });
     },
 
     clear: () => {
-      set({ book: noBook() });
+      const { mageId } = get().book;
+
+      set({ book: { mageId, counts: {} }, name: null });
     },
   }));
 
-  store.subscribe((state) => {
-    writeStored(BOOK_STORAGE_KEY, encodeBook(state.book));
+  store.subscribe(({ book, name }) => {
+    if (book.mageId === null) {
+      return;
+    }
+
+    writeDraft({ book, name });
+    writeCurrentMageId(book.mageId);
   });
 
   return store;

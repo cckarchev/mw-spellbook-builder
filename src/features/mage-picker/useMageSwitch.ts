@@ -1,53 +1,18 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { builderPath } from '@/core/routing/builderPath';
-import { emptyBook, mageSwitchKind } from '@/core/rules/bookChanges';
 import type { Mage } from '@/core/rules/types';
-import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { useBookStore } from '@/store/useBookStore';
 
-/**
- * Switches the book's mage and opens the builder. When the switch would clear the book,
- * the new mage waits in pendingSwitch until it is confirmed.
- */
+/** Opens the builder on the mage's draft; the book left behind stays as its own mage's draft. */
 export const useMageSwitch = () => {
   const navigate = useNavigate();
   const book = useBookStore((state) => state.book);
-  const loadBook = useBookStore((state) => state.loadBook);
-  const resetFilters = useCatalogFiltersStore((state) => state.reset);
+  const openMage = useBookStore((state) => state.openMage);
 
-  const [pendingSwitch, setPendingSwitch] = useState<Mage | null>(null);
-
-  const requestSwitch = (mage: Mage) => {
-    const kind = mageSwitchKind(book, mage.id);
-
-    if (kind === 'newBook') {
-      setPendingSwitch(mage);
-
-      return;
-    }
-
-    if (kind === 'direct') {
-      loadBook(emptyBook(mage.id));
-    }
-
+  const selectMage = (mage: Mage) => {
+    openMage(mage.id);
     navigate(builderPath(mage.name, 'cards'));
   };
 
-  const confirmSwitch = () => {
-    if (!pendingSwitch) {
-      return;
-    }
-
-    loadBook(emptyBook(pendingSwitch.id));
-    resetFilters();
-    setPendingSwitch(null);
-    navigate(builderPath(pendingSwitch.name, 'cards'));
-  };
-
-  const cancelSwitch = () => {
-    setPendingSwitch(null);
-  };
-
-  return { book, pendingSwitch, requestSwitch, confirmSwitch, cancelSwitch };
+  return { book, selectMage };
 };

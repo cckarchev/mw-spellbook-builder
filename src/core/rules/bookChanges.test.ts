@@ -1,11 +1,4 @@
-import {
-  copyCount,
-  emptyBook,
-  hasCards,
-  hasUnsavedChanges,
-  mageSwitchKind,
-  sameBook,
-} from './bookChanges';
+import { copyCount, emptyBook, hasCards, hasUnsavedChanges, sameBook } from './bookChanges';
 import type { Book } from './types';
 
 const TWO_COPIES = 2;
@@ -46,20 +39,6 @@ describe('copyCount', () => {
 
   it('is 0 for a book with no cards', () => {
     expect(copyCount({ ...wizardBook, counts: {} })).toBe(0);
-  });
-});
-
-describe('mageSwitchKind', () => {
-  it('starts a new book for another mage when the book has cards', () => {
-    expect(mageSwitchKind(wizardBook, 'warlock')).toBe('newBook');
-  });
-
-  it('switches straight away when the book has no cards', () => {
-    expect(mageSwitchKind({ ...wizardBook, counts: {} }, 'warlock')).toBe('direct');
-  });
-
-  it('keeps the book when the same mage is picked again', () => {
-    expect(mageSwitchKind(wizardBook, 'wizard')).toBe('sameMage');
   });
 });
 

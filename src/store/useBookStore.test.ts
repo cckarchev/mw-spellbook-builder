@@ -1,9 +1,13 @@
+import { CURRENT_MAGE_KEY, DRAFT_PREFIX, LEGACY_BOOK_KEY } from '@/core/persistence/drafts';
 import type { Book } from '@/core/rules/types';
 import { canAddCopy } from '@/core/rules/validateBook';
+import { encodeBook } from '@/core/share-link/bookCodec';
 import { cards, magesById } from '@/data/catalog';
-import { BOOK_STORAGE_KEY, createBookStore } from './useBookStore';
+import { createBookStore } from './useBookStore';
 
 const WIZARD_ID = 'wizard';
+const WARLOCK_ID = 'warlock';
+const NAME = 'Tourney';
 const ADD_ATTEMPTS = 10;
 const LOADED_COPIES = 2;
 
@@ -73,36 +77,93 @@ describe('useBookStore book changes', () => {
     expect(createBookStore().getState().book).toEqual(EMPTY_BOOK);
   });
 
-  it('loadBook replaces the book and clear empties it', () => {
+  it('loadBook replaces the book and its name', () => {
     const store = createBookStore();
     const loaded: Book = {
       mageId: WIZARD_ID,
       counts: { [anyMageCard.id]: LOADED_COPIES },
     };
 
-    store.getState().loadBook(loaded);
+    store.getState().loadBook(loaded, NAME);
 
     expect(store.getState().book).toEqual(loaded);
+    expect(store.getState().name).toBe(NAME);
 
+    store.getState().loadBook(loaded);
+
+    expect(store.getState().name).toBeNull();
+  });
+
+  it('clear empties the book, keeps the mage and drops the name', () => {
+    const store = createWizardStore();
+
+    store.getState().addCopy(anyMageCard.id);
+    store.getState().setName(NAME);
     store.getState().clear();
 
-    expect(store.getState().book).toEqual(EMPTY_BOOK);
+    expect(store.getState().book).toEqual({ mageId: WIZARD_ID, counts: {} });
+    expect(store.getState().name).toBeNull();
+  });
+});
+
+describe('useBookStore openMage', () => {
+  it("keeps the previous mage's book as its draft and restores it on return", () => {
+    const store = createWizardStore();
+
+    store.getState().addCopy(anyMageCard.id);
+    store.getState().setName(NAME);
+
+    const wizardBook = store.getState().book;
+
+    store.getState().openMage(WARLOCK_ID);
+
+    expect(store.getState().book).toEqual({ mageId: WARLOCK_ID, counts: {} });
+    expect(store.getState().name).toBeNull();
+
+    store.getState().openMage(WIZARD_ID);
+
+    expect(store.getState().book).toEqual(wizardBook);
+    expect(store.getState().name).toBe(NAME);
+  });
+
+  it('keeps the book when the mage is the same', () => {
+    const store = createWizardStore();
+
+    store.getState().addCopy(anyMageCard.id);
+
+    const before = store.getState().book;
+
+    store.getState().openMage(WIZARD_ID);
+
+    expect(store.getState().book).toBe(before);
   });
 });
 
 describe('useBookStore persistence', () => {
-  it('survives a store re-create through localStorage', () => {
+  it("survives a store re-create through the mage's draft", () => {
     const first = createWizardStore();
 
     first.getState().addCopy(anyMageCard.id);
+    first.getState().setName(NAME);
 
     const second = createBookStore();
 
     expect(second.getState().book).toEqual(first.getState().book);
+    expect(second.getState().name).toBe(NAME);
   });
 
-  it('starts empty when localStorage holds garbage', () => {
-    localStorage.setItem(BOOK_STORAGE_KEY, 'not a book');
+  it('starts from the book kept before there was a draft per mage', () => {
+    const legacy: Book = { mageId: WIZARD_ID, counts: { [anyMageCard.id]: 1 } };
+
+    localStorage.setItem(LEGACY_BOOK_KEY, encodeBook(legacy));
+
+    expect(createBookStore().getState().book).toEqual(legacy);
+  });
+
+  it('starts empty when storage holds garbage', () => {
+    localStorage.setItem(LEGACY_BOOK_KEY, 'not a book');
+    localStorage.setItem(CURRENT_MAGE_KEY, WIZARD_ID);
+    localStorage.setItem(DRAFT_PREFIX + WIZARD_ID, 'not a draft');
 
     expect(createBookStore().getState().book).toEqual(EMPTY_BOOK);
   });

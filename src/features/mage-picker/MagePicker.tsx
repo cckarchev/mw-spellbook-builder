@@ -1,11 +1,10 @@
 import { mages } from '@/data/catalog';
-import { NewBookDialog } from '@/features/shared/NewBookDialog';
 import styles from './MagePicker.module.css';
 import { MageTile } from './mage-tile/MageTile';
 import { useMageSwitch } from './useMageSwitch';
 
 export const MagePicker = () => {
-  const { book, pendingSwitch, requestSwitch, confirmSwitch, cancelSwitch } = useMageSwitch();
+  const { book, selectMage } = useMageSwitch();
 
   return (
     <main className={styles.picker}>
@@ -16,16 +15,10 @@ export const MagePicker = () => {
             key={mage.id}
             mage={mage}
             current={mage.id === book.mageId}
-            onSelect={requestSwitch}
+            onSelect={selectMage}
           />
         ))}
       </div>
-      <NewBookDialog
-        open={pendingSwitch !== null}
-        book={book}
-        onConfirm={confirmSwitch}
-        onCancel={cancelSwitch}
-      />
     </main>
   );
 };
