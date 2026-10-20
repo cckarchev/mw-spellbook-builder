@@ -1,4 +1,4 @@
-import { readStored, removeStored, writeStored } from './storage';
+import { readStored, readStoredJson, removeStored, writeStored } from './storage';
 
 const KEY = 'test:key';
 
@@ -59,5 +59,25 @@ describe('removeStored', () => {
     expect(() => {
       removeStored(KEY);
     }).not.toThrow();
+  });
+});
+
+describe('readStoredJson', () => {
+  afterEach(() => {
+    localStorage.clear();
+  });
+
+  it('parses the stored JSON', () => {
+    writeStored(KEY, '{"a":1}');
+
+    expect(readStoredJson(KEY)).toEqual({ a: 1 });
+  });
+
+  it('returns null for a missing key or text that is not JSON', () => {
+    expect(readStoredJson(KEY)).toBeNull();
+
+    writeStored(KEY, 'not json');
+
+    expect(readStoredJson(KEY)).toBeNull();
   });
 });

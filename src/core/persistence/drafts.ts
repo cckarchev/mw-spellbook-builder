@@ -1,7 +1,7 @@
 import { hasCards } from '@/core/rules/bookChanges';
 import type { Book } from '@/core/rules/types';
 import { decodeBook, encodeBook } from '@/core/share-link/bookCodec';
-import { readStored, removeStored, writeStored } from './storage';
+import { readStored, readStoredJson, removeStored, writeStored } from './storage';
 
 export const DRAFT_PREFIX = 'mw-spellbook-builder:draft:';
 export const CURRENT_MAGE_KEY = 'mw-spellbook-builder:current-mage';
@@ -31,18 +31,9 @@ const isStoredDraft = (value: unknown): value is StoredDraft => {
   return typeof b === 'string' && hasValidName;
 };
 
-const parseJson = (text: string): unknown => {
-  try {
-    return JSON.parse(text);
-  } catch {
-    return null;
-  }
-};
-
 /** The mage's draft, or null when there is none or it cannot be read. */
 export const readDraft = (mageId: string): Draft | null => {
-  const stored = readStored(DRAFT_PREFIX + mageId);
-  const parsed = stored === null ? null : parseJson(stored);
+  const parsed = readStoredJson(DRAFT_PREFIX + mageId);
 
   if (!isStoredDraft(parsed)) {
     return null;

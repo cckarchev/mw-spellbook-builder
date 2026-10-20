@@ -27,3 +27,18 @@ export const removeStored = (key: string): void => {
     // Nothing to clean up when storage is unavailable.
   }
 };
+
+/** The stored JSON value, or null when there is none, it is not JSON, or storage is unavailable. */
+export const readStoredJson = (key: string): unknown => {
+  const stored = readStored(key);
+
+  if (stored === null) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(stored);
+  } catch {
+    return null;
+  }
+};
