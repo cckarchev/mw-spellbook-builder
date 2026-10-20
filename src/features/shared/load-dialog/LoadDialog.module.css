@@ -7,3 +7,16 @@
 .empty {
   color: var(--color-text-dim);
 }
+
+.section + .section {
+  margin-top: var(--space-md);
+}
+
+.heading {
+  margin-bottom: var(--space-xxs);
+  color: var(--color-text-dim);
+  font-size: var(--font-size-sm);
+  font-weight: inherit;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}

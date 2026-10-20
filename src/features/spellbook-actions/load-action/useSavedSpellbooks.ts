@@ -1,51 +1,67 @@
 import { useState } from 'react';
-import {
-  deleteSavedSpellbook,
-  type SavedSpellbook,
-  savedSpellbooks,
-} from '@/core/persistence/savedSpellbooks';
+import { type SavedSpellbook, savedSpellbooks } from '@/core/persistence/savedSpellbooks';
+import type { Spellbook } from '@/core/rules/types';
+import { officialSpellbook } from '@/data/officialSpellbooks';
 import { useSpellbookStatus } from '@/store/useSpellbookStatus';
 import { useSpellbookStore } from '@/store/useSpellbookStore';
+import { useDeleteSavedSpellbook } from './useDeleteSavedSpellbook';
+
+/** A spellbook to load and the name it carries once loaded; null for the official spellbook. */
+interface LoadChoice {
+  spellbook: Spellbook;
+  name: string | null;
+}
 
 /**
- * The mage's saved spellbooks for the Load dialog, with loading and deleting them behind their
- * confirms. `onLoaded` runs after a saved spellbook replaces the current one.
+ * The mage's saved spellbooks and official spellbook for the Load dialog, with loading and
+ * deleting them behind their confirms. `onLoaded` runs after a spellbook replaces the current one.
  */
 export const useSavedSpellbooks = (onLoaded: () => void) => {
   const spellbook = useSpellbookStore((state) => state.spellbook);
-  const currentName = useSpellbookStore((state) => state.name);
   const loadSpellbook = useSpellbookStore((state) => state.loadSpellbook);
   const { unsaved } = useSpellbookStatus();
 
   const [saved, setSaved] = useState<SavedSpellbook[]>([]);
-  const [pendingLoad, setPendingLoad] = useState<SavedSpellbook | null>(null);
-  const [pendingDelete, setPendingDelete] = useState<string | null>(null);
+  const [official, setOfficial] = useState<Spellbook | null>(null);
+  const [pendingLoad, setPendingLoad] = useState<LoadChoice | null>(null);
 
   const readSaved = () => {
     setSaved(spellbook.mageId === null ? [] : savedSpellbooks(spellbook.mageId));
   };
 
-  /** Re-reads the saved spellbooks and drops any pending confirm. */
+  const deletion = useDeleteSavedSpellbook(readSaved);
+
+  /** Re-reads the saved and official spellbooks and drops any pending confirm. */
   const refresh = () => {
     readSaved();
+    setOfficial(officialSpellbook(spellbook.mageId));
     setPendingLoad(null);
-    setPendingDelete(null);
+    deletion.cancelDelete();
   };
 
-  const load = (savedSpellbook: SavedSpellbook) => {
-    loadSpellbook(savedSpellbook.spellbook, savedSpellbook.name);
+  const load = (choice: LoadChoice) => {
+    loadSpellbook(choice.spellbook, choice.name);
     setPendingLoad(null);
     onLoaded();
   };
 
-  const requestLoad = (savedSpellbook: SavedSpellbook) => {
+  const requestChoice = (choice: LoadChoice) => {
     if (unsaved) {
-      setPendingLoad(savedSpellbook);
+      setPendingLoad(choice);
 
       return;
     }
 
-    load(savedSpellbook);
+    load(choice);
+  };
+
+  const requestLoad = (savedSpellbook: SavedSpellbook) => {
+    requestChoice({ spellbook: savedSpellbook.spellbook, name: savedSpellbook.name });
+  };
+
+  /** The official spellbook loads unnamed: saving it later makes the player's own copy. */
+  const requestLoadOfficial = (officialToLoad: Spellbook) => {
+    requestChoice({ spellbook: officialToLoad, name: null });
   };
 
   const confirmLoad = () => {
@@ -60,36 +76,15 @@ export const useSavedSpellbooks = (onLoaded: () => void) => {
     setPendingLoad(null);
   };
 
-  const confirmDelete = () => {
-    if (pendingDelete === null || spellbook.mageId === null) {
-      return;
-    }
-
-    deleteSavedSpellbook(spellbook.mageId, pendingDelete);
-
-    // The spellbook stays, as a draft that no longer comes from a saved spellbook.
-    if (pendingDelete === currentName) {
-      loadSpellbook(spellbook, null);
-    }
-
-    setPendingDelete(null);
-    readSaved();
-  };
-
-  const cancelDelete = () => {
-    setPendingDelete(null);
-  };
-
   return {
     saved,
+    official,
     pendingLoad,
-    pendingDelete,
     refresh,
     requestLoad,
+    requestLoadOfficial,
     confirmLoad,
     cancelLoad,
-    requestDelete: setPendingDelete,
-    confirmDelete,
-    cancelDelete,
+    ...deletion,
   };
 };

@@ -5,9 +5,10 @@ import { mageStatsImage } from '@/core/catalog/mageImage';
 import { splitByTerms } from '@/core/glossary/findTerms';
 import { mageSlug } from '@/core/routing/builderPath';
 import { SCHOOLS } from '@/core/rules/types';
-import { cards, cardsByCode, magesById } from './catalog';
+import { cards, cardsByCode, cardsById, magesById } from './catalog';
 import { glossary, glossaryIndex } from './glossary';
 import { mages } from './mages';
+import { officialSpellbook } from './officialSpellbooks';
 
 const PUBLIC_DIR = 'public';
 const PALADIN_HOLY_LEVEL = 2;
@@ -161,5 +162,58 @@ describe('glossary data integrity', () => {
 
   it('has an entry for Stance, which the Codex leaves out', () => {
     expect(termsIn('Monk Only, Stance')).toContainEqual(['Stance', 'Stance']);
+  });
+});
+
+const OFFICIAL_MAGE_IDS = [
+  'adramelech-warlock',
+  'anvil-throne-warlord',
+  'beastmaster',
+  'druid',
+  'forcemaster',
+  'johktari-beastmaster',
+  'necromancer',
+  'paladin',
+  'priest',
+  'priestess',
+  'siren',
+  'warlock',
+  'warlord',
+  'wizard',
+];
+
+describe('official spellbook data integrity', () => {
+  it('has an official spellbook for exactly these 14 mages', () => {
+    const withOfficial = mages.filter((mage) => officialSpellbook(mage.id) !== null);
+
+    expect(withOfficial.map((mage) => mage.id).sort()).toEqual(OFFICIAL_MAGE_IDS);
+  });
+
+  it('uses only cards in the catalog, with positive counts', () => {
+    const problems = OFFICIAL_MAGE_IDS.flatMap((mageId) => {
+      const counts = officialSpellbook(mageId)?.counts ?? {};
+
+      return Object.entries(counts)
+        .filter(([cardId, count]) => !cardsById.has(cardId) || count <= 0)
+        .map(([cardId]) => `${mageId}: ${cardId}`);
+    });
+
+    expect(problems).toEqual([]);
+  });
+
+  it('gives each official spellbook its own mage', () => {
+    const wrongMage = OFFICIAL_MAGE_IDS.filter(
+      (mageId) => officialSpellbook(mageId)?.mageId !== mageId,
+    );
+
+    expect(wrongMage).toEqual([]);
+  });
+
+  it('has no official spellbook for a mage without one', () => {
+    expect(officialSpellbook('sistarran-wizard')).toBeNull();
+  });
+
+  it('has no official spellbook when there is no mage', () => {
+    expect(officialSpellbook(null)).toBeNull();
   });
 });

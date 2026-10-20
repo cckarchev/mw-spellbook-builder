@@ -21,9 +21,20 @@ export const emptySpellbook = (mageId: string): Spellbook => ({ mageId, counts: 
 
 /**
  * Whether the spellbook would lose work if replaced. `saved` is the saved copy of the spellbook's
- * name, null when it has no name: then any card counts as unsaved work.
+ * name, null when it has no name: then any card counts as unsaved work. `official` is the mage's
+ * official spellbook, if any: a spellbook equal to it loses nothing, since it can be loaded again.
  */
-export const hasUnsavedChanges = (spellbook: Spellbook, saved: Spellbook | null): boolean => {
+export const hasUnsavedChanges = (
+  spellbook: Spellbook,
+  saved: Spellbook | null,
+  official: Spellbook | null,
+): boolean => {
+  const isOfficial = official !== null && sameSpellbook(spellbook, official);
+
+  if (isOfficial) {
+    return false;
+  }
+
   if (saved === null) {
     return hasCards(spellbook);
   }

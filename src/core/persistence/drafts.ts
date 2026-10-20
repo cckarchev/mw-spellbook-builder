@@ -1,6 +1,7 @@
 import { hasCards, hasUnsavedChanges } from '@/core/rules/spellbookChanges';
 import type { Spellbook } from '@/core/rules/types';
 import { decodeSpellbook, encodeSpellbook } from '@/core/share-link/spellbookCodec';
+import { officialSpellbook } from '@/data/officialSpellbooks';
 import { savedCopy } from './savedSpellbooks';
 import { readStored, readStoredJson, removeStored, writeStored } from './storage';
 
@@ -70,7 +71,10 @@ export const writeDraft = ({ spellbook, name }: Draft): void => {
   writeStored(key, JSON.stringify(stored));
 };
 
-/** Whether the mage's draft holds work that its saved copy does not, and would be lost if replaced. */
+/**
+ * Whether the mage's draft holds work that neither its saved copy nor the mage's official
+ * spellbook has, and would be lost if replaced.
+ */
 export const hasUnsavedDraft = (mageId: string): boolean => {
   const draft = readDraft(mageId);
 
@@ -80,7 +84,7 @@ export const hasUnsavedDraft = (mageId: string): boolean => {
 
   const saved = savedCopy(draft.spellbook, draft.name);
 
-  return hasUnsavedChanges(draft.spellbook, saved);
+  return hasUnsavedChanges(draft.spellbook, saved, officialSpellbook(mageId));
 };
 
 export const readCurrentMageId = (): string | null => readStored(CURRENT_MAGE_KEY);

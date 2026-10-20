@@ -14,9 +14,15 @@ import { frameBox } from './lib/frameBox';
 import { normalizeCard } from './lib/normalizeCard';
 import { parseCodexXml } from './lib/readCodex';
 import { parseSetXml, readModuleSets } from './lib/readModule';
+import {
+  parseDeckXml,
+  readOfficialDecks,
+  resolveOfficialSpellbook,
+} from './lib/readOfficialSpellbooks';
 
 // Reads the OCTGN Mage Wars module, the community image pack and the Codex from raw-input/
-// and writes src/data/cards.json, src/data/glossary.json and public/cards/<code>.webp.
+// and writes src/data/cards.json, src/data/glossary.json, src/data/officialSpellbooks.json
+// and public/cards/<code>.webp.
 // Run with `npm run data`. Reading the Codex needs `pdftohtml`, from poppler-utils.
 
 const RAW_DIR = 'raw-input';
@@ -38,6 +44,7 @@ const CODEX_MAX_BUFFER = CODEX_MAX_BUFFER_MEGABYTES * MEGABYTE;
 
 const CARDS_JSON_PATH = path.join('src', 'data', 'cards.json');
 const GLOSSARY_JSON_PATH = path.join('src', 'data', 'glossary.json');
+const OFFICIAL_SPELLBOOKS_JSON_PATH = path.join('src', 'data', 'officialSpellbooks.json');
 const PUBLIC_DIR = 'public';
 const IMAGE_DIR = path.join(PUBLIC_DIR, 'cards');
 const IMAGE_WIDTH = 480;
@@ -129,6 +136,30 @@ const readCards = async (): Promise<Card[]> => {
   const sorted = cards.sort((a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id));
 
   return applyCorrections(sorted, CARD_CORRECTIONS);
+};
+
+/** Sorts an object's keys, so the generated JSON diffs cleanly between runs. */
+const sortedByKey = <T>(record: Record<string, T>): Record<string, T> =>
+  Object.fromEntries(Object.entries(record).sort(([a], [b]) => a.localeCompare(b)));
+
+/** The module's official spellbooks as mage id to card id counts, one per mage. */
+const readOfficialSpellbooks = async (
+  cards: readonly Card[],
+): Promise<Record<string, Record<string, number>>> => {
+  const decks = readOfficialDecks(await readFile(MODULE_PATH));
+  const spellbooks: Record<string, Record<string, number>> = {};
+
+  for (const [fileName, xml] of decks) {
+    const { mageId, counts } = resolveOfficialSpellbook(parseDeckXml(xml), fileName, cards, mages);
+
+    if (Object.hasOwn(spellbooks, mageId)) {
+      throw new Error(`Two official spellbooks for ${mageId}`);
+    }
+
+    spellbooks[mageId] = sortedByKey(counts);
+  }
+
+  return sortedByKey(spellbooks);
 };
 
 const assertUniqueCodes = (cards: readonly Card[]): void => {
@@ -230,6 +261,9 @@ const main = async (): Promise<void> => {
 
   assertUniqueCodes(cards);
 
+  // Before the slow image work, so an unresolved card fails the run early.
+  const officialSpellbooks = await readOfficialSpellbooks(cards);
+
   const mageCardIds = mages
     .flatMap((mage) => [mage.imageCardId, mage.statsCardId])
     .filter((id): id is string => id !== null);
@@ -246,6 +280,7 @@ const main = async (): Promise<void> => {
   const glossary = readGlossary();
 
   await writeJson(GLOSSARY_JSON_PATH, glossary);
+  await writeJson(OFFICIAL_SPELLBOOKS_JSON_PATH, officialSpellbooks);
 
   const missingImages = cards.filter((card) => card.image === null);
   const unknownExpansion = cards.filter((card) => card.expansion === 'Unknown');
@@ -257,6 +292,7 @@ const main = async (): Promise<void> => {
   log(`Stale images removed: ${removed}`);
   log(`Mages without image: ${mageCardIds.filter((id) => !withImage.has(id)).length}`);
   log(`Glossary terms: ${glossary.length}`);
+  log(`Official spellbooks: ${Object.keys(officialSpellbooks).length}`);
 };
 
 await main();

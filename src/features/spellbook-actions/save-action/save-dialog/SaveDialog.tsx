@@ -5,6 +5,8 @@ import styles from './SaveDialog.module.css';
 
 /** Long enough for "Tourney 2026 Fire Wizard", short enough for the header line. */
 const NAME_MAX_LENGTH = 40;
+/** Saved spellbooks live in localStorage, so players are told they do not follow them around. */
+const STORAGE_NOTE = 'Saved in this browser only. To use it on another device, share its link.';
 
 interface SaveDialogProps {
   open: boolean;
@@ -54,6 +56,7 @@ export const SaveDialog = ({
             {error}
           </p>
         )}
+        <p className={styles.note}>{STORAGE_NOTE}</p>
         <Button type="submit" variant="primary" className={styles.save}>
           Save
         </Button>

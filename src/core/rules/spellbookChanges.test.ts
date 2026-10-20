@@ -61,20 +61,40 @@ describe('emptySpellbook', () => {
 
 describe('hasUnsavedChanges', () => {
   it('is false for an unnamed empty spellbook', () => {
-    expect(hasUnsavedChanges(emptySpellbook('wizard'), null)).toBe(false);
+    expect(hasUnsavedChanges(emptySpellbook('wizard'), null, null)).toBe(false);
   });
 
   it('is true for an unnamed spellbook with cards', () => {
-    expect(hasUnsavedChanges(wizardSpellbook, null)).toBe(true);
+    expect(hasUnsavedChanges(wizardSpellbook, null, null)).toBe(true);
   });
 
   it('is false when the spellbook equals its saved copy', () => {
-    expect(hasUnsavedChanges(wizardSpellbook, { ...wizardSpellbook })).toBe(false);
+    expect(hasUnsavedChanges(wizardSpellbook, { ...wizardSpellbook }, null)).toBe(false);
   });
 
   it('is true when a count differs from the saved copy', () => {
     const saved: Spellbook = { ...wizardSpellbook, counts: { fireball: THREE_COPIES, bolt: 1 } };
 
-    expect(hasUnsavedChanges(wizardSpellbook, saved)).toBe(true);
+    expect(hasUnsavedChanges(wizardSpellbook, saved, null)).toBe(true);
+  });
+
+  it('is false for an unnamed spellbook equal to the official one', () => {
+    expect(hasUnsavedChanges(wizardSpellbook, null, { ...wizardSpellbook })).toBe(false);
+  });
+
+  it('is true for an unnamed spellbook that differs from the official one', () => {
+    const official: Spellbook = { ...wizardSpellbook, counts: { fireball: THREE_COPIES } };
+
+    expect(hasUnsavedChanges(wizardSpellbook, null, official)).toBe(true);
+  });
+
+  it('is false for a named spellbook equal to the official one even when its saved copy differs', () => {
+    const saved = emptySpellbook('wizard');
+
+    expect(hasUnsavedChanges(wizardSpellbook, saved, { ...wizardSpellbook })).toBe(false);
+  });
+
+  it('is false for an empty unnamed spellbook when an official one exists', () => {
+    expect(hasUnsavedChanges(emptySpellbook('wizard'), null, wizardSpellbook)).toBe(false);
   });
 });
