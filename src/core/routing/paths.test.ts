@@ -1,4 +1,6 @@
-import { builderPath, mageSlug } from './builderPath';
+import { bookPath, builderPath, mageSlug, PICKER_PATH } from './paths';
+
+const WIZARD = { name: 'Sistarran Wizard' };
 
 describe('mageSlug', () => {
   it('lowercases a one-word name', () => {
@@ -22,5 +24,15 @@ describe('builderPath', () => {
 
   it('opens the book tab one level down', () => {
     expect(builderPath('Sistarran Wizard', 'book')).toBe('/sistarran-wizard/book');
+  });
+});
+
+describe('bookPath', () => {
+  it('opens the tab of the mage of the book', () => {
+    expect(bookPath(WIZARD, 'book')).toBe('/sistarran-wizard/book');
+  });
+
+  it('goes to the mage picker when the book has no mage', () => {
+    expect(bookPath(undefined, 'book')).toBe(PICKER_PATH);
   });
 });

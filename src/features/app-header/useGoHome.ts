@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { PICKER_PATH } from '@/core/routing/paths';
 import { hasCards } from '@/core/rules/bookChanges';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { useBookStore } from '@/store/useBookStore';
-
-const HOME_PATH = '/';
 
 /**
  * Goes back to the mage picker with a new book: the book and the catalog filters are cleared.
@@ -24,7 +23,7 @@ export const useGoHome = () => {
     resetFilters();
     setAskingToClear(false);
     // Already home: replace the entry, so Back does not seem to do nothing.
-    navigate(HOME_PATH, { replace: location.pathname === HOME_PATH });
+    navigate(PICKER_PATH, { replace: location.pathname === PICKER_PATH });
   };
 
   const requestHome = () => {

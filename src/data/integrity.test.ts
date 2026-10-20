@@ -3,7 +3,7 @@ import path from 'node:path';
 import { cardCode, cardImagePath } from '@/core/catalog/cardImage';
 import { mageStatsImage } from '@/core/catalog/mageImage';
 import { splitByTerms } from '@/core/glossary/findTerms';
-import { mageSlug } from '@/core/routing/builderPath';
+import { mageSlug } from '@/core/routing/paths';
 import { SCHOOLS } from '@/core/rules/types';
 import { cards, cardsByCode, magesById } from './catalog';
 import { glossary, glossaryIndex } from './glossary';

@@ -29,3 +29,6 @@ export const mageSwitchKind = (book: Book, mageId: string): MageSwitchKind => {
 
   return hasCards(book) ? 'newBook' : 'direct';
 };
+
+/** A new book for the mage, with no cards yet. */
+export const emptyBook = (mageId: string): Book => ({ mageId, counts: {} });

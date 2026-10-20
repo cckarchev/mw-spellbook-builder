@@ -60,6 +60,8 @@ describe('opening a share link', () => {
     expect(screen.getByRole('dialog', { name: 'Check this book' })).toHaveTextContent(
       'This link could not be read',
     );
+    // It stays where the link was opened, here the mage picker.
+    expect(screen.getByRole('heading', { name: 'Choose a mage' })).toBeInTheDocument();
   });
 
   it('names an unknown mage and still reports the cards left out', () => {

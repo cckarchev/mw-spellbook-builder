@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { builderPath } from '@/core/routing/builderPath';
-import { mageSwitchKind } from '@/core/rules/bookChanges';
+import { builderPath } from '@/core/routing/paths';
+import { emptyBook, mageSwitchKind } from '@/core/rules/bookChanges';
 import type { Mage } from '@/core/rules/types';
-import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { useBookStore } from '@/store/useBookStore';
+import { useStartNewBook } from './useStartNewBook';
 
 /**
  * Switches the book's mage and opens the builder. When the switch would clear the book,
@@ -14,7 +14,7 @@ export const useMageSwitch = () => {
   const navigate = useNavigate();
   const book = useBookStore((state) => state.book);
   const loadBook = useBookStore((state) => state.loadBook);
-  const resetFilters = useCatalogFiltersStore((state) => state.reset);
+  const startNewBook = useStartNewBook();
 
   const [pendingSwitch, setPendingSwitch] = useState<Mage | null>(null);
 
@@ -28,7 +28,7 @@ export const useMageSwitch = () => {
     }
 
     if (kind === 'direct') {
-      loadBook({ mageId: mage.id, counts: {} });
+      loadBook(emptyBook(mage.id));
     }
 
     navigate(builderPath(mage.name, 'cards'));
@@ -39,8 +39,7 @@ export const useMageSwitch = () => {
       return;
     }
 
-    loadBook({ mageId: pendingSwitch.id, counts: {} });
-    resetFilters();
+    startNewBook(pendingSwitch);
     setPendingSwitch(null);
     navigate(builderPath(pendingSwitch.name, 'cards'));
   };

@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import type { BuilderTab } from '@/core/routing/builderPath';
-import { mageSwitchKind } from '@/core/rules/bookChanges';
+import { type BuilderTab, bookPath } from '@/core/routing/paths';
+import { emptyBook, mageSwitchKind } from '@/core/rules/bookChanges';
 import type { Mage } from '@/core/rules/types';
 import { BOOK_PARAM } from '@/core/share-link/shareUrl';
-import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
+import { bookMage } from '@/data/catalog';
 import { useBookStore } from '@/store/useBookStore';
-import { currentBookPath } from './currentBookPath';
+import { useStartNewBook } from './useStartNewBook';
 
 /**
  * Makes the book follow the mage in the URL, as picking that mage would: a book with no
@@ -18,14 +18,15 @@ export const useRouteMage = (routeMage: Mage | undefined, tab: BuilderTab) => {
   const navigate = useNavigate();
   const book = useBookStore((state) => state.book);
   const loadBook = useBookStore((state) => state.loadBook);
-  const resetFilters = useCatalogFiltersStore((state) => state.reset);
+  const startNewBook = useStartNewBook();
 
   // A share link brings its own book and mage; the incoming link handles those.
   const opensShareLink = new URLSearchParams(location.search).has(BOOK_PARAM);
   const kind = routeMage && !opensShareLink ? mageSwitchKind(book, routeMage.id) : 'sameMage';
 
-  // Runs when the URL names a mage, not on every book change: a book cleared on the way out
-  // of the builder must not bring the URL's mage back.
+  // Runs when the URL names a mage, not on every book change: clearing the book on the way
+  // out of the builder must not reload the mage of the URL being left. Coming back to that
+  // URL later, such as with Back, does load it, as a fresh visit would.
   useEffect(() => {
     if (!routeMage || opensShareLink) {
       return;
@@ -34,7 +35,7 @@ export const useRouteMage = (routeMage: Mage | undefined, tab: BuilderTab) => {
     const current = useBookStore.getState().book;
 
     if (mageSwitchKind(current, routeMage.id) === 'direct') {
-      loadBook({ mageId: routeMage.id, counts: {} });
+      loadBook(emptyBook(routeMage.id));
     }
   }, [routeMage, opensShareLink, loadBook]);
 
@@ -43,12 +44,11 @@ export const useRouteMage = (routeMage: Mage | undefined, tab: BuilderTab) => {
       return;
     }
 
-    loadBook({ mageId: routeMage.id, counts: {} });
-    resetFilters();
+    startNewBook(routeMage);
   };
 
   const cancel = () => {
-    navigate(currentBookPath(book, tab), { replace: true });
+    navigate(bookPath(bookMage(book), tab), { replace: true });
   };
 
   return { isPending: kind === 'newBook', confirm, cancel };

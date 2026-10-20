@@ -1,21 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { bookPath, builderPath, PICKER_PATH } from '@/core/routing/paths';
 import { hasCards, sameBook } from '@/core/rules/bookChanges';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { type DecodedBook, decodeBook } from '@/core/share-link/bookCodec';
 import { incomingProblems, noMageProblems } from '@/core/share-link/bookNotes';
 import { BOOK_PARAM } from '@/core/share-link/shareUrl';
-import { cardsById, magesById } from '@/data/catalog';
-import { currentBookPath } from '@/features/mage-switch/currentBookPath';
+import { bookMage, cardsById } from '@/data/catalog';
 import { useBookStore } from '@/store/useBookStore';
-
-const PICKER_PATH = '/';
 
 const UNREADABLE = 'This link could not be read. Your current book is unchanged.';
 
 /** Where a book opened from a link goes, and what to tell the player about it. */
 const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
-  const mage = book.mageId === null ? undefined : magesById.get(book.mageId);
+  const mage = bookMage(book);
 
   if (!mage) {
     return { path: PICKER_PATH, problems: noMageProblems(unknownMage, unknownCodes) };
@@ -24,7 +22,7 @@ const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
   const { issues } = summarizeBook(book, mage, cardsById);
 
   return {
-    path: currentBookPath(book, 'book'),
+    path: builderPath(mage.name, 'book'),
     problems: incomingProblems(unknownCodes, issues, mage, book.counts, cardsById),
   };
 };
@@ -65,7 +63,7 @@ export const useIncomingBook = () => {
 
     if (!decoded) {
       setProblems([UNREADABLE]);
-      navigate(currentBookPath(current, 'cards'), { replace: true });
+      navigate(location.pathname, { replace: true });
 
       return;
     }
@@ -73,7 +71,7 @@ export const useIncomingBook = () => {
     if (hasCards(current) && !sameBook(current, decoded.book)) {
       // The current book stays on screen while the player decides.
       setPendingReplace(decoded);
-      navigate(currentBookPath(current, 'book'), { replace: true });
+      navigate(bookPath(bookMage(current), 'book'), { replace: true });
 
       return;
     }
