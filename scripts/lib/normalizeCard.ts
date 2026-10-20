@@ -28,7 +28,8 @@ const TYPES = new Map<string, CardType>([
 const AND_SEPARATOR = '+';
 const OR_SEPARATOR = '/';
 const SCHOOL_SEPARATOR_PATTERN = /[+/]/;
-const TRAIT_SEPARATOR = '•';
+// Bullets separate traits, but some cards break the line between two traits instead.
+const TRAIT_SEPARATOR = /[•\n]/;
 const SUBTYPE_SEPARATOR = ',';
 const ONLY_TRAIT_PATTERN = /^(.+) Only$/;
 

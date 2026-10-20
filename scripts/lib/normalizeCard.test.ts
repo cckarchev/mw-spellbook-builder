@@ -129,6 +129,14 @@ describe('normalizeCard: schools and traits', () => {
     expect(card?.onlyFor).toBe('Warlord');
   });
 
+  it('splits traits on line breaks too, so an "Only" trait after one is still read', () => {
+    const raw = makeRaw({ Traits: 'Aegis 2 • Nonliving • Dissipate 5\nForcemaster Only' });
+    const card = normalizeCard(raw, 'arena', undefined);
+
+    expect(card?.traits).toEqual(['Aegis 2', 'Nonliving', 'Dissipate 5', 'Forcemaster Only']);
+    expect(card?.onlyFor).toBe('Forcemaster');
+  });
+
   it('reads a school "Only" trait', () => {
     const card = normalizeCard(makeRaw({ Traits: 'Epic • Holy Mage Only' }), 'arena', undefined);
 
