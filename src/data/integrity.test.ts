@@ -13,6 +13,9 @@ const PALADIN_HOLY_LEVEL = 2;
 const PALADIN_WAR_LEVEL = 2;
 const SCHOOL_MAGE_NAMES = new Set(SCHOOLS.map((school) => `${school} Mage`));
 const MAGE_ONLY_NAMES = new Set(mages.flatMap((mage) => mage.onlyNames));
+// "Makes the above attack", "immediately attacks", "gains a Damage Barrier", "Orchid's attack targets".
+const REFERS_TO_ATTACK_PATTERN =
+  /above attack|immediately attacks|gains a Damage Barrier|'s attack targets/i;
 
 const publicFileExists = (publicPath: string): boolean =>
   existsSync(path.join(PUBLIC_DIR, publicPath));
@@ -38,6 +41,20 @@ describe('card data integrity', () => {
     });
 
     expect(unresolved.map((card) => `${card.name}: ${card.onlyFor}`)).toEqual([]);
+  });
+
+  it('has an attack bar for every card whose text refers to its attack', () => {
+    const missing = cards.filter(
+      (card) => card.attackBar === '' && REFERS_TO_ATTACK_PATTERN.test(card.effect),
+    );
+
+    expect(missing.map((card) => card.name)).toEqual([]);
+  });
+
+  it('prints the double Corrode of Acid Ball, which the module drops', () => {
+    const acidBall = cards.find((card) => card.name === 'Acid Ball');
+
+    expect(acidBall?.attackBar).toContain('5+ = 2 Corrode');
   });
 });
 

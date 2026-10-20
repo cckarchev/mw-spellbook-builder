@@ -8,6 +8,7 @@ import { cardCode, cardImagePath } from '@/core/catalog/cardImage';
 import type { GlossaryEntry } from '@/core/glossary/types';
 import type { Card, Format } from '@/core/rules/types';
 import { mages } from '@/data/mages';
+import { applyCorrections, CARD_CORRECTIONS } from './lib/cardCorrections';
 import { buildExpansionMap, type LegacySet } from './lib/expansions';
 import { frameBox } from './lib/frameBox';
 import { normalizeCard } from './lib/normalizeCard';
@@ -125,7 +126,9 @@ const readCards = async (): Promise<Card[]> => {
     }
   }
 
-  return cards.sort((a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id));
+  const sorted = cards.sort((a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id));
+
+  return applyCorrections(sorted, CARD_CORRECTIONS);
 };
 
 const assertUniqueCodes = (cards: readonly Card[]): void => {

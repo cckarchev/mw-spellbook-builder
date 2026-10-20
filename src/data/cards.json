@@ -47,7 +47,7 @@
     "range": "0-2",
     "target": "Creature or Conjuration",
     "effect": "",
-    "attackBar": "Ranged | Acid | 2d6 | d12 1-4 = Corrode, 5+ = Corrode",
+    "attackBar": "Ranged | Acid | 2d6 | d12 1-4 = Corrode, 5+ = 2 Corrode",
     "abilityBar": "",
     "image": "/cards/a5386a31.webp"
   },
@@ -2361,7 +2361,7 @@
     "range": "0-2",
     "target": "Friendly Vine Marker",
     "effect": "Target friendly vine marker makes the above attack.\nThen, destroy that vine marker.",
-    "attackBar": "",
+    "attackBar": "Thornburst\nRanged 0-0 | 4d6 | d12 7+ = Bleed | Piercing +1",
     "abilityBar": "",
     "image": "/cards/7c50b8b4.webp"
   },
@@ -2755,7 +2755,7 @@
     "range": "0-2",
     "target": "Corporeal Creature",
     "effect": "This creature gains a Damage Barrier.",
-    "attackBar": "",
+    "attackBar": "Searing Heat\nDamage Barrier | Flame | 2d6 | d12 7-9 = Burn, 10+ = 2 Burn | Unavoidable",
     "abilityBar": "",
     "image": "/cards/1ed8a709.webp"
   },
@@ -2781,7 +2781,7 @@
     "range": "0-2",
     "target": "Living Creature",
     "effect": "This creature gains a Damage Barrier.",
-    "attackBar": "",
+    "attackBar": "Blinding Aura\nDamage Barrier | Light | 1d6 | d12 5-10 = Daze, 11+ = Stun | Unavoidable, Ethereal, +2 vs. Nonliving Creatures",
     "abilityBar": "",
     "image": "/cards/8330e07a.webp"
   },
@@ -2807,7 +2807,7 @@
     "range": "0-2",
     "target": "Corporeal Creature",
     "effect": "This creature gains a Damage Barrier.",
-    "attackBar": "",
+    "attackBar": "Electric Surge\nDamage Barrier | Lightning | 2d6 | d12 7-10 = Daze, 11+ = Stun | Ethereal, Unavoidable",
     "abilityBar": "",
     "image": "/cards/0574a699.webp"
   },
@@ -3071,7 +3071,7 @@
     "range": "0-2",
     "target": "Corporeal Creature or Conjuration",
     "effect": "Remove all Burn conditions from the target.\nThen, Combustion makes the above attack to the target where X is twice the number of Burn conditions removed.",
-    "attackBar": "",
+    "attackBar": "Burnout\nRanged | Flame | Xd6 | Defrost, Unavoidable",
     "abilityBar": "",
     "image": "/cards/0c8ccd8a.webp"
   },
@@ -3361,7 +3361,7 @@
     "range": "0-1",
     "target": "Zone",
     "effect": "Comes into play with a Mist token on it.\nWhen Orchid's attack targets a Mage, at the end of the Damage & Effects Step, you may remove the Mist token, choose an equipment object on that Mage, and pay its casting cost to destroy that object.",
-    "attackBar": "",
+    "attackBar": "Corrosive Mist\nRanged 0-0 | Acid | 2d6 | d12 7+ = Corrode | Unavoidable",
     "abilityBar": "",
     "image": "/cards/a3a04a1e.webp"
   },
@@ -9337,7 +9337,7 @@
     "range": "0-2",
     "target": "Zone",
     "effect": "Hellfire Trap can only target a zone without enemy creatures.\nWhen an enemy creature enters the zone, you must reveal Hellfire Trap.\nHellfire Trap immediately attacks that creature.\nThen, destroy Hellfire Trap.",
-    "attackBar": "",
+    "attackBar": "Trap Attack\nFlame | 4d6 | d12 5-8 = Burn, 9+ = 2 Burn | Unavoidable, Defrost",
     "abilityBar": "",
     "image": "/cards/22fe0c48.webp"
   },
@@ -9865,7 +9865,7 @@
     "range": "0-2",
     "target": "Zone",
     "effect": "When an enemy creature enters this zone, Hydrothermal Vent must be revealed.\nMake the above attack, then destroy Hydrothermal Vent.\nThe reveal cost is lowered by 1 if enchanting a zone with an aquatic terrain attached.",
-    "attackBar": "",
+    "attackBar": "Superheated Vent\nHydro | 5d6 | d12 4-8 = Daze, 9+ = Stun",
     "abilityBar": "",
     "image": "/cards/12dda20e.webp"
   },
@@ -17708,7 +17708,7 @@
     "range": "0-2",
     "target": "Zone",
     "effect": "Spiked Pit can only target a zone with no enemy non-Flying creatures.\nWhen an enemy non-Flying creature enters the zone, you must reveal Spiked Pit.\nSpike Pit immediately attacks that creature.\nThen, destroy Spiked Pit.",
-    "attackBar": "",
+    "attackBar": "Impaling Spikes\n4d6 | d12 1+ = Stuck | Unavoidable, Piercing +2",
     "abilityBar": "",
     "image": "/cards/8cfdf60f.webp"
   },
@@ -18970,7 +18970,7 @@
     "range": "0-2",
     "target": "Creature or Conjuration",
     "effect": "When Telekinetic Bomb is destroyed after it has been revealed, it makes the above attack against the target.",
-    "attackBar": "",
+    "attackBar": "Blast\n4d6 | d12 4+ = Stagger | Ethereal, Unavoidable",
     "abilityBar": "",
     "image": "/cards/aa9d500c.webp"
   },
