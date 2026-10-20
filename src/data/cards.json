@@ -47,7 +47,7 @@
     "range": "0-2",
     "target": "Creature or Conjuration",
     "effect": "",
-    "attackBar": "Ranged | Acid | 2d6 | d12 1-4 = Corrode, 5+ = Corrode",
+    "attackBar": "Ranged | Acid | 2d6 | d12 1-4 = Corrode, 5+ = 2 Corrode",
     "abilityBar": "",
     "image": "/cards/a5386a31.webp"
   },
@@ -362,8 +362,8 @@
         "level": 3
       }
     ],
-    "traits": ["Zone Exclusive", "Flame +2", "Legendary\nWarlord Only"],
-    "onlyFor": null,
+    "traits": ["Zone Exclusive", "Flame +2", "Legendary", "Warlord Only"],
+    "onlyFor": "Warlord",
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
     "manaCost": "12",
@@ -466,8 +466,8 @@
         "level": 2
       }
     ],
-    "traits": ["Zone Exclusive", "Legendary", "War Mage Only\nEpic"],
-    "onlyFor": null,
+    "traits": ["Zone Exclusive", "Legendary", "War Mage Only", "Epic"],
+    "onlyFor": "War Mage",
     "format": "arena",
     "expansion": "Forged in Fire",
     "manaCost": "8",
@@ -492,8 +492,8 @@
         "level": 2
       }
     ],
-    "traits": ["Zone Exclusive", "Burnproof", "Warlord Only\nEpic"],
-    "onlyFor": null,
+    "traits": ["Zone Exclusive", "Burnproof", "Warlord Only", "Epic"],
+    "onlyFor": "Warlord",
     "format": "arena",
     "expansion": "Forged in Fire",
     "manaCost": "9",
@@ -1374,7 +1374,7 @@
         "level": 2
       }
     ],
-    "traits": ["Zone Exclusive", "Flame +2\nUnique", "War Mage Only"],
+    "traits": ["Zone Exclusive", "Flame +2", "Unique", "War Mage Only"],
     "onlyFor": "War Mage",
     "format": "arena",
     "expansion": "Lost Grimoire",
@@ -1452,7 +1452,7 @@
         "level": 3
       }
     ],
-    "traits": ["Spawnpoint", "Zone Exclusive", "Flame +2\nEpic", "Warlord Only"],
+    "traits": ["Spawnpoint", "Zone Exclusive", "Flame +2", "Epic", "Warlord Only"],
     "onlyFor": "Warlord",
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
@@ -1482,7 +1482,7 @@
         "level": 1
       }
     ],
-    "traits": ["Spawnpoint", "Zone Exclusive", "Flame Immunity\nHydro +3"],
+    "traits": ["Spawnpoint", "Zone Exclusive", "Flame Immunity", "Hydro +3"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -1750,7 +1750,7 @@
         "level": 1
       }
     ],
-    "traits": ["Elusive", "Legendary\nNonliving", "Psychic Immunity"],
+    "traits": ["Elusive", "Legendary", "Nonliving", "Psychic Immunity"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Paladin vs Siren",
@@ -1932,7 +1932,7 @@
         "level": 1
       }
     ],
-    "traits": ["Regenerate 2", "Living", "Flame +2\nHydro Immunity", "Extendable"],
+    "traits": ["Regenerate 2", "Living", "Flame +2", "Hydro Immunity", "Extendable"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -2361,7 +2361,7 @@
     "range": "0-2",
     "target": "Friendly Vine Marker",
     "effect": "Target friendly vine marker makes the above attack.\nThen, destroy that vine marker.",
-    "attackBar": "",
+    "attackBar": "Thornburst\nRanged 0-0 | 4d6 | d12 7+ = Bleed | Piercing +1",
     "abilityBar": "",
     "image": "/cards/7c50b8b4.webp"
   },
@@ -2430,8 +2430,8 @@
         "level": 2
       }
     ],
-    "traits": ["Aegis 1", "Familiar", "Flying\nLegendary\nHoly Mage Only"],
-    "onlyFor": null,
+    "traits": ["Aegis 1", "Familiar", "Flying", "Legendary", "Holy Mage Only"],
+    "onlyFor": "Holy Mage",
     "format": "arena",
     "expansion": "Paladin vs Siren",
     "manaCost": "9",
@@ -2755,7 +2755,7 @@
     "range": "0-2",
     "target": "Corporeal Creature",
     "effect": "This creature gains a Damage Barrier.",
-    "attackBar": "",
+    "attackBar": "Searing Heat\nDamage Barrier | Flame | 2d6 | d12 7-9 = Burn, 10+ = 2 Burn | Unavoidable",
     "abilityBar": "",
     "image": "/cards/1ed8a709.webp"
   },
@@ -2781,7 +2781,7 @@
     "range": "0-2",
     "target": "Living Creature",
     "effect": "This creature gains a Damage Barrier.",
-    "attackBar": "",
+    "attackBar": "Blinding Aura\nDamage Barrier | Light | 1d6 | d12 5-10 = Daze, 11+ = Stun | Unavoidable, Ethereal, +2 vs. Nonliving Creatures",
     "abilityBar": "",
     "image": "/cards/8330e07a.webp"
   },
@@ -2807,7 +2807,7 @@
     "range": "0-2",
     "target": "Corporeal Creature",
     "effect": "This creature gains a Damage Barrier.",
-    "attackBar": "",
+    "attackBar": "Electric Surge\nDamage Barrier | Lightning | 2d6 | d12 7-10 = Daze, 11+ = Stun | Ethereal, Unavoidable",
     "abilityBar": "",
     "image": "/cards/0574a699.webp"
   },
@@ -3071,7 +3071,7 @@
     "range": "0-2",
     "target": "Corporeal Creature or Conjuration",
     "effect": "Remove all Burn conditions from the target.\nThen, Combustion makes the above attack to the target where X is twice the number of Burn conditions removed.",
-    "attackBar": "",
+    "attackBar": "Burnout\nRanged | Flame | Xd6 | Defrost, Unavoidable",
     "abilityBar": "",
     "image": "/cards/0c8ccd8a.webp"
   },
@@ -3361,7 +3361,7 @@
     "range": "0-1",
     "target": "Zone",
     "effect": "Comes into play with a Mist token on it.\nWhen Orchid's attack targets a Mage, at the end of the Damage & Effects Step, you may remove the Mist token, choose an equipment object on that Mage, and pay its casting cost to destroy that object.",
-    "attackBar": "",
+    "attackBar": "Corrosive Mist\nRanged 0-0 | Acid | 2d6 | d12 7+ = Corrode | Unavoidable",
     "abilityBar": "",
     "image": "/cards/a3a04a1e.webp"
   },
@@ -3486,8 +3486,8 @@
         "level": 2
       }
     ],
-    "traits": ["Spawnpoint", "Zone Exclusive", "Epic\nPaladin Only"],
-    "onlyFor": null,
+    "traits": ["Spawnpoint", "Zone Exclusive", "Epic", "Paladin Only"],
+    "onlyFor": "Paladin",
     "format": "arena",
     "expansion": "Paladin vs Siren",
     "manaCost": "7",
@@ -4088,7 +4088,7 @@
         "level": 2
       }
     ],
-    "traits": ["Zeon Exclusive", "Epic"],
+    "traits": ["Zone Exclusive", "Epic"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -4597,7 +4597,8 @@
     "traits": [
       "Resilient",
       "Uncontainable",
-      "Nonliving\nSlow",
+      "Nonliving",
+      "Slow",
       "Psychic Immunity",
       "Acid Immunity"
     ],
@@ -4708,7 +4709,7 @@
         "level": 3
       }
     ],
-    "traits": ["Frost -2", "Bloodthirsty"],
+    "traits": ["Frost -2", "Bloodthirsty +2"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Conquest of Kumanjaro",
@@ -5046,8 +5047,8 @@
         "level": 2
       }
     ],
-    "traits": ["Spawnpoint", "Zone Exclusive", "Epic\nMonk Only"],
-    "onlyFor": null,
+    "traits": ["Spawnpoint", "Zone Exclusive", "Epic", "Monk Only"],
+    "onlyFor": "Monk",
     "format": "arena",
     "expansion": "Core Set",
     "manaCost": "6",
@@ -5592,7 +5593,7 @@
         "level": 5
       }
     ],
-    "traits": ["Slow", "Burnproof", "Lightning -2\nTough -2", "Nonliving", "Unmovable"],
+    "traits": ["Slow", "Burnproof", "Lightning -2", "Tough -2", "Nonliving", "Unmovable"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
@@ -5812,8 +5813,8 @@
         "level": 3
       }
     ],
-    "traits": ["Familiar", "Flying", "Legendary\nElementalist Only"],
-    "onlyFor": null,
+    "traits": ["Familiar", "Flying", "Legendary", "Elementalist Only"],
+    "onlyFor": "Elementalist",
     "format": "arena",
     "expansion": "Core Set",
     "manaCost": "14",
@@ -6242,7 +6243,7 @@
         "level": 2
       }
     ],
-    "traits": ["Zone Exclusive", "Regenerate 2", "Unique\nFlame +2", "Hydro Immunity", "Living"],
+    "traits": ["Zone Exclusive", "Regenerate 2", "Unique", "Flame +2", "Hydro Immunity", "Living"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -6502,8 +6503,8 @@
         "level": 3
       }
     ],
-    "traits": ["Familiar", "Flying", "Pest", "Legendary\nNature Mage Only"],
-    "onlyFor": null,
+    "traits": ["Familiar", "Flying", "Pest", "Legendary", "Nature Mage Only"],
+    "onlyFor": "Nature Mage",
     "format": "arena",
     "expansion": "Core Set",
     "manaCost": "12",
@@ -6580,7 +6581,7 @@
         "level": 6
       }
     ],
-    "traits": ["Upkeep +1", "Hydro +2", "Incorporeal\nNonliving", "Flame Immunity"],
+    "traits": ["Upkeep +1", "Hydro +2", "Incorporeal", "Nonliving", "Flame Immunity"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Lost Grimoire",
@@ -7100,8 +7101,8 @@
         "level": 1
       }
     ],
-    "traits": ["Aegis 1", "Nonliving", "Dissipate 4\nForcemaster Only"],
-    "onlyFor": null,
+    "traits": ["Aegis 1", "Nonliving", "Dissipate 4", "Forcemaster Only"],
+    "onlyFor": "Forcemaster",
     "format": "academy",
     "expansion": "Mage Wars Academy: Forcemaster",
     "manaCost": "5",
@@ -7178,8 +7179,8 @@
         "level": 2
       }
     ],
-    "traits": ["Aegis 2", "Nonliving", "Dissipate 5\nForcemaster Only"],
-    "onlyFor": null,
+    "traits": ["Aegis 2", "Nonliving", "Dissipate 5", "Forcemaster Only"],
+    "onlyFor": "Forcemaster",
     "format": "academy",
     "expansion": "Mage Wars Academy: Forcemaster",
     "manaCost": "9",
@@ -7204,8 +7205,8 @@
         "level": 1
       }
     ],
-    "traits": ["Invisible", "Nonliving", "Dissipate 4\nForcemaster Only"],
-    "onlyFor": null,
+    "traits": ["Invisible", "Nonliving", "Dissipate 4", "Forcemaster Only"],
+    "onlyFor": "Forcemaster",
     "format": "academy",
     "expansion": "Mage Wars Academy: Forcemaster",
     "manaCost": "3",
@@ -7308,8 +7309,8 @@
         "level": 2
       }
     ],
-    "traits": ["Aegis 2", "Nonliving", "Dissipate 5\nForcemaster Only", "Unique"],
-    "onlyFor": null,
+    "traits": ["Aegis 2", "Nonliving", "Dissipate 5", "Forcemaster Only", "Unique"],
+    "onlyFor": "Forcemaster",
     "format": "academy",
     "expansion": "Core Set",
     "manaCost": "7",
@@ -7628,7 +7629,7 @@
         "level": 2
       }
     ],
-    "traits": ["Melting 2", "Nonliving", "Frost Immunity\nFlame +2"],
+    "traits": ["Melting 2", "Nonliving", "Frost Immunity", "Flame +2"],
     "onlyFor": null,
     "format": "academy",
     "expansion": "Core Set",
@@ -7848,7 +7849,7 @@
         "level": 1
       }
     ],
-    "traits": ["Legendary", "Lightning Immunity", "Psychic Immunity\nIncorporeal", "Nonliving"],
+    "traits": ["Legendary", "Lightning Immunity", "Psychic Immunity", "Incorporeal", "Nonliving"],
     "onlyFor": null,
     "format": "academy",
     "expansion": "Mage Wars Academy: Elementalist",
@@ -7978,7 +7979,7 @@
         "level": 6
       }
     ],
-    "traits": ["Zone Exclusive", "Flame Immunity", "Hydro 3\nEpic", "Warlock Only"],
+    "traits": ["Zone Exclusive", "Flame Immunity", "Hydro 3", "Epic", "Warlock Only"],
     "onlyFor": "Warlock",
     "format": "arena",
     "expansion": "Core Set",
@@ -8004,8 +8005,8 @@
         "level": 4
       }
     ],
-    "traits": ["Spawnpoint", "Zone Exclusive", "Epic\nWizard Only"],
-    "onlyFor": null,
+    "traits": ["Spawnpoint", "Zone Exclusive", "Epic", "Wizard Only"],
+    "onlyFor": "Wizard",
     "format": "arena",
     "expansion": "Core Set",
     "manaCost": "14",
@@ -8635,7 +8636,8 @@
     "traits": [
       "Spawnpoint",
       "Zone Exclusive",
-      "Lightning Immunity\nBurnproof",
+      "Lightning Immunity",
+      "Burnproof",
       "Epic",
       "Necromancer Only"
     ],
@@ -9032,7 +9034,7 @@
         "level": 1
       }
     ],
-    "traits": ["Zone Exclusive", "Burnproof", "Legendary\nEpic"],
+    "traits": ["Zone Exclusive", "Burnproof", "Legendary", "Epic"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Forged in Fire",
@@ -9335,7 +9337,7 @@
     "range": "0-2",
     "target": "Zone",
     "effect": "Hellfire Trap can only target a zone without enemy creatures.\nWhen an enemy creature enters the zone, you must reveal Hellfire Trap.\nHellfire Trap immediately attacks that creature.\nThen, destroy Hellfire Trap.",
-    "attackBar": "",
+    "attackBar": "Trap Attack\nFlame | 4d6 | d12 5-8 = Burn, 9+ = 2 Burn | Unavoidable, Defrost",
     "abilityBar": "",
     "image": "/cards/22fe0c48.webp"
   },
@@ -9863,7 +9865,7 @@
     "range": "0-2",
     "target": "Zone",
     "effect": "When an enemy creature enters this zone, Hydrothermal Vent must be revealed.\nMake the above attack, then destroy Hydrothermal Vent.\nThe reveal cost is lowered by 1 if enchanting a zone with an aquatic terrain attached.",
-    "attackBar": "",
+    "attackBar": "Superheated Vent\nHydro | 5d6 | d12 4-8 = Daze, 9+ = Stun",
     "abilityBar": "",
     "image": "/cards/12dda20e.webp"
   },
@@ -9884,7 +9886,7 @@
         "level": 1
       }
     ],
-    "traits": ["Melting 1", "Nonliving", "Frost Immunity\nPsychic Immunity", "Flame +2"],
+    "traits": ["Melting 1", "Nonliving", "Frost Immunity", "Psychic Immunity", "Flame +2"],
     "onlyFor": null,
     "format": "academy",
     "expansion": "Core Set",
@@ -10152,7 +10154,7 @@
         "level": 5
       }
     ],
-    "traits": ["Upkeep +1", "Invisible", "Incorporeal\nNonliving", "Forcemaster Only", "Epic"],
+    "traits": ["Upkeep +1", "Invisible", "Incorporeal", "Nonliving", "Forcemaster Only", "Epic"],
     "onlyFor": "Forcemaster",
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
@@ -10178,7 +10180,7 @@
         "level": 3
       }
     ],
-    "traits": ["Slow", "Unmovable", "Lightning +2\nBurnproof", "Nonliving", "Psychic Immunity"],
+    "traits": ["Slow", "Unmovable", "Lightning +2", "Burnproof", "Nonliving", "Psychic Immunity"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
@@ -10524,7 +10526,7 @@
         "level": 5
       }
     ],
-    "traits": ["Flying", "Aegis 1", "Flame Immunity\nLegendary"],
+    "traits": ["Flying", "Aegis 1", "Flame Immunity", "Legendary"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -10818,7 +10820,14 @@
         "level": 4
       }
     ],
-    "traits": ["Legendary", "Nature Mage Only", "Epic\nRegenerate 2", "Hydro Immunity", "Flame +2"],
+    "traits": [
+      "Legendary",
+      "Nature Mage Only",
+      "Epic",
+      "Regenerate 2",
+      "Hydro Immunity",
+      "Flame +2"
+    ],
     "onlyFor": "Nature Mage",
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -10896,8 +10905,8 @@
         "level": 4
       }
     ],
-    "traits": ["Spawnpoint", "Zone Exclusive", "Epic\nBeastmaster Only"],
-    "onlyFor": null,
+    "traits": ["Spawnpoint", "Zone Exclusive", "Epic", "Beastmaster Only"],
+    "onlyFor": "Beastmaster",
     "format": "arena",
     "expansion": "Core Set",
     "manaCost": "15",
@@ -11748,7 +11757,7 @@
         "level": 2
       }
     ],
-    "traits": ["Armor -X", "Frost +X", "Nonliving\nPsychic Immunity", "Slow", "Uncontainable"],
+    "traits": ["Armor -X", "Frost +X", "Nonliving", "Psychic Immunity", "Slow", "Uncontainable"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Lost Grimoire",
@@ -11934,7 +11943,7 @@
         "level": 1
       }
     ],
-    "traits": ["Zone Exclusive", "Regenerate 2", "Living\nFlame +2", "Hydro Immunity"],
+    "traits": ["Zone Exclusive", "Regenerate 2", "Living", "Flame +2", "Hydro Immunity"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -12626,7 +12635,7 @@
         "level": 3
       }
     ],
-    "traits": ["Aegis 1", "Flying", "Melee +X\nRegenerate X", "Legendary", "Holy Mage Only"],
+    "traits": ["Aegis 1", "Flying", "Melee +X", "Regenerate X", "Legendary", "Holy Mage Only"],
     "onlyFor": "Holy Mage",
     "format": "arena",
     "expansion": "Paladin vs Siren",
@@ -12860,7 +12869,7 @@
         "level": 2
       }
     ],
-    "traits": ["Regenerate 2", "Living", "Legendary\nFlame +2", "Hydro Immunity"],
+    "traits": ["Regenerate 2", "Living", "Legendary", "Flame +2", "Hydro Immunity"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -13820,7 +13829,7 @@
         "level": 4
       }
     ],
-    "traits": ["Spawnpoint", "Zone Exclusive", "Incorporeal\nEpic", "Warlock Only"],
+    "traits": ["Spawnpoint", "Zone Exclusive", "Incorporeal", "Epic", "Warlock Only"],
     "onlyFor": "Warlock",
     "format": "arena",
     "expansion": "Core Set",
@@ -14002,7 +14011,14 @@
         "level": 2
       }
     ],
-    "traits": ["Bloodthirsty +1", "Lumbering", "Pest\nResilient", "Psychic Immunity", "Nonliving"],
+    "traits": [
+      "Bloodthirsty +1",
+      "Lumbering",
+      "Pest",
+      "Resilient",
+      "Psychic Immunity",
+      "Nonliving"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -14314,8 +14330,8 @@
         "level": 1
       }
     ],
-    "traits": ["Nonliving", "Pest", "Dissipate 5\nForcemaster Only"],
-    "onlyFor": null,
+    "traits": ["Nonliving", "Pest", "Dissipate 5", "Forcemaster Only"],
+    "onlyFor": "Forcemaster",
     "format": "academy",
     "expansion": "Mage Wars Academy: Forcemaster",
     "manaCost": "3",
@@ -14340,8 +14356,8 @@
         "level": 2
       }
     ],
-    "traits": ["Aegis 2", "Nonliving", "Dissipate 5\nForcemaster Only"],
-    "onlyFor": null,
+    "traits": ["Aegis 2", "Nonliving", "Dissipate 5", "Forcemaster Only"],
+    "onlyFor": "Forcemaster",
     "format": "academy",
     "expansion": "Mage Wars Academy: Forcemaster",
     "manaCost": "7",
@@ -14682,7 +14698,7 @@
         "level": 3
       }
     ],
-    "traits": ["Rooted", "Uproot 1", "Regenerate 1\nHydro Immunity", "Flame +2"],
+    "traits": ["Rooted", "Uproot 1", "Regenerate 1", "Hydro Immunity", "Flame +2"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -15782,7 +15798,7 @@
         "level": 2
       }
     ],
-    "traits": ["Indestructible", "Dissipate 3", "Incorporeal\nEpic"],
+    "traits": ["Indestructible", "Dissipate 3", "Incorporeal", "Epic"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Forged in Fire",
@@ -16020,7 +16036,7 @@
         "level": 5
       }
     ],
-    "traits": ["Aegis 1", "Flying", "Light Immunity\nLegendary"],
+    "traits": ["Aegis 1", "Flying", "Light Immunity", "Legendary"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -16049,12 +16065,14 @@
     "traits": [
       "Spawnpoint",
       "Zone Exclusive",
-      "Regenerate 2\nFlame +2",
+      "Regenerate 2",
+      "Flame +2",
       "Hydro Immunity",
-      "Living\nDruid Only",
+      "Living",
+      "Druid Only",
       "Epic"
     ],
-    "onlyFor": null,
+    "onlyFor": "Druid",
     "format": "arena",
     "expansion": "Druid vs Necromancer",
     "manaCost": "7",
@@ -16187,7 +16205,7 @@
         "level": 8
       }
     ],
-    "traits": ["Psychic Immunity", "Unstoppable", "Nonliving\nLegendary"],
+    "traits": ["Psychic Immunity", "Unstoppable", "Nonliving", "Legendary"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Forged in Fire",
@@ -16265,7 +16283,14 @@
         "level": 2
       }
     ],
-    "traits": ["Bloodthirsty +0", "Lumbering", "Pest\nResilient", "Psychic Immunity", "Nonliving"],
+    "traits": [
+      "Bloodthirsty +0",
+      "Lumbering",
+      "Pest",
+      "Resilient",
+      "Psychic Immunity",
+      "Nonliving"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -16373,7 +16398,7 @@
         "level": 1
       }
     ],
-    "traits": ["Spawnpoint", "Regenerate 2", "Living\nFlame +2", "Hydro Immunity", "Druid Only"],
+    "traits": ["Spawnpoint", "Regenerate 2", "Living", "Flame +2", "Hydro Immunity", "Druid Only"],
     "onlyFor": "Druid",
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -16451,7 +16476,7 @@
         "level": 5
       }
     ],
-    "traits": ["Aegis 1", "Flying", "Wind Immunity\nLegendary"],
+    "traits": ["Aegis 1", "Flying", "Wind Immunity", "Legendary"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
@@ -16529,8 +16554,8 @@
         "level": 3
       }
     ],
-    "traits": ["Familiar", "Flame -2", "Legendary\nWarlock Only"],
-    "onlyFor": null,
+    "traits": ["Familiar", "Flame -2", "Legendary", "Warlock Only"],
+    "onlyFor": "Warlock",
     "format": "arena",
     "expansion": "Forged in Fire",
     "manaCost": "12",
@@ -16584,7 +16609,8 @@
     "traits": [
       "Bloodthirsty +1",
       "Lumbering",
-      "Resilient\nPsychic Immunity",
+      "Resilient",
+      "Psychic Immunity",
       "Nonliving",
       "Legendary"
     ],
@@ -16665,7 +16691,7 @@
         "level": 6
       }
     ],
-    "traits": ["Hydro -3", "Legendary", "Slow", "Tough -3\nUnstoppable"],
+    "traits": ["Hydro -3", "Legendary", "Slow", "Tough -3", "Unstoppable"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -17513,8 +17539,8 @@
         "level": 2
       }
     ],
-    "traits": ["Elusive", "Pest", "Legendary\nBeastmaster Only"],
-    "onlyFor": null,
+    "traits": ["Elusive", "Pest", "Legendary", "Beastmaster Only"],
+    "onlyFor": "Beastmaster",
     "format": "arena",
     "expansion": "Core Set",
     "manaCost": "7",
@@ -17682,7 +17708,7 @@
     "range": "0-2",
     "target": "Zone",
     "effect": "Spiked Pit can only target a zone with no enemy non-Flying creatures.\nWhen an enemy non-Flying creature enters the zone, you must reveal Spiked Pit.\nSpike Pit immediately attacks that creature.\nThen, destroy Spiked Pit.",
-    "attackBar": "",
+    "attackBar": "Impaling Spikes\n4d6 | d12 1+ = Stuck | Unavoidable, Piercing +2",
     "abilityBar": "",
     "image": "/cards/8cfdf60f.webp"
   },
@@ -18205,7 +18231,7 @@
         "level": 3
       }
     ],
-    "traits": ["Flying", "Incorporeal", "Upkeep +1\nLightning -1", "Wind -1"],
+    "traits": ["Flying", "Incorporeal", "Upkeep +1", "Lightning -1", "Wind -1"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -18231,7 +18257,7 @@
         "level": 2
       }
     ],
-    "traits": ["Upkeep +X", "Living", "Flame +2\nHydro Immunity"],
+    "traits": ["Upkeep +X", "Living", "Flame +2", "Hydro Immunity"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -18723,7 +18749,7 @@
         "level": 7
       }
     ],
-    "traits": ["Unstoppable", "Burnproof", "Psychic Immunity\nNonliving", "Warlord Only", "Epic"],
+    "traits": ["Unstoppable", "Burnproof", "Psychic Immunity", "Nonliving", "Warlord Only", "Epic"],
     "onlyFor": "Warlord",
     "format": "arena",
     "expansion": "Forged in Fire",
@@ -18857,8 +18883,8 @@
         "level": 1
       }
     ],
-    "traits": ["Pest", "Elusive", "Legendary\nBeastmaster Only"],
-    "onlyFor": null,
+    "traits": ["Pest", "Elusive", "Legendary", "Beastmaster Only"],
+    "onlyFor": "Beastmaster",
     "format": "academy",
     "expansion": "Mage Wars Academy: Beastmaster vs. Wizard",
     "manaCost": "5",
@@ -18883,8 +18909,8 @@
         "level": 1
       }
     ],
-    "traits": ["Flying", "Legendary", "Pest\nDruid Only"],
-    "onlyFor": null,
+    "traits": ["Flying", "Legendary", "Pest", "Druid Only"],
+    "onlyFor": "Druid",
     "format": "arena",
     "expansion": "Druid vs Necromancer",
     "manaCost": "6",
@@ -18944,7 +18970,7 @@
     "range": "0-2",
     "target": "Creature or Conjuration",
     "effect": "When Telekinetic Bomb is destroyed after it has been revealed, it makes the above attack against the target.",
-    "attackBar": "",
+    "attackBar": "Blast\n4d6 | d12 4+ = Stagger | Ethereal, Unavoidable",
     "abilityBar": "",
     "image": "/cards/aa9d500c.webp"
   },
@@ -19117,8 +19143,8 @@
         "level": 3
       }
     ],
-    "traits": ["Spawnpoint", "Zone Exclusive", "Epic\nHoly Mage Only"],
-    "onlyFor": null,
+    "traits": ["Spawnpoint", "Zone Exclusive", "Epic", "Holy Mage Only"],
+    "onlyFor": "Holy Mage",
     "format": "arena",
     "expansion": "Core Set",
     "manaCost": "10",
@@ -19407,7 +19433,7 @@
         "level": 2
       }
     ],
-    "traits": ["Rooted", "Regenerate 2", "Flame +2\nHydro Immunity"],
+    "traits": ["Rooted", "Regenerate 2", "Flame +2", "Hydro Immunity"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -19433,7 +19459,7 @@
         "level": 2
       }
     ],
-    "traits": ["Flying", "Familiar", "Spellbind\nPest", "Mind Mage Only"],
+    "traits": ["Flying", "Familiar", "Spellbind", "Pest", "Mind Mage Only"],
     "onlyFor": "Mind Mage",
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
@@ -19567,7 +19593,7 @@
         "level": 3
       }
     ],
-    "traits": ["Hydro Immunity", "Nonliving", "Resilient\nBurnproof", "Frost +2"],
+    "traits": ["Hydro Immunity", "Nonliving", "Resilient", "Burnproof", "Frost +2"],
     "onlyFor": null,
     "format": "academy",
     "expansion": "Core Set",
@@ -19671,7 +19697,7 @@
         "level": 3
       }
     ],
-    "traits": ["Nonlivng", "Legendary"],
+    "traits": ["Nonliving", "Legendary"],
     "onlyFor": null,
     "format": "academy",
     "expansion": "Mage Wars Academy: Forcemaster",
@@ -19700,9 +19726,11 @@
     "traits": [
       "Rooted",
       "Uproot 2",
-      "Vigilant\nIntercept",
+      "Vigilant",
+      "Intercept",
       "Flame +2",
-      "Regenerate 2\nHydro Immunity",
+      "Regenerate 2",
+      "Hydro Immunity",
       "Legendary"
     ],
     "onlyFor": null,
@@ -19730,8 +19758,8 @@
         "level": 2
       }
     ],
-    "traits": ["Aegis 2", "Nonliving", "Dissipate 5\nForcemaster Only"],
-    "onlyFor": null,
+    "traits": ["Aegis 2", "Nonliving", "Dissipate 5", "Forcemaster Only"],
+    "onlyFor": "Forcemaster",
     "format": "academy",
     "expansion": "Mage Wars Academy: Forcemaster",
     "manaCost": "8",
@@ -20080,7 +20108,14 @@
         "level": 2
       }
     ],
-    "traits": ["Bloodthirsty +1", "Lumbering", "Pest\nResilient", "Psychic Immunity", "Nonliving"],
+    "traits": [
+      "Bloodthirsty +1",
+      "Lumbering",
+      "Pest",
+      "Resilient",
+      "Psychic Immunity",
+      "Nonliving"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -20292,7 +20327,7 @@
         "level": 5
       }
     ],
-    "traits": ["Aegis 1", "Flying", "Lightning -2\nLegendary"],
+    "traits": ["Aegis 1", "Flying", "Lightning -2", "Legendary"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -20422,7 +20457,14 @@
         "level": 2
       }
     ],
-    "traits": ["Bloodthirsty +1", "Lumbering", "Pest\nResilient", "Psychic Immunity", "Nonliving"],
+    "traits": [
+      "Bloodthirsty +1",
+      "Lumbering",
+      "Pest",
+      "Resilient",
+      "Psychic Immunity",
+      "Nonliving"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -20500,7 +20542,7 @@
         "level": 2
       }
     ],
-    "traits": ["Rooted", "Regenerate 1", "Flame +2\nHydro Immunity"],
+    "traits": ["Rooted", "Regenerate 1", "Flame +2", "Hydro Immunity"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -20529,12 +20571,14 @@
     "traits": [
       "Spawnpoint",
       "Zone Exclusive",
-      "Regenerate 2\nFlame +2",
+      "Regenerate 2",
+      "Flame +2",
       "Hydro Immunity",
-      "Living\nDruid Only",
+      "Living",
+      "Druid Only",
       "Epic"
     ],
-    "onlyFor": null,
+    "onlyFor": "Druid",
     "format": "arena",
     "expansion": "Druid vs Necromancer",
     "manaCost": "9",
@@ -20771,7 +20815,7 @@
         "level": 1
       }
     ],
-    "traits": ["Extendable", "Lightning Immunity", "Flame Immunity\nHydro +2"],
+    "traits": ["Extendable", "Lightning Immunity", "Flame Immunity", "Hydro +2"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Forged in Fire",
@@ -20797,7 +20841,7 @@
         "level": 2
       }
     ],
-    "traits": ["Incorporeal", "Extendable", "Flame Immunity\nHydro +3"],
+    "traits": ["Incorporeal", "Extendable", "Flame Immunity", "Hydro +3"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -20953,7 +20997,7 @@
         "level": 1
       }
     ],
-    "traits": ["Regenerate 2", "Living", "Flame +2", "Hydro Immunity\nExtendable"],
+    "traits": ["Regenerate 2", "Living", "Flame +2", "Hydro Immunity", "Extendable"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -21065,7 +21109,7 @@
         "level": 6
       }
     ],
-    "traits": ["Burnproof", "Frost +3", "Hydro Immunity\nNonliving", "Resilient", "Unstoppable"],
+    "traits": ["Burnproof", "Frost +3", "Hydro Immunity", "Nonliving", "Resilient", "Unstoppable"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Paladin vs Siren",
@@ -21303,7 +21347,7 @@
         "level": 5
       }
     ],
-    "traits": ["Flying", "Incorporeal", "Upkeep +1\nWind -2"],
+    "traits": ["Flying", "Incorporeal", "Upkeep +1", "Wind -2"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -21701,7 +21745,7 @@
         "level": 3
       }
     ],
-    "traits": ["Bloodthirsty +2", "Lumbering", "Resilient\nPsychic Immunity", "Nonliving"],
+    "traits": ["Bloodthirsty +2", "Lumbering", "Resilient", "Psychic Immunity", "Nonliving"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -21727,7 +21771,7 @@
         "level": 1
       }
     ],
-    "traits": ["Bloodthirsty +1", "Slow", "Resilient\nPsychic Immunity", "Nonliving"],
+    "traits": ["Bloodthirsty +1", "Slow", "Resilient", "Psychic Immunity", "Nonliving"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -21779,7 +21823,7 @@
         "level": 2
       }
     ],
-    "traits": ["Bloodthirsty +1", "Lumbering", "Resilient\nPsychic Immunity", "Nonliving"],
+    "traits": ["Bloodthirsty +1", "Lumbering", "Resilient", "Psychic Immunity", "Nonliving"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",

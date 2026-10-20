@@ -83,6 +83,8 @@ export interface Mage {
   onlyNames: string[];
   training: Training;
   imageCardId: string | null;
+  /** The "<Name> Stats" card with the training and abilities. */
+  statsCardId: string | null;
 }
 
 export interface Book {

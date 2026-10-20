@@ -5,15 +5,19 @@ import path from 'node:path';
 import { unzipSync } from 'fflate';
 import sharp from 'sharp';
 import { cardCode, cardImagePath } from '@/core/catalog/cardImage';
+import type { GlossaryEntry } from '@/core/glossary/types';
 import type { Card, Format } from '@/core/rules/types';
 import { mages } from '@/data/mages';
+import { applyCorrections, CARD_CORRECTIONS } from './lib/cardCorrections';
 import { buildExpansionMap, type LegacySet } from './lib/expansions';
 import { frameBox } from './lib/frameBox';
 import { normalizeCard } from './lib/normalizeCard';
+import { parseCodexXml } from './lib/readCodex';
 import { parseSetXml, readModuleSets } from './lib/readModule';
 
-// Reads the OCTGN Mage Wars module and the community image pack from raw-input/ and
-// writes src/data/cards.json and public/cards/<code>.webp. Run with `npm run data`.
+// Reads the OCTGN Mage Wars module, the community image pack and the Codex from raw-input/
+// and writes src/data/cards.json, src/data/glossary.json and public/cards/<code>.webp.
+// Run with `npm run data`. Reading the Codex needs `pdftohtml`, from poppler-utils.
 
 const RAW_DIR = 'raw-input';
 const MODULE_PATH = path.join(RAW_DIR, 'mage-wars-3.1.4.1.nupkg');
@@ -26,7 +30,14 @@ const LEGACY_RAW_BASE =
   'https://raw.githubusercontent.com/sIKE23/Mage-Wars/master/GameDatabase/9acef3d0-efa8-4d3f-a10c-54812baecdda/Sets';
 const IMAGE_PACK_PATH = path.join(RAW_DIR, 'MW_Card_Image_Pack.o8c');
 
+const CODEX_PATH = path.join(RAW_DIR, 'Mage_Wars_Codex.pdf');
+const MEGABYTE = 1_048_576;
+/** The Codex XML passes the default 1 MB buffer of execFileSync. */
+const CODEX_MAX_BUFFER_MEGABYTES = 16;
+const CODEX_MAX_BUFFER = CODEX_MAX_BUFFER_MEGABYTES * MEGABYTE;
+
 const CARDS_JSON_PATH = path.join('src', 'data', 'cards.json');
+const GLOSSARY_JSON_PATH = path.join('src', 'data', 'glossary.json');
 const PUBLIC_DIR = 'public';
 const IMAGE_DIR = path.join(PUBLIC_DIR, 'cards');
 const IMAGE_WIDTH = 480;
@@ -115,7 +126,9 @@ const readCards = async (): Promise<Card[]> => {
     }
   }
 
-  return cards.sort((a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id));
+  const sorted = cards.sort((a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id));
+
+  return applyCorrections(sorted, CARD_CORRECTIONS);
 };
 
 const assertUniqueCodes = (cards: readonly Card[]): void => {
@@ -189,6 +202,22 @@ const removeStaleImages = async (keptIds: ReadonlySet<string>): Promise<number> 
   return stale.length;
 };
 
+const writeJson = async (filePath: string, data: unknown): Promise<void> => {
+  await writeFile(filePath, `${JSON.stringify(data, null, JSON_INDENT)}\n`);
+  // Match the repo formatter so `npm run lint` checks the generated file too.
+  execFileSync(BIOME_BIN, ['format', '--write', filePath], { stdio: 'ignore' });
+};
+
+/** The Codex glossary, read through the XML output of pdftohtml, which keeps each run's font. */
+const readGlossary = (): GlossaryEntry[] => {
+  const xml = execFileSync('pdftohtml', ['-xml', '-i', '-q', '-stdout', CODEX_PATH], {
+    encoding: 'utf8',
+    maxBuffer: CODEX_MAX_BUFFER,
+  });
+
+  return parseCodexXml(xml);
+};
+
 const main = async (): Promise<void> => {
   if (!existsSync(IMAGE_PACK_PATH)) {
     throw new Error(`Place the image pack at ${IMAGE_PACK_PATH} first`);
@@ -201,7 +230,9 @@ const main = async (): Promise<void> => {
 
   assertUniqueCodes(cards);
 
-  const mageCardIds = mages.flatMap((mage) => (mage.imageCardId ? [mage.imageCardId] : []));
+  const mageCardIds = mages
+    .flatMap((mage) => [mage.imageCardId, mage.statsCardId])
+    .filter((id): id is string => id !== null);
   const withImage = await writeImages(new Set([...cards.map((card) => card.id), ...mageCardIds]));
 
   const removed = await removeStaleImages(withImage);
@@ -210,9 +241,11 @@ const main = async (): Promise<void> => {
     card.image = withImage.has(card.id) ? cardImagePath(card.code) : null;
   }
 
-  await writeFile(CARDS_JSON_PATH, `${JSON.stringify(cards, null, JSON_INDENT)}\n`);
-  // Match the repo formatter so `npm run lint` checks the generated file too.
-  execFileSync(BIOME_BIN, ['format', '--write', CARDS_JSON_PATH], { stdio: 'ignore' });
+  await writeJson(CARDS_JSON_PATH, cards);
+
+  const glossary = readGlossary();
+
+  await writeJson(GLOSSARY_JSON_PATH, glossary);
 
   const missingImages = cards.filter((card) => card.image === null);
   const unknownExpansion = cards.filter((card) => card.expansion === 'Unknown');
@@ -223,6 +256,7 @@ const main = async (): Promise<void> => {
   log(`Without expansion: ${unknownExpansion.length}`);
   log(`Stale images removed: ${removed}`);
   log(`Mages without image: ${mageCardIds.filter((id) => !withImage.has(id)).length}`);
+  log(`Glossary terms: ${glossary.length}`);
 };
 
 await main();

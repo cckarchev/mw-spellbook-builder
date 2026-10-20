@@ -1,4 +1,5 @@
 import { type ReactNode, useEffect, useId, useRef } from 'react';
+import { CloseIcon } from './CloseIcon';
 import styles from './Dialog.module.css';
 
 interface DialogProps {
@@ -6,6 +7,10 @@ interface DialogProps {
   title: string;
   /** Called on Escape and on a tap outside the panel. */
   onClose: () => void;
+  /** An X in the top right corner that closes the dialog, and takes the focus first. */
+  closeButton?: boolean;
+  /** Extra class on the panel, such as one that sets --dialog-width. */
+  className?: string;
   children: ReactNode;
 }
 
@@ -38,7 +43,14 @@ const trapTab = (event: KeyboardEvent, panel: HTMLElement) => {
 };
 
 /** A modal panel over a dimmed page that keeps the focus inside. Renders nothing while closed. */
-export const Dialog = ({ open, title, onClose, children }: DialogProps) => {
+export const Dialog = ({
+  open,
+  title,
+  onClose,
+  closeButton = false,
+  className,
+  children,
+}: DialogProps) => {
   const titleId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
   // Read through a ref, so a new onClose from a re-render does not refocus the first button.
@@ -74,6 +86,8 @@ export const Dialog = ({ open, title, onClose, children }: DialogProps) => {
     return null;
   }
 
+  const panelClasses = [styles.panel, className].filter(Boolean).join(' ');
+
   return (
     <div className={styles.scrim}>
       <button
@@ -85,14 +99,21 @@ export const Dialog = ({ open, title, onClose, children }: DialogProps) => {
       />
       <div
         ref={panelRef}
-        className={styles.panel}
+        className={panelClasses}
         role="dialog"
         aria-modal={true}
         aria-labelledby={titleId}
       >
-        <h2 id={titleId} className={styles.title}>
-          {title}
-        </h2>
+        <div className={styles.header}>
+          <h2 id={titleId} className={styles.title}>
+            {title}
+          </h2>
+          {closeButton ? (
+            <button type="button" className={styles.close} aria-label="Close" onClick={onClose}>
+              <CloseIcon />
+            </button>
+          ) : null}
+        </div>
         {children}
       </div>
     </div>

@@ -23,6 +23,8 @@
   --color-bg-accent-tint: rgb(var(--rgb-accent) / 0.15);
   /* Fainter accent wash behind a whole row that is in the book. */
   --color-bg-selected: rgb(var(--rgb-accent) / 0.06);
+  /* Faint wash on every other row of a list, so long lists are easier to follow. */
+  --color-bg-stripe: rgb(var(--rgb-white) / 0.06);
   /* Recessed well that frames a block inside a row, such as card details. */
   --color-bg-inset: rgb(var(--rgb-black) / 0.25);
   /* Backdrop that dims the page behind a modal dialog. */
@@ -73,7 +75,6 @@
   /* Sharp corners everywhere, to match the parent site. */
   --radius: 0;
 
-  --font-size-xs: 12px;
   --font-size-sm: 14px;
   --font-size-md: 16px;
   --font-size-lg: 20px;
@@ -121,6 +122,8 @@
   /* Rounded card corners, 3 mm on 63 x 88 mm, so the corner stays round at any size. */
   --card-radius: 4.8% / 3.4%;
   --card-full-width: 280px;
+  /* A card shown on its own, such as a mage stats card: the width of the exported images. */
+  --card-zoom-width: 480px;
 
   /* Width of a mage tile in the mage picker, above phone width. */
   --mage-tile-width: 180px;
@@ -134,6 +137,7 @@
   /* Stacking layers, lowest first. */
   --z-sticky: 40;
   --z-dialog: 100;
+  --z-popover: 110;
 }
 
 @media (--tablet-up) {

@@ -1,6 +1,7 @@
 import type { Mage } from '@/core/rules/types';
 import type { BookSummary } from '@/core/rules/validateBook';
 import { plural } from '@/core/text/plural';
+import { MageStats } from '@/features/shared/mage-stats/MageStats';
 import styles from './BookHeader.module.css';
 
 interface BookHeaderProps {
@@ -50,7 +51,9 @@ export const BookHeader = ({ mage, summary }: BookHeaderProps) => {
 
   return (
     <section className={styles.header} data-state={state} aria-label="Book summary">
-      <h1 className={styles.mageName}>{mage.name}</h1>
+      <h1 className={styles.mageName}>
+        <MageStats mage={mage} label={mage.name} className={styles.mageButton} />
+      </h1>
       <div className={styles.score}>
         <span className={styles.points}>
           {summary.points} / {summary.budget}

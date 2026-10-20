@@ -27,7 +27,11 @@ To regenerate them, put the community image pack at `raw-input/MW_Card_Image_Pac
 
 The script cuts the white or transparent frame some pack images have and rewrites every image, so a full run takes about a minute.
 
-The mages (`src/data/mages.ts`) are written by hand from each mage's stats card in the module.
+Where the module's text disagrees with the card image (a missing attack bar, a misprinted trait), `scripts/lib/cardCorrections.ts` holds the fix, copied by hand from the image. The script stops if a correction no longer matches its card.
+
+The glossary (`src/data/glossary.json`) comes from the Mage Wars Codex: put it at `raw-input/Mage_Wars_Codex.pdf`. The script reads it with `pdftohtml`, from poppler-utils, which tells the terms apart from their definitions by their font.
+
+The mages (`src/data/mages.ts`) are written by hand from each mage's stats card in the module. Each one names two cards, the mage picture for the table and the stats card, and the script extracts both images.
 
 ## Rules
 

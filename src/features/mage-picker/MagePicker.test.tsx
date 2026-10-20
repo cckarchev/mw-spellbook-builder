@@ -55,6 +55,31 @@ describe('MagePicker', () => {
   });
 });
 
+describe('MagePicker stats card', () => {
+  it('shows the mage stats card without picking the mage', async () => {
+    renderPicker();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Wizard stats' }));
+
+    const dialog = screen.getByRole('dialog', { name: 'Wizard stats' });
+
+    expect(within(dialog).getByRole('img', { name: 'Wizard stats card' })).toBeInTheDocument();
+    expect(useBookStore.getState().book.mageId).toBeNull();
+    expect(buildScreen()).not.toBeInTheDocument();
+  });
+
+  it('closes the stats card', async () => {
+    renderPicker();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Wizard stats' }));
+    const dialog = screen.getByRole('dialog', { name: 'Wizard stats' });
+
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Close' }));
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+});
+
 describe('MagePicker switching to another mage', () => {
   beforeEach(() => {
     useBookStore.getState().loadBook({

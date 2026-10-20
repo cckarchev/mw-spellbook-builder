@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Dialog } from './Dialog';
 
@@ -36,5 +36,34 @@ describe('Dialog', () => {
     await userEvent.tab({ shift: true });
 
     expect(screen.getByRole('button', { name: 'Last' })).toHaveFocus();
+  });
+});
+
+describe('Dialog close button', () => {
+  it('closes from the X in the corner and takes the focus first', async () => {
+    const onClose = vi.fn();
+
+    render(
+      <Dialog open={true} title="Card" onClose={onClose} closeButton={true}>
+        <button type="button">Inside</button>
+      </Dialog>,
+    );
+
+    const dialog = screen.getByRole('dialog', { name: 'Card' });
+    const close = within(dialog).getByRole('button', { name: 'Close' });
+
+    expect(close).toHaveFocus();
+
+    await userEvent.click(close);
+
+    expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it('has no X by default', () => {
+    renderDialog();
+
+    const dialog = screen.getByRole('dialog', { name: 'Pick one' });
+
+    expect(within(dialog).queryByRole('button', { name: 'Close' })).not.toBeInTheDocument();
   });
 });

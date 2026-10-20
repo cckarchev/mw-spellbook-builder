@@ -21,7 +21,7 @@
   text-align: start;
   background: none;
   border: none;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }

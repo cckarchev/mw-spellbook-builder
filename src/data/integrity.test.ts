@@ -1,8 +1,11 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { cardCode, cardImagePath } from '@/core/catalog/cardImage';
+import { mageStatsImage } from '@/core/catalog/mageImage';
+import { splitByTerms } from '@/core/glossary/findTerms';
 import { SCHOOLS } from '@/core/rules/types';
 import { cards, cardsByCode, magesById } from './catalog';
+import { glossary, glossaryIndex } from './glossary';
 import { mages } from './mages';
 
 const PUBLIC_DIR = 'public';
@@ -10,6 +13,9 @@ const PALADIN_HOLY_LEVEL = 2;
 const PALADIN_WAR_LEVEL = 2;
 const SCHOOL_MAGE_NAMES = new Set(SCHOOLS.map((school) => `${school} Mage`));
 const MAGE_ONLY_NAMES = new Set(mages.flatMap((mage) => mage.onlyNames));
+// "Makes the above attack", "immediately attacks", "gains a Damage Barrier", "Orchid's attack targets".
+const REFERS_TO_ATTACK_PATTERN =
+  /above attack|immediately attacks|gains a Damage Barrier|'s attack targets/i;
 
 const publicFileExists = (publicPath: string): boolean =>
   existsSync(path.join(PUBLIC_DIR, publicPath));
@@ -36,6 +42,30 @@ describe('card data integrity', () => {
 
     expect(unresolved.map((card) => `${card.name}: ${card.onlyFor}`)).toEqual([]);
   });
+
+  it('has an attack bar for every card whose text refers to its attack', () => {
+    const missing = cards.filter(
+      (card) => card.attackBar === '' && REFERS_TO_ATTACK_PATTERN.test(card.effect),
+    );
+
+    expect(missing.map((card) => card.name)).toEqual([]);
+  });
+
+  it('prints the double Corrode of Acid Ball, which the module drops', () => {
+    const acidBall = cards.find((card) => card.name === 'Acid Ball');
+
+    expect(acidBall?.attackBar).toContain('5+ = 2 Corrode');
+  });
+
+  it.each([
+    ['Dire Wolf', 'Bloodthirsty +2'],
+    ['Deathlock', 'Zone Exclusive'],
+    ['Tjusut, the Risen King', 'Nonliving'],
+  ])('fixes the trait the module misprints on %s', (name, trait) => {
+    const card = cards.find((candidate) => candidate.name === name);
+
+    expect(card?.traits).toContain(trait);
+  });
 });
 
 describe('mage data integrity', () => {
@@ -48,6 +78,16 @@ describe('mage data integrity', () => {
       const code = cardCode(mage.imageCardId ?? '');
 
       return !publicFileExists(cardImagePath(code));
+    });
+
+    expect(missing.map((mage) => mage.name)).toEqual([]);
+  });
+
+  it('has an image file for every mage stats card', () => {
+    const missing = mages.filter((mage) => {
+      const image = mageStatsImage(mage);
+
+      return image === null || !publicFileExists(image);
     });
 
     expect(missing.map((mage) => mage.name)).toEqual([]);
@@ -73,5 +113,45 @@ describe('mage data integrity', () => {
 
   it('names the Salenia Forcemaster as the current module does, not the legacy sets', () => {
     expect(magesById.get('salenia-forcemaster')?.name).toBe('Salenia Forcemaster');
+  });
+});
+
+describe('glossary data integrity', () => {
+  /** The term each word of a text points at, leaving out plain text. */
+  const termsIn = (text: string) =>
+    splitByTerms(text, glossaryIndex).flatMap((segment) =>
+      segment.entry ? [[segment.text, segment.entry.term]] : [],
+    );
+
+  it('has a definition for every term', () => {
+    const empty = glossary.filter((entry) => entry.definition === '');
+
+    expect(empty.map((entry) => entry.term)).toEqual([]);
+  });
+
+  it('explains the words of an attack bar', () => {
+    expect(termsIn('d12 7-8 = Daze, 9+ = Stun | Ethereal, Unavoidable')).toEqual([
+      ['Daze', 'Daze'],
+      ['Stun', 'Stun'],
+      ['Ethereal', 'Ethereal'],
+      ['Unavoidable', 'Unavoidable'],
+    ]);
+  });
+
+  it('points damage types, immunities and "Only" traits at their generic entries', () => {
+    expect(termsIn('Flame +2, Hydro Immunity, Forcemaster Only, Holy Mage Only')).toEqual([
+      ['Flame +2', 'Damage Type +/- X'],
+      ['Hydro Immunity', 'Immunity'],
+      ['Forcemaster Only', 'Mage Only'],
+      ['Holy Mage Only', 'Mage Only'],
+    ]);
+  });
+
+  it('explains Attack only as the spell type', () => {
+    expect(termsIn('an Attack spell that attacks')).toEqual([['Attack', 'Attack']]);
+  });
+
+  it('has an entry for Stance, which the Codex leaves out', () => {
+    expect(termsIn('Monk Only, Stance')).toContainEqual(['Stance', 'Stance']);
   });
 });

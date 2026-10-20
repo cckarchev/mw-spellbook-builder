@@ -48,6 +48,7 @@ export const makeMage = (
     budget: ARENA_BUDGET,
     onlyNames: [],
     imageCardId: null,
+    statsCardId: null,
     ...rest,
     training: { ...emptyTraining(), ...training },
   };
