@@ -92,7 +92,7 @@ export const Spellbook = ({ book, mage, summary, onAdd, onRemove }: SpellbookPro
       <ConfirmDialog
         open={pendingCard !== undefined}
         title={`Remove ${pendingCard?.name ?? 'card'}?`}
-        body={<p>It is the last copy, so the card leaves the book.</p>}
+        body={<p>It is the last copy, so the card leaves the spellbook.</p>}
         confirmLabel="Remove"
         onConfirm={confirmRemove}
         onCancel={cancelRemove}

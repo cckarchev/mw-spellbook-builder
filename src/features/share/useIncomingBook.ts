@@ -13,7 +13,7 @@ import { bookMage, cardsById } from '@/data/catalog';
 import { currentBookPath } from '@/features/shared/currentBookPath';
 import { useBookStore } from '@/store/useBookStore';
 
-const UNREADABLE = 'This link could not be read. Your current book is unchanged.';
+const UNREADABLE = 'This link could not be read. Your current spellbook is unchanged.';
 
 /** Where a book opened from a link goes, and what to tell the player about it. */
 const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {

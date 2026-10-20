@@ -23,7 +23,7 @@ const renderHeader = (book: Book, name: string | null = null, unsaved = false) =
   );
 };
 
-const summaryRegion = () => screen.getByRole('region', { name: 'Book summary' });
+const summaryRegion = () => screen.getByRole('region', { name: 'Spellbook summary' });
 
 describe('BookHeader', () => {
   it('shows the mage and the points used out of the budget', () => {

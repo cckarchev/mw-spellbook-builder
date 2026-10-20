@@ -90,7 +90,7 @@ describe('Spellbook', () => {
 
     const dialog = screen.getByRole('dialog', { name: 'Remove Fireball?' });
 
-    expect(dialog).toHaveTextContent('It is the last copy, so the card leaves the book.');
+    expect(dialog).toHaveTextContent('It is the last copy, so the card leaves the spellbook.');
 
     await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
 

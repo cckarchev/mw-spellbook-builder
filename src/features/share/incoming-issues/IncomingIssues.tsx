@@ -9,7 +9,7 @@ interface IncomingIssuesProps {
 
 /** What was wrong with a book opened from a link. Closed while there is nothing to say. */
 export const IncomingIssues = ({ problems, onDismiss }: IncomingIssuesProps) => (
-  <Dialog open={problems.length > 0} title="Check this book" onClose={onDismiss}>
+  <Dialog open={problems.length > 0} title="Check this spellbook" onClose={onDismiss}>
     <ul className={styles.problems}>
       {problems.map((problem) => (
         <li key={problem}>{problem}</li>

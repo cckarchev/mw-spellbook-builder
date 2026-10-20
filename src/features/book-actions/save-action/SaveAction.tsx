@@ -45,7 +45,7 @@ export const SaveAction = () => {
       <ConfirmDialog
         open={save.confirmingOverwrite}
         title={`Overwrite "${save.trimmedName}"?`}
-        body={<p>A saved book with this name already exists and will be replaced.</p>}
+        body={<p>A saved spellbook with this name already exists and will be replaced.</p>}
         confirmLabel="Overwrite"
         onConfirm={save.confirmOverwrite}
         onCancel={save.cancelOverwrite}

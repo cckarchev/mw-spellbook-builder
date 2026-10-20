@@ -14,7 +14,7 @@ const OTHER_WIZARD_BOOK = { mageId: 'wizard', counts: { [FIREBALL]: 1 } };
 const openLoad = async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Load' }));
 
-  return screen.getByRole('dialog', { name: 'Saved books' });
+  return screen.getByRole('dialog', { name: 'Saved spellbooks' });
 };
 
 /** Shows whether the book has unsaved changes, as the book header reads it. */
@@ -31,12 +31,12 @@ const saveButton = () => screen.getByRole('button', { name: 'Save' });
 const openSave = async () => {
   await userEvent.click(saveButton());
 
-  return screen.getByRole('dialog', { name: 'Save book' });
+  return screen.getByRole('dialog', { name: 'Save spellbook' });
 };
 
 const saveAs = async (name: string) => {
   const dialog = await openSave();
-  const input = within(dialog).getByRole('textbox', { name: 'Book name' });
+  const input = within(dialog).getByRole('textbox', { name: 'Spellbook name' });
 
   await userEvent.clear(input);
 
@@ -70,7 +70,7 @@ describe('BookActions Save', () => {
 
     const dialog = await openSave();
 
-    expect(within(dialog).getByRole('textbox', { name: 'Book name' })).toHaveValue(NAME);
+    expect(within(dialog).getByRole('textbox', { name: 'Spellbook name' })).toHaveValue(NAME);
   });
 
   it('trims spaces from the name', async () => {
@@ -87,7 +87,7 @@ describe('BookActions Save', () => {
     await saveAs('   ');
 
     expect(savedNames()).toEqual([]);
-    expect(screen.getByText('Enter a name for this book.')).toBeInTheDocument();
+    expect(screen.getByText('Enter a name for this spellbook.')).toBeInTheDocument();
   });
 
   it('is disabled for an empty book', () => {
@@ -178,7 +178,7 @@ describe('BookActions Load', () => {
 
     const dialog = await openLoad();
 
-    expect(dialog).toHaveTextContent('No saved books for this mage yet.');
+    expect(dialog).toHaveTextContent('No saved spellbooks for this mage yet.');
   });
 
   it('loads a book right away when nothing would be lost', async () => {
@@ -203,7 +203,7 @@ describe('BookActions Load', () => {
 
     await userEvent.click(within(dialog).getByRole('button', { name: /^Tourney/ }));
 
-    const confirm = screen.getByRole('dialog', { name: 'Replace current book?' });
+    const confirm = screen.getByRole('dialog', { name: 'Replace current spellbook?' });
 
     expect(confirm).toHaveTextContent('Unsaved changes will be lost.');
 
@@ -229,8 +229,8 @@ describe('BookActions Delete', () => {
 
     expect(savedNames()).toEqual([]);
     expect(useBookStore.getState().book).toEqual(smallBook);
-    expect(screen.getByRole('dialog', { name: 'Saved books' })).toHaveTextContent(
-      'No saved books for this mage yet.',
+    expect(screen.getByRole('dialog', { name: 'Saved spellbooks' })).toHaveTextContent(
+      'No saved spellbooks for this mage yet.',
     );
   });
 
@@ -259,9 +259,9 @@ describe('BookActions Clear', () => {
 
     await userEvent.click(clearButton());
 
-    const confirm = screen.getByRole('dialog', { name: 'Clear this book?' });
+    const confirm = screen.getByRole('dialog', { name: 'Clear this spellbook?' });
 
-    expect(confirm).toHaveTextContent('Your Wizard book has 7 cards. It will be cleared.');
+    expect(confirm).toHaveTextContent('Your Wizard spellbook has 7 cards. It will be cleared.');
 
     await userEvent.click(within(confirm).getByRole('button', { name: 'Clear' }));
 

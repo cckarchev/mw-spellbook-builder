@@ -34,7 +34,7 @@ export const LoadAction = () => {
       />
       <ConfirmDialog
         open={books.pendingLoad !== null}
-        title="Replace current book?"
+        title="Replace current spellbook?"
         body={<p>Unsaved changes will be lost.</p>}
         confirmLabel="Replace"
         onConfirm={books.confirmLoad}
@@ -43,7 +43,7 @@ export const LoadAction = () => {
       <ConfirmDialog
         open={books.pendingDelete !== null}
         title={`Delete "${books.pendingDelete ?? ''}"?`}
-        body={<p>This saved book will be removed permanently.</p>}
+        body={<p>This saved spellbook will be removed permanently.</p>}
         confirmLabel="Delete"
         onConfirm={books.confirmDelete}
         onCancel={books.cancelDelete}

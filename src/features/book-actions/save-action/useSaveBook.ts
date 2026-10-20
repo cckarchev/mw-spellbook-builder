@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { loadSavedBook } from '@/core/persistence/savedBooks';
 import { useBookStore } from '@/store/useBookStore';
 
-const EMPTY_NAME_ERROR = 'Enter a name for this book.';
+const EMPTY_NAME_ERROR = 'Enter a name for this spellbook.';
 
 /**
  * The Save dialog's state: the draft name, its error, and the overwrite question.

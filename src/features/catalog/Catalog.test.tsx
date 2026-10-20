@@ -77,8 +77,8 @@ describe('Catalog listing', () => {
   it('shows how many copies of each type the book has and their points', () => {
     renderCatalog();
 
-    expect(sectionToggle('Attack')).toHaveTextContent('5 in book · 16 pts');
-    expect(sectionToggle('Creature')).not.toHaveTextContent('in book');
+    expect(sectionToggle('Attack')).toHaveTextContent('5 in spellbook · 16 pts');
+    expect(sectionToggle('Creature')).not.toHaveTextContent('in spellbook');
   });
 
   it('opens the sections while the player searches, to show the matches', async () => {

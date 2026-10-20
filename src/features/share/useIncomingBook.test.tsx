@@ -29,7 +29,7 @@ describe('opening a share link', () => {
     renderAt(`/?b=${encodeBook(smallBook)}`);
 
     expect(useBookStore.getState().book).toEqual(smallBook);
-    expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
@@ -40,7 +40,7 @@ describe('opening a share link', () => {
 
     expect(useBookStore.getState().book.counts).toEqual({ [FIREBALL]: OVER_LIMIT });
 
-    const dialog = screen.getByRole('dialog', { name: 'Check this book' });
+    const dialog = screen.getByRole('dialog', { name: 'Check this spellbook' });
 
     expect(
       within(dialog).getByText('1 card in the link is not in the catalog and was left out'),
@@ -58,7 +58,7 @@ describe('opening a share link', () => {
     renderAt('/?b=not-a-book');
 
     expect(useBookStore.getState().book).toEqual(smallBook);
-    expect(screen.getByRole('dialog', { name: 'Check this book' })).toHaveTextContent(
+    expect(screen.getByRole('dialog', { name: 'Check this spellbook' })).toHaveTextContent(
       'This link could not be read',
     );
   });
@@ -68,7 +68,7 @@ describe('opening a share link', () => {
 
     renderAt(`/wizard?b=${toBase64Url(JSON.stringify(wire))}`);
 
-    const dialog = screen.getByRole('dialog', { name: 'Check this book' });
+    const dialog = screen.getByRole('dialog', { name: 'Check this spellbook' });
 
     expect(dialog).toHaveTextContent('The mage in this link (archmage) is not in the catalog.');
     expect(dialog).toHaveTextContent('1 card in the link is not in the catalog and was left out');
@@ -84,7 +84,7 @@ describe('opening a share link over a book in progress', () => {
   it('asks before replacing it, and Cancel keeps it', async () => {
     renderAt(`/wizard?b=${encodeBook(smallBook)}`);
 
-    const dialog = screen.getByRole('dialog', { name: 'Replace your book?' });
+    const dialog = screen.getByRole('dialog', { name: 'Replace your spellbook?' });
 
     await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
 
@@ -98,7 +98,7 @@ describe('opening a share link over a book in progress', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Replace' }));
 
     expect(useBookStore.getState().book).toEqual(smallBook);
-    expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
   });
 
   it("asks about the link mage's draft even while another mage is open", async () => {
@@ -107,10 +107,10 @@ describe('opening a share link over a book in progress', () => {
     useBookStore.getState().loadBook(warlockBook);
     renderAt(`/wizard?b=${encodeBook(smallBook)}`);
 
-    const dialog = screen.getByRole('dialog', { name: 'Replace your book?' });
+    const dialog = screen.getByRole('dialog', { name: 'Replace your spellbook?' });
 
     expect(dialog).toHaveTextContent(
-      'This link opens another book. Your Wizard book will be replaced. To keep it, cancel and save it first.',
+      'This link opens another spellbook. Your Wizard spellbook will be replaced. To keep it, cancel and save it first.',
     );
 
     await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));

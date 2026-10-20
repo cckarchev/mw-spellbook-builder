@@ -13,9 +13,9 @@ interface LoadDialogProps {
 
 /** The mage's saved books, to load one or delete it. */
 export const LoadDialog = ({ open, saved, onLoad, onDelete, onClose }: LoadDialogProps) => (
-  <Dialog open={open} title="Saved books" onClose={onClose} closeButton={true}>
+  <Dialog open={open} title="Saved spellbooks" onClose={onClose} closeButton={true}>
     {saved.length === 0 ? (
-      <p className={styles.empty}>No saved books for this mage yet.</p>
+      <p className={styles.empty}>No saved spellbooks for this mage yet.</p>
     ) : (
       <ul className={styles.list}>
         {saved.map((savedBook) => (

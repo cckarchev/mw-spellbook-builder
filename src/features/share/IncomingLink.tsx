@@ -5,7 +5,7 @@ import { IncomingIssues } from './incoming-issues/IncomingIssues';
 import { useIncomingBook } from './useIncomingBook';
 
 const replaceBody = (mageName: string) =>
-  `This link opens another book. Your ${mageName} book will be replaced. ${KEEP_BOOK_HINT}`;
+  `This link opens another spellbook. Your ${mageName} spellbook will be replaced. ${KEEP_BOOK_HINT}`;
 
 /** Opens a book from a share link: asks before replacing a book in progress, then lists its problems. */
 export const IncomingLink = () => {
@@ -17,7 +17,7 @@ export const IncomingLink = () => {
     <>
       <ConfirmDialog
         open={pendingReplace !== null}
-        title="Replace your book?"
+        title="Replace your spellbook?"
         body={<p>{replaceBody(replacedMageName)}</p>}
         confirmLabel="Replace"
         onConfirm={confirmReplace}

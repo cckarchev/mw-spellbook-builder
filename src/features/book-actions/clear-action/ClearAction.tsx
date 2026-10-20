@@ -47,7 +47,7 @@ export const ClearAction = () => {
       />
       <ConfirmDialog
         open={isConfirming}
-        title="Clear this book?"
+        title="Clear this spellbook?"
         body={<BookLossNote book={book} />}
         confirmLabel="Clear"
         onConfirm={confirmClear}

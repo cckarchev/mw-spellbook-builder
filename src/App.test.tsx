@@ -49,7 +49,7 @@ describe('App build screen', () => {
   it('opens the Book tab at the mage book path', () => {
     renderAt('/wizard/book');
 
-    expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Mana Crystal');
   });
 
@@ -66,7 +66,7 @@ describe('App build screen', () => {
     renderAt('/wizard');
 
     await userEvent.type(screen.getByRole('searchbox', { name: 'Search cards' }), 'fireball');
-    await userEvent.click(screen.getByRole('tab', { name: 'Book' }));
+    await userEvent.click(screen.getByRole('tab', { name: 'Spellbook' }));
     await userEvent.click(screen.getByRole('tab', { name: 'Cards' }));
 
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toHaveValue('fireball');

@@ -33,10 +33,10 @@ export const SaveDialog = ({
   };
 
   return (
-    <Dialog open={open} title="Save book" onClose={onClose} closeButton={true}>
+    <Dialog open={open} title="Save spellbook" onClose={onClose} closeButton={true}>
       <form className={styles.form} onSubmit={submit} noValidate={true}>
         <label className={styles.label} htmlFor={inputId}>
-          Book name
+          Spellbook name
         </label>
         <input
           id={inputId}

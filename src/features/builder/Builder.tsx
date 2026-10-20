@@ -18,7 +18,7 @@ const TAB_ID_PREFIX = 'builder-tab';
 
 const TABS: Tab<BuilderTab>[] = [
   { id: 'cards', label: 'Cards' },
-  { id: 'book', label: 'Book' },
+  { id: 'book', label: 'Spellbook' },
 ];
 
 /** The build screen of the mage in the URL: a sticky header, book actions and tabs over the catalog or the book. */

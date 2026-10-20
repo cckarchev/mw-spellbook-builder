@@ -55,7 +55,7 @@ export const BookHeader = ({ mage, summary, name, unsaved }: BookHeaderProps) =>
   const state = bookState(summary);
 
   return (
-    <section className={styles.header} data-state={state} aria-label="Book summary">
+    <section className={styles.header} data-state={state} aria-label="Spellbook summary">
       <div className={styles.titles}>
         <h1 className={styles.mageName}>
           <MageStats mage={mage} label={mage.name} className={styles.mageButton} />

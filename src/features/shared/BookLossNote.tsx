@@ -16,7 +16,7 @@ export const BookLossNote = ({ book }: { book: Book }) => {
 
   return (
     <p>
-      Your {mageName} book has {cardsLabel}. It will be cleared. {KEEP_BOOK_HINT}
+      Your {mageName} spellbook has {cardsLabel}. It will be cleared. {KEEP_BOOK_HINT}
     </p>
   );
 };

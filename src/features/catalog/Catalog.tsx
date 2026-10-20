@@ -17,13 +17,13 @@ import styles from './Catalog.module.css';
 import { FilterBar } from './filter-bar/FilterBar';
 import { useCatalogFilters } from './useCatalogFilters';
 
-/** What the book already has of one type, such as "5 in book · 16 pts". Nothing when it has none. */
+/** What the book already has of one type, such as "5 in spellbook · 16 pts". Nothing when it has none. */
 const inBookLabel = (bookGroup: BookGroup | undefined): string | undefined => {
   if (!bookGroup) {
     return undefined;
   }
 
-  return `${bookGroup.copies} in book · ${bookGroup.points} pts`;
+  return `${bookGroup.copies} in spellbook · ${bookGroup.points} pts`;
 };
 
 /** Every card the mage can use, filtered and grouped by type, each with its cost and a stepper. */
