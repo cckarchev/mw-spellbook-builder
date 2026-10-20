@@ -40,13 +40,23 @@ beforeEach(() => {
 describe('AppHeader', () => {
   it('goes home with a new book, without asking, when the book has no cards', async () => {
     useBookStore.getState().loadBook({ mageId: 'wizard', counts: {} });
-    renderAt('/build');
+    renderAt('/wizard');
 
     await clickAppName();
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(useBookStore.getState().book).toEqual(EMPTY_BOOK);
     expect(pickerHeading()).toBeInTheDocument();
+  });
+
+  // Back must not return to a mage URL, which would switch the next book to that mage.
+  it('replaces the builder in the history instead of adding the picker after it', async () => {
+    useBookStore.getState().loadBook({ mageId: 'wizard', counts: {} });
+    renderAt('/wizard');
+
+    await clickAppName();
+
+    expect(screen.getByRole('status', { name: 'Navigation' })).toHaveTextContent('REPLACE /');
   });
 
   it('does not add a history entry when the player is already home', async () => {
@@ -59,7 +69,7 @@ describe('AppHeader', () => {
 
   it('asks before discarding a book with cards, and Cancel keeps it', async () => {
     useBookStore.getState().loadBook(smallBook);
-    renderAt('/build');
+    renderAt('/wizard');
 
     await clickAppName();
 
@@ -75,7 +85,7 @@ describe('AppHeader', () => {
 
   it('clears the book and the filters when confirmed', async () => {
     useBookStore.getState().loadBook(smallBook);
-    renderAt('/build');
+    renderAt('/wizard');
 
     await userEvent.type(screen.getByRole('searchbox'), 'fire');
     await clickAppName();

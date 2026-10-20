@@ -1,21 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { builderPath, PICKER_PATH } from '@/core/routing/builderPath';
 import { hasCards, sameBook } from '@/core/rules/bookChanges';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { type DecodedBook, decodeBook } from '@/core/share-link/bookCodec';
 import { incomingProblems, noMageProblems } from '@/core/share-link/bookNotes';
 import { BOOK_PARAM } from '@/core/share-link/shareUrl';
-import { cardsById, magesById } from '@/data/catalog';
+import { bookMage, cardsById } from '@/data/catalog';
+import { currentBookPath } from '@/features/shared/currentBookPath';
 import { useBookStore } from '@/store/useBookStore';
-
-const BOOK_TAB_PATH = '/build?tab=book';
-const PICKER_PATH = '/';
 
 const UNREADABLE = 'This link could not be read. Your current book is unchanged.';
 
 /** Where a book opened from a link goes, and what to tell the player about it. */
 const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
-  const mage = book.mageId === null ? undefined : magesById.get(book.mageId);
+  const mage = bookMage(book);
 
   if (!mage) {
     return { path: PICKER_PATH, problems: noMageProblems(unknownMage, unknownCodes) };
@@ -24,7 +23,7 @@ const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
   const { issues } = summarizeBook(book, mage, cardsById);
 
   return {
-    path: BOOK_TAB_PATH,
+    path: builderPath(mage.name, 'book'),
     problems: incomingProblems(unknownCodes, issues, mage, book.counts, cardsById),
   };
 };
@@ -65,14 +64,15 @@ export const useIncomingBook = () => {
 
     if (!decoded) {
       setProblems([UNREADABLE]);
-      navigate(location.pathname, { replace: true });
+      navigate(currentBookPath(current, 'cards'), { replace: true });
 
       return;
     }
 
     if (hasCards(current) && !sameBook(current, decoded.book)) {
+      // The current book stays on screen while the player decides.
       setPendingReplace(decoded);
-      navigate(location.pathname, { replace: true });
+      navigate(currentBookPath(current, 'book'), { replace: true });
 
       return;
     }

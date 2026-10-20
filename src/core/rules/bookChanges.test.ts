@@ -1,4 +1,4 @@
-import { copyCount, hasCards, mageSwitchKind, sameBook } from './bookChanges';
+import { copyCount, emptyBook, hasCards, mageSwitchKind, sameBook } from './bookChanges';
 import type { Book } from './types';
 
 const TWO_COPIES = 2;
@@ -53,5 +53,11 @@ describe('mageSwitchKind', () => {
 
   it('keeps the book when the same mage is picked again', () => {
     expect(mageSwitchKind(wizardBook, 'wizard')).toBe('sameMage');
+  });
+});
+
+describe('emptyBook', () => {
+  it('starts a book for the mage with no cards', () => {
+    expect(emptyBook('wizard')).toEqual({ mageId: 'wizard', counts: {} });
   });
 });

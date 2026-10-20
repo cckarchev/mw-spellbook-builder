@@ -1,17 +1,17 @@
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { type Tab, Tabs, tabPanelProps } from '@/components/tabs/Tabs';
+import { type BuilderTab, builderPath, PICKER_PATH } from '@/core/routing/builderPath';
 import { summarizeBook } from '@/core/rules/validateBook';
-import { cardsById, magesById } from '@/data/catalog';
+import { bookMage, cardsById, magesBySlug } from '@/data/catalog';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
+import { NewBookDialog } from '@/features/shared/NewBookDialog';
 import { Spellbook } from '@/features/spellbook/Spellbook';
 import { useBookStore } from '@/store/useBookStore';
 import styles from './Builder.module.css';
+import { useRouteMage } from './useRouteMage';
 
-type BuilderTab = 'cards' | 'book';
-
-const TAB_PARAM = 'tab';
 const TAB_ID_PREFIX = 'builder-tab';
 
 const TABS: Tab<BuilderTab>[] = [
@@ -19,36 +19,31 @@ const TABS: Tab<BuilderTab>[] = [
   { id: 'book', label: 'Book' },
 ];
 
-/** The build screen: a sticky header and tabs over the catalog or the book. */
-export const Builder = () => {
+/** The build screen of the mage in the URL: a sticky header and tabs over the catalog or the book. */
+export const Builder = ({ tab }: { tab: BuilderTab }) => {
+  const { mageSlug = '' } = useParams();
+  const navigate = useNavigate();
   const book = useBookStore((state) => state.book);
   const addCopy = useBookStore((state) => state.addCopy);
   const removeCopy = useBookStore((state) => state.removeCopy);
-  const [searchParams, setSearchParams] = useSearchParams();
 
-  const mage = book.mageId === null ? undefined : magesById.get(book.mageId);
+  const routeMage = magesBySlug.get(mageSlug);
+  const { isPending, confirm, cancel } = useRouteMage(routeMage, tab);
+  const mage = bookMage(book);
 
-  if (!mage) {
-    return <Navigate to="/" replace={true} />;
+  if (!routeMage) {
+    return <Navigate to={PICKER_PATH} replace={true} />;
   }
 
-  const activeTab: BuilderTab = searchParams.get(TAB_PARAM) === 'book' ? 'book' : 'cards';
+  // Until the book follows the URL's mage, there is only the confirm, if the switch needs one.
+  if (mage?.id !== routeMage.id) {
+    return <NewBookDialog open={isPending} book={book} onConfirm={confirm} onCancel={cancel} />;
+  }
+
   const summary = summarizeBook(book, mage, cardsById);
 
-  // Cards is the default tab, so it keeps the URL free of the param.
-  const showTab = (tab: BuilderTab) => {
-    setSearchParams(
-      (params) => {
-        if (tab === 'cards') {
-          params.delete(TAB_PARAM);
-        } else {
-          params.set(TAB_PARAM, tab);
-        }
-
-        return params;
-      },
-      { replace: true },
-    );
+  const showTab = (next: BuilderTab) => {
+    navigate(builderPath(mage.name, next), { replace: true });
   };
 
   const panelProps: BookPanelProps = { onAdd: addCopy, onRemove: removeCopy, book, mage };
@@ -57,10 +52,10 @@ export const Builder = () => {
     <div className={styles.builder}>
       <div className={styles.sticky}>
         <BookHeader mage={mage} summary={summary} />
-        <Tabs tabs={TABS} active={activeTab} onChange={showTab} idPrefix={TAB_ID_PREFIX} />
+        <Tabs tabs={TABS} active={tab} onChange={showTab} idPrefix={TAB_ID_PREFIX} />
       </div>
-      <main className={styles.panel} {...tabPanelProps(TAB_ID_PREFIX, activeTab)}>
-        {activeTab === 'cards' ? (
+      <main className={styles.panel} {...tabPanelProps(TAB_ID_PREFIX, tab)}>
+        {tab === 'cards' ? (
           <Catalog {...panelProps} />
         ) : (
           <Spellbook {...panelProps} summary={summary} />

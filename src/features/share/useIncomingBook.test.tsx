@@ -65,7 +65,7 @@ describe('opening a share link', () => {
   it('names an unknown mage and still reports the cards left out', () => {
     const wire = { v: 1, m: 'archmage', c: { deadbeef: 1 } };
 
-    renderAt(`/build?b=${toBase64Url(JSON.stringify(wire))}`);
+    renderAt(`/wizard?b=${toBase64Url(JSON.stringify(wire))}`);
 
     const dialog = screen.getByRole('dialog', { name: 'Check this book' });
 
@@ -81,7 +81,7 @@ describe('opening a share link over a book in progress', () => {
   });
 
   it('asks before replacing it, and Cancel keeps it', async () => {
-    renderAt(`/build?b=${encodeBook(smallBook)}`);
+    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
 
     const dialog = screen.getByRole('dialog', { name: 'Replace your book?' });
 
@@ -92,7 +92,7 @@ describe('opening a share link over a book in progress', () => {
   });
 
   it('replaces it when confirmed', async () => {
-    renderAt(`/build?b=${encodeBook(smallBook)}`);
+    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
 
     await userEvent.click(screen.getByRole('button', { name: 'Replace' }));
 
@@ -100,10 +100,23 @@ describe('opening a share link over a book in progress', () => {
     expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
   });
 
+  it('keeps a book of another mage on Cancel, with no second question', async () => {
+    const warlockBook = { mageId: 'warlock', counts: { [FIREBALL]: 1 } };
+
+    useBookStore.getState().loadBook(warlockBook);
+    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+
+    expect(useBookStore.getState().book).toEqual(warlockBook);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
+  });
+
   it('opens the same book without asking', () => {
     useBookStore.getState().loadBook(smallBook);
 
-    renderAt(`/build?b=${encodeBook(smallBook)}`);
+    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });

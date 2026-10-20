@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { Toast } from '@/components/toast/Toast';
 import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
 import { bookText } from '@/core/export/bookText';
+import { builderPath } from '@/core/routing/builderPath';
 import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { encodeBook } from '@/core/share-link/bookCodec';
@@ -12,7 +13,12 @@ import { overBudgetBook, smallBook, wizard } from '@/features/shared/testBooks';
 import { ShareActions } from './ShareActions';
 
 const shareUrlOf = (book: Book): string =>
-  buildShareUrl({ encoded: encodeBook(book), embedBase: null, origin: window.location.origin });
+  buildShareUrl({
+    encoded: encodeBook(book),
+    embedBase: null,
+    origin: window.location.origin,
+    magePath: builderPath(wizard.name, 'cards'),
+  });
 
 // The toast store outlives each render, so every test starts with no message.
 beforeEach(() => {

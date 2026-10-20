@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { mageSwitchKind } from '@/core/rules/bookChanges';
+import { builderPath } from '@/core/routing/builderPath';
+import { emptyBook, mageSwitchKind } from '@/core/rules/bookChanges';
 import type { Mage } from '@/core/rules/types';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
 import { useBookStore } from '@/store/useBookStore';
-
-const BUILD_PATH = '/build';
 
 /**
  * Switches the book's mage and opens the builder. When the switch would clear the book,
@@ -29,10 +28,10 @@ export const useMageSwitch = () => {
     }
 
     if (kind === 'direct') {
-      loadBook({ mageId: mage.id, counts: {} });
+      loadBook(emptyBook(mage.id));
     }
 
-    navigate(BUILD_PATH);
+    navigate(builderPath(mage.name, 'cards'));
   };
 
   const confirmSwitch = () => {
@@ -40,10 +39,10 @@ export const useMageSwitch = () => {
       return;
     }
 
-    loadBook({ mageId: pendingSwitch.id, counts: {} });
+    loadBook(emptyBook(pendingSwitch.id));
     resetFilters();
     setPendingSwitch(null);
-    navigate(BUILD_PATH);
+    navigate(builderPath(pendingSwitch.name, 'cards'));
   };
 
   const cancelSwitch = () => {
