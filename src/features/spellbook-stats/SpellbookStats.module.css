@@ -1,0 +1,26 @@
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.empty {
+  padding-block: var(--space-lg);
+  color: var(--color-text-dim);
+  text-align: center;
+}
+
+.note {
+  margin: 0;
+  color: var(--color-text-body);
+  font-size: var(--font-size-sm);
+}
+
+/* The swatch that ties the note to the highlighted part of the bars. */
+.warningKey {
+  display: inline-block;
+  width: var(--space-sm);
+  height: var(--space-sm);
+  vertical-align: middle;
+  background: var(--color-warning);
+}

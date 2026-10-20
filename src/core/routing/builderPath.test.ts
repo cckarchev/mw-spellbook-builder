@@ -23,4 +23,8 @@ describe('builderPath', () => {
   it('opens the spellbook tab one level down', () => {
     expect(builderPath('Sistarran Wizard', 'spellbook')).toBe('/sistarran-wizard/spellbook');
   });
+
+  it('opens the stats tab one level down', () => {
+    expect(builderPath('Sistarran Wizard', 'stats')).toBe('/sistarran-wizard/stats');
+  });
 });

@@ -1,0 +1,76 @@
+.curve {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.chart {
+  position: relative;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(var(--curve-columns), minmax(0, 1fr));
+  gap: var(--curve-gap);
+  height: var(--curve-height);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Count on top, bar growing up from the baseline, cost under it. */
+.column,
+.variableColumn {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  justify-items: stretch;
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.count {
+  color: var(--color-text-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+.bar {
+  align-self: end;
+  background: var(--color-bar);
+}
+
+.variableColumn .bar {
+  background: var(--color-bar-muted);
+}
+
+.label {
+  padding-block-start: var(--space-xxs);
+  color: var(--color-text-dim);
+  border-top: var(--border-default);
+}
+
+/* A dashed line in the gap after the column that holds the channeling. */
+.channeling {
+  position: absolute;
+  inset-block: 0;
+  left: calc(
+    (100% + var(--curve-gap)) *
+    var(--channeling-columns) /
+    var(--curve-columns) -
+    var(--curve-gap) /
+    2
+  );
+  border-inline-start: var(--border-width-strong) dashed var(--color-accent);
+}
+
+.note {
+  margin: 0;
+  color: var(--color-text-body);
+  font-size: var(--font-size-sm);
+}
+
+.legend {
+  display: inline-block;
+  width: var(--space-md);
+  vertical-align: middle;
+  border-top: var(--border-width-strong) dashed var(--color-accent);
+}

@@ -1,0 +1,49 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Label, bar and value in columns that line up across rows. */
+.row {
+  display: grid;
+  grid-template-columns: var(--bar-label-width) minmax(0, 1fr) var(--bar-value-width);
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: var(--font-size-sm);
+}
+
+.label {
+  overflow: hidden;
+  color: var(--color-text-body);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track {
+  display: block;
+  height: var(--bar-thickness);
+}
+
+/* The highlighted part sits at the end of the bar. */
+.bar {
+  display: flex;
+  justify-content: flex-end;
+  height: 100%;
+  background: var(--color-bar);
+}
+
+.highlight {
+  display: block;
+  height: 100%;
+  background: var(--color-warning);
+}
+
+.value {
+  color: var(--color-text-strong);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}

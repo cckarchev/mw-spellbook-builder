@@ -1,0 +1,27 @@
+.split {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+}
+
+.bar {
+  display: flex;
+  gap: var(--border-width-strong);
+  height: var(--bar-thickness);
+}
+
+.part {
+  flex-basis: 0;
+  background: var(--color-bar);
+}
+
+/* Every other part in the lighter tone, so neighbors stay apart. */
+.part:nth-child(even) {
+  background: var(--color-bar-muted);
+}
+
+.caption {
+  margin: 0;
+  color: var(--color-text-body);
+  font-size: var(--font-size-sm);
+}

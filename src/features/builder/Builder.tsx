@@ -11,9 +11,11 @@ import { useIsDesktop } from '@/features/shared/useMediaQuery';
 import { SpellbookActions } from '@/features/spellbook-actions/SpellbookActions';
 import { SpellbookHeader } from '@/features/spellbook-header/SpellbookHeader';
 import { SpellbookPanel } from '@/features/spellbook-panel/SpellbookPanel';
+import { SpellbookStats } from '@/features/spellbook-stats/SpellbookStats';
 import { useSpellbookStatus } from '@/store/useSpellbookStatus';
 import { useSpellbookStore } from '@/store/useSpellbookStore';
 import styles from './Builder.module.css';
+import { SpellbookColumn } from './spellbook-column/SpellbookColumn';
 import { useRouteMage } from './useRouteMage';
 import { useStickyHeight } from './useStickyHeight';
 
@@ -22,11 +24,13 @@ const TAB_ID_PREFIX = 'builder-tab';
 const TABS: Tab<BuilderTab>[] = [
   { id: 'cards', label: 'Cards' },
   { id: 'spellbook', label: 'Spellbook' },
+  { id: 'stats', label: 'Stats' },
 ];
 
 /**
  * The build screen of the mage in the URL: a sticky header and spellbook actions, then tabs over
- * the catalog or the spellbook, or both side by side on desktop.
+ * the catalog, the spellbook or its stats. On desktop the catalog sits beside a column that
+ * switches between the spellbook and its stats.
  */
 export const Builder = ({ tab }: { tab: BuilderTab }) => {
   const { mageSlug = '' } = useParams();
@@ -87,17 +91,13 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
           <section className={styles.panel} aria-label="Catalog">
             <Catalog {...panelProps} />
           </section>
-          <aside className={styles.spellbookColumn} aria-label="Spellbook">
-            <SpellbookPanel {...panelProps} summary={summary} variant="column" />
-          </aside>
+          <SpellbookColumn {...panelProps} tab={tab} summary={summary} onShowTab={showTab} />
         </main>
       ) : (
         <main className={styles.panel} {...tabPanelProps(TAB_ID_PREFIX, tab)}>
-          {tab === 'cards' ? (
-            <Catalog {...panelProps} />
-          ) : (
-            <SpellbookPanel {...panelProps} summary={summary} />
-          )}
+          {tab === 'cards' ? <Catalog {...panelProps} /> : null}
+          {tab === 'spellbook' ? <SpellbookPanel {...panelProps} summary={summary} /> : null}
+          {tab === 'stats' ? <SpellbookStats spellbook={spellbook} mage={mage} /> : null}
         </main>
       )}
     </div>

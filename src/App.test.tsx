@@ -138,10 +138,10 @@ describe('App build screen on desktop', () => {
     vi.unstubAllGlobals();
   });
 
-  it('shows the catalog and the spellbook without tabs', () => {
+  it('shows the catalog and the spellbook without the Cards tab', () => {
     renderAt('/wizard');
 
-    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+    expect(screen.queryByRole('tab', { name: 'Cards' })).not.toBeInTheDocument();
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
     expect(spellbookColumn()).toHaveTextContent('Mana Crystal');
   });
@@ -149,7 +149,7 @@ describe('App build screen on desktop', () => {
   it('shows the same screen at the spellbook path', () => {
     renderAt('/wizard/spellbook');
 
-    expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+    expect(screen.queryByRole('tab', { name: 'Cards' })).not.toBeInTheDocument();
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
     expect(spellbookColumn()).toHaveTextContent('Mana Crystal');
   });

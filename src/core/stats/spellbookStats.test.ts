@@ -70,6 +70,12 @@ describe('spellbookStats mana', () => {
     expect(stats.manaCurve).toMatchObject({ atOrBelow: 1, above: 1, channeling: 10 });
   });
 
+  it('points at the bucket that holds the channeling', () => {
+    const nineToTen = 4;
+
+    expect(statsOf().manaCurve.channelingBucket).toBe(nineToTen);
+  });
+
   it('lists flat mana sources with their total', () => {
     const stats = statsOf(
       [card({ name: 'Harmonize' }), 1],

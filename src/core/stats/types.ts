@@ -11,6 +11,8 @@ export interface ManaCurve {
   /** Copies with a variable (X) cost. */
   variable: number;
   channeling: number;
+  /** Index of the bucket the channeling falls in, where the chart marks it. */
+  channelingBucket: number;
   /** Copies with a fixed cost at or below the channeling. */
   atOrBelow: number;
   /** Copies with a fixed cost above the channeling. */

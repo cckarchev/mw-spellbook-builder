@@ -58,7 +58,9 @@ export const manaCurveOf = (copies: CostedCopies[], channeling: number): ManaCur
     }
   }
 
-  return { buckets, variable, channeling, atOrBelow, above };
+  const channelingBucket = COST_BUCKETS.findIndex((bucket) => channeling <= bucket.max);
+
+  return { buckets, variable, channeling, channelingBucket, atOrBelow, above };
 };
 
 export const manaSourcesOf = (copies: CostedCopies[]): ManaSources => {
