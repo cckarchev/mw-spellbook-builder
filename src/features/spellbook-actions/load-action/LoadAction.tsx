@@ -5,7 +5,12 @@ import { LoadDialog } from '@/features/shared/load-dialog/LoadDialog';
 import { LoadIcon } from '../Icons';
 import { useSavedSpellbooks } from './useSavedSpellbooks';
 
-/** The Load button, the saved spellbooks, and the questions before replacing or deleting one. */
+const LOAD_TITLE = 'Load spellbook';
+
+/**
+ * The Load button, the official and saved spellbooks, and the questions before replacing or
+ * deleting one.
+ */
 export const LoadAction = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,9 +32,12 @@ export const LoadAction = () => {
       {/* The list steps aside while a confirm asks, so only one dialog is open at a time. */}
       <LoadDialog
         open={isOpen && !isConfirming}
+        title={LOAD_TITLE}
         saved={spellbooks.saved}
         onLoad={spellbooks.requestLoad}
         onDelete={spellbooks.requestDelete}
+        official={spellbooks.official}
+        onLoadOfficial={spellbooks.requestLoadOfficial}
         onClose={close}
       />
       <ConfirmDialog

@@ -2,12 +2,14 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useToastStore } from '@/components/toast/useToastStore';
 import { savedSpellbooks, saveSpellbook } from '@/core/persistence/savedSpellbooks';
+import { officialSpellbook } from '@/data/officialSpellbooks';
 import { FIREBALL, resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
 import { useSpellbookStatus } from '@/store/useSpellbookStatus';
 import { useSpellbookStore } from '@/store/useSpellbookStore';
 import { SpellbookActions } from './SpellbookActions';
 
 const NAME = 'Tourney';
+const LOAD_TITLE = 'Load spellbook';
 
 const EMPTY_WIZARD_SPELLBOOK = { mageId: 'wizard', counts: {} };
 const OTHER_WIZARD_SPELLBOOK = { mageId: 'wizard', counts: { [FIREBALL]: 1 } };
@@ -15,7 +17,7 @@ const OTHER_WIZARD_SPELLBOOK = { mageId: 'wizard', counts: { [FIREBALL]: 1 } };
 const openLoad = async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Load' }));
 
-  return screen.getByRole('dialog', { name: 'Saved spellbooks' });
+  return screen.getByRole('dialog', { name: LOAD_TITLE });
 };
 
 /** Shows whether the spellbook has unsaved changes, as the spellbook header reads it. */
@@ -185,7 +187,8 @@ describe('SpellbookActions Load', () => {
     render(<SpellbookActions />);
 
     const dialog = await openLoad();
-    const rows = within(dialog).getAllByRole('button', { name: /pts$/ });
+    const savedSection = within(dialog).getByRole('region', { name: 'Saved' });
+    const rows = within(savedSection).getAllByRole('button', { name: /pts$/ });
 
     expect(rows.map((row) => row.textContent)).toEqual(['Alpha0 pts', 'beta18 pts']);
   });
@@ -231,6 +234,87 @@ describe('SpellbookActions Load', () => {
   });
 });
 
+describe('SpellbookActions Load official', () => {
+  const officialWizardSpellbook = () => {
+    const official = officialSpellbook('wizard');
+
+    if (official === null) {
+      throw new Error('The Wizard has no official spellbook');
+    }
+
+    return official;
+  };
+
+  const officialRow = (dialog: HTMLElement) => {
+    const officialSection = within(dialog).getByRole('region', { name: 'Official' });
+
+    return within(officialSection).getByRole('button', { name: /^Official spellbook.*pts$/ });
+  };
+
+  it('shows the official spellbook first for a mage that has one', async () => {
+    saveSpellbook(NAME, smallSpellbook);
+    render(<SpellbookActions />);
+
+    const dialog = await openLoad();
+    const officialSection = within(dialog).getByRole('region', { name: 'Official' });
+    const sections = within(dialog).getAllByRole('region');
+
+    expect(sections.map((section) => section.getAttribute('aria-label'))).toEqual([
+      'Official',
+      'Saved',
+    ]);
+    expect(officialRow(dialog)).toBeInTheDocument();
+    expect(
+      within(officialSection).queryByRole('button', { name: /Delete/ }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('shows no official section for a mage without one', async () => {
+    useSpellbookStore.getState().loadSpellbook({ mageId: 'sistarran-wizard', counts: {} });
+    render(<SpellbookActions />);
+
+    const dialog = await openLoad();
+
+    expect(within(dialog).queryByRole('region', { name: 'Official' })).not.toBeInTheDocument();
+    expect(dialog).toHaveTextContent('No saved spellbooks for this mage yet.');
+  });
+
+  it('loads the official spellbook unnamed, after asking when unsaved changes would be lost', async () => {
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook, null);
+    render(<SpellbookActions />);
+
+    const dialog = await openLoad();
+
+    await userEvent.click(officialRow(dialog));
+
+    const confirm = screen.getByRole('dialog', { name: 'Replace current spellbook?' });
+
+    await userEvent.click(within(confirm).getByRole('button', { name: 'Replace' }));
+
+    expect(useSpellbookStore.getState().spellbook).toEqual(officialWizardSpellbook());
+    expect(useSpellbookStore.getState().name).toBeNull();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('loads the official spellbook without asking when the current one is that official spellbook', async () => {
+    useSpellbookStore.getState().loadSpellbook(officialWizardSpellbook(), null);
+    render(
+      <>
+        <SpellbookActions />
+        <StatusProbe />
+      </>,
+    );
+
+    const dialog = await openLoad();
+
+    await userEvent.click(officialRow(dialog));
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(useSpellbookStore.getState().spellbook).toEqual(officialWizardSpellbook());
+    expect(screen.getByRole('status', { name: 'Status' })).toHaveTextContent(/^saved$/);
+  });
+});
+
 describe('SpellbookActions Delete', () => {
   it('deletes a saved spellbook after asking, and keeps the current spellbook', async () => {
     saveSpellbook(NAME, EMPTY_WIZARD_SPELLBOOK);
@@ -246,7 +330,7 @@ describe('SpellbookActions Delete', () => {
 
     expect(savedNames()).toEqual([]);
     expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
-    expect(screen.getByRole('dialog', { name: 'Saved spellbooks' })).toHaveTextContent(
+    expect(screen.getByRole('dialog', { name: LOAD_TITLE })).toHaveTextContent(
       'No saved spellbooks for this mage yet.',
     );
   });

@@ -180,6 +180,19 @@ describe('MagePicker loading from a badge', () => {
     expect(buildScreen()).toBeInTheDocument();
   });
 
+  it("does not list the official spellbook in the picker's saved spellbooks", async () => {
+    saveSpellbook('Tourney', smallSpellbook);
+
+    renderPicker();
+
+    await openWizardBadge();
+
+    const dialog = screen.getByRole('dialog', { name: 'Saved Wizard spellbooks' });
+
+    expect(within(dialog).queryByText('Official spellbook')).not.toBeInTheDocument();
+    expect(within(dialog).getAllByRole('button', { name: /pts$/ })).toHaveLength(1);
+  });
+
   it('asks before replacing a draft with unsaved work, and keeps it on cancel', async () => {
     const draft = { mageId: 'wizard', counts: { [FIREBALL]: ONE_COPY } };
 
