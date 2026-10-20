@@ -20,3 +20,12 @@
   background: var(--color-bg-error);
   border-inline-start: var(--border-width-strong) solid var(--color-error);
 }
+
+/* Share buttons first, the view switch at the end of the row, lined up with the buttons. */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-xs);
+}

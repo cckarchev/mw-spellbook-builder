@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Toast } from '@/components/toast/Toast';
+import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
 import { bookText } from '@/core/export/bookText';
 import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
@@ -12,11 +14,21 @@ import { ShareActions } from './ShareActions';
 const shareUrlOf = (book: Book): string =>
   buildShareUrl({ encoded: encodeBook(book), embedBase: null, origin: window.location.origin });
 
+// The toast store outlives each render, so every test starts with no message.
+beforeEach(() => {
+  useToastStore.getState().hide();
+});
+
 const renderActions = (book: Book) => {
   const user = userEvent.setup();
   const summary = summarizeBook(book, wizard, cardsById);
 
-  render(<ShareActions book={book} mage={wizard} summary={summary} />);
+  render(
+    <>
+      <ShareActions book={book} mage={wizard} summary={summary} />
+      <Toast />
+    </>,
+  );
 
   return { user, summary };
 };
@@ -39,6 +51,18 @@ describe('ShareActions copying', () => {
     const expected = bookText(smallBook, wizard, summary, cardsById, shareUrlOf(smallBook));
 
     expect(await navigator.clipboard.readText()).toBe(expected);
+    expect(screen.getByRole('status')).toHaveTextContent('Text copied');
+  });
+
+  it('says how to copy by hand, for longer, when the clipboard fails', async () => {
+    const { user } = renderActions(smallBook);
+
+    vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('denied'));
+
+    await user.click(screen.getByRole('button', { name: 'Copy link' }));
+
+    expect(screen.getByRole('status')).toHaveTextContent('copy the link from the address bar');
+    expect(useToastStore.getState().durationMs).toBe(LONG_TOAST_DURATION_MS);
   });
 
   it('still copies an over-budget book, with a note', async () => {

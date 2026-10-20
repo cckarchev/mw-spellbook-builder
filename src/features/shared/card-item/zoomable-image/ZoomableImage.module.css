@@ -1,0 +1,23 @@
+.button {
+  flex-shrink: 0;
+  max-width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: var(--card-radius);
+  cursor: zoom-in;
+}
+
+.button:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--card-aspect);
+  object-fit: cover;
+  background: var(--color-bg-tint);
+  border-radius: var(--card-radius);
+}

@@ -1,0 +1,20 @@
+.region {
+  position: fixed;
+  right: var(--page-gutter);
+  bottom: var(--space-lg);
+  left: var(--page-gutter);
+  z-index: var(--z-toast);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.toast {
+  padding: var(--space-xs) var(--space-md);
+  color: var(--color-text-strong);
+  font-size: var(--font-size-sm);
+  background: var(--color-bg-surface);
+  border: var(--border-default);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-panel);
+}

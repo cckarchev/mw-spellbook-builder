@@ -4,7 +4,6 @@ import { summarizeBook } from '@/core/rules/validateBook';
 import { cardsById, magesById } from '@/data/catalog';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
-import { ShareActions } from '@/features/share/ShareActions';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { Spellbook } from '@/features/spellbook/Spellbook';
 import { useBookStore } from '@/store/useBookStore';
@@ -64,10 +63,7 @@ export const Builder = () => {
         {activeTab === 'cards' ? (
           <Catalog {...panelProps} />
         ) : (
-          <>
-            <ShareActions book={book} mage={mage} summary={summary} />
-            <Spellbook {...panelProps} summary={summary} />
-          </>
+          <Spellbook {...panelProps} summary={summary} />
         )}
       </main>
     </div>

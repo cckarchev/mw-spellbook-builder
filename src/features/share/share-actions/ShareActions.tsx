@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import type { ReactNode } from 'react';
 import { Button } from '@/components/button/Button';
+import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
 import { bookText } from '@/core/export/bookText';
 import type { Book, Mage } from '@/core/rules/types';
 import type { BookSummary } from '@/core/rules/validateBook';
@@ -8,6 +9,7 @@ import { shareNote } from '@/core/share-link/bookNotes';
 import { getEmbedBase } from '@/core/share-link/embed';
 import { buildShareUrl } from '@/core/share-link/shareUrl';
 import { cardsById } from '@/data/catalog';
+import { CopyIcon, LinkIcon, ShareIcon } from './Icons';
 import styles from './ShareActions.module.css';
 
 interface ShareActionsProps {
@@ -28,9 +30,31 @@ const copyText = async (text: string): Promise<boolean> => {
   }
 };
 
+interface ActionButtonProps {
+  icon: ReactNode;
+  label: string;
+  primary: boolean;
+  onClick: () => void;
+}
+
+/** A small icon button; the label shows beside the icon above phone width, and as a tooltip. */
+const ActionButton = ({ icon, label, primary, onClick }: ActionButtonProps) => (
+  <Button
+    variant={primary ? 'primary' : 'ghost'}
+    size="small"
+    className={styles.action}
+    aria-label={label}
+    title={label}
+    onClick={onClick}
+  >
+    {icon}
+    <span className={styles.label}>{label}</span>
+  </Button>
+);
+
 /** The share sheet on phones that have one; the copy buttons work everywhere. */
 export const ShareActions = ({ book, mage, summary }: ShareActionsProps) => {
-  const [status, setStatus] = useState<string | null>(null);
+  const showToast = useToastStore((state) => state.show);
 
   const url = buildShareUrl({
     encoded: encodeBook(book),
@@ -43,7 +67,13 @@ export const ShareActions = ({ book, mage, summary }: ShareActionsProps) => {
   const copy = async (text: string, doneMessage: string) => {
     const copied = await copyText(text);
 
-    setStatus(copied ? doneMessage : COPY_FAILED);
+    if (!copied) {
+      showToast(COPY_FAILED, LONG_TOAST_DURATION_MS);
+
+      return;
+    }
+
+    showToast(doneMessage);
   };
 
   const share = async () => {
@@ -59,20 +89,21 @@ export const ShareActions = ({ book, mage, summary }: ShareActionsProps) => {
       {note ? <p className={styles.note}>{note}</p> : null}
       <div className={styles.buttons}>
         {canShare ? (
-          <Button variant="primary" onClick={share}>
-            Share
-          </Button>
+          <ActionButton icon={<ShareIcon />} label="Share" primary={true} onClick={share} />
         ) : null}
-        <Button variant={canShare ? 'ghost' : 'primary'} onClick={() => copy(url, 'Link copied')}>
-          Copy link
-        </Button>
-        <Button onClick={() => copy(bookText(book, mage, summary, cardsById, url), 'Text copied')}>
-          Copy text
-        </Button>
+        <ActionButton
+          icon={<LinkIcon />}
+          label="Copy link"
+          primary={!canShare}
+          onClick={() => copy(url, 'Link copied')}
+        />
+        <ActionButton
+          icon={<CopyIcon />}
+          label="Copy text"
+          primary={false}
+          onClick={() => copy(bookText(book, mage, summary, cardsById, url), 'Text copied')}
+        />
       </div>
-      <p className={styles.status} role="status">
-        {status}
-      </p>
     </section>
   );
 };

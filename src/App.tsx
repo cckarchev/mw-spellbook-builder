@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { Toast } from '@/components/toast/Toast';
 import { Builder } from '@/features/builder/Builder';
 import { MagePicker } from '@/features/mage-picker/MagePicker';
 import { IncomingLink } from '@/features/share/IncomingLink';
@@ -13,5 +14,6 @@ export const App = () => (
       </Route>
     </Routes>
     <IncomingLink />
+    <Toast />
   </>
 );

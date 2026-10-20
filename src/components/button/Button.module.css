@@ -18,6 +18,12 @@
     opacity var(--duration-fast);
 }
 
+.small {
+  min-height: var(--chip-height);
+  padding-inline: var(--space-sm);
+  font-size: var(--font-size-md);
+}
+
 .button:focus-visible {
   outline: var(--focus-ring);
   outline-offset: var(--focus-ring-offset);

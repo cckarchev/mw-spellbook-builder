@@ -1,8 +1,9 @@
+@import '@/theme/breakpoints.css';
+
 .actions {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
-  margin-bottom: var(--space-md);
 }
 
 .note {
@@ -13,18 +14,22 @@
   border-inline-start: var(--border-width-strong) solid var(--color-error);
 }
 
+/* The buttons at their own width, in one row. */
 .buttons {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: var(--space-xs);
 }
 
-.buttons > * {
-  flex: 1;
-}
+/* On a phone the buttons show their icons only, each a touch target wide; the name stays on
+   the button for screen readers. */
+@media (--phone) {
+  .action {
+    min-width: var(--touch-target);
+  }
 
-.status {
-  min-height: 1lh;
-  color: var(--color-text-dim);
-  font-size: var(--font-size-sm);
+  .label {
+    display: none;
+  }
 }

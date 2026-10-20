@@ -4,12 +4,15 @@ import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { cardsById } from '@/data/catalog';
 import { FIREBALL, smallBook, tooManyCopiesBook, wizard } from '@/features/shared/testBooks';
+import { type ViewMode, viewModeStorageKey } from '@/features/shared/view-switch/useViewMode';
 import { Spellbook } from './Spellbook';
 
 const ONE_FIREBALL: Book = { ...smallBook, counts: { ...smallBook.counts, [FIREBALL]: 1 } };
 
-const renderSpellbook = (book: Book = smallBook) => {
+const renderSpellbook = (book: Book = smallBook, view: ViewMode = 'list') => {
   const onRemove = vi.fn();
+
+  localStorage.setItem(viewModeStorageKey('book'), view);
 
   render(
     <Spellbook
@@ -68,6 +71,7 @@ describe('Spellbook', () => {
     renderSpellbook({ ...smallBook, counts: {} });
 
     expect(screen.getByText('No cards yet. Add some from the Cards tab.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Grid' })).not.toBeInTheDocument();
   });
 
   it('removes a copy without asking while more copies stay', async () => {
@@ -102,5 +106,29 @@ describe('Spellbook', () => {
 
     expect(onRemove).toHaveBeenCalledWith(FIREBALL);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+});
+
+describe('Spellbook grid', () => {
+  it('shows the cards as images with the points of every copy', () => {
+    renderSpellbook(smallBook, 'grid');
+
+    const attack = screen.getByRole('region', { name: 'Attack (5) 16 pts' });
+    const tile = within(attack).getByRole('img', { name: 'Fireball' }).closest('li');
+
+    // Three copies at 4 points each.
+    expect(tile).toHaveTextContent('12 pts');
+    expect(
+      within(tile as HTMLElement).getByRole('button', { name: 'Add one Fireball' }),
+    ).toBeInTheDocument();
+  });
+
+  it('marks the card that has a problem', () => {
+    renderSpellbook(tooManyCopiesBook, 'grid');
+
+    const tile = screen.getByText('Too many copies: max 4').closest('li');
+
+    expect(tile).toHaveAttribute('data-problem', 'true');
+    expect(within(tile as HTMLElement).getByRole('img', { name: 'Fireball' })).toBeInTheDocument();
   });
 });

@@ -1,0 +1,68 @@
+@import '@/theme/breakpoints.css';
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xxs);
+  padding: var(--space-xxs);
+  border: var(--border-width-strong) solid transparent;
+}
+
+/* On a phone the stepper needs the whole tile width. */
+@media (--phone) {
+  .tile {
+    padding: 0;
+  }
+}
+
+.tile[data-in-book='true'] {
+  background: var(--color-bg-selected);
+  border-color: var(--color-accent);
+}
+
+.art {
+  position: relative;
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+}
+
+/* A card without art still takes a card's shape, with its name on it. */
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: var(--card-aspect);
+  padding: var(--space-xs);
+  color: var(--color-text-strong);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  background: var(--color-bg-tint);
+  border-radius: var(--card-radius);
+}
+
+.points {
+  position: absolute;
+  top: var(--space-xxs);
+  right: var(--space-xxs);
+  padding: 0 var(--space-xxs);
+  color: var(--color-gold);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  background: var(--color-bg-scrim);
+  pointer-events: none;
+}
+
+/* After the in-book border, so a problem shows over it. */
+.tile[data-problem='true'] {
+  border-color: var(--color-error);
+}
+
+.problem {
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}

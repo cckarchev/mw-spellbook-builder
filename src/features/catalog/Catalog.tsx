@@ -9,8 +9,10 @@ import { addCopyBlockedReason } from '@/core/rules/validateBook';
 import { plural } from '@/core/text/plural';
 import { cards, cardsById } from '@/data/catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
-import { CardRow } from '@/features/shared/card-row/CardRow';
+import { CardItem } from '@/features/shared/card-item/CardItem';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
+import { useViewMode } from '@/features/shared/view-switch/useViewMode';
+import { ViewSwitch } from '@/features/shared/view-switch/ViewSwitch';
 import styles from './Catalog.module.css';
 import { FilterBar } from './filter-bar/FilterBar';
 import { useCatalogFilters } from './useCatalogFilters';
@@ -27,6 +29,7 @@ const inBookLabel = (bookGroup: BookGroup | undefined): string | undefined => {
 /** Every card the mage can use, filtered and grouped by type, each with its cost and a stepper. */
 export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
   const { filters, setQuery, toggle, setScope, clearChips } = useCatalogFilters(mage);
+  const { view, setView } = useViewMode('catalog');
 
   const legalCards = useMemo(() => filterCards(cards, EMPTY_FILTERS, mage), [mage]);
   const options = useMemo(() => filterOptions(legalCards), [legalCards]);
@@ -49,7 +52,9 @@ export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
         scope={scopeOf(filters, mage)}
         onScopeChange={setScope}
         onClearChips={clearChips}
-      />
+      >
+        <ViewSwitch view={view} onChange={setView} />
+      </FilterBar>
       {filtering ? (
         <p className={styles.count} data-empty={shownCards.length === 0}>
           Showing {shownCards.length} of {plural(legalCards.length, 'card', 'cards')}
@@ -62,10 +67,12 @@ export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
           count={group.items.length}
           meta={inBookLabel(bookGroupsByType.get(group.type))}
           defaultExpanded={filtering}
+          layout={view}
         >
           {group.items.map((card) => (
-            <CardRow
+            <CardItem
               key={card.id}
+              view={view}
               card={card}
               count={book.counts[card.id] ?? 0}
               points={cardCost(card, mage)}
