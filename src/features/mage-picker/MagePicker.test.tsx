@@ -15,7 +15,7 @@ const renderPicker = () => {
     <MemoryRouter initialEntries={['/']}>
       <Routes>
         <Route index={true} element={<MagePicker />} />
-        <Route path="/build" element={<h1>Build screen</h1>} />
+        <Route path=":mageSlug" element={<h1>Build screen</h1>} />
       </Routes>
     </MemoryRouter>,
   );

@@ -6,9 +6,9 @@ import { type DecodedBook, decodeBook } from '@/core/share-link/bookCodec';
 import { incomingProblems, noMageProblems } from '@/core/share-link/bookNotes';
 import { BOOK_PARAM } from '@/core/share-link/shareUrl';
 import { cardsById, magesById } from '@/data/catalog';
+import { currentBookPath } from '@/features/mage-switch/currentBookPath';
 import { useBookStore } from '@/store/useBookStore';
 
-const BOOK_TAB_PATH = '/build?tab=book';
 const PICKER_PATH = '/';
 
 const UNREADABLE = 'This link could not be read. Your current book is unchanged.';
@@ -24,7 +24,7 @@ const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
   const { issues } = summarizeBook(book, mage, cardsById);
 
   return {
-    path: BOOK_TAB_PATH,
+    path: currentBookPath(book, 'book'),
     problems: incomingProblems(unknownCodes, issues, mage, book.counts, cardsById),
   };
 };
@@ -65,14 +65,15 @@ export const useIncomingBook = () => {
 
     if (!decoded) {
       setProblems([UNREADABLE]);
-      navigate(location.pathname, { replace: true });
+      navigate(currentBookPath(current, 'cards'), { replace: true });
 
       return;
     }
 
     if (hasCards(current) && !sameBook(current, decoded.book)) {
+      // The current book stays on screen while the player decides.
       setPendingReplace(decoded);
-      navigate(location.pathname, { replace: true });
+      navigate(currentBookPath(current, 'book'), { replace: true });
 
       return;
     }

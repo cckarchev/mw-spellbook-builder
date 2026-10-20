@@ -1,9 +1,8 @@
-import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
 import { mages } from '@/data/catalog';
-import { BookLossNote } from '@/features/shared/BookLossNote';
+import { NewBookDialog } from '@/features/mage-switch/NewBookDialog';
+import { useMageSwitch } from '@/features/mage-switch/useMageSwitch';
 import styles from './MagePicker.module.css';
 import { MageTile } from './mage-tile/MageTile';
-import { useMageSwitch } from './useMageSwitch';
 
 export const MagePicker = () => {
   const { book, pendingSwitch, requestSwitch, confirmSwitch, cancelSwitch } = useMageSwitch();
@@ -21,11 +20,9 @@ export const MagePicker = () => {
           />
         ))}
       </div>
-      <ConfirmDialog
+      <NewBookDialog
         open={pendingSwitch !== null}
-        title="Start a new book?"
-        body={<BookLossNote book={book} />}
-        confirmLabel="Clear and switch"
+        book={book}
         onConfirm={confirmSwitch}
         onCancel={cancelSwitch}
       />

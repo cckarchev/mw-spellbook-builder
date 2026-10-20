@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Button } from '@/components/button/Button';
 import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
 import { bookText } from '@/core/export/bookText';
+import { builderPath } from '@/core/routing/builderPath';
 import type { Book, Mage } from '@/core/rules/types';
 import type { BookSummary } from '@/core/rules/validateBook';
 import { encodeBook } from '@/core/share-link/bookCodec';
@@ -60,6 +61,7 @@ export const ShareActions = ({ book, mage, summary }: ShareActionsProps) => {
     encoded: encodeBook(book),
     embedBase: getEmbedBase(),
     origin: window.location.origin,
+    magePath: builderPath(mage.name, 'cards'),
   });
   const note = shareNote(summary);
   const canShare = typeof navigator.share === 'function';
