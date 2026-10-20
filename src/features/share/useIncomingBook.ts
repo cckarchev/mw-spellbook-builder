@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { readDraft } from '@/core/persistence/drafts';
 import { builderPath, PICKER_PATH } from '@/core/routing/builderPath';
 import { hasCards, sameBook } from '@/core/rules/bookChanges';
+import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { type DecodedBook, decodeBook } from '@/core/share-link/bookCodec';
 import { incomingProblems, noMageProblems } from '@/core/share-link/bookNotes';
@@ -28,9 +30,21 @@ const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
   };
 };
 
+/** Whether opening the book would replace a draft of its mage that holds other cards. */
+const replacesWork = (book: Book): boolean => {
+  const draft = book.mageId === null ? null : readDraft(book.mageId);
+
+  if (draft === null) {
+    return false;
+  }
+
+  return hasCards(draft.book) && !sameBook(draft.book, book);
+};
+
 /**
  * Loads the book from a share link (?b=) once at startup and opens it on the Book tab.
- * A book in progress is only replaced once the player confirms it in pendingReplace.
+ * A draft of the link's mage that holds other cards is only replaced once the player confirms
+ * it in pendingReplace; the drafts of other mages are never touched.
  * Returns the problems found in the link's book, for the player to see, until dismissed.
  */
 export const useIncomingBook = () => {
@@ -69,7 +83,7 @@ export const useIncomingBook = () => {
       return;
     }
 
-    if (hasCards(current) && !sameBook(current, decoded.book)) {
+    if (replacesWork(decoded.book)) {
       // The current book stays on screen while the player decides.
       setPendingReplace(decoded);
       navigate(currentBookPath(current, 'book'), { replace: true });

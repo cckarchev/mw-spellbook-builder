@@ -6,7 +6,7 @@ import { bookMage } from '@/data/catalog';
 const CURRENT_MAGE_FALLBACK = 'current';
 
 /** How to keep a book that a confirm is about to clear or replace. */
-export const KEEP_BOOK_HINT = 'To keep it, cancel and copy its link from the Book tab first.';
+export const KEEP_BOOK_HINT = 'To keep it, cancel and save it first.';
 
 /** What a confirm says before the book is cleared, and how to keep it. */
 export const BookLossNote = ({ book }: { book: Book }) => {

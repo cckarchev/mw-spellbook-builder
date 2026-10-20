@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { App } from '@/App';
+import { readDraft } from '@/core/persistence/drafts';
 import { toBase64Url } from '@/core/share-link/base64Url';
 import { encodeBook } from '@/core/share-link/bookCodec';
 import { cardsById } from '@/data/catalog';
@@ -100,17 +101,34 @@ describe('opening a share link over a book in progress', () => {
     expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
   });
 
-  it('keeps a book of another mage on Cancel, with no second question', async () => {
+  it("asks about the link mage's draft even while another mage is open", async () => {
     const warlockBook = { mageId: 'warlock', counts: { [FIREBALL]: 1 } };
 
     useBookStore.getState().loadBook(warlockBook);
     renderAt(`/wizard?b=${encodeBook(smallBook)}`);
 
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    const dialog = screen.getByRole('dialog', { name: 'Replace your book?' });
+
+    expect(dialog).toHaveTextContent(
+      'This link opens another book. Your Wizard book will be replaced. To keep it, cancel and save it first.',
+    );
+
+    await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
 
     expect(useBookStore.getState().book).toEqual(warlockBook);
+    expect(readDraft('wizard')?.book).toEqual(overBudgetBook);
+  });
+
+  it("does not ask when the link's mage has no draft, and keeps the open book as its draft", () => {
+    const warlockBook = { mageId: 'warlock', counts: { [FIREBALL]: 1 } };
+
+    resetBookStore();
+    useBookStore.getState().loadBook(warlockBook);
+    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
+
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
+    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(readDraft('warlock')?.book).toEqual(warlockBook);
   });
 
   it('opens the same book without asking', () => {
