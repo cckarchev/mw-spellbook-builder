@@ -11,9 +11,21 @@ import { ViewSwitch } from '@/features/shared/view-switch/ViewSwitch';
 import styles from './SpellbookPanel.module.css';
 import { useLastCopyConfirm } from './useLastCopyConfirm';
 
+/** On its own tab, or as the column next to the catalog on desktop. */
+export type SpellbookPanelVariant = 'tab' | 'column';
+
 interface SpellbookPanelProps extends BuilderPanelProps {
   summary: SpellbookSummary;
+  variant?: SpellbookPanelVariant;
 }
+
+const EMPTY_TEXT: Record<SpellbookPanelVariant, string> = {
+  tab: 'No cards yet. Add some from the Cards tab.',
+  column: 'No cards yet. Add some from the catalog.',
+};
+
+/** The desktop column is too narrow for card images, so it always shows rows. */
+const COLUMN_VIEW: ViewMode = 'list';
 
 interface GroupsProps extends BuilderPanelProps {
   groups: SpellbookGroup[];
@@ -57,8 +69,9 @@ export const SpellbookPanel = ({
   summary,
   onAdd,
   onRemove,
+  variant = 'tab',
 }: SpellbookPanelProps) => {
-  const { view, setView } = useViewMode('spellbook');
+  const { view: storedView, setView } = useViewMode('spellbook');
   const groups = spellbookGroups(spellbook, mage, cardsById);
   const problems = spellbookProblems(summary.issues, mage, spellbook.counts, cardsById);
   const { pendingCardId, requestRemove, confirmRemove, cancelRemove } = useLastCopyConfirm(
@@ -67,18 +80,21 @@ export const SpellbookPanel = ({
   );
   const pendingCard = pendingCardId ? cardsById.get(pendingCardId) : undefined;
 
+  const isColumn = variant === 'column';
+  const view = isColumn ? COLUMN_VIEW : storedView;
+
   // An empty spellbook has nothing to show either way, so it gets no view switch.
   const isEmpty = groups.length === 0;
+  const showViewSwitch = !isEmpty && !isColumn;
 
   return (
     <div className={styles.spellbook}>
-      {isEmpty ? (
-        <p className={styles.empty}>No cards yet. Add some from the Cards tab.</p>
-      ) : (
+      {isEmpty ? <p className={styles.empty}>{EMPTY_TEXT[variant]}</p> : null}
+      {showViewSwitch ? (
         <div className={styles.toolbar}>
           <ViewSwitch view={view} onChange={setView} />
         </div>
-      )}
+      ) : null}
       {!isEmpty && problems.length > 0 ? (
         <ul className={styles.problems} aria-label="Problems">
           {problems.map((problem) => (

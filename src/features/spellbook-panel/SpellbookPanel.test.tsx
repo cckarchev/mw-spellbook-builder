@@ -10,14 +10,18 @@ import {
   wizard,
 } from '@/features/shared/testSpellbooks';
 import { type ViewMode, viewModeStorageKey } from '@/features/shared/view-switch/useViewMode';
-import { SpellbookPanel } from './SpellbookPanel';
+import { SpellbookPanel, type SpellbookPanelVariant } from './SpellbookPanel';
 
 const ONE_FIREBALL: Spellbook = {
   ...smallSpellbook,
   counts: { ...smallSpellbook.counts, [FIREBALL]: 1 },
 };
 
-const renderSpellbookPanel = (spellbook: Spellbook = smallSpellbook, view: ViewMode = 'list') => {
+const renderSpellbookPanel = (
+  spellbook: Spellbook = smallSpellbook,
+  view: ViewMode = 'list',
+  variant: SpellbookPanelVariant = 'tab',
+) => {
   const onRemove = vi.fn();
 
   localStorage.setItem(viewModeStorageKey('spellbook'), view);
@@ -29,6 +33,7 @@ const renderSpellbookPanel = (spellbook: Spellbook = smallSpellbook, view: ViewM
       summary={summarizeSpellbook(spellbook, wizard, cardsById)}
       onAdd={vi.fn()}
       onRemove={onRemove}
+      variant={variant}
     />,
   );
 
@@ -138,5 +143,45 @@ describe('SpellbookPanel grid', () => {
 
     expect(tile).toHaveAttribute('data-problem', 'true');
     expect(within(tile as HTMLElement).getByRole('img', { name: 'Fireball' })).toBeInTheDocument();
+  });
+});
+
+describe('SpellbookPanel as a column', () => {
+  it('shows rows even when the stored view is grid', () => {
+    renderSpellbookPanel(smallSpellbook, 'grid', 'column');
+
+    const attack = screen.getByRole('region', { name: 'Attack (5) 16 pts' });
+
+    expect(within(attack).getByText('Fireball')).toBeInTheDocument();
+    expect(within(attack).queryByRole('img', { name: 'Fireball' })).not.toBeInTheDocument();
+    expect(localStorage.getItem(viewModeStorageKey('spellbook'))).toBe('grid');
+  });
+
+  it('has no view switch', () => {
+    renderSpellbookPanel(smallSpellbook, 'list', 'column');
+
+    expect(screen.queryByRole('button', { name: 'Grid' })).not.toBeInTheDocument();
+  });
+
+  it('points at the catalog when empty', () => {
+    renderSpellbookPanel({ ...smallSpellbook, counts: {} }, 'list', 'column');
+
+    expect(screen.getByText('No cards yet. Add some from the catalog.')).toBeInTheDocument();
+    expect(
+      screen.queryByText('No cards yet. Add some from the Cards tab.'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('asks before removing the last copy', async () => {
+    const { onRemove } = renderSpellbookPanel(ONE_FIREBALL, 'list', 'column');
+
+    await removeOneFireball();
+
+    expect(screen.getByRole('dialog', { name: 'Remove Fireball?' })).toBeInTheDocument();
+    expect(onRemove).not.toHaveBeenCalled();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Remove' }));
+
+    expect(onRemove).toHaveBeenCalledWith(FIREBALL);
   });
 });
