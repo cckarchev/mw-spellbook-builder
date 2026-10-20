@@ -5,3 +5,5 @@
 @custom-media --phone (max-width: 480px);
 @custom-media --below-tablet (max-width: 767.98px);
 @custom-media --tablet-up (min-width: 768px);
+/* Keep in step with DESKTOP_QUERY in src/features/shared/useMediaQuery.ts. */
+@custom-media --desktop-up (min-width: 1024px);
