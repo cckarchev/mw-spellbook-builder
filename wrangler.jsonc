@@ -7,6 +7,8 @@
     "directory": "./dist/",
     "not_found_handling": "single-page-application"
   },
+  // Branch and pull request builds deploy as Previews of this Worker; they need no settings of their own.
+  "previews": {},
   "routes": [
     {
       "pattern": "mw-spellbook-builder.cckarchev.ar",
