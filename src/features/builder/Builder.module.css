@@ -3,7 +3,7 @@
   flex-direction: column;
 }
 
-/* Header and tabs stay on screen while the list scrolls under them. */
+/* The header, and the tabs below desktop, stay on screen while the page scrolls under them. */
 .sticky {
   position: sticky;
   top: 0;
@@ -38,10 +38,9 @@
 .actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: var(--space-xs);
   margin-inline-start: auto;
-  padding-block: var(--space-sm);
+  padding-block-end: var(--space-sm);
 }
 
 .divider {
@@ -63,5 +62,6 @@
   top: var(--builder-sticky-height);
   max-height: calc(100dvh - var(--builder-sticky-height));
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding-block: var(--space-md) var(--space-xl);
 }
