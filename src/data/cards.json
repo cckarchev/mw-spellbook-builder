@@ -4088,7 +4088,7 @@
         "level": 2
       }
     ],
-    "traits": ["Zeon Exclusive", "Epic"],
+    "traits": ["Zone Exclusive", "Epic"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -4709,7 +4709,7 @@
         "level": 3
       }
     ],
-    "traits": ["Frost -2", "Bloodthirsty"],
+    "traits": ["Frost -2", "Bloodthirsty +2"],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Conquest of Kumanjaro",
@@ -19697,7 +19697,7 @@
         "level": 3
       }
     ],
-    "traits": ["Nonlivng", "Legendary"],
+    "traits": ["Nonliving", "Legendary"],
     "onlyFor": null,
     "format": "academy",
     "expansion": "Mage Wars Academy: Forcemaster",

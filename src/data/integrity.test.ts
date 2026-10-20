@@ -56,6 +56,16 @@ describe('card data integrity', () => {
 
     expect(acidBall?.attackBar).toContain('5+ = 2 Corrode');
   });
+
+  it.each([
+    ['Dire Wolf', 'Bloodthirsty +2'],
+    ['Deathlock', 'Zone Exclusive'],
+    ['Tjusut, the Risen King', 'Nonliving'],
+  ])('fixes the trait the module misprints on %s', (name, trait) => {
+    const card = cards.find((candidate) => candidate.name === name);
+
+    expect(card?.traits).toContain(trait);
+  });
 });
 
 describe('mage data integrity', () => {

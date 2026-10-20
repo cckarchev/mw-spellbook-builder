@@ -3,7 +3,7 @@ import type { Card } from '@/core/rules/types';
 // The module's printed text gets a few cards wrong. These fixes are copied by hand from the card
 // images. The engine data in the module is no better: it misses effects that the cards print.
 
-interface CardCorrection extends Partial<Pick<Card, 'attackBar'>> {
+interface CardCorrection extends Partial<Pick<Card, 'attackBar' | 'traits'>> {
   code: string;
   /** Checked against the card, so a correction never lands on the wrong one. */
   name: string;
@@ -70,6 +70,10 @@ export const CARD_CORRECTIONS: CardCorrection[] = [
     name: 'Telekinetic Bomb',
     attackBar: 'Blast\n4d6 | d12 4+ = Stagger | Ethereal, Unavoidable',
   },
+  // Misprinted traits.
+  { code: '7add1431', name: 'Dire Wolf', traits: ['Frost -2', 'Bloodthirsty +2'] },
+  { code: 'd6f98712', name: 'Deathlock', traits: ['Zone Exclusive', 'Epic'] },
+  { code: 'ca2b10a9', name: 'Tjusut, the Risen King', traits: ['Nonliving', 'Legendary'] },
 ];
 
 /** The cards with their corrections applied. Throws on a correction that matches no card. */
