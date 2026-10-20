@@ -1,12 +1,14 @@
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { type Tab, Tabs, tabPanelProps } from '@/components/tabs/Tabs';
-import { type BuilderTab, builderPath, PICKER_PATH } from '@/core/routing/paths';
+import { type BuilderTab, builderPath } from '@/core/routing/paths';
+import { mageSwitchKind } from '@/core/rules/bookChanges';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { bookMage, cardsById, magesBySlug } from '@/data/catalog';
 import { BookHeader } from '@/features/book-header/BookHeader';
 import { Catalog } from '@/features/catalog/Catalog';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { Spellbook } from '@/features/spellbook/Spellbook';
+import { ToPicker } from '@/layout/ToPicker';
 import { useBookStore } from '@/store/useBookStore';
 import styles from './Builder.module.css';
 
@@ -32,11 +34,11 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
   const mage = bookMage(book);
 
   if (!routeMage) {
-    return <Navigate to={PICKER_PATH} replace={true} />;
+    return <ToPicker />;
   }
 
-  // A book with no mage is about to take the URL's mage; there is nothing to show yet.
-  if (!mage) {
+  // A book with no cards is about to switch to the URL's mage, so the old mage is not drawn first.
+  if (!mage || mageSwitchKind(book, routeMage.id) === 'direct') {
     return null;
   }
 

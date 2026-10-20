@@ -45,19 +45,31 @@ export const bookPath = (mage: { name: string } | undefined, tab: BuilderTab): s
 
 const PATH_SEPARATOR = '/';
 
-const pathSegments = (pathname: string): string[] =>
-  pathname.split(PATH_SEPARATOR).filter((segment) => segment !== '');
+/** The mage and tab a builder path opens. */
+export interface BuilderLocation {
+  slug: string;
+  tab: BuilderTab;
+}
 
-/** The mage slug a path starts with, such as "wizard" for "/wizard/book", or null on the picker. */
-export const slugFromPath = (pathname: string): string | null => {
-  const [firstSegment] = pathSegments(pathname);
+/**
+ * The mage and tab of a builder path, matching the app's routes: "/<slug>" for Cards and
+ * "/<slug>/book" for Book. Any other path, the picker included, is not a builder path.
+ */
+export const parseBuilderPath = (pathname: string): BuilderLocation | null => {
+  const segments = pathname.split(PATH_SEPARATOR).filter((segment) => segment !== '');
+  const [slug, tabSegment, ...rest] = segments;
 
-  return firstSegment ?? null;
-};
+  if (slug === undefined || rest.length > 0) {
+    return null;
+  }
 
-/** The builder tab a path opens: Book under its segment, Cards otherwise. */
-export const tabFromPath = (pathname: string): BuilderTab => {
-  const [, tabSegment] = pathSegments(pathname);
+  if (tabSegment === undefined) {
+    return { slug, tab: 'cards' };
+  }
 
-  return tabSegment === BOOK_SEGMENT ? 'book' : 'cards';
+  if (tabSegment === BOOK_SEGMENT) {
+    return { slug, tab: 'book' };
+  }
+
+  return null;
 };

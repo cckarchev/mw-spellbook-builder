@@ -3,7 +3,7 @@ import { type BookGroup, bookGroups } from '@/core/catalog/bookGroups';
 import { addCopyBlockedReason, type BookSummary } from '@/core/rules/validateBook';
 import { bookProblems, cardProblems } from '@/core/share-link/bookNotes';
 import { cardsById } from '@/data/catalog';
-import { ShareActions } from '@/features/share/share-actions/ShareActions';
+import { ShareActions } from '@/features/share-actions/ShareActions';
 import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { CardItem } from '@/features/shared/card-item/CardItem';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';

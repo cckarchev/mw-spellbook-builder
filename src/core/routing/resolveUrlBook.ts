@@ -1,4 +1,4 @@
-import { emptyBook, hasCards, mageSwitchKind, sameBook } from '@/core/rules/bookChanges';
+import { hasCards, mageSwitchKind, sameBook } from '@/core/rules/bookChanges';
 import type { Book } from '@/core/rules/types';
 
 /** A share link's content: its book, plus whatever else the caller decoded with it. */
@@ -21,8 +21,8 @@ export type UrlBookAction<Link extends LinkContent> =
   | { kind: 'unreadableLink' }
   | { kind: 'openLink'; link: Link }
   | { kind: 'askReplace'; link: Link }
-  | { kind: 'switchMage'; book: Book }
-  | { kind: 'askNewBook'; book: Book };
+  | { kind: 'switchMage'; mageId: string }
+  | { kind: 'askNewBook'; mageId: string };
 
 const resolveLink = <Link extends LinkContent>(
   current: Book,
@@ -51,13 +51,11 @@ const resolveRouteMage = <Link extends LinkContent>(
     return { kind: 'keep' };
   }
 
-  const book = emptyBook(routeMageId);
-
   if (kind === 'newBook') {
-    return { kind: 'askNewBook', book };
+    return { kind: 'askNewBook', mageId: routeMageId };
   }
 
-  return { kind: 'switchMage', book };
+  return { kind: 'switchMage', mageId: routeMageId };
 };
 
 /**

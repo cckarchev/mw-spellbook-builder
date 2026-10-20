@@ -71,19 +71,19 @@ describe('resolveUrlBook with a mage in the path', () => {
   it('switches right away when the book has no cards', () => {
     const action = resolveUrlBook({ current: EMPTY_WIZARD, routeMageId: WARLOCK, link: null });
 
-    expect(action).toEqual({ kind: 'switchMage', book: { mageId: WARLOCK, counts: {} } });
+    expect(action).toEqual({ kind: 'switchMage', mageId: WARLOCK });
   });
 
   it('switches a book with no mage yet', () => {
     const action = resolveUrlBook({ current: NO_BOOK, routeMageId: WARLOCK, link: null });
 
-    expect(action).toEqual({ kind: 'switchMage', book: { mageId: WARLOCK, counts: {} } });
+    expect(action).toEqual({ kind: 'switchMage', mageId: WARLOCK });
   });
 
   it('asks before clearing a book of another mage with cards', () => {
     const action = resolveUrlBook({ current: WIZARD_BOOK, routeMageId: WARLOCK, link: null });
 
-    expect(action).toEqual({ kind: 'askNewBook', book: { mageId: WARLOCK, counts: {} } });
+    expect(action).toEqual({ kind: 'askNewBook', mageId: WARLOCK });
   });
 });
 

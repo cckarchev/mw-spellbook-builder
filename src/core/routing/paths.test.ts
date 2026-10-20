@@ -1,4 +1,4 @@
-import { bookPath, builderPath, mageSlug, PICKER_PATH, slugFromPath, tabFromPath } from './paths';
+import { bookPath, builderPath, mageSlug, PICKER_PATH, parseBuilderPath } from './paths';
 
 const WIZARD = { name: 'Sistarran Wizard' };
 
@@ -37,23 +37,28 @@ describe('bookPath', () => {
   });
 });
 
-describe('slugFromPath', () => {
-  it('reads the mage slug of a builder path', () => {
-    expect(slugFromPath('/sistarran-wizard')).toBe('sistarran-wizard');
-    expect(slugFromPath('/sistarran-wizard/book')).toBe('sistarran-wizard');
+describe('parseBuilderPath', () => {
+  it('reads the mage slug and the Cards tab of a mage path', () => {
+    expect(parseBuilderPath('/sistarran-wizard')).toEqual({
+      slug: 'sistarran-wizard',
+      tab: 'cards',
+    });
   });
 
-  it('has no slug on the mage picker', () => {
-    expect(slugFromPath(PICKER_PATH)).toBeNull();
-  });
-});
-
-describe('tabFromPath', () => {
-  it('reads the Book tab from its segment', () => {
-    expect(tabFromPath('/wizard/book')).toBe('book');
+  it('reads the Book tab under its segment', () => {
+    expect(parseBuilderPath('/wizard/book')).toEqual({ slug: 'wizard', tab: 'book' });
   });
 
-  it('reads the Cards tab from a bare mage path', () => {
-    expect(tabFromPath('/wizard')).toBe('cards');
+  it('ignores a trailing slash, as the router does', () => {
+    expect(parseBuilderPath('/wizard/book/')).toEqual({ slug: 'wizard', tab: 'book' });
+  });
+
+  it('is not a builder path on the mage picker', () => {
+    expect(parseBuilderPath(PICKER_PATH)).toBeNull();
+  });
+
+  it('is not a builder path under an unknown segment or deeper', () => {
+    expect(parseBuilderPath('/wizard/not-a-tab')).toBeNull();
+    expect(parseBuilderPath('/wizard/book/more')).toBeNull();
   });
 });

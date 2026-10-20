@@ -115,11 +115,29 @@ describe('opening a share link over a book in progress', () => {
     expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
   });
 
+  it('still asks when the link comes on a path the app does not know', () => {
+    renderAt(`/build?b=${encodeBook(smallBook)}`);
+
+    expect(screen.getByRole('dialog', { name: 'Replace your book?' })).toBeInTheDocument();
+  });
+
   it('opens the same book without asking', () => {
     useBookStore.getState().loadBook(smallBook);
 
     renderAt(`/wizard?b=${encodeBook(smallBook)}`);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+});
+
+describe('opening a path the app does not know', () => {
+  it('leaves the book alone, even when the path starts with a mage', () => {
+    const necromancerBook = { mageId: 'necromancer', counts: {} };
+
+    useBookStore.getState().loadBook(necromancerBook);
+    renderAt('/wizard/not-a-tab');
+
+    expect(useBookStore.getState().book).toEqual(necromancerBook);
+    expect(screen.getByRole('heading', { name: 'Choose a mage' })).toBeInTheDocument();
   });
 });

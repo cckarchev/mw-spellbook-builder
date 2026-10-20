@@ -1,28 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import {
-  bookPath,
-  builderPath,
-  PICKER_PATH,
-  slugFromPath,
-  tabFromPath,
-} from '@/core/routing/paths';
+import { bookPath, builderPath, PICKER_PATH, parseBuilderPath } from '@/core/routing/paths';
 import { resolveUrlBook } from '@/core/routing/resolveUrlBook';
-import type { Mage } from '@/core/rules/types';
+import { emptyBook } from '@/core/rules/bookChanges';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { type DecodedBook, decodeBook } from '@/core/share-link/bookCodec';
 import { incomingProblems, noMageProblems } from '@/core/share-link/bookNotes';
 import { BOOK_PARAM } from '@/core/share-link/shareUrl';
 import { bookMage, cardsById, magesBySlug } from '@/data/catalog';
-import { useStartNewBook } from '@/features/mage-switch/useStartNewBook';
 import { useBookStore } from '@/store/useBookStore';
+import { useStartNewBook } from './useStartNewBook';
 
 const UNREADABLE = 'This link could not be read. Your current book is unchanged.';
 
 /** A question waiting on the player before the URL may replace or clear the book. */
 type PendingQuestion =
   | { kind: 'askReplace'; decoded: DecodedBook }
-  | { kind: 'askNewBook'; mage: Mage };
+  | { kind: 'askNewBook'; mageId: string };
 
 /** Where a book opened from a link goes, and what to tell the player about it. */
 const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
@@ -80,8 +74,8 @@ export const useUrlBook = () => {
   // cleared on the way out of the builder does not bring the mage of the URL being left back.
   useEffect(() => {
     const link = readLink(location.search);
-    const slug = slugFromPath(location.pathname);
-    const routeMage = slug === null ? undefined : magesBySlug.get(slug);
+    const builderLocation = parseBuilderPath(location.pathname);
+    const routeMage = builderLocation ? magesBySlug.get(builderLocation.slug) : undefined;
     const current = useBookStore.getState().book;
     const action = resolveUrlBook({ current, routeMageId: routeMage?.id ?? null, link });
 
@@ -102,11 +96,11 @@ export const useUrlBook = () => {
     }
 
     if (action.kind === 'switchMage') {
-      loadBook(action.book);
+      loadBook(emptyBook(action.mageId));
     }
 
-    if (action.kind === 'askNewBook' && routeMage) {
-      setPending({ kind: 'askNewBook', mage: routeMage });
+    if (action.kind === 'askNewBook') {
+      setPending({ kind: 'askNewBook', mageId: action.mageId });
     }
   }, [location.pathname, location.search, navigate, open, loadBook]);
 
@@ -116,7 +110,7 @@ export const useUrlBook = () => {
     }
 
     if (pending?.kind === 'askNewBook') {
-      startNewBook(pending.mage);
+      startNewBook(pending.mageId);
     }
 
     setPending(null);
@@ -126,7 +120,8 @@ export const useUrlBook = () => {
   // to the Book tab after a share link, to the tab the URL named after a mage path.
   const cancel = () => {
     const current = useBookStore.getState().book;
-    const tab = pending?.kind === 'askReplace' ? 'book' : tabFromPath(location.pathname);
+    const urlTab = parseBuilderPath(location.pathname)?.tab ?? 'cards';
+    const tab = pending?.kind === 'askReplace' ? 'book' : urlTab;
 
     setPending(null);
     navigate(bookPath(bookMage(current), tab), { replace: true });

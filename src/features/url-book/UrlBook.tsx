@@ -1,8 +1,8 @@
 import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
-import { NewBookDialog } from '@/features/mage-switch/NewBookDialog';
 import { KEEP_BOOK_HINT } from '@/features/shared/BookLossNote';
 import { useBookStore } from '@/store/useBookStore';
 import { IncomingIssues } from './incoming-issues/IncomingIssues';
+import { NewBookDialog } from './NewBookDialog';
 import { useUrlBook } from './useUrlBook';
 
 const REPLACE_BODY = `This link opens another book. Your current book will be replaced. ${KEEP_BOOK_HINT}`;

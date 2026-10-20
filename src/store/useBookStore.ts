@@ -17,13 +17,13 @@ interface BookStore {
   clear: () => void;
 }
 
-const emptyBook = (): Book => ({ mageId: null, counts: {} });
+const noBook = (): Book => ({ mageId: null, counts: {} });
 
 const readInitialBook = (): Book => {
   const stored = readStored(BOOK_STORAGE_KEY);
   const decoded = stored === null ? null : decodeBook(stored);
 
-  return decoded?.book ?? emptyBook();
+  return decoded?.book ?? noBook();
 };
 
 const withoutCard = (counts: Book['counts'], cardId: string): Book['counts'] => {
@@ -71,7 +71,7 @@ export const createBookStore = () => {
     },
 
     clear: () => {
-      set({ book: emptyBook() });
+      set({ book: noBook() });
     },
   }));
 
