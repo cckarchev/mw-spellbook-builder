@@ -1,6 +1,6 @@
 import { makeCard, wizard } from '@/core/rules/fixtures';
-import type { Book, Card } from '@/core/rules/types';
-import { bookGroups } from './bookGroups';
+import type { Card, Spellbook } from '@/core/rules/types';
+import { spellbookGroups } from './spellbookGroups';
 
 const LEVEL_TWO = 2;
 const FIREBALL_COPIES = 3;
@@ -31,7 +31,7 @@ const cardsById: ReadonlyMap<string, Card> = new Map(
   [fireball, lightningBolt, manaCrystal].map((card) => [card.id, card]),
 );
 
-const book: Book = {
+const spellbook: Spellbook = {
   mageId: wizard.id,
   counts: {
     'mana-crystal': CRYSTAL_COPIES,
@@ -41,9 +41,9 @@ const book: Book = {
   },
 };
 
-describe('bookGroups', () => {
-  it('groups the book by type with names sorted, skipping unknown cards', () => {
-    const groups = bookGroups(book, wizard, cardsById);
+describe('spellbookGroups', () => {
+  it('groups the spellbook by type with names sorted, skipping unknown cards', () => {
+    const groups = spellbookGroups(spellbook, wizard, cardsById);
     const names = groups.map((group) => [
       group.type,
       group.entries.map((entry) => entry.card.name),
@@ -56,7 +56,7 @@ describe('bookGroups', () => {
   });
 
   it('gives each entry its count and points, and each group its copies and subtotal', () => {
-    const [attack, conjuration] = bookGroups(book, wizard, cardsById);
+    const [attack, conjuration] = spellbookGroups(spellbook, wizard, cardsById);
 
     expect(attack?.entries[0]).toMatchObject({ count: FIREBALL_COPIES, points: FIREBALL_POINTS });
     expect(attack?.points).toBe(ATTACK_POINTS);

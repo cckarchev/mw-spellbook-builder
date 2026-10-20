@@ -1,22 +1,22 @@
 import { useState } from 'react';
 import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
-import { hasCards } from '@/core/rules/bookChanges';
+import { hasCards } from '@/core/rules/spellbookChanges';
 import { ActionButton } from '@/features/shared/action-button/ActionButton';
-import { BookLossNote } from '@/features/shared/BookLossNote';
-import { useBookStatus } from '@/store/useBookStatus';
-import { useBookStore } from '@/store/useBookStore';
+import { SpellbookLossNote } from '@/features/shared/SpellbookLossNote';
+import { useSpellbookStatus } from '@/store/useSpellbookStatus';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 import { TrashIcon } from '../Icons';
 
-/** The Clear button: empties the book and drops its name, after a confirm when unsaved work would go. */
+/** The Clear button: empties the spellbook and drops its name, after a confirm when unsaved work would go. */
 export const ClearAction = () => {
-  const book = useBookStore((state) => state.book);
-  const name = useBookStore((state) => state.name);
-  const clear = useBookStore((state) => state.clear);
-  const { unsaved } = useBookStatus();
+  const spellbook = useSpellbookStore((state) => state.spellbook);
+  const name = useSpellbookStore((state) => state.name);
+  const clear = useSpellbookStore((state) => state.clear);
+  const { unsaved } = useSpellbookStatus();
 
   const [isConfirming, setIsConfirming] = useState(false);
 
-  const hasNothingToClear = !hasCards(book) && name === null;
+  const hasNothingToClear = !hasCards(spellbook) && name === null;
 
   const requestClear = () => {
     if (unsaved) {
@@ -48,7 +48,7 @@ export const ClearAction = () => {
       <ConfirmDialog
         open={isConfirming}
         title="Clear this spellbook?"
-        body={<BookLossNote book={book} />}
+        body={<SpellbookLossNote spellbook={spellbook} />}
         confirmLabel="Clear"
         onConfirm={confirmClear}
         onCancel={cancelClear}

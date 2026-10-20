@@ -2,10 +2,10 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { readDraft, writeDraft } from '@/core/persistence/drafts';
-import { saveBook } from '@/core/persistence/savedBooks';
+import { saveSpellbook } from '@/core/persistence/savedSpellbooks';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
-import { FIREBALL, resetBookStore, smallBook } from '@/features/shared/testBooks';
-import { useBookStore } from '@/store/useBookStore';
+import { FIREBALL, resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 import { MagePicker } from './MagePicker';
 
 /** A "Warlock Only" card, illegal for every other mage. */
@@ -30,7 +30,7 @@ const chooseWizard = async () => {
 };
 
 beforeEach(() => {
-  resetBookStore();
+  resetSpellbookStore();
   useCatalogFiltersStore.getState().reset();
 });
 
@@ -40,18 +40,20 @@ describe('MagePicker', () => {
 
     await chooseWizard();
 
-    expect(useBookStore.getState().book.mageId).toBe('wizard');
+    expect(useSpellbookStore.getState().spellbook.mageId).toBe('wizard');
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(buildScreen()).toBeInTheDocument();
   });
 
-  it('keeps the book when the player picks the same mage again', async () => {
-    useBookStore.getState().loadBook({ mageId: 'wizard', counts: { [FIREBALL]: ONE_COPY } });
+  it('keeps the spellbook when the player picks the same mage again', async () => {
+    useSpellbookStore
+      .getState()
+      .loadSpellbook({ mageId: 'wizard', counts: { [FIREBALL]: ONE_COPY } });
     renderPicker();
 
     await chooseWizard();
 
-    expect(useBookStore.getState().book.counts).toEqual({ [FIREBALL]: ONE_COPY });
+    expect(useSpellbookStore.getState().spellbook.counts).toEqual({ [FIREBALL]: ONE_COPY });
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(buildScreen()).toBeInTheDocument();
   });
@@ -66,7 +68,7 @@ describe('MagePicker stats card', () => {
     const dialog = screen.getByRole('dialog', { name: 'Wizard stats' });
 
     expect(within(dialog).getByRole('img', { name: 'Wizard stats card' })).toBeInTheDocument();
-    expect(useBookStore.getState().book.mageId).toBeNull();
+    expect(useSpellbookStore.getState().spellbook.mageId).toBeNull();
     expect(buildScreen()).not.toBeInTheDocument();
   });
 
@@ -84,13 +86,13 @@ describe('MagePicker stats card', () => {
 
 describe('MagePicker switching to another mage', () => {
   beforeEach(() => {
-    useBookStore.getState().loadBook({
+    useSpellbookStore.getState().loadSpellbook({
       mageId: 'warlock',
       counts: { [ADRAMELECHS_TORMENT]: ONE_COPY },
     });
   });
 
-  it('opens the other mage without asking and keeps the old book as its draft', async () => {
+  it('opens the other mage without asking and keeps the old spellbook as its draft', async () => {
     renderPicker();
 
     await chooseWizard();
@@ -98,8 +100,8 @@ describe('MagePicker switching to another mage', () => {
     const warlockDraft = readDraft('warlock');
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(useBookStore.getState().book).toEqual({ mageId: 'wizard', counts: {} });
-    expect(warlockDraft?.book.counts).toEqual({ [ADRAMELECHS_TORMENT]: ONE_COPY });
+    expect(useSpellbookStore.getState().spellbook).toEqual({ mageId: 'wizard', counts: {} });
+    expect(warlockDraft?.spellbook.counts).toEqual({ [ADRAMELECHS_TORMENT]: ONE_COPY });
     expect(buildScreen()).toBeInTheDocument();
   });
 });
@@ -107,11 +109,11 @@ describe('MagePicker switching to another mage', () => {
 describe('MagePicker tile notes', () => {
   const tile = (name: string) => screen.getByRole('button', { name });
 
-  it("tells each mage's draft and saved books", () => {
-    useBookStore.getState().loadBook(smallBook);
-    writeDraft({ book: { mageId: 'priest', counts: { [FIREBALL]: ONE_COPY } }, name: null });
-    saveBook('One', { mageId: 'warlock', counts: {} });
-    saveBook('Two', { mageId: 'warlock', counts: {} });
+  it("tells each mage's draft and saved spellbooks", () => {
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook);
+    writeDraft({ spellbook: { mageId: 'priest', counts: { [FIREBALL]: ONE_COPY } }, name: null });
+    saveSpellbook('One', { mageId: 'warlock', counts: {} });
+    saveSpellbook('Two', { mageId: 'warlock', counts: {} });
 
     renderPicker();
 

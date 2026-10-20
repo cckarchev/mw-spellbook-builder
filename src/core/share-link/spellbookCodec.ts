@@ -1,4 +1,4 @@
-import type { Book } from '@/core/rules/types';
+import type { Spellbook } from '@/core/rules/types';
 import { cardsByCode, cardsById, magesById } from '@/data/catalog';
 import { fromBase64Url, toBase64Url } from './base64Url';
 
@@ -15,18 +15,18 @@ interface Wire {
   c: Record<string, number>;
 }
 
-export interface DecodedBook {
-  book: Book;
+export interface DecodedSpellbook {
+  spellbook: Spellbook;
   /** Codes in the link that match no card, such as cards removed from the data. */
   unknownCodes: string[];
   /** The mage id the link names when the catalog has no such mage, else null. */
   unknownMage: string | null;
 }
 
-export const encodeBook = (book: Book): string => {
+export const encodeSpellbook = (spellbook: Spellbook): string => {
   const counts: Record<string, number> = {};
 
-  for (const [cardId, quantity] of Object.entries(book.counts)) {
+  for (const [cardId, quantity] of Object.entries(spellbook.counts)) {
     const code = cardsById.get(cardId)?.code;
 
     if (code) {
@@ -36,7 +36,7 @@ export const encodeBook = (book: Book): string => {
 
   const wire: Wire = {
     v: WIRE_VERSION,
-    m: book.mageId ?? undefined,
+    m: spellbook.mageId ?? undefined,
     c: counts,
   };
 
@@ -60,12 +60,12 @@ const isQuantity = (value: unknown): value is number =>
   typeof value === 'number' && Number.isInteger(value) && value > 0;
 
 interface DecodedCounts {
-  counts: Book['counts'];
+  counts: Spellbook['counts'];
   unknownCodes: string[];
 }
 
 const decodeCounts = (wireCounts: Record<string, unknown>): DecodedCounts => {
-  const counts: Book['counts'] = {};
+  const counts: Spellbook['counts'] = {};
   const unknownCodes: string[] = [];
 
   for (const [code, quantity] of Object.entries(wireCounts)) {
@@ -84,8 +84,8 @@ const decodeCounts = (wireCounts: Record<string, unknown>): DecodedCounts => {
   return { counts, unknownCodes };
 };
 
-/** Reads a share link's book. Returns null when the link cannot be read at all. */
-export const decodeBook = (encoded: string): DecodedBook | null => {
+/** Reads a share link's spellbook. Returns null when the link cannot be read at all. */
+export const decodeSpellbook = (encoded: string): DecodedSpellbook | null => {
   const wire = parseWire(encoded);
 
   if (!wire || wire.v !== WIRE_VERSION || !isRecord(wire.c)) {
@@ -98,5 +98,5 @@ export const decodeBook = (encoded: string): DecodedBook | null => {
   const unknownMage = isKnownMage ? null : namedMage;
   const { counts, unknownCodes } = decodeCounts(wire.c);
 
-  return { book: { mageId, counts }, unknownCodes, unknownMage };
+  return { spellbook: { mageId, counts }, unknownCodes, unknownMage };
 };

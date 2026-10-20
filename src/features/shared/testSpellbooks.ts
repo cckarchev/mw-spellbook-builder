@@ -1,6 +1,6 @@
-import type { Book, Mage } from '@/core/rules/types';
+import type { Mage, Spellbook } from '@/core/rules/types';
 import { magesById } from '@/data/catalog';
-import { useBookStore } from '@/store/useBookStore';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 
 // Test fixtures for the builder screens, built on the real catalog.
 
@@ -30,17 +30,17 @@ const wizardOrThrow = (): Mage => {
 
 export const wizard = wizardOrThrow();
 
-const wizardBook = (counts: Book['counts']): Book => ({ mageId: wizard.id, counts });
+const wizardSpellbook = (counts: Spellbook['counts']): Spellbook => ({ mageId: wizard.id, counts });
 
 /** 18 / 120: Fireball 3 x 4 (Fire, untrained), Lightning Bolt 2 x 2, Mana Crystal 2 x 1. */
-export const smallBook = wizardBook({
+export const smallSpellbook = wizardSpellbook({
   [FIREBALL]: FIREBALL_COPIES,
   [LIGHTNING_BOLT]: BOLT_COPIES,
   [MANA_CRYSTAL]: CRYSTAL_COPIES,
 });
 
-/** 122 / 120: the small book with 4 Lightning Bolts, 4 Alfiya (16 each) and 3 Water Elementals (12 each). */
-export const overBudgetBook = wizardBook({
+/** 122 / 120: the small spellbook with 4 Lightning Bolts, 4 Alfiya (16 each) and 3 Water Elementals (12 each). */
+export const overBudgetSpellbook = wizardSpellbook({
   [FIREBALL]: FIREBALL_COPIES,
   [LIGHTNING_BOLT]: BOLT_LIMIT,
   [MANA_CRYSTAL]: CRYSTAL_COPIES,
@@ -48,21 +48,21 @@ export const overBudgetBook = wizardBook({
   [WATER_ELEMENTAL]: ELEMENTAL_COPIES,
 });
 
-/** The small book with 5 Fireballs: 26 / 120, one problem (max 4 copies). */
-export const tooManyCopiesBook = wizardBook({
+/** The small spellbook with 5 Fireballs: 26 / 120, one problem (max 4 copies). */
+export const tooManyCopiesSpellbook = wizardSpellbook({
   [FIREBALL]: FIREBALL_OVER_LIMIT,
   [LIGHTNING_BOLT]: BOLT_COPIES,
   [MANA_CRYSTAL]: CRYSTAL_COPIES,
 });
 
-/** The over-budget book with 5 Fireballs: 130 / 120 and one problem. */
-export const overWithProblemBook = {
-  ...overBudgetBook,
-  counts: { ...overBudgetBook.counts, [FIREBALL]: FIREBALL_OVER_LIMIT },
+/** The over-budget spellbook with 5 Fireballs: 130 / 120 and one problem. */
+export const overWithProblemSpellbook = {
+  ...overBudgetSpellbook,
+  counts: { ...overBudgetSpellbook.counts, [FIREBALL]: FIREBALL_OVER_LIMIT },
 };
 
-/** Empties the app's book store and its storage, for a test to start from no book. */
-export const resetBookStore = () => {
+/** Empties the app's spellbook store and its storage, for a test to start from no spellbook. */
+export const resetSpellbookStore = () => {
   localStorage.clear();
-  useBookStore.setState({ book: { mageId: null, counts: {} }, name: null });
+  useSpellbookStore.setState({ spellbook: { mageId: null, counts: {} }, name: null });
 };

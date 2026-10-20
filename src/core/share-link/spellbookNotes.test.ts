@@ -1,6 +1,11 @@
 import { makeCard, wizard } from '@/core/rules/fixtures';
 import type { Card } from '@/core/rules/types';
-import { bookProblems, cardProblems, incomingProblems, noMageProblems } from './bookNotes';
+import {
+  cardProblems,
+  incomingProblems,
+  noMageProblems,
+  spellbookProblems,
+} from './spellbookNotes';
 
 const LEVEL_TWO_LIMIT = 4;
 
@@ -60,9 +65,9 @@ describe('noMageProblems', () => {
   });
 });
 
-describe('bookProblems', () => {
-  it('lists every problem of the book being built', () => {
-    const problems = bookProblems(
+describe('spellbookProblems', () => {
+  it('lists every problem of the spellbook being built', () => {
+    const problems = spellbookProblems(
       [
         { kind: 'tooManyCopies', cardId: 'fireball', max: LEVEL_TWO_LIMIT },
         { kind: 'illegalCard', cardId: 'warlock-only' },

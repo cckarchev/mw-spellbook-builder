@@ -6,7 +6,7 @@ import styles from './MageTile.module.css';
 
 interface MageTileProps {
   mage: Mage;
-  /** The mage of the book being built. */
+  /** The mage of the spellbook being built. */
   current: boolean;
   /** What the mage already has, such as 'Draft · 87 pts · 3 saved', or null for nothing. */
   note: string | null;

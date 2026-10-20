@@ -1,32 +1,32 @@
 import { cardCost } from '@/core/rules/cardCost';
-import type { Book, Card, CardType, Mage } from '@/core/rules/types';
+import type { Card, CardType, Mage, Spellbook } from '@/core/rules/types';
 import { groupByType } from './groupByType';
 
-interface BookEntry {
+interface SpellbookEntry {
   card: Card;
   count: number;
   /** Points for all copies of the card. */
   points: number;
 }
 
-export interface BookGroup {
+export interface SpellbookGroup {
   type: CardType;
-  entries: BookEntry[];
+  entries: SpellbookEntry[];
   /** Copies of every card in the group. */
   copies: number;
   /** Points for every card in the group. */
   points: number;
 }
 
-/** The book's cards grouped by type, with points per card and per group. Unknown cards are skipped. */
-export const bookGroups = (
-  book: Book,
+/** The spellbook's cards grouped by type, with points per card and per group. Unknown cards are skipped. */
+export const spellbookGroups = (
+  spellbook: Spellbook,
   mage: Mage,
   cardsById: ReadonlyMap<string, Card>,
-): BookGroup[] => {
-  const entries: (BookEntry & { type: CardType; name: string })[] = [];
+): SpellbookGroup[] => {
+  const entries: (SpellbookEntry & { type: CardType; name: string })[] = [];
 
-  for (const [cardId, count] of Object.entries(book.counts)) {
+  for (const [cardId, count] of Object.entries(spellbook.counts)) {
     const card = cardsById.get(cardId);
 
     if (card && count > 0) {

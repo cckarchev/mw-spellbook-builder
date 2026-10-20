@@ -1,69 +1,80 @@
-import { copyCount, emptyBook, hasCards, hasUnsavedChanges, sameBook } from './bookChanges';
-import type { Book } from './types';
+import {
+  copyCount,
+  emptySpellbook,
+  hasCards,
+  hasUnsavedChanges,
+  sameSpellbook,
+} from './spellbookChanges';
+import type { Spellbook } from './types';
 
 const TWO_COPIES = 2;
 const THREE_COPIES = 3;
 
-const wizardBook: Book = {
+const wizardSpellbook: Spellbook = {
   mageId: 'wizard',
   counts: { fireball: TWO_COPIES, bolt: 1 },
 };
 
-describe('sameBook', () => {
+describe('sameSpellbook', () => {
   it('ignores the order of the cards', () => {
-    const reordered: Book = { ...wizardBook, counts: { bolt: 1, fireball: TWO_COPIES } };
+    const reordered: Spellbook = { ...wizardSpellbook, counts: { bolt: 1, fireball: TWO_COPIES } };
 
-    expect(sameBook(wizardBook, reordered)).toBe(true);
+    expect(sameSpellbook(wizardSpellbook, reordered)).toBe(true);
   });
 
   it('tells apart a different count, card or mage', () => {
     expect(
-      sameBook(wizardBook, { ...wizardBook, counts: { fireball: THREE_COPIES, bolt: 1 } }),
+      sameSpellbook(wizardSpellbook, {
+        ...wizardSpellbook,
+        counts: { fireball: THREE_COPIES, bolt: 1 },
+      }),
     ).toBe(false);
-    expect(sameBook(wizardBook, { ...wizardBook, counts: { fireball: TWO_COPIES } })).toBe(false);
-    expect(sameBook(wizardBook, { ...wizardBook, mageId: 'warlock' })).toBe(false);
+    expect(
+      sameSpellbook(wizardSpellbook, { ...wizardSpellbook, counts: { fireball: TWO_COPIES } }),
+    ).toBe(false);
+    expect(sameSpellbook(wizardSpellbook, { ...wizardSpellbook, mageId: 'warlock' })).toBe(false);
   });
 });
 
 describe('hasCards', () => {
-  it('is false for a book with a mage and no cards', () => {
-    expect(hasCards({ ...wizardBook, counts: {} })).toBe(false);
-    expect(hasCards(wizardBook)).toBe(true);
+  it('is false for a spellbook with a mage and no cards', () => {
+    expect(hasCards({ ...wizardSpellbook, counts: {} })).toBe(false);
+    expect(hasCards(wizardSpellbook)).toBe(true);
   });
 });
 
 describe('copyCount', () => {
   it('adds up the copies of every card', () => {
-    expect(copyCount(wizardBook)).toBe(THREE_COPIES);
+    expect(copyCount(wizardSpellbook)).toBe(THREE_COPIES);
   });
 
-  it('is 0 for a book with no cards', () => {
-    expect(copyCount({ ...wizardBook, counts: {} })).toBe(0);
+  it('is 0 for a spellbook with no cards', () => {
+    expect(copyCount({ ...wizardSpellbook, counts: {} })).toBe(0);
   });
 });
 
-describe('emptyBook', () => {
-  it('starts a book for the mage with no cards', () => {
-    expect(emptyBook('wizard')).toEqual({ mageId: 'wizard', counts: {} });
+describe('emptySpellbook', () => {
+  it('starts a spellbook for the mage with no cards', () => {
+    expect(emptySpellbook('wizard')).toEqual({ mageId: 'wizard', counts: {} });
   });
 });
 
 describe('hasUnsavedChanges', () => {
-  it('is false for an unnamed empty book', () => {
-    expect(hasUnsavedChanges(emptyBook('wizard'), null)).toBe(false);
+  it('is false for an unnamed empty spellbook', () => {
+    expect(hasUnsavedChanges(emptySpellbook('wizard'), null)).toBe(false);
   });
 
-  it('is true for an unnamed book with cards', () => {
-    expect(hasUnsavedChanges(wizardBook, null)).toBe(true);
+  it('is true for an unnamed spellbook with cards', () => {
+    expect(hasUnsavedChanges(wizardSpellbook, null)).toBe(true);
   });
 
-  it('is false when the book equals its saved copy', () => {
-    expect(hasUnsavedChanges(wizardBook, { ...wizardBook })).toBe(false);
+  it('is false when the spellbook equals its saved copy', () => {
+    expect(hasUnsavedChanges(wizardSpellbook, { ...wizardSpellbook })).toBe(false);
   });
 
   it('is true when a count differs from the saved copy', () => {
-    const saved: Book = { ...wizardBook, counts: { fireball: THREE_COPIES, bolt: 1 } };
+    const saved: Spellbook = { ...wizardSpellbook, counts: { fireball: THREE_COPIES, bolt: 1 } };
 
-    expect(hasUnsavedChanges(wizardBook, saved)).toBe(true);
+    expect(hasUnsavedChanges(wizardSpellbook, saved)).toBe(true);
   });
 });

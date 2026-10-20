@@ -13,7 +13,7 @@ export const CardRow = memo(
     const details = [schoolSummary(card), ...card.subtypes].join(' · ');
 
     return (
-      <li className={styles.row} data-in-book={count > 0} data-problem={problem !== null}>
+      <li className={styles.row} data-in-spellbook={count > 0} data-problem={problem !== null}>
         <div className={styles.main}>
           <button
             type="button"

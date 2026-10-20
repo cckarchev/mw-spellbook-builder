@@ -15,7 +15,7 @@ interface SaveDialogProps {
   onClose: () => void;
 }
 
-/** Asks for the name to save the book under. */
+/** Asks for the name to save the spellbook under. */
 export const SaveDialog = ({
   open,
   name,

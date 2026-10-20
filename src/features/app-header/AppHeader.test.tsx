@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation, useNavigationType } from 'react-router-dom';
 import { App } from '@/App';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
-import { resetBookStore, smallBook } from '@/features/shared/testBooks';
-import { useBookStore } from '@/store/useBookStore';
+import { resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 import { APP_NAME } from './AppHeader';
 
 /** Shows how the last navigation changed the history, for the test to read. */
@@ -31,19 +31,19 @@ const clickAppName = async () => {
 const pickerHeading = () => screen.queryByRole('heading', { name: 'Choose a mage' });
 
 beforeEach(() => {
-  resetBookStore();
+  resetSpellbookStore();
   useCatalogFiltersStore.getState().reset();
 });
 
 describe('AppHeader', () => {
-  it('goes home without asking and keeps the book', async () => {
-    useBookStore.getState().loadBook(smallBook);
+  it('goes home without asking and keeps the spellbook', async () => {
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook);
     renderAt('/wizard');
 
     await clickAppName();
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
     expect(pickerHeading()).toBeInTheDocument();
   });
 

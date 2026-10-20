@@ -1,16 +1,16 @@
-import type { Book } from '@/core/rules/types';
-import { decodeBook, encodeBook } from '@/core/share-link/bookCodec';
+import type { Spellbook } from '@/core/rules/types';
+import { decodeSpellbook, encodeSpellbook } from '@/core/share-link/spellbookCodec';
 import { readStoredJson, removeStored, writeStored } from './storage';
 
 export const SAVED_PREFIX = 'mw-spellbook-builder:saved:';
 
-export interface SavedBook {
+export interface SavedSpellbook {
   name: string;
-  book: Book;
+  spellbook: Spellbook;
 }
 
 /**
- * The mage's saved books as name to encodeBook string; empty when there are none or they
+ * The mage's saved spellbooks as name to encodeSpellbook string; empty when there are none or they
  * cannot be read. A Map rather than the stored object, because names are typed by the
  * player: on a plain object "constructor" would read as an inherited value.
  */
@@ -42,37 +42,37 @@ const writeSavedMap = (mageId: string, saved: Map<string, string>): void => {
   writeStored(key, JSON.stringify(Object.fromEntries(saved)));
 };
 
-/** The book an encodeBook string holds, when it decodes to a book of this mage. */
-const decodeFor = (mageId: string, encoded: string): Book | null => {
-  const book = decodeBook(encoded)?.book;
+/** The spellbook an encodeSpellbook string holds, when it decodes to a spellbook of this mage. */
+const decodeFor = (mageId: string, encoded: string): Spellbook | null => {
+  const spellbook = decodeSpellbook(encoded)?.spellbook;
 
-  if (book?.mageId !== mageId) {
+  if (spellbook?.mageId !== mageId) {
     return null;
   }
 
-  return book;
+  return spellbook;
 };
 
-/** Case-insensitive alphabetical order for book names. */
-const byName = (first: SavedBook, second: SavedBook): number =>
+/** Case-insensitive alphabetical order for spellbook names. */
+const byName = (first: SavedSpellbook, second: SavedSpellbook): number =>
   first.name.localeCompare(second.name, undefined, { sensitivity: 'base' });
 
-/** The mage's saved books that can be read, sorted by name. */
-export const savedBooks = (mageId: string): SavedBook[] => {
-  const books: SavedBook[] = [];
+/** The mage's saved spellbooks that can be read, sorted by name. */
+export const savedSpellbooks = (mageId: string): SavedSpellbook[] => {
+  const spellbooks: SavedSpellbook[] = [];
 
   for (const [name, encoded] of readSavedMap(mageId)) {
-    const book = decodeFor(mageId, encoded);
+    const spellbook = decodeFor(mageId, encoded);
 
-    if (book) {
-      books.push({ name, book });
+    if (spellbook) {
+      spellbooks.push({ name, spellbook });
     }
   }
 
-  return books.sort(byName);
+  return spellbooks.sort(byName);
 };
 
-export const loadSavedBook = (mageId: string, name: string): Book | null => {
+export const loadSavedSpellbook = (mageId: string, name: string): Spellbook | null => {
   const encoded = readSavedMap(mageId).get(name);
 
   if (encoded === undefined) {
@@ -82,20 +82,20 @@ export const loadSavedBook = (mageId: string, name: string): Book | null => {
   return decodeFor(mageId, encoded);
 };
 
-/** The saved copy of a book under its name, null when it has no name or the copy is gone. */
-export const savedCopy = (book: Book, name: string | null): Book | null => {
-  const { mageId } = book;
+/** The saved copy of a spellbook under its name, null when it has no name or the copy is gone. */
+export const savedCopy = (spellbook: Spellbook, name: string | null): Spellbook | null => {
+  const { mageId } = spellbook;
 
   if (mageId === null || name === null) {
     return null;
   }
 
-  return loadSavedBook(mageId, name);
+  return loadSavedSpellbook(mageId, name);
 };
 
-/** Saves the book under the name for its mage, replacing a book with the same name. */
-export const saveBook = (name: string, book: Book): void => {
-  const { mageId } = book;
+/** Saves the spellbook under the name for its mage, replacing a spellbook with the same name. */
+export const saveSpellbook = (name: string, spellbook: Spellbook): void => {
+  const { mageId } = spellbook;
 
   if (mageId === null) {
     return;
@@ -103,11 +103,11 @@ export const saveBook = (name: string, book: Book): void => {
 
   const saved = readSavedMap(mageId);
 
-  saved.set(name, encodeBook(book));
+  saved.set(name, encodeSpellbook(spellbook));
   writeSavedMap(mageId, saved);
 };
 
-export const deleteSavedBook = (mageId: string, name: string): void => {
+export const deleteSavedSpellbook = (mageId: string, name: string): void => {
   const saved = readSavedMap(mageId);
 
   if (!saved.delete(name)) {

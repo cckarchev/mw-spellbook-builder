@@ -1,22 +1,22 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { Book } from '@/core/rules/types';
-import { summarizeBook } from '@/core/rules/validateBook';
+import type { Spellbook } from '@/core/rules/types';
+import { summarizeSpellbook } from '@/core/rules/validateSpellbook';
 import { cardsById } from '@/data/catalog';
 import {
-  overBudgetBook,
-  overWithProblemBook,
-  smallBook,
-  tooManyCopiesBook,
+  overBudgetSpellbook,
+  overWithProblemSpellbook,
+  smallSpellbook,
+  tooManyCopiesSpellbook,
   wizard,
-} from '@/features/shared/testBooks';
-import { BookHeader } from './BookHeader';
+} from '@/features/shared/testSpellbooks';
+import { SpellbookHeader } from './SpellbookHeader';
 
-const renderHeader = (book: Book, name: string | null = null, unsaved = false) => {
+const renderHeader = (spellbook: Spellbook, name: string | null = null, unsaved = false) => {
   render(
-    <BookHeader
+    <SpellbookHeader
       mage={wizard}
-      summary={summarizeBook(book, wizard, cardsById)}
+      summary={summarizeSpellbook(spellbook, wizard, cardsById)}
       name={name}
       unsaved={unsaved}
     />,
@@ -25,9 +25,9 @@ const renderHeader = (book: Book, name: string | null = null, unsaved = false) =
 
 const summaryRegion = () => screen.getByRole('region', { name: 'Spellbook summary' });
 
-describe('BookHeader', () => {
+describe('SpellbookHeader', () => {
   it('shows the mage and the points used out of the budget', () => {
-    renderHeader(smallBook);
+    renderHeader(smallSpellbook);
 
     expect(screen.getByRole('heading', { level: 1, name: 'Wizard' })).toBeInTheDocument();
     expect(screen.getByText('18 / 120')).toBeInTheDocument();
@@ -35,31 +35,31 @@ describe('BookHeader', () => {
   });
 
   it('turns to the error state over budget', () => {
-    renderHeader(overBudgetBook);
+    renderHeader(overBudgetSpellbook);
 
     expect(screen.getByText('122 / 120')).toBeInTheDocument();
     expect(screen.getByText('2 over')).toBeInTheDocument();
     expect(summaryRegion()).toHaveAttribute('data-state', 'over');
   });
 
-  it('counts the problems of a book within budget', () => {
-    renderHeader(tooManyCopiesBook);
+  it('counts the problems of a spellbook within budget', () => {
+    renderHeader(tooManyCopiesSpellbook);
 
     expect(screen.getByText('1 problem')).toBeInTheDocument();
     expect(summaryRegion()).toHaveAttribute('data-state', 'invalid');
   });
 
   it('shows both the points over and the problems', () => {
-    renderHeader(overWithProblemBook);
+    renderHeader(overWithProblemSpellbook);
 
     expect(screen.getByText('10 over · 1 problem')).toBeInTheDocument();
     expect(summaryRegion()).toHaveAttribute('data-state', 'over');
   });
 });
 
-describe('BookHeader stats card', () => {
+describe('SpellbookHeader stats card', () => {
   it('shows the mage stats card from the mage name', async () => {
-    renderHeader(smallBook);
+    renderHeader(smallSpellbook);
 
     await userEvent.click(screen.getByRole('button', { name: 'Wizard' }));
 
@@ -69,22 +69,22 @@ describe('BookHeader stats card', () => {
   });
 });
 
-describe('BookHeader book name', () => {
-  it('shows the name of a saved book', () => {
-    renderHeader(smallBook, 'Tourney');
+describe('SpellbookHeader spellbook name', () => {
+  it('shows the name of a saved spellbook', () => {
+    renderHeader(smallSpellbook, 'Tourney');
 
     expect(screen.getByText('Tourney')).toBeInTheDocument();
     expect(screen.queryByText('unsaved')).not.toBeInTheDocument();
   });
 
   it('marks unsaved changes', () => {
-    renderHeader(smallBook, 'Tourney', true);
+    renderHeader(smallSpellbook, 'Tourney', true);
 
     expect(screen.getByText('unsaved')).toBeInTheDocument();
   });
 
-  it('shows neither for a book with no name', () => {
-    renderHeader(smallBook, null, true);
+  it('shows neither for a spellbook with no name', () => {
+    renderHeader(smallSpellbook, null, true);
 
     expect(screen.queryByText('unsaved')).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/^Wizard$/);

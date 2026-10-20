@@ -2,28 +2,28 @@ import { plural } from '@/core/text/plural';
 import { cardCost } from './cardCost';
 import { maxCopies } from './copyLimit';
 import { isLegalFor } from './legality';
-import type { Book, Card, Mage } from './types';
+import type { Card, Mage, Spellbook } from './types';
 
-export type BookIssue =
-  /** A card id in the book that the catalog no longer has. */
+export type SpellbookIssue =
+  /** A card id in the spellbook that the catalog no longer has. */
   | { kind: 'unknownCard'; cardId: string }
   | { kind: 'illegalCard'; cardId: string }
   | { kind: 'tooManyCopies'; cardId: string; max: number };
 
-export interface BookSummary {
+export interface SpellbookSummary {
   points: number;
   budget: number;
   /** Points above the budget, 0 when within it. Over budget is allowed while building. */
   overBy: number;
   cardCount: number;
-  issues: BookIssue[];
+  issues: SpellbookIssue[];
 }
 
-const entriesInBook = (book: Book): [string, number][] =>
-  Object.entries(book.counts).filter(([, count]) => count > 0);
+const entriesInSpellbook = (spellbook: Spellbook): [string, number][] =>
+  Object.entries(spellbook.counts).filter(([, count]) => count > 0);
 
-const issuesForCard = (card: Card, count: number, mage: Mage): BookIssue[] => {
-  const issues: BookIssue[] = [];
+const issuesForCard = (card: Card, count: number, mage: Mage): SpellbookIssue[] => {
+  const issues: SpellbookIssue[] = [];
   const max = maxCopies(card);
 
   if (!isLegalFor(card, mage)) {
@@ -37,17 +37,17 @@ const issuesForCard = (card: Card, count: number, mage: Mage): BookIssue[] => {
   return issues;
 };
 
-/** Points, card count and every rule the book breaks, for this mage. */
-export const summarizeBook = (
-  book: Book,
+/** Points, card count and every rule the spellbook breaks, for this mage. */
+export const summarizeSpellbook = (
+  spellbook: Spellbook,
   mage: Mage,
   cardsById: ReadonlyMap<string, Card>,
-): BookSummary => {
-  const issues: BookIssue[] = [];
+): SpellbookSummary => {
+  const issues: SpellbookIssue[] = [];
   let points = 0;
   let cardCount = 0;
 
-  for (const [cardId, count] of entriesInBook(book)) {
+  for (const [cardId, count] of entriesInSpellbook(spellbook)) {
     const card = cardsById.get(cardId);
 
     if (!card) {
@@ -66,8 +66,12 @@ export const summarizeBook = (
 };
 
 /** Why the + control for a card is blocked, or null when it is not. Going over budget does not block it. */
-export const addCopyBlockedReason = (book: Book, card: Card, mage: Mage): string | null => {
-  const count = book.counts[card.id] ?? 0;
+export const addCopyBlockedReason = (
+  spellbook: Spellbook,
+  card: Card,
+  mage: Mage,
+): string | null => {
+  const count = spellbook.counts[card.id] ?? 0;
   const max = maxCopies(card);
 
   if (!isLegalFor(card, mage)) {
@@ -82,5 +86,5 @@ export const addCopyBlockedReason = (book: Book, card: Card, mage: Mage): string
 };
 
 /** Whether the + control for a card is enabled. */
-export const canAddCopy = (book: Book, card: Card, mage: Mage): boolean =>
-  addCopyBlockedReason(book, card, mage) === null;
+export const canAddCopy = (spellbook: Spellbook, card: Card, mage: Mage): boolean =>
+  addCopyBlockedReason(spellbook, card, mage) === null;

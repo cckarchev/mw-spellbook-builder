@@ -1,5 +1,5 @@
-import type { Book, Card, Mage } from '@/core/rules/types';
-import type { BookIssue } from '@/core/rules/validateBook';
+import type { Card, Mage, Spellbook } from '@/core/rules/types';
+import type { SpellbookIssue } from '@/core/rules/validateSpellbook';
 import { plural } from '@/core/text/plural';
 
 const NOTE_SEPARATOR = '. ';
@@ -14,9 +14,9 @@ const unknownCardsLine = (count: number): string => {
 };
 
 const issueLine = (
-  issue: BookIssue,
+  issue: SpellbookIssue,
   mage: Mage,
-  counts: Book['counts'],
+  counts: Spellbook['counts'],
   cardsById: ReadonlyMap<string, Card>,
 ): string | null => {
   switch (issue.kind) {
@@ -37,11 +37,11 @@ const issueLine = (
   }
 };
 
-/** One line per problem of the book being built, for the player to fix. */
-export const bookProblems = (
-  issues: BookIssue[],
+/** One line per problem of the spellbook being built, for the player to fix. */
+export const spellbookProblems = (
+  issues: SpellbookIssue[],
   mage: Mage,
-  counts: Book['counts'],
+  counts: Spellbook['counts'],
   cardsById: ReadonlyMap<string, Card>,
 ): string[] => {
   const lines: string[] = [];
@@ -57,20 +57,20 @@ export const bookProblems = (
   return lines;
 };
 
-/** One line per problem in a book opened from a link, for the player to fix. */
+/** One line per problem in a spellbook opened from a link, for the player to fix. */
 export const incomingProblems = (
   unknownCodes: string[],
-  issues: BookIssue[],
+  issues: SpellbookIssue[],
   mage: Mage,
-  counts: Book['counts'],
+  counts: Spellbook['counts'],
   cardsById: ReadonlyMap<string, Card>,
 ): string[] => {
   const unknownLines = unknownCodes.length > 0 ? [unknownCardsLine(unknownCodes.length)] : [];
 
-  return [...unknownLines, ...bookProblems(issues, mage, counts, cardsById)];
+  return [...unknownLines, ...spellbookProblems(issues, mage, counts, cardsById)];
 };
 
-const cardNote = (issue: BookIssue, mage: Mage): { cardId: string; note: string } | null => {
+const cardNote = (issue: SpellbookIssue, mage: Mage): { cardId: string; note: string } | null => {
   switch (issue.kind) {
     case 'tooManyCopies': {
       return { cardId: issue.cardId, note: `Too many copies: max ${issue.max}` };
@@ -85,7 +85,7 @@ const cardNote = (issue: BookIssue, mage: Mage): { cardId: string; note: string 
 };
 
 /** A short note for each card row that has a problem, keyed by card id. */
-export const cardProblems = (issues: BookIssue[], mage: Mage): Map<string, string> => {
+export const cardProblems = (issues: SpellbookIssue[], mage: Mage): Map<string, string> => {
   const notes = new Map<string, string>();
 
   for (const issue of issues) {

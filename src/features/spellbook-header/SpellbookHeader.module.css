@@ -73,7 +73,7 @@
   min-width: 0;
 }
 
-.bookName {
+.spellbookName {
   display: flex;
   align-items: baseline;
   gap: var(--space-xs);

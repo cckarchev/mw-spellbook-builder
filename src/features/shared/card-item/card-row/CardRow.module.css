@@ -4,12 +4,12 @@
   border-bottom: var(--border-divider);
 }
 
-/* Before the in-book wash, which wins on the same specificity. */
+/* Before the in-spellbook wash, which wins on the same specificity. */
 .row:nth-child(even) {
   background: var(--color-bg-stripe);
 }
 
-.row[data-in-book='true'] {
+.row[data-in-spellbook='true'] {
   background: var(--color-bg-selected);
 }
 

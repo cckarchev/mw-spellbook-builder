@@ -6,7 +6,7 @@ const PRODUCT = 'Spellbook Builder';
 
 export const APP_NAME = `${BRAND} ${PRODUCT}`;
 
-/** The app name, which goes home to the mage picker; the book stays as its mage's draft. */
+/** The app name, which goes home to the mage picker; the spellbook stays as its mage's draft. */
 export const AppHeader = () => (
   <header className={styles.header}>
     <Link className={styles.name} to="/">

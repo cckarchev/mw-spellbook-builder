@@ -4,7 +4,7 @@ import { readStored, writeStored } from '@/core/persistence/storage';
 export type ViewMode = 'list' | 'grid';
 
 /** A panel that remembers its own view mode. */
-export type ViewPanel = 'catalog' | 'book';
+export type ViewPanel = 'catalog' | 'spellbook';
 
 const STORAGE_PREFIX = 'mw-spellbook-builder:view:';
 

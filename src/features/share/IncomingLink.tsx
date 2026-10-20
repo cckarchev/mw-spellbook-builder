@@ -1,16 +1,17 @@
 import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
-import { bookMage } from '@/data/catalog';
-import { CURRENT_MAGE_FALLBACK, KEEP_BOOK_HINT } from '@/features/shared/BookLossNote';
+import { spellbookMage } from '@/data/catalog';
+import { CURRENT_MAGE_FALLBACK, KEEP_SPELLBOOK_HINT } from '@/features/shared/SpellbookLossNote';
 import { IncomingIssues } from './incoming-issues/IncomingIssues';
-import { useIncomingBook } from './useIncomingBook';
+import { useIncomingSpellbook } from './useIncomingSpellbook';
 
 const replaceBody = (mageName: string) =>
-  `This link opens another spellbook. Your ${mageName} spellbook will be replaced. ${KEEP_BOOK_HINT}`;
+  `This link opens another spellbook. Your ${mageName} spellbook will be replaced. ${KEEP_SPELLBOOK_HINT}`;
 
-/** Opens a book from a share link: asks before replacing a book in progress, then lists its problems. */
+/** Opens a spellbook from a share link: asks before replacing a spellbook in progress, then lists its problems. */
 export const IncomingLink = () => {
-  const { problems, dismiss, pendingReplace, confirmReplace, cancelReplace } = useIncomingBook();
-  const replacedMage = pendingReplace ? bookMage(pendingReplace.book) : undefined;
+  const { problems, dismiss, pendingReplace, confirmReplace, cancelReplace } =
+    useIncomingSpellbook();
+  const replacedMage = pendingReplace ? spellbookMage(pendingReplace.spellbook) : undefined;
   const replacedMageName = replacedMage?.name ?? CURRENT_MAGE_FALLBACK;
 
   return (

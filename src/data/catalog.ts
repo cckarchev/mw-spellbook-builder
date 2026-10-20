@@ -1,5 +1,5 @@
 import { mageSlug } from '@/core/routing/builderPath';
-import type { Book, Card, Mage } from '@/core/rules/types';
+import type { Card, Mage, Spellbook } from '@/core/rules/types';
 import cardsJson from './cards.json';
 import { mages as mageList } from './mages';
 
@@ -21,11 +21,11 @@ export const magesBySlug: ReadonlyMap<string, Mage> = new Map(
   mages.map((mage) => [mageSlug(mage.name), mage]),
 );
 
-/** The book's mage, or undefined when it has none or names one not in the catalog. */
-export const bookMage = (book: Book): Mage | undefined => {
-  if (book.mageId === null) {
+/** The spellbook's mage, or undefined when it has none or names one not in the catalog. */
+export const spellbookMage = (spellbook: Spellbook): Mage | undefined => {
+  if (spellbook.mageId === null) {
     return undefined;
   }
 
-  return magesById.get(book.mageId);
+  return magesById.get(spellbook.mageId);
 };

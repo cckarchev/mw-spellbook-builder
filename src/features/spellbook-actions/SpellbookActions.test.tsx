@@ -1,15 +1,15 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { saveBook, savedBooks } from '@/core/persistence/savedBooks';
-import { FIREBALL, resetBookStore, smallBook } from '@/features/shared/testBooks';
-import { useBookStatus } from '@/store/useBookStatus';
-import { useBookStore } from '@/store/useBookStore';
-import { BookActions } from './BookActions';
+import { savedSpellbooks, saveSpellbook } from '@/core/persistence/savedSpellbooks';
+import { FIREBALL, resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
+import { useSpellbookStatus } from '@/store/useSpellbookStatus';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
+import { SpellbookActions } from './SpellbookActions';
 
 const NAME = 'Tourney';
 
-const EMPTY_WIZARD_BOOK = { mageId: 'wizard', counts: {} };
-const OTHER_WIZARD_BOOK = { mageId: 'wizard', counts: { [FIREBALL]: 1 } };
+const EMPTY_WIZARD_SPELLBOOK = { mageId: 'wizard', counts: {} };
+const OTHER_WIZARD_SPELLBOOK = { mageId: 'wizard', counts: { [FIREBALL]: 1 } };
 
 const openLoad = async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Load' }));
@@ -17,14 +17,14 @@ const openLoad = async () => {
   return screen.getByRole('dialog', { name: 'Saved spellbooks' });
 };
 
-/** Shows whether the book has unsaved changes, as the book header reads it. */
+/** Shows whether the spellbook has unsaved changes, as the spellbook header reads it. */
 const StatusProbe = () => {
-  const { unsaved } = useBookStatus();
+  const { unsaved } = useSpellbookStatus();
 
   return <output aria-label="Status">{unsaved ? 'unsaved' : 'saved'}</output>;
 };
 
-const savedNames = () => savedBooks('wizard').map(({ name }) => name);
+const savedNames = () => savedSpellbooks('wizard').map(({ name }) => name);
 
 const saveButton = () => screen.getByRole('button', { name: 'Save' });
 
@@ -48,25 +48,25 @@ const saveAs = async (name: string) => {
 };
 
 beforeEach(() => {
-  resetBookStore();
-  useBookStore.getState().loadBook(smallBook);
+  resetSpellbookStore();
+  useSpellbookStore.getState().loadSpellbook(smallSpellbook);
 });
 
-describe('BookActions Save', () => {
-  it('saves under a typed name and names the book', async () => {
-    render(<BookActions />);
+describe('SpellbookActions Save', () => {
+  it('saves under a typed name and names the spellbook', async () => {
+    render(<SpellbookActions />);
 
     await saveAs(NAME);
 
     expect(savedNames()).toEqual([NAME]);
-    expect(useBookStore.getState().name).toBe(NAME);
+    expect(useSpellbookStore.getState().name).toBe(NAME);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('starts the field from the current name', async () => {
-    useBookStore.getState().save(NAME);
-    useBookStore.getState().removeCopy(FIREBALL);
-    render(<BookActions />);
+    useSpellbookStore.getState().save(NAME);
+    useSpellbookStore.getState().removeCopy(FIREBALL);
+    render(<SpellbookActions />);
 
     const dialog = await openSave();
 
@@ -74,7 +74,7 @@ describe('BookActions Save', () => {
   });
 
   it('trims spaces from the name', async () => {
-    render(<BookActions />);
+    render(<SpellbookActions />);
 
     await saveAs(`  ${NAME}  `);
 
@@ -82,7 +82,7 @@ describe('BookActions Save', () => {
   });
 
   it('blocks an empty name', async () => {
-    render(<BookActions />);
+    render(<SpellbookActions />);
 
     await saveAs('   ');
 
@@ -90,82 +90,82 @@ describe('BookActions Save', () => {
     expect(screen.getByText('Enter a name for this spellbook.')).toBeInTheDocument();
   });
 
-  it('is disabled for an empty book', () => {
-    useBookStore.getState().loadBook(EMPTY_WIZARD_BOOK);
-    render(<BookActions />);
+  it('is disabled for an empty spellbook', () => {
+    useSpellbookStore.getState().loadSpellbook(EMPTY_WIZARD_SPELLBOOK);
+    render(<SpellbookActions />);
 
     expect(saveButton()).toBeDisabled();
   });
 
-  it('is disabled for a saved book with no changes', () => {
-    useBookStore.getState().save(NAME);
-    render(<BookActions />);
+  it('is disabled for a saved spellbook with no changes', () => {
+    useSpellbookStore.getState().save(NAME);
+    render(<SpellbookActions />);
 
     expect(saveButton()).toBeDisabled();
   });
 });
 
-describe('BookActions Save over a saved name', () => {
-  it('asks before replacing a saved book with the same name, and replaces it on confirm', async () => {
-    render(<BookActions />);
+describe('SpellbookActions Save over a saved name', () => {
+  it('asks before replacing a saved spellbook with the same name, and replaces it on confirm', async () => {
+    render(<SpellbookActions />);
 
     await saveAs(NAME);
-    useBookStore.getState().loadBook(OTHER_WIZARD_BOOK);
+    useSpellbookStore.getState().loadSpellbook(OTHER_WIZARD_SPELLBOOK);
     await saveAs(NAME);
 
     const confirm = screen.getByRole('dialog', { name: `Overwrite "${NAME}"?` });
 
     await userEvent.click(within(confirm).getByRole('button', { name: 'Overwrite' }));
 
-    expect(savedBooks('wizard')[0]?.book).toEqual(OTHER_WIZARD_BOOK);
+    expect(savedSpellbooks('wizard')[0]?.spellbook).toEqual(OTHER_WIZARD_SPELLBOOK);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('saves changes to the loaded book under its own name without asking', async () => {
-    render(<BookActions />);
+  it('saves changes to the loaded spellbook under its own name without asking', async () => {
+    render(<SpellbookActions />);
 
     await saveAs(NAME);
-    useBookStore.getState().loadBook(OTHER_WIZARD_BOOK, NAME);
+    useSpellbookStore.getState().loadSpellbook(OTHER_WIZARD_SPELLBOOK, NAME);
     await saveAs(NAME);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(savedBooks('wizard')[0]?.book).toEqual(OTHER_WIZARD_BOOK);
+    expect(savedSpellbooks('wizard')[0]?.spellbook).toEqual(OTHER_WIZARD_SPELLBOOK);
   });
 
-  it('shows the book as saved again after saving its changes', async () => {
+  it('shows the spellbook as saved again after saving its changes', async () => {
     render(
       <>
-        <BookActions />
+        <SpellbookActions />
         <StatusProbe />
       </>,
     );
 
     await saveAs(NAME);
-    useBookStore.getState().addCopy(FIREBALL);
+    useSpellbookStore.getState().addCopy(FIREBALL);
     await saveAs(NAME);
 
     expect(screen.getByRole('status', { name: 'Status' })).toHaveTextContent('saved');
     expect(screen.getByRole('status', { name: 'Status' })).not.toHaveTextContent('unsaved');
   });
 
-  it('keeps the saved book when the overwrite is cancelled', async () => {
-    render(<BookActions />);
+  it('keeps the saved spellbook when the overwrite is cancelled', async () => {
+    render(<SpellbookActions />);
 
     await saveAs(NAME);
-    useBookStore.getState().loadBook(OTHER_WIZARD_BOOK);
+    useSpellbookStore.getState().loadSpellbook(OTHER_WIZARD_SPELLBOOK);
     await saveAs(NAME);
     await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
-    expect(savedBooks('wizard')[0]?.book).toEqual(smallBook);
+    expect(savedSpellbooks('wizard')[0]?.spellbook).toEqual(smallSpellbook);
   });
 });
 
-describe('BookActions Load', () => {
-  it("lists this mage's saved books by name with their points", async () => {
-    saveBook('beta', smallBook);
-    saveBook('Alpha', EMPTY_WIZARD_BOOK);
-    saveBook('Other mage', { mageId: 'warlock', counts: {} });
-    render(<BookActions />);
+describe('SpellbookActions Load', () => {
+  it("lists this mage's saved spellbooks by name with their points", async () => {
+    saveSpellbook('beta', smallSpellbook);
+    saveSpellbook('Alpha', EMPTY_WIZARD_SPELLBOOK);
+    saveSpellbook('Other mage', { mageId: 'warlock', counts: {} });
+    render(<SpellbookActions />);
 
     const dialog = await openLoad();
     const rows = within(dialog).getAllByRole('button', { name: /pts$/ });
@@ -173,31 +173,31 @@ describe('BookActions Load', () => {
     expect(rows.map((row) => row.textContent)).toEqual(['Alpha0 pts', 'beta18 pts']);
   });
 
-  it('says when there are no saved books', async () => {
-    render(<BookActions />);
+  it('says when there are no saved spellbooks', async () => {
+    render(<SpellbookActions />);
 
     const dialog = await openLoad();
 
     expect(dialog).toHaveTextContent('No saved spellbooks for this mage yet.');
   });
 
-  it('loads a book right away when nothing would be lost', async () => {
-    saveBook(NAME, smallBook);
-    useBookStore.getState().loadBook(EMPTY_WIZARD_BOOK);
-    render(<BookActions />);
+  it('loads a spellbook right away when nothing would be lost', async () => {
+    saveSpellbook(NAME, smallSpellbook);
+    useSpellbookStore.getState().loadSpellbook(EMPTY_WIZARD_SPELLBOOK);
+    render(<SpellbookActions />);
 
     const dialog = await openLoad();
 
     await userEvent.click(within(dialog).getByRole('button', { name: /^Tourney/ }));
 
-    expect(useBookStore.getState().book).toEqual(smallBook);
-    expect(useBookStore.getState().name).toBe(NAME);
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
+    expect(useSpellbookStore.getState().name).toBe(NAME);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('asks before replacing a book with unsaved changes', async () => {
-    saveBook(NAME, EMPTY_WIZARD_BOOK);
-    render(<BookActions />);
+  it('asks before replacing a spellbook with unsaved changes', async () => {
+    saveSpellbook(NAME, EMPTY_WIZARD_SPELLBOOK);
+    render(<SpellbookActions />);
 
     const dialog = await openLoad();
 
@@ -209,15 +209,15 @@ describe('BookActions Load', () => {
 
     await userEvent.click(within(confirm).getByRole('button', { name: 'Replace' }));
 
-    expect(useBookStore.getState().book).toEqual(EMPTY_WIZARD_BOOK);
+    expect(useSpellbookStore.getState().spellbook).toEqual(EMPTY_WIZARD_SPELLBOOK);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });
 
-describe('BookActions Delete', () => {
-  it('deletes a saved book after asking, and keeps the current book', async () => {
-    saveBook(NAME, EMPTY_WIZARD_BOOK);
-    render(<BookActions />);
+describe('SpellbookActions Delete', () => {
+  it('deletes a saved spellbook after asking, and keeps the current spellbook', async () => {
+    saveSpellbook(NAME, EMPTY_WIZARD_SPELLBOOK);
+    render(<SpellbookActions />);
 
     const dialog = await openLoad();
 
@@ -228,34 +228,34 @@ describe('BookActions Delete', () => {
     await userEvent.click(within(confirm).getByRole('button', { name: 'Delete' }));
 
     expect(savedNames()).toEqual([]);
-    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
     expect(screen.getByRole('dialog', { name: 'Saved spellbooks' })).toHaveTextContent(
       'No saved spellbooks for this mage yet.',
     );
   });
 
-  it('drops the name, and keeps the cards, when the loaded book is deleted', async () => {
-    saveBook(NAME, smallBook);
-    useBookStore.getState().loadBook(smallBook, NAME);
-    render(<BookActions />);
+  it('drops the name, and keeps the cards, when the loaded spellbook is deleted', async () => {
+    saveSpellbook(NAME, smallSpellbook);
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook, NAME);
+    render(<SpellbookActions />);
 
     const dialog = await openLoad();
 
     await userEvent.click(within(dialog).getByRole('button', { name: `Delete ${NAME}` }));
     await userEvent.click(screen.getByRole('button', { name: 'Delete' }));
 
-    expect(useBookStore.getState().name).toBeNull();
-    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(useSpellbookStore.getState().name).toBeNull();
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
   });
 });
 
-describe('BookActions Clear', () => {
+describe('SpellbookActions Clear', () => {
   const clearButton = () => screen.getByRole('button', { name: 'Clear' });
 
-  it('asks before clearing unsaved cards, and keeps the mage and the saved books', async () => {
-    saveBook(NAME, EMPTY_WIZARD_BOOK);
-    useBookStore.getState().loadBook(smallBook, NAME);
-    render(<BookActions />);
+  it('asks before clearing unsaved cards, and keeps the mage and the saved spellbooks', async () => {
+    saveSpellbook(NAME, EMPTY_WIZARD_SPELLBOOK);
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook, NAME);
+    render(<SpellbookActions />);
 
     await userEvent.click(clearButton());
 
@@ -265,45 +265,45 @@ describe('BookActions Clear', () => {
 
     await userEvent.click(within(confirm).getByRole('button', { name: 'Clear' }));
 
-    expect(useBookStore.getState().book).toEqual(EMPTY_WIZARD_BOOK);
-    expect(useBookStore.getState().name).toBeNull();
+    expect(useSpellbookStore.getState().spellbook).toEqual(EMPTY_WIZARD_SPELLBOOK);
+    expect(useSpellbookStore.getState().name).toBeNull();
     expect(savedNames()).toEqual([NAME]);
   });
 
-  it('keeps the book when the clear is cancelled', async () => {
-    render(<BookActions />);
+  it('keeps the spellbook when the clear is cancelled', async () => {
+    render(<SpellbookActions />);
 
     await userEvent.click(clearButton());
     await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
-    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
   });
 
-  it('clears a saved book with no changes without asking', async () => {
-    saveBook(NAME, smallBook);
-    useBookStore.getState().loadBook(smallBook, NAME);
-    render(<BookActions />);
+  it('clears a saved spellbook with no changes without asking', async () => {
+    saveSpellbook(NAME, smallSpellbook);
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook, NAME);
+    render(<SpellbookActions />);
 
     await userEvent.click(clearButton());
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(useBookStore.getState().book).toEqual(EMPTY_WIZARD_BOOK);
+    expect(useSpellbookStore.getState().spellbook).toEqual(EMPTY_WIZARD_SPELLBOOK);
     expect(savedNames()).toEqual([NAME]);
   });
 
-  it('clears an empty named book without asking', async () => {
-    useBookStore.getState().loadBook(EMPTY_WIZARD_BOOK, NAME);
-    render(<BookActions />);
+  it('clears an empty named spellbook without asking', async () => {
+    useSpellbookStore.getState().loadSpellbook(EMPTY_WIZARD_SPELLBOOK, NAME);
+    render(<SpellbookActions />);
 
     await userEvent.click(clearButton());
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(useBookStore.getState().name).toBeNull();
+    expect(useSpellbookStore.getState().name).toBeNull();
   });
 
-  it('is disabled for an empty book with no name', () => {
-    useBookStore.getState().loadBook(EMPTY_WIZARD_BOOK);
-    render(<BookActions />);
+  it('is disabled for an empty spellbook with no name', () => {
+    useSpellbookStore.getState().loadSpellbook(EMPTY_WIZARD_SPELLBOOK);
+    render(<SpellbookActions />);
 
     expect(clearButton()).toBeDisabled();
   });

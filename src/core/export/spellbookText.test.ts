@@ -1,7 +1,7 @@
 import { makeCard, wizard } from '@/core/rules/fixtures';
-import type { Book, Card } from '@/core/rules/types';
-import { type BookSummary, summarizeBook } from '@/core/rules/validateBook';
-import { bookText } from './bookText';
+import type { Card, Spellbook } from '@/core/rules/types';
+import { type SpellbookSummary, summarizeSpellbook } from '@/core/rules/validateSpellbook';
+import { spellbookText } from './spellbookText';
 
 const LEVEL_TWO = 2;
 const FIREBALL_COPIES = 3;
@@ -35,7 +35,7 @@ const cardsById = new Map<string, Card>(
   [fireball, lightningBolt, manaCrystal].map((card) => [card.id, card]),
 );
 
-const book: Book = {
+const spellbook: Spellbook = {
   mageId: wizard.id,
   counts: {
     [manaCrystal.id]: CRYSTAL_COPIES,
@@ -46,11 +46,11 @@ const book: Book = {
 
 const firstLine = (text: string): string => text.split('\n')[0];
 
-describe('bookText', () => {
-  it('lists the book grouped by type with points and the share link', () => {
-    const summary = summarizeBook(book, wizard, cardsById);
+describe('spellbookText', () => {
+  it('lists the spellbook grouped by type with points and the share link', () => {
+    const summary = summarizeSpellbook(spellbook, wizard, cardsById);
 
-    expect(bookText(book, wizard, summary, cardsById, SHARE_URL)).toBe(
+    expect(spellbookText(spellbook, wizard, summary, cardsById, SHARE_URL)).toBe(
       [
         'Wizard · 18/120 pts',
         '',
@@ -66,24 +66,24 @@ describe('bookText', () => {
     );
   });
 
-  it('says how far over budget the book is', () => {
-    const summary: BookSummary = {
-      ...summarizeBook(book, wizard, cardsById),
+  it('says how far over budget the spellbook is', () => {
+    const summary: SpellbookSummary = {
+      ...summarizeSpellbook(spellbook, wizard, cardsById),
       points: OVER_BUDGET_POINTS,
       overBy: OVER_BY,
     };
 
-    expect(firstLine(bookText(book, wizard, summary, cardsById, SHARE_URL))).toBe(
+    expect(firstLine(spellbookText(spellbook, wizard, summary, cardsById, SHARE_URL))).toBe(
       'Wizard · 124/120 pts (4 over)',
     );
   });
 
   it('skips cards missing from the catalog', () => {
-    const withUnknown: Book = { ...book, counts: { ...book.counts, gone: 1 } };
-    const summary = summarizeBook(book, wizard, cardsById);
+    const withUnknown: Spellbook = { ...spellbook, counts: { ...spellbook.counts, gone: 1 } };
+    const summary = summarizeSpellbook(spellbook, wizard, cardsById);
 
-    expect(bookText(withUnknown, wizard, summary, cardsById, SHARE_URL)).toBe(
-      bookText(book, wizard, summary, cardsById, SHARE_URL),
+    expect(spellbookText(withUnknown, wizard, summary, cardsById, SHARE_URL)).toBe(
+      spellbookText(spellbook, wizard, summary, cardsById, SHARE_URL),
     );
   });
 });

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { loadSavedBook } from '@/core/persistence/savedBooks';
-import { useBookStore } from '@/store/useBookStore';
+import { loadSavedSpellbook } from '@/core/persistence/savedSpellbooks';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 
 const EMPTY_NAME_ERROR = 'Enter a name for this spellbook.';
 
@@ -8,10 +8,10 @@ const EMPTY_NAME_ERROR = 'Enter a name for this spellbook.';
  * The Save dialog's state: the draft name, its error, and the overwrite question.
  * `onSaved` runs after a save, to close the dialog.
  */
-export const useSaveBook = (onSaved: () => void) => {
-  const book = useBookStore((state) => state.book);
-  const currentName = useBookStore((state) => state.name);
-  const save = useBookStore((state) => state.save);
+export const useSaveSpellbook = (onSaved: () => void) => {
+  const spellbook = useSpellbookStore((state) => state.spellbook);
+  const currentName = useSpellbookStore((state) => state.name);
+  const save = useSpellbookStore((state) => state.save);
 
   const [draftName, setDraftName] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +19,7 @@ export const useSaveBook = (onSaved: () => void) => {
 
   const trimmedName = draftName.trim();
 
-  /** Starts a fresh form from the book's current name. */
+  /** Starts a fresh form from the spellbook's current name. */
   const reset = () => {
     setDraftName(currentName ?? '');
     setError(null);
@@ -44,9 +44,9 @@ export const useSaveBook = (onSaved: () => void) => {
       return;
     }
 
-    const { mageId } = book;
-    const nameTaken = mageId !== null && loadSavedBook(mageId, trimmedName) !== null;
-    // Saving the loaded book under its own name updates it; there is nothing else to lose.
+    const { mageId } = spellbook;
+    const nameTaken = mageId !== null && loadSavedSpellbook(mageId, trimmedName) !== null;
+    // Saving the loaded spellbook under its own name updates it; there is nothing else to lose.
     const isOwnName = trimmedName === currentName;
 
     if (nameTaken && !isOwnName) {

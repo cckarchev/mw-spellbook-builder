@@ -1,11 +1,11 @@
-import { sameBook } from '@/core/rules/bookChanges';
-import type { Book } from '@/core/rules/types';
-import { encodeBook } from '@/core/share-link/bookCodec';
+import { sameSpellbook } from '@/core/rules/spellbookChanges';
+import type { Spellbook } from '@/core/rules/types';
+import { encodeSpellbook } from '@/core/share-link/spellbookCodec';
 import {
   CURRENT_MAGE_KEY,
   DRAFT_PREFIX,
-  LEGACY_BOOK_KEY,
-  migrateLegacyBook,
+  LEGACY_SPELLBOOK_KEY,
+  migrateLegacySpellbook,
   readCurrentMageId,
   readDraft,
   writeCurrentMageId,
@@ -17,8 +17,8 @@ const WIZARD_ID = 'wizard';
 const WARLOCK_ID = 'warlock';
 const NAME = 'Tourney';
 
-const wizardBook: Book = { mageId: WIZARD_ID, counts: { [FIREBALL]: 1 } };
-const emptyWizardBook: Book = { mageId: WIZARD_ID, counts: {} };
+const wizardSpellbook: Spellbook = { mageId: WIZARD_ID, counts: { [FIREBALL]: 1 } };
+const emptyWizardSpellbook: Spellbook = { mageId: WIZARD_ID, counts: {} };
 
 const storedDraft = (mageId: string) => localStorage.getItem(DRAFT_PREFIX + mageId);
 
@@ -27,12 +27,12 @@ beforeEach(() => {
 });
 
 describe('drafts', () => {
-  it('writeDraft then readDraft returns the same book and name', () => {
-    writeDraft({ book: wizardBook, name: NAME });
+  it('writeDraft then readDraft returns the same spellbook and name', () => {
+    writeDraft({ spellbook: wizardSpellbook, name: NAME });
 
     const draft = readDraft(WIZARD_ID);
 
-    expect(draft && sameBook(draft.book, wizardBook)).toBe(true);
+    expect(draft && sameSpellbook(draft.spellbook, wizardSpellbook)).toBe(true);
     expect(draft?.name).toBe(NAME);
   });
 
@@ -46,38 +46,38 @@ describe('drafts', () => {
     expect(readDraft(WIZARD_ID)).toBeNull();
   });
 
-  it('readDraft is null when its book string does not decode', () => {
+  it('readDraft is null when its spellbook string does not decode', () => {
     localStorage.setItem(DRAFT_PREFIX + WIZARD_ID, JSON.stringify({ b: '!!!', n: null }));
 
     expect(readDraft(WIZARD_ID)).toBeNull();
   });
 
-  it('readDraft is null when the stored book names another mage', () => {
-    const warlockBook: Book = { mageId: WARLOCK_ID, counts: {} };
+  it('readDraft is null when the stored spellbook names another mage', () => {
+    const warlockSpellbook: Spellbook = { mageId: WARLOCK_ID, counts: {} };
 
     localStorage.setItem(
       DRAFT_PREFIX + WIZARD_ID,
-      JSON.stringify({ b: encodeBook(warlockBook), n: null }),
+      JSON.stringify({ b: encodeSpellbook(warlockSpellbook), n: null }),
     );
 
     expect(readDraft(WIZARD_ID)).toBeNull();
   });
 
-  it('writeDraft of an empty unnamed book removes the key', () => {
-    writeDraft({ book: wizardBook, name: null });
-    writeDraft({ book: emptyWizardBook, name: null });
+  it('writeDraft of an empty unnamed spellbook removes the key', () => {
+    writeDraft({ spellbook: wizardSpellbook, name: null });
+    writeDraft({ spellbook: emptyWizardSpellbook, name: null });
 
     expect(storedDraft(WIZARD_ID)).toBeNull();
   });
 
-  it('writeDraft of an empty named book keeps it', () => {
-    writeDraft({ book: emptyWizardBook, name: NAME });
+  it('writeDraft of an empty named spellbook keeps it', () => {
+    writeDraft({ spellbook: emptyWizardSpellbook, name: NAME });
 
     expect(readDraft(WIZARD_ID)?.name).toBe(NAME);
   });
 
-  it('writeDraft of a book with no mage stores nothing', () => {
-    writeDraft({ book: { mageId: null, counts: {} }, name: NAME });
+  it('writeDraft of a spellbook with no mage stores nothing', () => {
+    writeDraft({ spellbook: { mageId: null, counts: {} }, name: NAME });
 
     expect(localStorage.length).toBe(0);
   });
@@ -95,34 +95,34 @@ describe('current mage', () => {
   });
 });
 
-describe('migrateLegacyBook', () => {
-  it("moves the legacy book into its mage's draft, makes that mage current and removes the legacy key", () => {
-    localStorage.setItem(LEGACY_BOOK_KEY, encodeBook(wizardBook));
+describe('migrateLegacySpellbook', () => {
+  it("moves the legacy spellbook into its mage's draft, makes that mage current and removes the legacy key", () => {
+    localStorage.setItem(LEGACY_SPELLBOOK_KEY, encodeSpellbook(wizardSpellbook));
 
-    migrateLegacyBook();
+    migrateLegacySpellbook();
 
     const draft = readDraft(WIZARD_ID);
 
-    expect(draft && sameBook(draft.book, wizardBook)).toBe(true);
+    expect(draft && sameSpellbook(draft.spellbook, wizardSpellbook)).toBe(true);
     expect(draft?.name).toBeNull();
     expect(readCurrentMageId()).toBe(WIZARD_ID);
-    expect(localStorage.getItem(LEGACY_BOOK_KEY)).toBeNull();
+    expect(localStorage.getItem(LEGACY_SPELLBOOK_KEY)).toBeNull();
   });
 
   it('with garbage in the legacy key only removes it', () => {
-    localStorage.setItem(LEGACY_BOOK_KEY, 'garbage');
+    localStorage.setItem(LEGACY_SPELLBOOK_KEY, 'garbage');
 
-    migrateLegacyBook();
+    migrateLegacySpellbook();
 
     expect(localStorage.length).toBe(0);
   });
 
   it('does nothing when there is no legacy key', () => {
-    writeDraft({ book: wizardBook, name: NAME });
+    writeDraft({ spellbook: wizardSpellbook, name: NAME });
 
     const before = storedDraft(WIZARD_ID);
 
-    migrateLegacyBook();
+    migrateLegacySpellbook();
 
     expect(storedDraft(WIZARD_ID)).toBe(before);
     expect(localStorage.getItem(CURRENT_MAGE_KEY)).toBeNull();

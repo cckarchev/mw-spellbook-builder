@@ -4,10 +4,15 @@ import { MemoryRouter } from 'react-router-dom';
 import { App } from '@/App';
 import { readDraft } from '@/core/persistence/drafts';
 import { toBase64Url } from '@/core/share-link/base64Url';
-import { encodeBook } from '@/core/share-link/bookCodec';
+import { encodeSpellbook } from '@/core/share-link/spellbookCodec';
 import { cardsById } from '@/data/catalog';
-import { FIREBALL, overBudgetBook, resetBookStore, smallBook } from '@/features/shared/testBooks';
-import { useBookStore } from '@/store/useBookStore';
+import {
+  FIREBALL,
+  overBudgetSpellbook,
+  resetSpellbookStore,
+  smallSpellbook,
+} from '@/features/shared/testSpellbooks';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 
 const FIREBALL_CODE = cardsById.get(FIREBALL)?.code ?? '';
 const OVER_LIMIT = 5;
@@ -21,14 +26,14 @@ const renderAt = (path: string) => {
 };
 
 beforeEach(() => {
-  resetBookStore();
+  resetSpellbookStore();
 });
 
 describe('opening a share link', () => {
-  it('loads the book and shows it on the Book tab', () => {
-    renderAt(`/?b=${encodeBook(smallBook)}`);
+  it('loads the spellbook and shows it on the Spellbook tab', () => {
+    renderAt(`/?b=${encodeSpellbook(smallSpellbook)}`);
 
-    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
     expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
@@ -38,7 +43,7 @@ describe('opening a share link', () => {
 
     renderAt(`/?b=${toBase64Url(JSON.stringify(wire))}`);
 
-    expect(useBookStore.getState().book.counts).toEqual({ [FIREBALL]: OVER_LIMIT });
+    expect(useSpellbookStore.getState().spellbook.counts).toEqual({ [FIREBALL]: OVER_LIMIT });
 
     const dialog = screen.getByRole('dialog', { name: 'Check this spellbook' });
 
@@ -52,12 +57,12 @@ describe('opening a share link', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('keeps the current book when the link cannot be read', () => {
-    useBookStore.getState().loadBook(smallBook);
+  it('keeps the current spellbook when the link cannot be read', () => {
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook);
 
-    renderAt('/?b=not-a-book');
+    renderAt('/?b=not-a-spellbook');
 
-    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
     expect(screen.getByRole('dialog', { name: 'Check this spellbook' })).toHaveTextContent(
       'This link could not be read',
     );
@@ -76,36 +81,36 @@ describe('opening a share link', () => {
   });
 });
 
-describe('opening a share link over a book in progress', () => {
+describe('opening a share link over a spellbook in progress', () => {
   beforeEach(() => {
-    useBookStore.getState().loadBook(overBudgetBook);
+    useSpellbookStore.getState().loadSpellbook(overBudgetSpellbook);
   });
 
   it('asks before replacing it, and Cancel keeps it', async () => {
-    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
+    renderAt(`/wizard?b=${encodeSpellbook(smallSpellbook)}`);
 
     const dialog = screen.getByRole('dialog', { name: 'Replace your spellbook?' });
 
     await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
 
-    expect(useBookStore.getState().book).toEqual(overBudgetBook);
+    expect(useSpellbookStore.getState().spellbook).toEqual(overBudgetSpellbook);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('replaces it when confirmed', async () => {
-    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
+    renderAt(`/wizard?b=${encodeSpellbook(smallSpellbook)}`);
 
     await userEvent.click(screen.getByRole('button', { name: 'Replace' }));
 
-    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
     expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
   });
 
   it("asks about the link mage's draft even while another mage is open", async () => {
-    const warlockBook = { mageId: 'warlock', counts: { [FIREBALL]: 1 } };
+    const warlockSpellbook = { mageId: 'warlock', counts: { [FIREBALL]: 1 } };
 
-    useBookStore.getState().loadBook(warlockBook);
-    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
+    useSpellbookStore.getState().loadSpellbook(warlockSpellbook);
+    renderAt(`/wizard?b=${encodeSpellbook(smallSpellbook)}`);
 
     const dialog = screen.getByRole('dialog', { name: 'Replace your spellbook?' });
 
@@ -115,35 +120,35 @@ describe('opening a share link over a book in progress', () => {
 
     await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
 
-    expect(useBookStore.getState().book).toEqual(warlockBook);
-    expect(readDraft('wizard')?.book).toEqual(overBudgetBook);
+    expect(useSpellbookStore.getState().spellbook).toEqual(warlockSpellbook);
+    expect(readDraft('wizard')?.spellbook).toEqual(overBudgetSpellbook);
   });
 
-  it("does not ask when the link's mage has no draft, and keeps the open book as its draft", () => {
-    const warlockBook = { mageId: 'warlock', counts: { [FIREBALL]: 1 } };
+  it("does not ask when the link's mage has no draft, and keeps the open spellbook as its draft", () => {
+    const warlockSpellbook = { mageId: 'warlock', counts: { [FIREBALL]: 1 } };
 
-    resetBookStore();
-    useBookStore.getState().loadBook(warlockBook);
-    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
+    resetSpellbookStore();
+    useSpellbookStore.getState().loadSpellbook(warlockSpellbook);
+    renderAt(`/wizard?b=${encodeSpellbook(smallSpellbook)}`);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(useBookStore.getState().book).toEqual(smallBook);
-    expect(readDraft('warlock')?.book).toEqual(warlockBook);
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
+    expect(readDraft('warlock')?.spellbook).toEqual(warlockSpellbook);
   });
 
-  it('does not ask when the draft is a saved book with no changes', () => {
-    useBookStore.getState().save('Tourney');
+  it('does not ask when the draft is a saved spellbook with no changes', () => {
+    useSpellbookStore.getState().save('Tourney');
 
-    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
+    renderAt(`/wizard?b=${encodeSpellbook(smallSpellbook)}`);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(useBookStore.getState().book).toEqual(smallBook);
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
   });
 
-  it('opens the same book without asking', () => {
-    useBookStore.getState().loadBook(smallBook);
+  it('opens the same spellbook without asking', () => {
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook);
 
-    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
+    renderAt(`/wizard?b=${encodeSpellbook(smallSpellbook)}`);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });

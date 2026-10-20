@@ -21,7 +21,7 @@
   --color-bg-tint: #1c2124;
   /* Fill behind active accent controls, such as a selected filter chip. */
   --color-bg-accent-tint: rgb(var(--rgb-accent) / 0.15);
-  /* Fainter accent wash behind a whole row that is in the book. */
+  /* Fainter accent wash behind a whole row that is in the spellbook. */
   --color-bg-selected: rgb(var(--rgb-accent) / 0.06);
   /* Faint wash on every other row of a list, so long lists are easier to follow. */
   --color-bg-stripe: rgb(var(--rgb-white) / 0.06);

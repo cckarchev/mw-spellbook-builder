@@ -1,47 +1,51 @@
 import { useState } from 'react';
-import { deleteSavedBook, type SavedBook, savedBooks } from '@/core/persistence/savedBooks';
-import { useBookStatus } from '@/store/useBookStatus';
-import { useBookStore } from '@/store/useBookStore';
+import {
+  deleteSavedSpellbook,
+  type SavedSpellbook,
+  savedSpellbooks,
+} from '@/core/persistence/savedSpellbooks';
+import { useSpellbookStatus } from '@/store/useSpellbookStatus';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 
 /**
- * The mage's saved books for the Load dialog, with loading and deleting them behind their
- * confirms. `onLoaded` runs after a saved book replaces the current one.
+ * The mage's saved spellbooks for the Load dialog, with loading and deleting them behind their
+ * confirms. `onLoaded` runs after a saved spellbook replaces the current one.
  */
-export const useSavedBooks = (onLoaded: () => void) => {
-  const book = useBookStore((state) => state.book);
-  const currentName = useBookStore((state) => state.name);
-  const loadBook = useBookStore((state) => state.loadBook);
-  const { unsaved } = useBookStatus();
+export const useSavedSpellbooks = (onLoaded: () => void) => {
+  const spellbook = useSpellbookStore((state) => state.spellbook);
+  const currentName = useSpellbookStore((state) => state.name);
+  const loadSpellbook = useSpellbookStore((state) => state.loadSpellbook);
+  const { unsaved } = useSpellbookStatus();
 
-  const [saved, setSaved] = useState<SavedBook[]>([]);
-  const [pendingLoad, setPendingLoad] = useState<SavedBook | null>(null);
+  const [saved, setSaved] = useState<SavedSpellbook[]>([]);
+  const [pendingLoad, setPendingLoad] = useState<SavedSpellbook | null>(null);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
 
   const readSaved = () => {
-    setSaved(book.mageId === null ? [] : savedBooks(book.mageId));
+    setSaved(spellbook.mageId === null ? [] : savedSpellbooks(spellbook.mageId));
   };
 
-  /** Re-reads the saved books and drops any pending confirm. */
+  /** Re-reads the saved spellbooks and drops any pending confirm. */
   const refresh = () => {
     readSaved();
     setPendingLoad(null);
     setPendingDelete(null);
   };
 
-  const load = (savedBook: SavedBook) => {
-    loadBook(savedBook.book, savedBook.name);
+  const load = (savedSpellbook: SavedSpellbook) => {
+    loadSpellbook(savedSpellbook.spellbook, savedSpellbook.name);
     setPendingLoad(null);
     onLoaded();
   };
 
-  const requestLoad = (savedBook: SavedBook) => {
+  const requestLoad = (savedSpellbook: SavedSpellbook) => {
     if (unsaved) {
-      setPendingLoad(savedBook);
+      setPendingLoad(savedSpellbook);
 
       return;
     }
 
-    load(savedBook);
+    load(savedSpellbook);
   };
 
   const confirmLoad = () => {
@@ -57,15 +61,15 @@ export const useSavedBooks = (onLoaded: () => void) => {
   };
 
   const confirmDelete = () => {
-    if (pendingDelete === null || book.mageId === null) {
+    if (pendingDelete === null || spellbook.mageId === null) {
       return;
     }
 
-    deleteSavedBook(book.mageId, pendingDelete);
+    deleteSavedSpellbook(spellbook.mageId, pendingDelete);
 
-    // The book stays, as a draft that no longer comes from a saved book.
+    // The spellbook stays, as a draft that no longer comes from a saved spellbook.
     if (pendingDelete === currentName) {
-      loadBook(book, null);
+      loadSpellbook(spellbook, null);
     }
 
     setPendingDelete(null);

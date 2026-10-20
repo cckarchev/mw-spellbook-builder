@@ -7,7 +7,7 @@ interface IncomingIssuesProps {
   onDismiss: () => void;
 }
 
-/** What was wrong with a book opened from a link. Closed while there is nothing to say. */
+/** What was wrong with a spellbook opened from a link. Closed while there is nothing to say. */
 export const IncomingIssues = ({ problems, onDismiss }: IncomingIssuesProps) => (
   <Dialog open={problems.length > 0} title="Check this spellbook" onClose={onDismiss}>
     <ul className={styles.problems}>

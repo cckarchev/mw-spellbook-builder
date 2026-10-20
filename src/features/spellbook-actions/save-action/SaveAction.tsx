@@ -1,20 +1,20 @@
 import { useState } from 'react';
 import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
-import { hasCards } from '@/core/rules/bookChanges';
+import { hasCards } from '@/core/rules/spellbookChanges';
 import { ActionButton } from '@/features/shared/action-button/ActionButton';
-import { useBookStatus } from '@/store/useBookStatus';
-import { useBookStore } from '@/store/useBookStore';
+import { useSpellbookStatus } from '@/store/useSpellbookStatus';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 import { SaveIcon } from '../Icons';
 import { SaveDialog } from './save-dialog/SaveDialog';
-import { useSaveBook } from './useSaveBook';
+import { useSaveSpellbook } from './useSaveSpellbook';
 
 /**
- * The Save button, its name dialog, and the question before overwriting a saved book. The
+ * The Save button, its name dialog, and the question before overwriting a saved spellbook. The
  * button only works when there is something new to keep: cards, with unsaved changes.
  */
 export const SaveAction = () => {
-  const book = useBookStore((state) => state.book);
-  const { unsaved } = useBookStatus();
+  const spellbook = useSpellbookStore((state) => state.spellbook);
+  const { unsaved } = useSpellbookStatus();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -22,9 +22,9 @@ export const SaveAction = () => {
     setIsOpen(false);
   };
 
-  const save = useSaveBook(close);
+  const save = useSaveSpellbook(close);
 
-  const hasNothingToSave = !(hasCards(book) && unsaved);
+  const hasNothingToSave = !(hasCards(spellbook) && unsaved);
 
   const open = () => {
     save.reset();

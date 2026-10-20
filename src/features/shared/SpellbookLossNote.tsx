@@ -1,22 +1,22 @@
-import { copyCount } from '@/core/rules/bookChanges';
-import type { Book } from '@/core/rules/types';
+import { copyCount } from '@/core/rules/spellbookChanges';
+import type { Spellbook } from '@/core/rules/types';
 import { plural } from '@/core/text/plural';
-import { bookMage } from '@/data/catalog';
+import { spellbookMage } from '@/data/catalog';
 
-/** What a confirm calls a book whose mage is unknown. */
+/** What a confirm calls a spellbook whose mage is unknown. */
 export const CURRENT_MAGE_FALLBACK = 'current';
 
-/** How to keep a book that a confirm is about to clear or replace. */
-export const KEEP_BOOK_HINT = 'To keep it, cancel and save it first.';
+/** How to keep a spellbook that a confirm is about to clear or replace. */
+export const KEEP_SPELLBOOK_HINT = 'To keep it, cancel and save it first.';
 
-/** What a confirm says before the book is cleared, and how to keep it. */
-export const BookLossNote = ({ book }: { book: Book }) => {
-  const mageName = bookMage(book)?.name ?? CURRENT_MAGE_FALLBACK;
-  const cardsLabel = plural(copyCount(book), 'card', 'cards');
+/** What a confirm says before the spellbook is cleared, and how to keep it. */
+export const SpellbookLossNote = ({ spellbook }: { spellbook: Spellbook }) => {
+  const mageName = spellbookMage(spellbook)?.name ?? CURRENT_MAGE_FALLBACK;
+  const cardsLabel = plural(copyCount(spellbook), 'card', 'cards');
 
   return (
     <p>
-      Your {mageName} spellbook has {cardsLabel}. It will be cleared. {KEEP_BOOK_HINT}
+      Your {mageName} spellbook has {cardsLabel}. It will be cleared. {KEEP_SPELLBOOK_HINT}
     </p>
   );
 };

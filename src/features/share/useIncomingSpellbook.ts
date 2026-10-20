@@ -1,74 +1,74 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { readDraft } from '@/core/persistence/drafts';
-import { savedCopy } from '@/core/persistence/savedBooks';
+import { savedCopy } from '@/core/persistence/savedSpellbooks';
 import { builderPath, PICKER_PATH } from '@/core/routing/builderPath';
-import { hasUnsavedChanges, sameBook } from '@/core/rules/bookChanges';
-import type { Book } from '@/core/rules/types';
-import { summarizeBook } from '@/core/rules/validateBook';
-import { type DecodedBook, decodeBook } from '@/core/share-link/bookCodec';
-import { incomingProblems, noMageProblems } from '@/core/share-link/bookNotes';
-import { BOOK_PARAM } from '@/core/share-link/shareUrl';
-import { bookMage, cardsById } from '@/data/catalog';
-import { currentBookPath } from '@/features/shared/currentBookPath';
-import { useBookStore } from '@/store/useBookStore';
+import { hasUnsavedChanges, sameSpellbook } from '@/core/rules/spellbookChanges';
+import type { Spellbook } from '@/core/rules/types';
+import { summarizeSpellbook } from '@/core/rules/validateSpellbook';
+import { SPELLBOOK_PARAM } from '@/core/share-link/shareUrl';
+import { type DecodedSpellbook, decodeSpellbook } from '@/core/share-link/spellbookCodec';
+import { incomingProblems, noMageProblems } from '@/core/share-link/spellbookNotes';
+import { cardsById, spellbookMage } from '@/data/catalog';
+import { currentSpellbookPath } from '@/features/shared/currentSpellbookPath';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 
 const UNREADABLE = 'This link could not be read. Your current spellbook is unchanged.';
 
-/** Where a book opened from a link goes, and what to tell the player about it. */
-const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
-  const mage = bookMage(book);
+/** Where a spellbook opened from a link goes, and what to tell the player about it. */
+const openedSpellbook = ({ spellbook, unknownCodes, unknownMage }: DecodedSpellbook) => {
+  const mage = spellbookMage(spellbook);
 
   if (!mage) {
     return { path: PICKER_PATH, problems: noMageProblems(unknownMage, unknownCodes) };
   }
 
-  const { issues } = summarizeBook(book, mage, cardsById);
+  const { issues } = summarizeSpellbook(spellbook, mage, cardsById);
 
   return {
-    path: builderPath(mage.name, 'book'),
-    problems: incomingProblems(unknownCodes, issues, mage, book.counts, cardsById),
+    path: builderPath(mage.name, 'spellbook'),
+    problems: incomingProblems(unknownCodes, issues, mage, spellbook.counts, cardsById),
   };
 };
 
-/** Whether opening the book would replace unsaved work in a draft of its mage. */
-const replacesWork = (book: Book): boolean => {
-  const draft = book.mageId === null ? null : readDraft(book.mageId);
+/** Whether opening the spellbook would replace unsaved work in a draft of its mage. */
+const replacesWork = (spellbook: Spellbook): boolean => {
+  const draft = spellbook.mageId === null ? null : readDraft(spellbook.mageId);
 
   if (draft === null) {
     return false;
   }
 
-  const saved = savedCopy(draft.book, draft.name);
+  const saved = savedCopy(draft.spellbook, draft.name);
 
-  return hasUnsavedChanges(draft.book, saved) && !sameBook(draft.book, book);
+  return hasUnsavedChanges(draft.spellbook, saved) && !sameSpellbook(draft.spellbook, spellbook);
 };
 
 /**
- * Loads the book from a share link (?b=) once at startup and opens it on the Book tab.
+ * Loads the spellbook from a share link (?b=) once at startup and opens it on the Spellbook tab.
  * A draft of the link's mage with unsaved work is only replaced once the player confirms
  * it in pendingReplace; the drafts of other mages are never touched.
- * Returns the problems found in the link's book, for the player to see, until dismissed.
+ * Returns the problems found in the link's spellbook, for the player to see, until dismissed.
  */
-export const useIncomingBook = () => {
+export const useIncomingSpellbook = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const loadBook = useBookStore((state) => state.loadBook);
+  const loadSpellbook = useSpellbookStore((state) => state.loadSpellbook);
   const handled = useRef(false);
 
   const [problems, setProblems] = useState<string[]>([]);
-  const [pendingReplace, setPendingReplace] = useState<DecodedBook | null>(null);
+  const [pendingReplace, setPendingReplace] = useState<DecodedSpellbook | null>(null);
 
-  const open = (decoded: DecodedBook) => {
-    const { path, problems: found } = openedBook(decoded);
+  const open = (decoded: DecodedSpellbook) => {
+    const { path, problems: found } = openedSpellbook(decoded);
 
-    loadBook(decoded.book);
+    loadSpellbook(decoded.spellbook);
     setProblems(found);
     navigate(path, { replace: true });
   };
 
   useEffect(() => {
-    const encoded = new URLSearchParams(location.search).get(BOOK_PARAM);
+    const encoded = new URLSearchParams(location.search).get(SPELLBOOK_PARAM);
 
     if (handled.current || encoded === null) {
       return;
@@ -76,20 +76,20 @@ export const useIncomingBook = () => {
 
     handled.current = true;
 
-    const decoded = decodeBook(encoded);
-    const current = useBookStore.getState().book;
+    const decoded = decodeSpellbook(encoded);
+    const current = useSpellbookStore.getState().spellbook;
 
     if (!decoded) {
       setProblems([UNREADABLE]);
-      navigate(currentBookPath(current, 'cards'), { replace: true });
+      navigate(currentSpellbookPath(current, 'cards'), { replace: true });
 
       return;
     }
 
-    if (replacesWork(decoded.book)) {
-      // The current book stays on screen while the player decides.
+    if (replacesWork(decoded.spellbook)) {
+      // The current spellbook stays on screen while the player decides.
       setPendingReplace(decoded);
-      navigate(currentBookPath(current, 'book'), { replace: true });
+      navigate(currentSpellbookPath(current, 'spellbook'), { replace: true });
 
       return;
     }

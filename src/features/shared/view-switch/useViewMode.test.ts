@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react';
 import { useViewMode, type ViewPanel, viewModeStorageKey } from './useViewMode';
 
 const PANEL: ViewPanel = 'catalog';
-const OTHER_PANEL: ViewPanel = 'book';
+const OTHER_PANEL: ViewPanel = 'spellbook';
 
 beforeEach(() => {
   localStorage.clear();

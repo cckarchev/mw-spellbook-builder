@@ -3,9 +3,9 @@ import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
 import { ActionButton } from '@/features/shared/action-button/ActionButton';
 import { LoadIcon } from '../Icons';
 import { LoadDialog } from './load-dialog/LoadDialog';
-import { useSavedBooks } from './useSavedBooks';
+import { useSavedSpellbooks } from './useSavedSpellbooks';
 
-/** The Load button, the saved books, and the questions before replacing or deleting one. */
+/** The Load button, the saved spellbooks, and the questions before replacing or deleting one. */
 export const LoadAction = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -13,11 +13,11 @@ export const LoadAction = () => {
     setIsOpen(false);
   };
 
-  const books = useSavedBooks(close);
-  const isConfirming = books.pendingLoad !== null || books.pendingDelete !== null;
+  const spellbooks = useSavedSpellbooks(close);
+  const isConfirming = spellbooks.pendingLoad !== null || spellbooks.pendingDelete !== null;
 
   const open = () => {
-    books.refresh();
+    spellbooks.refresh();
     setIsOpen(true);
   };
 
@@ -27,26 +27,26 @@ export const LoadAction = () => {
       {/* The list steps aside while a confirm asks, so only one dialog is open at a time. */}
       <LoadDialog
         open={isOpen && !isConfirming}
-        saved={books.saved}
-        onLoad={books.requestLoad}
-        onDelete={books.requestDelete}
+        saved={spellbooks.saved}
+        onLoad={spellbooks.requestLoad}
+        onDelete={spellbooks.requestDelete}
         onClose={close}
       />
       <ConfirmDialog
-        open={books.pendingLoad !== null}
+        open={spellbooks.pendingLoad !== null}
         title="Replace current spellbook?"
         body={<p>Unsaved changes will be lost.</p>}
         confirmLabel="Replace"
-        onConfirm={books.confirmLoad}
-        onCancel={books.cancelLoad}
+        onConfirm={spellbooks.confirmLoad}
+        onCancel={spellbooks.cancelLoad}
       />
       <ConfirmDialog
-        open={books.pendingDelete !== null}
-        title={`Delete "${books.pendingDelete ?? ''}"?`}
+        open={spellbooks.pendingDelete !== null}
+        title={`Delete "${spellbooks.pendingDelete ?? ''}"?`}
         body={<p>This saved spellbook will be removed permanently.</p>}
         confirmLabel="Delete"
-        onConfirm={books.confirmDelete}
-        onCancel={books.cancelDelete}
+        onConfirm={spellbooks.confirmDelete}
+        onCancel={spellbooks.cancelDelete}
       />
     </>
   );

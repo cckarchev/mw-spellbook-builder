@@ -1,8 +1,8 @@
-import type { Book, Mage } from '@/core/rules/types';
+import type { Mage, Spellbook } from '@/core/rules/types';
 
-/** What the Cards and Book tabs both get from the builder. */
-export interface BookPanelProps {
-  book: Book;
+/** What the Cards and Spellbook tabs both get from the builder. */
+export interface BuilderPanelProps {
+  spellbook: Spellbook;
   mage: Mage;
   onAdd: (cardId: string) => void;
   onRemove: (cardId: string) => void;

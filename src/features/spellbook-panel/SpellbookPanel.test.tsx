@@ -1,24 +1,32 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { Book } from '@/core/rules/types';
-import { summarizeBook } from '@/core/rules/validateBook';
+import type { Spellbook } from '@/core/rules/types';
+import { summarizeSpellbook } from '@/core/rules/validateSpellbook';
 import { cardsById } from '@/data/catalog';
-import { FIREBALL, smallBook, tooManyCopiesBook, wizard } from '@/features/shared/testBooks';
+import {
+  FIREBALL,
+  smallSpellbook,
+  tooManyCopiesSpellbook,
+  wizard,
+} from '@/features/shared/testSpellbooks';
 import { type ViewMode, viewModeStorageKey } from '@/features/shared/view-switch/useViewMode';
-import { Spellbook } from './Spellbook';
+import { SpellbookPanel } from './SpellbookPanel';
 
-const ONE_FIREBALL: Book = { ...smallBook, counts: { ...smallBook.counts, [FIREBALL]: 1 } };
+const ONE_FIREBALL: Spellbook = {
+  ...smallSpellbook,
+  counts: { ...smallSpellbook.counts, [FIREBALL]: 1 },
+};
 
-const renderSpellbook = (book: Book = smallBook, view: ViewMode = 'list') => {
+const renderSpellbookPanel = (spellbook: Spellbook = smallSpellbook, view: ViewMode = 'list') => {
   const onRemove = vi.fn();
 
-  localStorage.setItem(viewModeStorageKey('book'), view);
+  localStorage.setItem(viewModeStorageKey('spellbook'), view);
 
   render(
-    <Spellbook
-      book={book}
+    <SpellbookPanel
+      spellbook={spellbook}
       mage={wizard}
-      summary={summarizeBook(book, wizard, cardsById)}
+      summary={summarizeSpellbook(spellbook, wizard, cardsById)}
       onAdd={vi.fn()}
       onRemove={onRemove}
     />,
@@ -31,9 +39,9 @@ const removeOneFireball = async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Remove one Fireball' }));
 };
 
-describe('Spellbook', () => {
-  it('groups the book by type with a point subtotal per group', () => {
-    renderSpellbook();
+describe('SpellbookPanel', () => {
+  it('groups the spellbook by type with a point subtotal per group', () => {
+    renderSpellbookPanel();
 
     // Copies per group, then the group subtotal.
     const attack = screen.getByRole('region', { name: 'Attack (5) 16 pts' });
@@ -44,8 +52,8 @@ describe('Spellbook', () => {
     expect(within(conjuration).getByText('Mana Crystal')).toBeInTheDocument();
   });
 
-  it('lists the problems of the book', () => {
-    renderSpellbook(tooManyCopiesBook);
+  it('lists the problems of the spellbook', () => {
+    renderSpellbookPanel(tooManyCopiesSpellbook);
 
     const problems = screen.getByRole('list', { name: 'Problems' });
 
@@ -53,7 +61,7 @@ describe('Spellbook', () => {
   });
 
   it('marks the card row that has a problem', () => {
-    renderSpellbook(tooManyCopiesBook);
+    renderSpellbookPanel(tooManyCopiesSpellbook);
 
     const row = screen.getByText('Too many copies: max 4').closest('li');
 
@@ -61,21 +69,21 @@ describe('Spellbook', () => {
     expect(within(row as HTMLElement).getByText('Fireball')).toBeInTheDocument();
   });
 
-  it('shows no problem list for a legal book', () => {
-    renderSpellbook();
+  it('shows no problem list for a legal spellbook', () => {
+    renderSpellbookPanel();
 
     expect(screen.queryByRole('list', { name: 'Problems' })).not.toBeInTheDocument();
   });
 
-  it('says when the book is empty', () => {
-    renderSpellbook({ ...smallBook, counts: {} });
+  it('says when the spellbook is empty', () => {
+    renderSpellbookPanel({ ...smallSpellbook, counts: {} });
 
     expect(screen.getByText('No cards yet. Add some from the Cards tab.')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Grid' })).not.toBeInTheDocument();
   });
 
   it('removes a copy without asking while more copies stay', async () => {
-    const { onRemove } = renderSpellbook();
+    const { onRemove } = renderSpellbookPanel();
 
     await removeOneFireball();
 
@@ -84,7 +92,7 @@ describe('Spellbook', () => {
   });
 
   it('asks before removing the last copy, and Cancel keeps it', async () => {
-    const { onRemove } = renderSpellbook(ONE_FIREBALL);
+    const { onRemove } = renderSpellbookPanel(ONE_FIREBALL);
 
     await removeOneFireball();
 
@@ -99,7 +107,7 @@ describe('Spellbook', () => {
   });
 
   it('removes the last copy when confirmed', async () => {
-    const { onRemove } = renderSpellbook(ONE_FIREBALL);
+    const { onRemove } = renderSpellbookPanel(ONE_FIREBALL);
 
     await removeOneFireball();
     await userEvent.click(screen.getByRole('button', { name: 'Remove' }));
@@ -109,9 +117,9 @@ describe('Spellbook', () => {
   });
 });
 
-describe('Spellbook grid', () => {
+describe('SpellbookPanel grid', () => {
   it('shows the cards as images with the points of every copy', () => {
-    renderSpellbook(smallBook, 'grid');
+    renderSpellbookPanel(smallSpellbook, 'grid');
 
     const attack = screen.getByRole('region', { name: 'Attack (5) 16 pts' });
     const tile = within(attack).getByRole('img', { name: 'Fireball' }).closest('li');
@@ -124,7 +132,7 @@ describe('Spellbook grid', () => {
   });
 
   it('marks the card that has a problem', () => {
-    renderSpellbook(tooManyCopiesBook, 'grid');
+    renderSpellbookPanel(tooManyCopiesSpellbook, 'grid');
 
     const tile = screen.getByText('Too many copies: max 4').closest('li');
 

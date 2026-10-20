@@ -1,20 +1,20 @@
-import { hasCards } from '@/core/rules/bookChanges';
-import type { Book } from '@/core/rules/types';
-import { decodeBook, encodeBook } from '@/core/share-link/bookCodec';
+import { hasCards } from '@/core/rules/spellbookChanges';
+import type { Spellbook } from '@/core/rules/types';
+import { decodeSpellbook, encodeSpellbook } from '@/core/share-link/spellbookCodec';
 import { readStored, readStoredJson, removeStored, writeStored } from './storage';
 
 export const DRAFT_PREFIX = 'mw-spellbook-builder:draft:';
 export const CURRENT_MAGE_KEY = 'mw-spellbook-builder:current-mage';
-/** Where the one book in progress lived before there was a draft per mage. */
-export const LEGACY_BOOK_KEY = 'mw-spellbook-builder:current';
+/** Where the one spellbook in progress lived before there was a draft per mage. */
+export const LEGACY_SPELLBOOK_KEY = 'mw-spellbook-builder:current';
 
-/** The book in progress for one mage, and the name of the saved book it came from. */
+/** The spellbook in progress for one mage, and the name of the saved spellbook it came from. */
 export interface Draft {
-  book: Book;
+  spellbook: Spellbook;
   name: string | null;
 }
 
-/** What a draft key holds: the encodeBook string and the name. */
+/** What a draft key holds: the encodeSpellbook string and the name. */
 interface StoredDraft {
   b: string;
   n: string | null;
@@ -39,18 +39,18 @@ export const readDraft = (mageId: string): Draft | null => {
     return null;
   }
 
-  const decoded = decodeBook(parsed.b);
+  const decoded = decodeSpellbook(parsed.b);
 
-  if (decoded?.book.mageId !== mageId) {
+  if (decoded?.spellbook.mageId !== mageId) {
     return null;
   }
 
-  return { book: decoded.book, name: parsed.n };
+  return { spellbook: decoded.spellbook, name: parsed.n };
 };
 
-/** Stores the draft under its book's mage; an empty unnamed book leaves nothing behind. */
-export const writeDraft = ({ book, name }: Draft): void => {
-  const { mageId } = book;
+/** Stores the draft under its spellbook's mage; an empty unnamed spellbook leaves nothing behind. */
+export const writeDraft = ({ spellbook, name }: Draft): void => {
+  const { mageId } = spellbook;
 
   if (mageId === null) {
     return;
@@ -58,13 +58,13 @@ export const writeDraft = ({ book, name }: Draft): void => {
 
   const key = DRAFT_PREFIX + mageId;
 
-  if (!hasCards(book) && name === null) {
+  if (!hasCards(spellbook) && name === null) {
     removeStored(key);
 
     return;
   }
 
-  const stored: StoredDraft = { b: encodeBook(book), n: name };
+  const stored: StoredDraft = { b: encodeSpellbook(spellbook), n: name };
 
   writeStored(key, JSON.stringify(stored));
 };
@@ -75,20 +75,20 @@ export const writeCurrentMageId = (mageId: string): void => {
   writeStored(CURRENT_MAGE_KEY, mageId);
 };
 
-/** Turns the old single book in progress into its mage's draft, once. */
-export const migrateLegacyBook = (): void => {
-  const legacy = readStored(LEGACY_BOOK_KEY);
+/** Turns the old single spellbook in progress into its mage's draft, once. */
+export const migrateLegacySpellbook = (): void => {
+  const legacy = readStored(LEGACY_SPELLBOOK_KEY);
 
   if (legacy === null) {
     return;
   }
 
-  const book = decodeBook(legacy)?.book;
+  const spellbook = decodeSpellbook(legacy)?.spellbook;
 
-  if (book?.mageId) {
-    writeDraft({ book, name: null });
-    writeCurrentMageId(book.mageId);
+  if (spellbook?.mageId) {
+    writeDraft({ spellbook, name: null });
+    writeCurrentMageId(spellbook.mageId);
   }
 
-  removeStored(LEGACY_BOOK_KEY);
+  removeStored(LEGACY_SPELLBOOK_KEY);
 };

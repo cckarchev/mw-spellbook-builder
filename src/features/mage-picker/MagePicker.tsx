@@ -5,7 +5,7 @@ import { mageNoteFor } from './mageNoteFor';
 import { useMageSwitch } from './useMageSwitch';
 
 export const MagePicker = () => {
-  const { book, selectMage } = useMageSwitch();
+  const { spellbook, selectMage } = useMageSwitch();
 
   return (
     <main className={styles.picker}>
@@ -15,8 +15,8 @@ export const MagePicker = () => {
           <MageTile
             key={mage.id}
             mage={mage}
-            current={mage.id === book.mageId}
-            note={mageNoteFor(mage, book)}
+            current={mage.id === spellbook.mageId}
+            note={mageNoteFor(mage, spellbook)}
             onSelect={selectMage}
           />
         ))}

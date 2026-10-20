@@ -1,20 +1,20 @@
 import type { Mage } from '@/core/rules/types';
-import type { BookSummary } from '@/core/rules/validateBook';
+import type { SpellbookSummary } from '@/core/rules/validateSpellbook';
 import { plural } from '@/core/text/plural';
 import { MageStats } from '@/features/shared/mage-stats/MageStats';
-import styles from './BookHeader.module.css';
+import styles from './SpellbookHeader.module.css';
 
-interface BookHeaderProps {
+interface SpellbookHeaderProps {
   mage: Mage;
-  summary: BookSummary;
-  /** The saved book's name, null for a book never saved. */
+  summary: SpellbookSummary;
+  /** The saved spellbook's name, null for a spellbook never saved. */
   name: string | null;
   unsaved: boolean;
 }
 
-type BookState = 'valid' | 'over' | 'invalid';
+type SpellbookState = 'valid' | 'over' | 'invalid';
 
-const bookState = (summary: BookSummary): BookState => {
+const spellbookState = (summary: SpellbookSummary): SpellbookState => {
   if (summary.overBy > 0) {
     return 'over';
   }
@@ -30,7 +30,7 @@ const VALID_LABEL = 'Valid';
 const LABEL_SEPARATOR = ' · ';
 
 /** What is wrong, all of it: "4 over · 2 problems". */
-const stateLabel = (summary: BookSummary): string => {
+const stateLabel = (summary: SpellbookSummary): string => {
   const parts: string[] = [];
 
   if (summary.overBy > 0) {
@@ -50,9 +50,9 @@ const stateLabel = (summary: BookSummary): string => {
 
 const UNSAVED_LABEL = 'unsaved';
 
-/** The mage, the saved book's name, the points used out of the budget, and whether the book is valid. */
-export const BookHeader = ({ mage, summary, name, unsaved }: BookHeaderProps) => {
-  const state = bookState(summary);
+/** The mage, the saved spellbook's name, the points used out of the budget, and whether the spellbook is valid. */
+export const SpellbookHeader = ({ mage, summary, name, unsaved }: SpellbookHeaderProps) => {
+  const state = spellbookState(summary);
 
   return (
     <section className={styles.header} data-state={state} aria-label="Spellbook summary">
@@ -61,7 +61,7 @@ export const BookHeader = ({ mage, summary, name, unsaved }: BookHeaderProps) =>
           <MageStats mage={mage} label={mage.name} className={styles.mageButton} />
         </h1>
         {name === null ? null : (
-          <p className={styles.bookName}>
+          <p className={styles.spellbookName}>
             <span className={styles.nameText}>{name}</span>
             {unsaved ? <span className={styles.unsaved}>{UNSAVED_LABEL}</span> : null}
           </p>

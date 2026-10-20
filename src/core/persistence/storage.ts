@@ -15,7 +15,7 @@ export const writeStored = (key: string, value: string): void => {
   try {
     localStorage.setItem(key, value);
   } catch {
-    // Persistence is a convenience; the book still lives in memory.
+    // Persistence is a convenience; the spellbook still lives in memory.
   }
 };
 

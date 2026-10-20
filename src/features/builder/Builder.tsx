@@ -1,16 +1,16 @@
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { type Tab, Tabs, tabPanelProps } from '@/components/tabs/Tabs';
 import { type BuilderTab, builderPath, PICKER_PATH } from '@/core/routing/builderPath';
-import { summarizeBook } from '@/core/rules/validateBook';
-import { bookMage, cardsById, magesBySlug } from '@/data/catalog';
-import { BookActions } from '@/features/book-actions/BookActions';
-import { BookHeader } from '@/features/book-header/BookHeader';
+import { summarizeSpellbook } from '@/core/rules/validateSpellbook';
+import { cardsById, magesBySlug, spellbookMage } from '@/data/catalog';
 import { Catalog } from '@/features/catalog/Catalog';
 import { ShareActions } from '@/features/share/share-actions/ShareActions';
-import type { BookPanelProps } from '@/features/shared/bookPanelProps';
-import { Spellbook } from '@/features/spellbook/Spellbook';
-import { useBookStatus } from '@/store/useBookStatus';
-import { useBookStore } from '@/store/useBookStore';
+import type { BuilderPanelProps } from '@/features/shared/builderPanelProps';
+import { SpellbookActions } from '@/features/spellbook-actions/SpellbookActions';
+import { SpellbookHeader } from '@/features/spellbook-header/SpellbookHeader';
+import { SpellbookPanel } from '@/features/spellbook-panel/SpellbookPanel';
+import { useSpellbookStatus } from '@/store/useSpellbookStatus';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 import styles from './Builder.module.css';
 import { useRouteMage } from './useRouteMage';
 
@@ -18,50 +18,50 @@ const TAB_ID_PREFIX = 'builder-tab';
 
 const TABS: Tab<BuilderTab>[] = [
   { id: 'cards', label: 'Cards' },
-  { id: 'book', label: 'Spellbook' },
+  { id: 'spellbook', label: 'Spellbook' },
 ];
 
-/** The build screen of the mage in the URL: a sticky header, book actions and tabs over the catalog or the book. */
+/** The build screen of the mage in the URL: a sticky header, spellbook actions and tabs over the catalog or the spellbook. */
 export const Builder = ({ tab }: { tab: BuilderTab }) => {
   const { mageSlug = '' } = useParams();
   const navigate = useNavigate();
-  const book = useBookStore((state) => state.book);
-  const addCopy = useBookStore((state) => state.addCopy);
-  const removeCopy = useBookStore((state) => state.removeCopy);
+  const spellbook = useSpellbookStore((state) => state.spellbook);
+  const addCopy = useSpellbookStore((state) => state.addCopy);
+  const removeCopy = useSpellbookStore((state) => state.removeCopy);
 
   const routeMage = magesBySlug.get(mageSlug);
 
   useRouteMage(routeMage);
 
-  const { name, unsaved } = useBookStatus();
+  const { name, unsaved } = useSpellbookStatus();
 
-  const mage = bookMage(book);
+  const mage = spellbookMage(spellbook);
 
   if (!routeMage) {
     return <Navigate to={PICKER_PATH} replace={true} />;
   }
 
-  // The book follows the URL's mage in an effect, so for one render it is still the old mage's.
+  // The spellbook follows the URL's mage in an effect, so for one render it is still the old mage's.
   if (mage?.id !== routeMage.id) {
     return null;
   }
 
-  const summary = summarizeBook(book, mage, cardsById);
+  const summary = summarizeSpellbook(spellbook, mage, cardsById);
 
   const showTab = (next: BuilderTab) => {
     navigate(builderPath(mage.name, next), { replace: true });
   };
 
-  const panelProps: BookPanelProps = { onAdd: addCopy, onRemove: removeCopy, book, mage };
+  const panelProps: BuilderPanelProps = { onAdd: addCopy, onRemove: removeCopy, spellbook, mage };
 
   return (
     <div className={styles.builder}>
       <div className={styles.sticky}>
-        <BookHeader mage={mage} summary={summary} name={name} unsaved={unsaved} />
+        <SpellbookHeader mage={mage} summary={summary} name={name} unsaved={unsaved} />
         <div className={styles.actions}>
-          <BookActions />
+          <SpellbookActions />
           <span className={styles.divider} aria-hidden="true" />
-          <ShareActions book={book} mage={mage} summary={summary} />
+          <ShareActions spellbook={spellbook} mage={mage} summary={summary} />
         </div>
         <Tabs tabs={TABS} active={tab} onChange={showTab} idPrefix={TAB_ID_PREFIX} />
       </div>
@@ -69,7 +69,7 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
         {tab === 'cards' ? (
           <Catalog {...panelProps} />
         ) : (
-          <Spellbook {...panelProps} summary={summary} />
+          <SpellbookPanel {...panelProps} summary={summary} />
         )}
       </main>
     </div>

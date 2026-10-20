@@ -2,19 +2,19 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Toast } from '@/components/toast/Toast';
 import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
-import { bookText } from '@/core/export/bookText';
+import { spellbookText } from '@/core/export/spellbookText';
 import { builderPath } from '@/core/routing/builderPath';
-import type { Book } from '@/core/rules/types';
-import { summarizeBook } from '@/core/rules/validateBook';
-import { encodeBook } from '@/core/share-link/bookCodec';
+import type { Spellbook } from '@/core/rules/types';
+import { summarizeSpellbook } from '@/core/rules/validateSpellbook';
 import { buildShareUrl } from '@/core/share-link/shareUrl';
+import { encodeSpellbook } from '@/core/share-link/spellbookCodec';
 import { cardsById } from '@/data/catalog';
-import { overBudgetBook, smallBook, wizard } from '@/features/shared/testBooks';
+import { overBudgetSpellbook, smallSpellbook, wizard } from '@/features/shared/testSpellbooks';
 import { ShareActions } from './ShareActions';
 
-const shareUrlOf = (book: Book): string =>
+const shareUrlOf = (spellbook: Spellbook): string =>
   buildShareUrl({
-    encoded: encodeBook(book),
+    encoded: encodeSpellbook(spellbook),
     embedBase: null,
     origin: window.location.origin,
     magePath: builderPath(wizard.name, 'cards'),
@@ -31,13 +31,13 @@ const pick = async (user: ReturnType<typeof userEvent.setup>, item: string) => {
   await user.click(screen.getByRole('menuitem', { name: item }));
 };
 
-const renderActions = (book: Book) => {
+const renderActions = (spellbook: Spellbook) => {
   const user = userEvent.setup();
-  const summary = summarizeBook(book, wizard, cardsById);
+  const summary = summarizeSpellbook(spellbook, wizard, cardsById);
 
   render(
     <>
-      <ShareActions book={book} mage={wizard} summary={summary} />
+      <ShareActions spellbook={spellbook} mage={wizard} summary={summary} />
       <Toast />
     </>,
   );
@@ -47,27 +47,33 @@ const renderActions = (book: Book) => {
 
 describe('ShareActions copying', () => {
   it('copies the share link', async () => {
-    const { user } = renderActions(smallBook);
+    const { user } = renderActions(smallSpellbook);
 
     await pick(user, 'Copy link');
 
-    expect(await navigator.clipboard.readText()).toBe(shareUrlOf(smallBook));
+    expect(await navigator.clipboard.readText()).toBe(shareUrlOf(smallSpellbook));
     expect(screen.getByRole('status')).toHaveTextContent('Link copied');
   });
 
-  it('copies the book as text', async () => {
-    const { user, summary } = renderActions(smallBook);
+  it('copies the spellbook as text', async () => {
+    const { user, summary } = renderActions(smallSpellbook);
 
     await pick(user, 'Copy text');
 
-    const expected = bookText(smallBook, wizard, summary, cardsById, shareUrlOf(smallBook));
+    const expected = spellbookText(
+      smallSpellbook,
+      wizard,
+      summary,
+      cardsById,
+      shareUrlOf(smallSpellbook),
+    );
 
     expect(await navigator.clipboard.readText()).toBe(expected);
     expect(screen.getByRole('status')).toHaveTextContent('Text copied');
   });
 
   it('says how to copy by hand, for longer, when the clipboard fails', async () => {
-    const { user } = renderActions(smallBook);
+    const { user } = renderActions(smallSpellbook);
 
     vi.spyOn(navigator.clipboard, 'writeText').mockRejectedValue(new Error('denied'));
 
@@ -77,12 +83,12 @@ describe('ShareActions copying', () => {
     expect(useToastStore.getState().durationMs).toBe(LONG_TOAST_DURATION_MS);
   });
 
-  it('still copies an over-budget book', async () => {
-    const { user } = renderActions(overBudgetBook);
+  it('still copies an over-budget spellbook', async () => {
+    const { user } = renderActions(overBudgetSpellbook);
 
     await pick(user, 'Copy link');
 
-    expect(await navigator.clipboard.readText()).toBe(shareUrlOf(overBudgetBook));
+    expect(await navigator.clipboard.readText()).toBe(shareUrlOf(overBudgetSpellbook));
 
     await pick(user, 'Copy text');
 
@@ -100,17 +106,17 @@ describe('ShareActions with the Web Share API', () => {
 
     Object.defineProperty(navigator, 'share', { value: share, configurable: true });
 
-    const { user } = renderActions(smallBook);
+    const { user } = renderActions(smallSpellbook);
 
     await pick(user, 'Share…');
 
     expect(share).toHaveBeenCalledWith(
-      expect.objectContaining({ title: 'Wizard spellbook', url: shareUrlOf(smallBook) }),
+      expect.objectContaining({ title: 'Wizard spellbook', url: shareUrlOf(smallSpellbook) }),
     );
   });
 
   it('has no share sheet item without the API', async () => {
-    const { user } = renderActions(smallBook);
+    const { user } = renderActions(smallSpellbook);
 
     await user.click(screen.getByRole('button', { name: 'Share' }));
 
