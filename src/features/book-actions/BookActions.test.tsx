@@ -9,6 +9,7 @@ import { BookActions } from './BookActions';
 const NAME = 'Tourney';
 
 const EMPTY_WIZARD_BOOK = { mageId: 'wizard', counts: {} };
+const OTHER_WIZARD_BOOK = { mageId: 'wizard', counts: { [FIREBALL]: 1 } };
 
 const openLoad = async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Load' }));
@@ -25,8 +26,10 @@ const StatusProbe = () => {
 
 const savedNames = () => savedBooks('wizard').map(({ name }) => name);
 
+const saveButton = () => screen.getByRole('button', { name: 'Save' });
+
 const openSave = async () => {
-  await userEvent.click(screen.getByRole('button', { name: 'Save' }));
+  await userEvent.click(saveButton());
 
   return screen.getByRole('dialog', { name: 'Save book' });
 };
@@ -62,6 +65,7 @@ describe('BookActions Save', () => {
 
   it('starts the field from the current name', async () => {
     useBookStore.getState().save(NAME);
+    useBookStore.getState().removeCopy(FIREBALL);
     render(<BookActions />);
 
     const dialog = await openSave();
@@ -85,6 +89,20 @@ describe('BookActions Save', () => {
     expect(savedNames()).toEqual([]);
     expect(screen.getByText('Enter a name for this book.')).toBeInTheDocument();
   });
+
+  it('is disabled for an empty book', () => {
+    useBookStore.getState().loadBook(EMPTY_WIZARD_BOOK);
+    render(<BookActions />);
+
+    expect(saveButton()).toBeDisabled();
+  });
+
+  it('is disabled for a saved book with no changes', () => {
+    useBookStore.getState().save(NAME);
+    render(<BookActions />);
+
+    expect(saveButton()).toBeDisabled();
+  });
 });
 
 describe('BookActions Save over a saved name', () => {
@@ -92,14 +110,14 @@ describe('BookActions Save over a saved name', () => {
     render(<BookActions />);
 
     await saveAs(NAME);
-    useBookStore.getState().loadBook({ mageId: 'wizard', counts: {} });
+    useBookStore.getState().loadBook(OTHER_WIZARD_BOOK);
     await saveAs(NAME);
 
     const confirm = screen.getByRole('dialog', { name: `Overwrite "${NAME}"?` });
 
     await userEvent.click(within(confirm).getByRole('button', { name: 'Overwrite' }));
 
-    expect(savedBooks('wizard')[0]?.book.counts).toEqual({});
+    expect(savedBooks('wizard')[0]?.book).toEqual(OTHER_WIZARD_BOOK);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
@@ -107,11 +125,11 @@ describe('BookActions Save over a saved name', () => {
     render(<BookActions />);
 
     await saveAs(NAME);
-    useBookStore.getState().loadBook(EMPTY_WIZARD_BOOK, NAME);
+    useBookStore.getState().loadBook(OTHER_WIZARD_BOOK, NAME);
     await saveAs(NAME);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(savedBooks('wizard')[0]?.book).toEqual(EMPTY_WIZARD_BOOK);
+    expect(savedBooks('wizard')[0]?.book).toEqual(OTHER_WIZARD_BOOK);
   });
 
   it('shows the book as saved again after saving its changes', async () => {
@@ -134,7 +152,7 @@ describe('BookActions Save over a saved name', () => {
     render(<BookActions />);
 
     await saveAs(NAME);
-    useBookStore.getState().loadBook({ mageId: 'wizard', counts: {} });
+    useBookStore.getState().loadBook(OTHER_WIZARD_BOOK);
     await saveAs(NAME);
     await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
