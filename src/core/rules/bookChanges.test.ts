@@ -1,4 +1,11 @@
-import { copyCount, emptyBook, hasCards, mageSwitchKind, sameBook } from './bookChanges';
+import {
+  copyCount,
+  emptyBook,
+  hasCards,
+  hasUnsavedChanges,
+  mageSwitchKind,
+  sameBook,
+} from './bookChanges';
 import type { Book } from './types';
 
 const TWO_COPIES = 2;
@@ -59,5 +66,25 @@ describe('mageSwitchKind', () => {
 describe('emptyBook', () => {
   it('starts a book for the mage with no cards', () => {
     expect(emptyBook('wizard')).toEqual({ mageId: 'wizard', counts: {} });
+  });
+});
+
+describe('hasUnsavedChanges', () => {
+  it('is false for an unnamed empty book', () => {
+    expect(hasUnsavedChanges(emptyBook('wizard'), null)).toBe(false);
+  });
+
+  it('is true for an unnamed book with cards', () => {
+    expect(hasUnsavedChanges(wizardBook, null)).toBe(true);
+  });
+
+  it('is false when the book equals its saved copy', () => {
+    expect(hasUnsavedChanges(wizardBook, { ...wizardBook })).toBe(false);
+  });
+
+  it('is true when a count differs from the saved copy', () => {
+    const saved: Book = { ...wizardBook, counts: { fireball: THREE_COPIES, bolt: 1 } };
+
+    expect(hasUnsavedChanges(wizardBook, saved)).toBe(true);
   });
 });

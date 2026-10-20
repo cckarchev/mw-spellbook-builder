@@ -32,3 +32,15 @@ export const mageSwitchKind = (book: Book, mageId: string): MageSwitchKind => {
 
 /** A new book for the mage, with no cards yet. */
 export const emptyBook = (mageId: string): Book => ({ mageId, counts: {} });
+
+/**
+ * Whether the book would lose work if replaced. `saved` is the saved copy of the book's
+ * name, null when it has no name: then any card counts as unsaved work.
+ */
+export const hasUnsavedChanges = (book: Book, saved: Book | null): boolean => {
+  if (saved === null) {
+    return hasCards(book);
+  }
+
+  return !sameBook(book, saved);
+};
