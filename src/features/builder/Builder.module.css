@@ -3,7 +3,7 @@
   flex-direction: column;
 }
 
-/* Header and tabs stay on screen while the list scrolls under them. */
+/* The header, and the tabs below desktop, stay on screen while the page scrolls under them. */
 .sticky {
   position: sticky;
   top: 0;
@@ -17,12 +17,29 @@
   padding-block: var(--space-md) var(--space-xl);
 }
 
-/* Save, load and clear, then share, in one row on every tab, under the points. */
+/*
+ * The summary and the actions share one line when they fit. When they do not, the actions
+ * wrap to a line of their own under the points, at the end.
+ */
+.topBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--space-lg);
+}
+
+/* Starts at its natural width, so the line wraps before the mage name gets cut, then fills the line. */
+.summary {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Save, load and clear, then share, in one row on every tab. */
 .actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: var(--space-xs);
+  margin-inline-start: auto;
   padding-block-end: var(--space-sm);
 }
 
@@ -30,4 +47,21 @@
   align-self: stretch;
   margin-inline: var(--space-xxs);
   border-inline-start: var(--border-default);
+}
+
+/* Desktop: the catalog, and the spellbook beside it scrolling on its own under the header. */
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(var(--spellbook-column-min-width), 1fr);
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+.spellbookColumn {
+  position: sticky;
+  top: var(--builder-sticky-height);
+  max-height: calc(100dvh - var(--builder-sticky-height));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-block: var(--space-md) var(--space-xl);
 }

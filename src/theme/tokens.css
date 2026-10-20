@@ -107,6 +107,9 @@
 
   --layout-max-width: 1200px;
 
+  /* Narrowest the spellbook column next to the catalog gets on desktop. */
+  --spellbook-column-min-width: 320px;
+
   /* Inline space between the screen edge and page content. Phone first: the
      tightest gutter, widened from the tablet breakpoint up, below. */
   --page-gutter: var(--space-md);
@@ -147,6 +150,13 @@
 @media (--tablet-up) {
   :root {
     --page-gutter: var(--space-xl);
+  }
+}
+
+/* Wider on desktop, so the catalog grid keeps room for its tiles next to the spellbook. */
+@media (--desktop-up) {
+  :root {
+    --layout-max-width: 1440px;
   }
 }
 
