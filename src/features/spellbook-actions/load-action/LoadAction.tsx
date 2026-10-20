@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
 import { ActionButton } from '@/features/shared/action-button/ActionButton';
+import { LoadDialog } from '@/features/shared/load-dialog/LoadDialog';
 import { LoadIcon } from '../Icons';
-import { LoadDialog } from './load-dialog/LoadDialog';
 import { useSavedSpellbooks } from './useSavedSpellbooks';
 
 /** The Load button, the saved spellbooks, and the questions before replacing or deleting one. */

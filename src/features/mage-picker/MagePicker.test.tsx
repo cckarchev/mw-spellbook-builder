@@ -17,7 +17,7 @@ const renderPicker = () => {
     <MemoryRouter initialEntries={['/']}>
       <Routes>
         <Route index={true} element={<MagePicker />} />
-        <Route path=":mageSlug" element={<h1>Build screen</h1>} />
+        <Route path=":mageSlug/*" element={<h1>Build screen</h1>} />
       </Routes>
     </MemoryRouter>,
   );
@@ -106,9 +106,22 @@ describe('MagePicker switching to another mage', () => {
   });
 });
 
-describe('MagePicker tile notes', () => {
-  const tile = (name: string) => screen.getByRole('button', { name });
+const tile = (name: string) => screen.getByRole('button', { name });
 
+const badge = (mageName: string) =>
+  screen.queryByRole('button', { name: `Load a saved ${mageName} spellbook` });
+
+const openWizardBadge = async () => {
+  const badgeButton = badge('Wizard');
+
+  if (!badgeButton) {
+    throw new Error('No Wizard badge');
+  }
+
+  await userEvent.click(badgeButton);
+};
+
+describe('MagePicker badges', () => {
   it("tells each mage's draft and saved spellbooks", () => {
     useSpellbookStore.getState().loadSpellbook(smallSpellbook);
     writeDraft({ spellbook: { mageId: 'priest', counts: { [FIREBALL]: ONE_COPY } }, name: null });
@@ -117,9 +130,78 @@ describe('MagePicker tile notes', () => {
 
     renderPicker();
 
-    expect(tile('Wizard')).toHaveAccessibleDescription('Draft · 18 pts');
-    expect(tile('Priest')).toHaveAccessibleDescription(/^Draft · \d+ pts$/);
-    expect(tile('Warlock')).toHaveAccessibleDescription('2 saved');
+    expect(tile('Wizard')).toHaveAccessibleDescription('Draft');
+    expect(tile('Priest')).toHaveAccessibleDescription('Draft');
+    expect(tile('Warlock')).toHaveAccessibleDescription('2 saved spellbooks');
     expect(tile('Druid')).toHaveAccessibleDescription('');
+    expect(badge('Warlock')).toHaveTextContent('2');
+    expect(badge('Wizard')).not.toBeInTheDocument();
+  });
+
+  it('does not count a saved spellbook with no changes as a draft', () => {
+    saveSpellbook('Tourney', smallSpellbook);
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook, 'Tourney');
+
+    renderPicker();
+
+    expect(tile('Wizard')).toHaveAccessibleDescription('1 saved spellbook');
+  });
+});
+
+describe('MagePicker loading from a badge', () => {
+  it('continues the draft from the badge of a mage with no saved spellbooks', async () => {
+    const draft = { mageId: 'priest', counts: { [FIREBALL]: ONE_COPY } };
+
+    writeDraft({ spellbook: draft, name: null });
+
+    renderPicker();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Continue the Priest draft' }));
+
+    expect(useSpellbookStore.getState().spellbook).toEqual(draft);
+    expect(buildScreen()).toBeInTheDocument();
+  });
+
+  it('loads a saved spellbook from the badge and opens it', async () => {
+    saveSpellbook('Tourney', smallSpellbook);
+
+    renderPicker();
+
+    await openWizardBadge();
+
+    const dialog = screen.getByRole('dialog', { name: 'Saved Wizard spellbooks' });
+
+    expect(within(dialog).queryByRole('button', { name: /Delete/ })).not.toBeInTheDocument();
+
+    await userEvent.click(within(dialog).getByRole('button', { name: /Tourney/ }));
+
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
+    expect(useSpellbookStore.getState().name).toBe('Tourney');
+    expect(buildScreen()).toBeInTheDocument();
+  });
+
+  it('asks before replacing a draft with unsaved work, and keeps it on cancel', async () => {
+    const draft = { mageId: 'wizard', counts: { [FIREBALL]: ONE_COPY } };
+
+    saveSpellbook('Tourney', smallSpellbook);
+    useSpellbookStore.getState().loadSpellbook(draft);
+
+    renderPicker();
+
+    await openWizardBadge();
+    await userEvent.click(screen.getByRole('button', { name: /Tourney/ }));
+
+    const confirm = screen.getByRole('dialog', { name: 'Replace your Wizard draft?' });
+
+    await userEvent.click(within(confirm).getByRole('button', { name: 'Cancel' }));
+
+    expect(useSpellbookStore.getState().spellbook).toEqual(draft);
+    expect(screen.getByRole('dialog', { name: 'Saved Wizard spellbooks' })).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: /Tourney/ }));
+    await userEvent.click(screen.getByRole('button', { name: 'Replace' }));
+
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
+    expect(buildScreen()).toBeInTheDocument();
   });
 });

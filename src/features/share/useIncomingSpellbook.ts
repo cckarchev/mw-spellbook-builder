@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { readDraft } from '@/core/persistence/drafts';
-import { savedCopy } from '@/core/persistence/savedSpellbooks';
+import { hasUnsavedDraft, readDraft } from '@/core/persistence/drafts';
 import { builderPath, PICKER_PATH } from '@/core/routing/builderPath';
-import { hasUnsavedChanges, sameSpellbook } from '@/core/rules/spellbookChanges';
+import { sameSpellbook } from '@/core/rules/spellbookChanges';
 import type { Spellbook } from '@/core/rules/types';
 import { summarizeSpellbook } from '@/core/rules/validateSpellbook';
 import { SPELLBOOK_PARAM } from '@/core/share-link/shareUrl';
@@ -33,15 +32,15 @@ const openedSpellbook = ({ spellbook, unknownCodes, unknownMage }: DecodedSpellb
 
 /** Whether opening the spellbook would replace unsaved work in a draft of its mage. */
 const replacesWork = (spellbook: Spellbook): boolean => {
-  const draft = spellbook.mageId === null ? null : readDraft(spellbook.mageId);
+  const { mageId } = spellbook;
 
-  if (draft === null) {
+  if (mageId === null || !hasUnsavedDraft(mageId)) {
     return false;
   }
 
-  const saved = savedCopy(draft.spellbook, draft.name);
+  const draft = readDraft(mageId);
 
-  return hasUnsavedChanges(draft.spellbook, saved) && !sameSpellbook(draft.spellbook, spellbook);
+  return draft !== null && !sameSpellbook(draft.spellbook, spellbook);
 };
 
 /**

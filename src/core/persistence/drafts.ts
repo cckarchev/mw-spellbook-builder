@@ -1,6 +1,7 @@
-import { hasCards } from '@/core/rules/spellbookChanges';
+import { hasCards, hasUnsavedChanges } from '@/core/rules/spellbookChanges';
 import type { Spellbook } from '@/core/rules/types';
 import { decodeSpellbook, encodeSpellbook } from '@/core/share-link/spellbookCodec';
+import { savedCopy } from './savedSpellbooks';
 import { readStored, readStoredJson, removeStored, writeStored } from './storage';
 
 export const DRAFT_PREFIX = 'mw-spellbook-builder:draft:';
@@ -67,6 +68,19 @@ export const writeDraft = ({ spellbook, name }: Draft): void => {
   const stored: StoredDraft = { b: encodeSpellbook(spellbook), n: name };
 
   writeStored(key, JSON.stringify(stored));
+};
+
+/** Whether the mage's draft holds work that its saved copy does not, and would be lost if replaced. */
+export const hasUnsavedDraft = (mageId: string): boolean => {
+  const draft = readDraft(mageId);
+
+  if (draft === null) {
+    return false;
+  }
+
+  const saved = savedCopy(draft.spellbook, draft.name);
+
+  return hasUnsavedChanges(draft.spellbook, saved);
 };
 
 export const readCurrentMageId = (): string | null => readStored(CURRENT_MAGE_KEY);

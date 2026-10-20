@@ -1,16 +1,16 @@
 import type { SavedSpellbook } from '@/core/persistence/savedSpellbooks';
 import { summarizeSpellbook } from '@/core/rules/validateSpellbook';
 import { cardsById, spellbookMage } from '@/data/catalog';
-import { TrashIcon } from '../../../Icons';
+import { TrashIcon } from '../../TrashIcon';
 import styles from './SavedSpellbookRow.module.css';
 
 interface SavedSpellbookRowProps {
   savedSpellbook: SavedSpellbook;
   onLoad: (savedSpellbook: SavedSpellbook) => void;
-  onDelete: (name: string) => void;
+  onDelete?: (name: string) => void;
 }
 
-/** One saved spellbook: load it by its name, or delete it. */
+/** One saved spellbook: load it by its name, or delete it when `onDelete` is given. */
 export const SavedSpellbookRow = ({ savedSpellbook, onLoad, onDelete }: SavedSpellbookRowProps) => {
   const { name, spellbook } = savedSpellbook;
   const mage = spellbookMage(spellbook);
@@ -22,15 +22,17 @@ export const SavedSpellbookRow = ({ savedSpellbook, onLoad, onDelete }: SavedSpe
         <span className={styles.name}>{name}</span>
         <span className={styles.points}>{points} pts</span>
       </button>
-      <button
-        type="button"
-        className={styles.delete}
-        aria-label={`Delete ${name}`}
-        title={`Delete ${name}`}
-        onClick={() => onDelete(name)}
-      >
-        <TrashIcon />
-      </button>
+      {onDelete ? (
+        <button
+          type="button"
+          className={styles.delete}
+          aria-label={`Delete ${name}`}
+          title={`Delete ${name}`}
+          onClick={() => onDelete(name)}
+        >
+          <TrashIcon />
+        </button>
+      ) : null}
     </li>
   );
 };

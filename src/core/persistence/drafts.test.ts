@@ -4,6 +4,7 @@ import { encodeSpellbook } from '@/core/share-link/spellbookCodec';
 import {
   CURRENT_MAGE_KEY,
   DRAFT_PREFIX,
+  hasUnsavedDraft,
   LEGACY_SPELLBOOK_KEY,
   migrateLegacySpellbook,
   readCurrentMageId,
@@ -11,6 +12,7 @@ import {
   writeCurrentMageId,
   writeDraft,
 } from './drafts';
+import { saveSpellbook } from './savedSpellbooks';
 
 const FIREBALL = 'd8562a1d-6a95-4ca4-99aa-91c5ca769a33';
 const WIZARD_ID = 'wizard';
@@ -80,6 +82,32 @@ describe('drafts', () => {
     writeDraft({ spellbook: { mageId: null, counts: {} }, name: NAME });
 
     expect(localStorage.length).toBe(0);
+  });
+});
+
+describe('hasUnsavedDraft', () => {
+  it('is false when the mage has no draft', () => {
+    expect(hasUnsavedDraft(WIZARD_ID)).toBe(false);
+  });
+
+  it('is true for an unnamed draft with cards', () => {
+    writeDraft({ spellbook: wizardSpellbook, name: null });
+
+    expect(hasUnsavedDraft(WIZARD_ID)).toBe(true);
+  });
+
+  it('is false for a draft that matches its saved copy', () => {
+    saveSpellbook(NAME, wizardSpellbook);
+    writeDraft({ spellbook: wizardSpellbook, name: NAME });
+
+    expect(hasUnsavedDraft(WIZARD_ID)).toBe(false);
+  });
+
+  it('is true for a draft that differs from its saved copy', () => {
+    saveSpellbook(NAME, emptyWizardSpellbook);
+    writeDraft({ spellbook: wizardSpellbook, name: NAME });
+
+    expect(hasUnsavedDraft(WIZARD_ID)).toBe(true);
   });
 });
 
