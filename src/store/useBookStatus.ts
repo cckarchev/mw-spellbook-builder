@@ -1,4 +1,4 @@
-import { loadSavedBook } from '@/core/persistence/savedBooks';
+import { savedCopy } from '@/core/persistence/savedBooks';
 import { hasUnsavedChanges } from '@/core/rules/bookChanges';
 import { useBookStore } from './useBookStore';
 
@@ -15,9 +15,10 @@ interface BookStatus {
 export const useBookStatus = (): BookStatus => {
   const book = useBookStore((state) => state.book);
   const storedName = useBookStore((state) => state.name);
+  // Read only to render again after a save, which can leave the book and the name unchanged.
+  useBookStore((state) => state.savedRevision);
 
-  const { mageId } = book;
-  const saved = storedName !== null && mageId !== null ? loadSavedBook(mageId, storedName) : null;
+  const saved = savedCopy(book, storedName);
   const name = saved === null ? null : storedName;
 
   return { name, unsaved: hasUnsavedChanges(book, saved) };

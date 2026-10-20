@@ -1,10 +1,8 @@
 import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
 import { bookMage } from '@/data/catalog';
-import { KEEP_BOOK_HINT } from '@/features/shared/BookLossNote';
+import { CURRENT_MAGE_FALLBACK, KEEP_BOOK_HINT } from '@/features/shared/BookLossNote';
 import { IncomingIssues } from './incoming-issues/IncomingIssues';
 import { useIncomingBook } from './useIncomingBook';
-
-const CURRENT_MAGE_FALLBACK = 'current';
 
 const replaceBody = (mageName: string) =>
   `This link opens another book. Your ${mageName} book will be replaced. ${KEEP_BOOK_HINT}`;

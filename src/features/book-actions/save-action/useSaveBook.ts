@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { loadSavedBook, saveBook } from '@/core/persistence/savedBooks';
+import { loadSavedBook } from '@/core/persistence/savedBooks';
 import { useBookStore } from '@/store/useBookStore';
 
 const EMPTY_NAME_ERROR = 'Enter a name for this book.';
@@ -11,7 +11,7 @@ const EMPTY_NAME_ERROR = 'Enter a name for this book.';
 export const useSaveBook = (onSaved: () => void) => {
   const book = useBookStore((state) => state.book);
   const currentName = useBookStore((state) => state.name);
-  const setName = useBookStore((state) => state.setName);
+  const save = useBookStore((state) => state.save);
 
   const [draftName, setDraftName] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -32,8 +32,7 @@ export const useSaveBook = (onSaved: () => void) => {
   };
 
   const commit = () => {
-    saveBook(trimmedName, book);
-    setName(trimmedName);
+    save(trimmedName);
     setConfirmingOverwrite(false);
     onSaved();
   };
@@ -47,8 +46,10 @@ export const useSaveBook = (onSaved: () => void) => {
 
     const { mageId } = book;
     const nameTaken = mageId !== null && loadSavedBook(mageId, trimmedName) !== null;
+    // Saving the loaded book under its own name updates it; there is nothing else to lose.
+    const isOwnName = trimmedName === currentName;
 
-    if (nameTaken) {
+    if (nameTaken && !isOwnName) {
       setConfirmingOverwrite(true);
 
       return;

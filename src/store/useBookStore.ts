@@ -6,6 +6,7 @@ import {
   writeCurrentMageId,
   writeDraft,
 } from '@/core/persistence/drafts';
+import { saveBook } from '@/core/persistence/savedBooks';
 import { emptyBook } from '@/core/rules/bookChanges';
 import type { Book } from '@/core/rules/types';
 import { canAddCopy } from '@/core/rules/validateBook';
@@ -16,13 +17,19 @@ interface BookStore {
   book: Book;
   /** The name of the saved book this one was saved as or loaded from, null for none. */
   name: string | null;
+  /**
+   * Goes up on every save. A save can leave the book and its name as they were, so this is
+   * what tells readers of the saved copy to read it again.
+   */
+  savedRevision: number;
   /** Adds one copy, unless the + control would be disabled for it. */
   addCopy: (cardId: string) => void;
   removeCopy: (cardId: string) => void;
   /** Switches to the mage's draft, or a new book for it; the current book stays as its draft. */
   openMage: (mageId: string) => void;
   loadBook: (book: Book, name?: string | null) => void;
-  setName: (name: string) => void;
+  /** Saves the book under the name, replacing a saved book with that name, and names it. */
+  save: (name: string) => void;
   /** Empties the book and drops its name; the mage stays. */
   clear: () => void;
 }
@@ -54,6 +61,7 @@ const withoutCard = (counts: Book['counts'], cardId: string): Book['counts'] => 
 export const createBookStore = () => {
   const store = create<BookStore>()((set, get) => ({
     ...readInitialState(),
+    savedRevision: 0,
 
     addCopy: (cardId) => {
       const { book } = get();
@@ -97,8 +105,11 @@ export const createBookStore = () => {
       set({ book, name });
     },
 
-    setName: (name) => {
-      set({ name });
+    save: (name) => {
+      const { book, savedRevision } = get();
+
+      saveBook(name, book);
+      set({ name, savedRevision: savedRevision + 1 });
     },
 
     clear: () => {

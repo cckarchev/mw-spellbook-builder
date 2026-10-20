@@ -131,6 +131,15 @@ describe('opening a share link over a book in progress', () => {
     expect(readDraft('warlock')?.book).toEqual(warlockBook);
   });
 
+  it('does not ask when the draft is a saved book with no changes', () => {
+    useBookStore.getState().save('Tourney');
+
+    renderAt(`/wizard?b=${encodeBook(smallBook)}`);
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(useBookStore.getState().book).toEqual(smallBook);
+  });
+
   it('opens the same book without asking', () => {
     useBookStore.getState().loadBook(smallBook);
 

@@ -44,6 +44,18 @@ export const useSavedBooks = (onLoaded: () => void) => {
     load(savedBook);
   };
 
+  const confirmLoad = () => {
+    if (pendingLoad === null) {
+      return;
+    }
+
+    load(pendingLoad);
+  };
+
+  const cancelLoad = () => {
+    setPendingLoad(null);
+  };
+
   const confirmDelete = () => {
     if (pendingDelete === null || book.mageId === null) {
       return;
@@ -60,16 +72,20 @@ export const useSavedBooks = (onLoaded: () => void) => {
     readSaved();
   };
 
+  const cancelDelete = () => {
+    setPendingDelete(null);
+  };
+
   return {
     saved,
     pendingLoad,
     pendingDelete,
     refresh,
     requestLoad,
-    confirmLoad: () => pendingLoad && load(pendingLoad),
-    cancelLoad: () => setPendingLoad(null),
+    confirmLoad,
+    cancelLoad,
     requestDelete: setPendingDelete,
     confirmDelete,
-    cancelDelete: () => setPendingDelete(null),
+    cancelDelete,
   };
 };

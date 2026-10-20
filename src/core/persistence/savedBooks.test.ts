@@ -1,7 +1,14 @@
 import { sameBook } from '@/core/rules/bookChanges';
 import type { Book } from '@/core/rules/types';
 import { encodeBook } from '@/core/share-link/bookCodec';
-import { deleteSavedBook, loadSavedBook, SAVED_PREFIX, saveBook, savedBooks } from './savedBooks';
+import {
+  deleteSavedBook,
+  loadSavedBook,
+  SAVED_PREFIX,
+  saveBook,
+  savedBooks,
+  savedCopy,
+} from './savedBooks';
 
 const FIREBALL = 'd8562a1d-6a95-4ca4-99aa-91c5ca769a33';
 const WIZARD_ID = 'wizard';
@@ -121,5 +128,27 @@ describe('unreadable saved books', () => {
     localStorage.setItem(SAVED_PREFIX + WIZARD_ID, JSON.stringify(stored));
 
     expect(savedNames(WIZARD_ID)).toEqual([NAME]);
+  });
+});
+
+describe('savedCopy', () => {
+  it("is the saved book with the book's name", () => {
+    saveBook(NAME, wizardBook(1));
+
+    expect(savedCopy(wizardBook(2), NAME)).toEqual(wizardBook(1));
+  });
+
+  it('is null for a book with no name', () => {
+    saveBook(NAME, wizardBook(1));
+
+    expect(savedCopy(wizardBook(1), null)).toBeNull();
+  });
+
+  it('is null for a book with no mage', () => {
+    expect(savedCopy({ mageId: null, counts: {} }, NAME)).toBeNull();
+  });
+
+  it('is null when the saved book is gone', () => {
+    expect(savedCopy(wizardBook(1), NAME)).toBeNull();
   });
 });

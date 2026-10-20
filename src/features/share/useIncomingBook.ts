@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { readDraft } from '@/core/persistence/drafts';
+import { savedCopy } from '@/core/persistence/savedBooks';
 import { builderPath, PICKER_PATH } from '@/core/routing/builderPath';
-import { hasCards, sameBook } from '@/core/rules/bookChanges';
+import { hasUnsavedChanges, sameBook } from '@/core/rules/bookChanges';
 import type { Book } from '@/core/rules/types';
 import { summarizeBook } from '@/core/rules/validateBook';
 import { type DecodedBook, decodeBook } from '@/core/share-link/bookCodec';
@@ -30,7 +31,7 @@ const openedBook = ({ book, unknownCodes, unknownMage }: DecodedBook) => {
   };
 };
 
-/** Whether opening the book would replace a draft of its mage that holds other cards. */
+/** Whether opening the book would replace unsaved work in a draft of its mage. */
 const replacesWork = (book: Book): boolean => {
   const draft = book.mageId === null ? null : readDraft(book.mageId);
 
@@ -38,12 +39,14 @@ const replacesWork = (book: Book): boolean => {
     return false;
   }
 
-  return hasCards(draft.book) && !sameBook(draft.book, book);
+  const saved = savedCopy(draft.book, draft.name);
+
+  return hasUnsavedChanges(draft.book, saved) && !sameBook(draft.book, book);
 };
 
 /**
  * Loads the book from a share link (?b=) once at startup and opens it on the Book tab.
- * A draft of the link's mage that holds other cards is only replaced once the player confirms
+ * A draft of the link's mage with unsaved work is only replaced once the player confirms
  * it in pendingReplace; the drafts of other mages are never touched.
  * Returns the problems found in the link's book, for the player to see, until dismissed.
  */

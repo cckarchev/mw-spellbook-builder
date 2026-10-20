@@ -82,6 +82,17 @@ export const loadSavedBook = (mageId: string, name: string): Book | null => {
   return decodeFor(mageId, encoded);
 };
 
+/** The saved copy of a book under its name, null when it has no name or the copy is gone. */
+export const savedCopy = (book: Book, name: string | null): Book | null => {
+  const { mageId } = book;
+
+  if (mageId === null || name === null) {
+    return null;
+  }
+
+  return loadSavedBook(mageId, name);
+};
+
 /** Saves the book under the name for its mage, replacing a book with the same name. */
 export const saveBook = (name: string, book: Book): void => {
   const { mageId } = book;

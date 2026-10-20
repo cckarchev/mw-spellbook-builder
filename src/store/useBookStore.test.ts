@@ -1,4 +1,5 @@
 import { CURRENT_MAGE_KEY, DRAFT_PREFIX, LEGACY_BOOK_KEY } from '@/core/persistence/drafts';
+import { loadSavedBook } from '@/core/persistence/savedBooks';
 import type { Book } from '@/core/rules/types';
 import { canAddCopy } from '@/core/rules/validateBook';
 import { encodeBook } from '@/core/share-link/bookCodec';
@@ -94,11 +95,25 @@ describe('useBookStore book changes', () => {
     expect(store.getState().name).toBeNull();
   });
 
+  it('save stores the book under the name, names it, and bumps the saved revision', () => {
+    const store = createWizardStore();
+
+    store.getState().addCopy(anyMageCard.id);
+
+    const { book, savedRevision } = store.getState();
+
+    store.getState().save(NAME);
+
+    expect(loadSavedBook(WIZARD_ID, NAME)).toEqual(book);
+    expect(store.getState().name).toBe(NAME);
+    expect(store.getState().savedRevision).toBe(savedRevision + 1);
+  });
+
   it('clear empties the book, keeps the mage and drops the name', () => {
     const store = createWizardStore();
 
     store.getState().addCopy(anyMageCard.id);
-    store.getState().setName(NAME);
+    store.getState().save(NAME);
     store.getState().clear();
 
     expect(store.getState().book).toEqual({ mageId: WIZARD_ID, counts: {} });
@@ -111,7 +126,7 @@ describe('useBookStore openMage', () => {
     const store = createWizardStore();
 
     store.getState().addCopy(anyMageCard.id);
-    store.getState().setName(NAME);
+    store.getState().save(NAME);
 
     const wizardBook = store.getState().book;
 
@@ -144,7 +159,7 @@ describe('useBookStore persistence', () => {
     const first = createWizardStore();
 
     first.getState().addCopy(anyMageCard.id);
-    first.getState().setName(NAME);
+    first.getState().save(NAME);
 
     const second = createBookStore();
 

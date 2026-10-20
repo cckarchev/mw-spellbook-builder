@@ -1,7 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { saveBook, savedBooks } from '@/core/persistence/savedBooks';
-import { resetBookStore, smallBook } from '@/features/shared/testBooks';
+import { FIREBALL, resetBookStore, smallBook } from '@/features/shared/testBooks';
+import { useBookStatus } from '@/store/useBookStatus';
 import { useBookStore } from '@/store/useBookStore';
 import { BookActions } from './BookActions';
 
@@ -13,6 +14,13 @@ const openLoad = async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Load' }));
 
   return screen.getByRole('dialog', { name: 'Saved books' });
+};
+
+/** Shows whether the book has unsaved changes, as the book header reads it. */
+const StatusProbe = () => {
+  const { unsaved } = useBookStatus();
+
+  return <output aria-label="Status">{unsaved ? 'unsaved' : 'saved'}</output>;
 };
 
 const savedNames = () => savedBooks('wizard').map(({ name }) => name);
@@ -53,7 +61,7 @@ describe('BookActions Save', () => {
   });
 
   it('starts the field from the current name', async () => {
-    useBookStore.getState().setName(NAME);
+    useBookStore.getState().save(NAME);
     render(<BookActions />);
 
     const dialog = await openSave();
@@ -77,7 +85,9 @@ describe('BookActions Save', () => {
     expect(savedNames()).toEqual([]);
     expect(screen.getByText('Enter a name for this book.')).toBeInTheDocument();
   });
+});
 
+describe('BookActions Save over a saved name', () => {
   it('asks before replacing a saved book with the same name, and replaces it on confirm', async () => {
     render(<BookActions />);
 
@@ -91,6 +101,33 @@ describe('BookActions Save', () => {
 
     expect(savedBooks('wizard')[0]?.book.counts).toEqual({});
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('saves changes to the loaded book under its own name without asking', async () => {
+    render(<BookActions />);
+
+    await saveAs(NAME);
+    useBookStore.getState().loadBook(EMPTY_WIZARD_BOOK, NAME);
+    await saveAs(NAME);
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(savedBooks('wizard')[0]?.book).toEqual(EMPTY_WIZARD_BOOK);
+  });
+
+  it('shows the book as saved again after saving its changes', async () => {
+    render(
+      <>
+        <BookActions />
+        <StatusProbe />
+      </>,
+    );
+
+    await saveAs(NAME);
+    useBookStore.getState().addCopy(FIREBALL);
+    await saveAs(NAME);
+
+    expect(screen.getByRole('status', { name: 'Status' })).toHaveTextContent('saved');
+    expect(screen.getByRole('status', { name: 'Status' })).not.toHaveTextContent('unsaved');
   });
 
   it('keeps the saved book when the overwrite is cancelled', async () => {
@@ -197,8 +234,8 @@ describe('BookActions Delete', () => {
 describe('BookActions Clear', () => {
   const clearButton = () => screen.getByRole('button', { name: 'Clear' });
 
-  it('asks before clearing a book with cards, and keeps the mage and the saved books', async () => {
-    saveBook(NAME, smallBook);
+  it('asks before clearing unsaved cards, and keeps the mage and the saved books', async () => {
+    saveBook(NAME, EMPTY_WIZARD_BOOK);
     useBookStore.getState().loadBook(smallBook, NAME);
     render(<BookActions />);
 
@@ -222,6 +259,18 @@ describe('BookActions Clear', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
     expect(useBookStore.getState().book).toEqual(smallBook);
+  });
+
+  it('clears a saved book with no changes without asking', async () => {
+    saveBook(NAME, smallBook);
+    useBookStore.getState().loadBook(smallBook, NAME);
+    render(<BookActions />);
+
+    await userEvent.click(clearButton());
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(useBookStore.getState().book).toEqual(EMPTY_WIZARD_BOOK);
+    expect(savedNames()).toEqual([NAME]);
   });
 
   it('clears an empty named book without asking', async () => {
