@@ -1,4 +1,4 @@
-export type Reach = 'Melee' | 'Ranged';
+type Reach = 'Melee' | 'Ranged';
 
 export const DAMAGE_TYPES = [
   'Flame',
@@ -12,9 +12,9 @@ export const DAMAGE_TYPES = [
   'Frost',
 ] as const;
 
-export type DamageType = (typeof DAMAGE_TYPES)[number] | 'Physical';
+type DamageType = (typeof DAMAGE_TYPES)[number] | 'Physical';
 
-export interface AttackLine {
+interface AttackLine {
   reach: Reach | null;
   damageType: DamageType;
 }

@@ -1,31 +1,16 @@
-import { act, render, screen, within } from '@testing-library/react';
+import { act, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
-import { App } from '@/App';
-import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
-import {
-  LIGHTNING_BOLT,
-  resetSpellbookStore,
-  smallSpellbook,
-} from '@/features/shared/testSpellbooks';
+import { LIGHTNING_BOLT, smallSpellbook } from '@/features/shared/testSpellbooks';
 import { useSpellbookStore } from '@/store/useSpellbookStore';
+import { renderAppAt, resetAppState } from '@/test/renderAppAt';
 import { stubMatchMedia } from '@/test/stubMatchMedia';
 
 const EMPTY_STATS = 'Add cards to see stats.';
 
-const renderAt = (path: string) => {
-  render(
-    <MemoryRouter initialEntries={[path]}>
-      <App />
-    </MemoryRouter>,
-  );
-};
-
 const tabNames = (): string[] => screen.getAllByRole('tab').map((tab) => tab.textContent ?? '');
 
 beforeEach(() => {
-  resetSpellbookStore();
-  useCatalogFiltersStore.getState().reset();
+  resetAppState();
 });
 
 afterEach(() => {
@@ -39,7 +24,7 @@ describe('Builder stats tab below desktop', () => {
 
   it('has a Stats tab after Spellbook', async () => {
     useSpellbookStore.getState().loadSpellbook({ ...smallSpellbook, counts: {} });
-    renderAt('/wizard');
+    renderAppAt('/wizard');
 
     expect(tabNames()).toEqual(['Cards', 'Spellbook', 'Stats']);
 
@@ -50,7 +35,7 @@ describe('Builder stats tab below desktop', () => {
 
   it('opens stats from the URL', () => {
     useSpellbookStore.getState().loadSpellbook(smallSpellbook);
-    renderAt('/wizard/stats');
+    renderAppAt('/wizard/stats');
 
     expect(screen.getByRole('tab', { name: 'Stats' })).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('heading', { name: 'Mana curve' })).toBeInTheDocument();
@@ -61,7 +46,7 @@ describe('Builder stats tab below desktop', () => {
       ...smallSpellbook,
       counts: { [LIGHTNING_BOLT]: 1 },
     });
-    renderAt('/wizard/stats');
+    renderAppAt('/wizard/stats');
 
     expect(screen.getByRole('heading', { name: 'Mana curve' })).toBeInTheDocument();
 
@@ -82,7 +67,7 @@ describe('Builder stats tab on desktop', () => {
   });
 
   it('switches the spellbook column between spellbook and stats', async () => {
-    renderAt('/wizard');
+    renderAppAt('/wizard');
 
     expect(tabNames()).toEqual(['Spellbook', 'Stats']);
     expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
@@ -96,7 +81,7 @@ describe('Builder stats tab on desktop', () => {
   });
 
   it('opens the stats in the column from the URL', () => {
-    renderAt('/wizard/stats');
+    renderAppAt('/wizard/stats');
 
     expect(screen.getByRole('tab', { name: 'Stats' })).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('region', { name: 'Catalog' })).toBeInTheDocument();

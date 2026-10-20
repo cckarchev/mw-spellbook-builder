@@ -1,7 +1,7 @@
 import { makeCard, wizard } from '@/core/rules/fixtures';
 import type { Card, Spellbook } from '@/core/rules/types';
 import { summarizeSpellbook } from '@/core/rules/validateSpellbook';
-import { spellbookStats } from './spellbookStats';
+import { schoolTotal, spellbookStats } from './spellbookStats';
 
 type Entry = [Card, number];
 
@@ -160,12 +160,9 @@ describe('spellbookStats edge cases', () => {
       [card({ name: 'Talos', schools: [{ school: 'War', level: 7 }] }), 1],
     );
     const stats = spellbookStats(spellbook, wizard, cardsById);
-    const schoolTotal = stats.schools.reduce(
-      (sum, row) => sum + row.trainedPoints + row.extraRatePoints,
-      0,
-    );
+    const schoolPointsTotal = stats.schools.reduce((sum, row) => sum + schoolTotal(row), 0);
 
-    expect(schoolTotal).toBe(summarizeSpellbook(spellbook, wizard, cardsById).points);
+    expect(schoolPointsTotal).toBe(summarizeSpellbook(spellbook, wizard, cardsById).points);
   });
 
   it('skips cards the catalog does not have', () => {

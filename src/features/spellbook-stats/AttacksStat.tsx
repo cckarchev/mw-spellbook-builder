@@ -1,7 +1,8 @@
 import { BarList } from '@/components/bar-list/BarList';
 import { SplitBar } from '@/components/split-bar/SplitBar';
 import type { AttackStats } from '@/core/stats/types';
-import styles from './SpellbookStats.module.css';
+import { countBars } from './countBars';
+import { StatNote } from './stat-note/StatNote';
 
 /** Melee against ranged, then copies per damage type, or a line saying there are none. */
 export const AttacksStat = ({ attacks }: { attacks: AttackStats }) => {
@@ -11,15 +12,13 @@ export const AttacksStat = ({ attacks }: { attacks: AttackStats }) => {
   ].filter((reach) => reach.count > 0);
 
   if (attacks.damageTypes.length === 0) {
-    return <p className={styles.note}>No attacks.</p>;
+    return <StatNote>No attacks.</StatNote>;
   }
-
-  const damageRows = attacks.damageTypes.map((row) => ({ label: row.label, value: row.count }));
 
   return (
     <>
       {reaches.length > 0 ? <SplitBar parts={reaches} label="Melee and ranged" /> : null}
-      <BarList rows={damageRows} label="Damage types" />
+      <BarList rows={countBars(attacks.damageTypes)} label="Damage types" />
     </>
   );
 };

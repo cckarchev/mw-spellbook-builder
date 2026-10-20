@@ -1,6 +1,7 @@
 import { buildGlossaryIndex, type GlossaryIndex } from '@/core/glossary/findTerms';
 import type { GlossaryEntry } from '@/core/glossary/types';
 import { SCHOOLS } from '@/core/rules/types';
+import { DAMAGE_TYPES } from '@/core/stats/attackLines';
 import glossaryJson from './glossary.json';
 import { mages } from './mages';
 
@@ -16,17 +17,6 @@ const MISSING_FROM_CODEX: GlossaryEntry[] = [
 export const glossary: GlossaryEntry[] = [...glossaryJson, ...MISSING_FROM_CODEX];
 
 // The Codex explains damage types once, generically; cards name the type itself.
-const DAMAGE_TYPES = [
-  'Acid',
-  'Flame',
-  'Frost',
-  'Hydro',
-  'Light',
-  'Lightning',
-  'Poison',
-  'Psychic',
-  'Wind',
-];
 const DAMAGE_TYPE_TERM = 'Damage Type +/- X';
 const IMMUNITY_TERM = 'Immunity';
 const MAGE_ONLY_TERM = 'Mage Only';

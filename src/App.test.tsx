@@ -1,42 +1,31 @@
-import { act, cleanup, render, screen, within } from '@testing-library/react';
+import { act, cleanup, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
 import { readDraft } from '@/core/persistence/drafts';
 import { sameSpellbook } from '@/core/rules/spellbookChanges';
-import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
-import { FIREBALL, resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
+import { FIREBALL, smallSpellbook } from '@/features/shared/testSpellbooks';
 import { useSpellbookStore } from '@/store/useSpellbookStore';
+import { renderAppAt, resetAppState } from '@/test/renderAppAt';
 import { stubMatchMedia } from '@/test/stubMatchMedia';
-import { App } from './App';
-
-const renderAt = (path: string) => {
-  render(
-    <MemoryRouter initialEntries={[path]}>
-      <App />
-    </MemoryRouter>,
-  );
-};
 
 beforeEach(() => {
-  resetSpellbookStore();
-  useCatalogFiltersStore.getState().reset();
+  resetAppState();
 });
 
 describe('App', () => {
   it('opens on the mage picker', () => {
-    renderAt('/');
+    renderAppAt('/');
 
     expect(screen.getByRole('heading', { name: 'Choose a mage' })).toBeInTheDocument();
   });
 
   it('sends an unknown mage back to the mage picker', () => {
-    renderAt('/not-a-mage');
+    renderAppAt('/not-a-mage');
 
     expect(screen.getByRole('heading', { name: 'Choose a mage' })).toBeInTheDocument();
   });
 
   it('sends an unknown page under a mage back to the mage picker', () => {
-    renderAt('/wizard/not-a-tab');
+    renderAppAt('/wizard/not-a-tab');
 
     expect(screen.getByRole('heading', { name: 'Choose a mage' })).toBeInTheDocument();
   });
@@ -48,14 +37,14 @@ describe('App build screen', () => {
   });
 
   it('opens the Spellbook tab at the mage spellbook path', () => {
-    renderAt('/wizard/spellbook');
+    renderAppAt('/wizard/spellbook');
 
     expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Mana Crystal');
   });
 
   it('switches tabs', async () => {
-    renderAt('/wizard/spellbook');
+    renderAppAt('/wizard/spellbook');
 
     await userEvent.click(screen.getByRole('tab', { name: 'Cards' }));
 
@@ -64,7 +53,7 @@ describe('App build screen', () => {
   });
 
   it('keeps the search when the player comes back from the Spellbook tab', async () => {
-    renderAt('/wizard');
+    renderAppAt('/wizard');
 
     await userEvent.type(screen.getByRole('searchbox', { name: 'Search cards' }), 'fireball');
     await userEvent.click(screen.getByRole('tab', { name: 'Spellbook' }));
@@ -74,12 +63,12 @@ describe('App build screen', () => {
   });
 
   it('starts with no filters for another mage', async () => {
-    renderAt('/wizard');
+    renderAppAt('/wizard');
 
     await userEvent.type(screen.getByRole('searchbox', { name: 'Search cards' }), 'fireball');
     cleanup();
     useSpellbookStore.getState().loadSpellbook({ mageId: 'priest', counts: {} });
-    renderAt('/priest');
+    renderAppAt('/priest');
 
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toHaveValue('');
   });
@@ -91,7 +80,7 @@ describe('App opened at another mage', () => {
   it('switches right away when the spellbook has no cards', () => {
     useSpellbookStore.getState().loadSpellbook({ mageId: 'wizard', counts: {} });
 
-    renderAt('/warlock');
+    renderAppAt('/warlock');
 
     expect(currentMage()).toBe('warlock');
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
@@ -100,7 +89,7 @@ describe('App opened at another mage', () => {
   it('opens the mage without asking and keeps the old spellbook as its draft', () => {
     useSpellbookStore.getState().loadSpellbook(smallSpellbook);
 
-    renderAt('/warlock/spellbook');
+    renderAppAt('/warlock/spellbook');
 
     const wizardDraft = readDraft('wizard');
 
@@ -111,10 +100,10 @@ describe('App opened at another mage', () => {
 
   it('brings the old spellbook back on its mage URL', () => {
     useSpellbookStore.getState().loadSpellbook(smallSpellbook);
-    renderAt('/warlock');
+    renderAppAt('/warlock');
     cleanup();
 
-    renderAt('/wizard/spellbook');
+    renderAppAt('/wizard/spellbook');
 
     expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Mana Crystal');
@@ -139,7 +128,7 @@ describe('App build screen on desktop', () => {
   });
 
   it('shows the catalog and the spellbook without the Cards tab', () => {
-    renderAt('/wizard');
+    renderAppAt('/wizard');
 
     expect(screen.queryByRole('tab', { name: 'Cards' })).not.toBeInTheDocument();
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
@@ -147,7 +136,7 @@ describe('App build screen on desktop', () => {
   });
 
   it('shows the same screen at the spellbook path', () => {
-    renderAt('/wizard/spellbook');
+    renderAppAt('/wizard/spellbook');
 
     expect(screen.queryByRole('tab', { name: 'Cards' })).not.toBeInTheDocument();
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
@@ -155,7 +144,7 @@ describe('App build screen on desktop', () => {
   });
 
   it('adds a card from the catalog to the spellbook column', async () => {
-    renderAt('/wizard');
+    renderAppAt('/wizard');
 
     await searchCards('dispel');
     await userEvent.click(within(catalogColumn()).getByRole('button', { name: 'Add one Dispel' }));
@@ -165,7 +154,7 @@ describe('App build screen on desktop', () => {
 
   it('removes the last copy from the catalog without asking', async () => {
     useSpellbookStore.getState().loadSpellbook({ ...smallSpellbook, counts: { [FIREBALL]: 1 } });
-    renderAt('/wizard');
+    renderAppAt('/wizard');
 
     await searchCards('fireball');
     await userEvent.click(
@@ -179,7 +168,7 @@ describe('App build screen on desktop', () => {
   it('goes back to tabs when the window narrows', () => {
     vi.unstubAllGlobals();
     const { setMatches } = stubMatchMedia(true);
-    renderAt('/wizard');
+    renderAppAt('/wizard');
 
     act(() => {
       setMatches(false);

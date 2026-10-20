@@ -20,12 +20,13 @@ const COST_BUCKETS: CostBucket[] = [
 const FLAT_MANA_SOURCES = ['Mana Crystal', 'Mana Flower', 'Harmonize'];
 const CHANNELING_PER_SOURCE = 1;
 
-export interface CostedCopies {
+interface CostedCopies {
   manaCost: string;
   name: string;
   count: number;
 }
 
+/** Copies per cost bucket and against the channeling; variable costs are counted apart. */
 export const manaCurveOf = (copies: CostedCopies[], channeling: number): ManaCurve => {
   const buckets: CountRow[] = COST_BUCKETS.map((bucket) => ({ label: bucket.label, count: 0 }));
   let variable = 0;
@@ -63,6 +64,7 @@ export const manaCurveOf = (copies: CostedCopies[], channeling: number): ManaCur
   return { buckets, variable, channeling, channelingBucket, atOrBelow, above };
 };
 
+/** The flat channeling sources in the book, with the channeling they would add together. */
 export const manaSourcesOf = (copies: CostedCopies[]): ManaSources => {
   const cards = FLAT_MANA_SOURCES.map((name) => {
     const count = copies

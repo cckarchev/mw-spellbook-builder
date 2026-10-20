@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import type { ManaCurve as ManaCurveStats, ManaSources } from '@/core/stats/types';
+import { StatNote } from '../stat-note/StatNote';
 import styles from './ManaCurve.module.css';
 
 interface ManaCurveProps {
@@ -73,10 +74,10 @@ export const ManaCurve = ({ curve, sources }: ManaCurveProps) => {
         </ol>
         <span className={styles.channeling} aria-hidden="true" />
       </div>
-      <p className={styles.note}>
+      <StatNote>
         <span className={styles.legend} aria-hidden="true" /> {channelingSentence(curve)}
-      </p>
-      {sources.total > 0 ? <p className={styles.note}>{sourcesLine(sources)}</p> : null}
+      </StatNote>
+      {sources.total > 0 ? <StatNote>{sourcesLine(sources)}</StatNote> : null}
     </div>
   );
 };

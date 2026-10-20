@@ -1,12 +1,14 @@
 import { BarList, type BarRow } from '@/components/bar-list/BarList';
 import { SplitBar } from '@/components/split-bar/SplitBar';
 import type { Mage, Spellbook } from '@/core/rules/types';
-import { spellbookStats } from '@/core/stats/spellbookStats';
-import type { CountRow, SchoolPoints } from '@/core/stats/types';
+import { schoolTotal, spellbookStats } from '@/core/stats/spellbookStats';
+import type { SchoolPoints } from '@/core/stats/types';
 import { cardsById } from '@/data/catalog';
 import { AttacksStat } from './AttacksStat';
+import { countBars } from './countBars';
 import { ManaCurve } from './mana-curve/ManaCurve';
 import styles from './SpellbookStats.module.css';
+import { StatNote } from './stat-note/StatNote';
 import { StatSection } from './stat-section/StatSection';
 
 interface SpellbookStatsProps {
@@ -14,13 +16,10 @@ interface SpellbookStatsProps {
   mage: Mage;
 }
 
-const countBars = (rows: CountRow[]): BarRow[] =>
-  rows.map((row) => ({ label: row.label, value: row.count }));
-
 const schoolBars = (schools: SchoolPoints[]): BarRow[] =>
   schools.map((row) => ({
     label: row.school,
-    value: row.trainedPoints + row.extraRatePoints,
+    value: schoolTotal(row),
     highlight: row.extraRatePoints,
   }));
 
@@ -43,10 +42,10 @@ export const SpellbookStats = ({ spellbook, mage }: SpellbookStatsProps) => {
       <StatSection title="Points by school">
         <BarList rows={schoolBars(stats.schools)} label="Points by school" />
         {stats.untrainedPoints > 0 ? (
-          <p className={styles.note}>
+          <StatNote>
             <span className={styles.warningKey} aria-hidden="true" /> {stats.untrainedPoints} of{' '}
             {mage.budget} points go to untrained schools.
-          </p>
+          </StatNote>
         ) : null}
       </StatSection>
       <StatSection title="By level">

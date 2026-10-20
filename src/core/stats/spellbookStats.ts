@@ -3,9 +3,17 @@ import type { Card, Mage, School, Spellbook } from '@/core/rules/types';
 import { attackStatsOf } from './attackStats';
 import { manaCurveOf, manaSourcesOf } from './manaCurve';
 import { type CardCopies, rowsByCount, rowsInOrder, tally } from './rows';
-import type { SchoolPoints, SpellbookStats } from './types';
+import type { BookStats, SchoolPoints } from './types';
 
 const HIGHEST_SINGLE_LEVEL = 4;
+const TOP_LEVEL_LABEL = `Level ${HIGHEST_SINGLE_LEVEL + 1}+`;
+
+const levelName = (level: number): string => `Level ${level}`;
+
+const LEVEL_ORDER = [
+  ...Array.from({ length: HIGHEST_SINGLE_LEVEL }, (_, index) => levelName(index + 1)),
+  TOP_LEVEL_LABEL,
+];
 const ACTION_ORDER = ['Quick', 'Full'];
 
 const knownCopies = (spellbook: Spellbook, cardsById: ReadonlyMap<string, Card>): CardCopies[] => {
@@ -28,20 +36,14 @@ const levelLabel = (card: Card): string => {
   const level = totalLevel(card);
 
   if (level > HIGHEST_SINGLE_LEVEL) {
-    return `Level ${HIGHEST_SINGLE_LEVEL + 1}+`;
+    return TOP_LEVEL_LABEL;
   }
 
-  return `Level ${level}`;
+  return levelName(level);
 };
 
-const levelOrder = (): string[] => {
-  const singleLevels = Array.from(
-    { length: HIGHEST_SINGLE_LEVEL },
-    (_, index) => `Level ${index + 1}`,
-  );
-
-  return [...singleLevels, `Level ${HIGHEST_SINGLE_LEVEL + 1}+`];
-};
+/** All the points a school was charged, at the trained rate and above it. */
+export const schoolTotal = (row: SchoolPoints): number => row.trainedPoints + row.extraRatePoints;
 
 const schoolPointsOf = (copies: CardCopies[], mage: Mage): SchoolPoints[] => {
   const bySchool = new Map<School, SchoolPoints>();
@@ -65,11 +67,9 @@ const schoolPointsOf = (copies: CardCopies[], mage: Mage): SchoolPoints[] => {
     }
   }
 
-  const totalOf = (row: SchoolPoints): number => row.trainedPoints + row.extraRatePoints;
-
   return [...bySchool.values()]
-    .filter((row) => totalOf(row) > 0)
-    .sort((a, b) => totalOf(b) - totalOf(a) || a.school.localeCompare(b.school));
+    .filter((row) => schoolTotal(row) > 0)
+    .sort((a, b) => schoolTotal(b) - schoolTotal(a) || a.school.localeCompare(b.school));
 };
 
 /** Every stat of the Stats view, per copy, skipping card ids the catalog does not have. */
@@ -77,7 +77,7 @@ export const spellbookStats = (
   spellbook: Spellbook,
   mage: Mage,
   cardsById: ReadonlyMap<string, Card>,
-): SpellbookStats => {
+): BookStats => {
   const copies = knownCopies(spellbook, cardsById);
   const costed = copies.map(({ card, count }) => ({
     name: card.name,
@@ -96,7 +96,7 @@ export const spellbookStats = (
     types: rowsByCount(tally(copies, (card) => [card.type])),
     levels: rowsInOrder(
       tally(copies, (card) => [levelLabel(card)]),
-      levelOrder(),
+      LEVEL_ORDER,
     ),
     actions: rowsInOrder(
       tally(copies, (card) => [card.action]),

@@ -1,4 +1,4 @@
-export type ManaCost = number | 'X';
+type ManaCost = number | 'X';
 
 const VARIABLE_MARK = 'X';
 // Sentinel of V'Tar prints "2+3": cast for 2, reveal for 3. The curve counts the casting cost.

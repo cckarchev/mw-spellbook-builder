@@ -1,8 +1,12 @@
-import type { CountRow } from '@/core/stats/types';
 import styles from './SplitBar.module.css';
 
+export interface SplitPart {
+  label: string;
+  count: number;
+}
+
 interface SplitBarProps {
-  parts: CountRow[];
+  parts: SplitPart[];
   /** Names the bar for assistive tech. */
   label: string;
 }

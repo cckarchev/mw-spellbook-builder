@@ -43,7 +43,7 @@ export interface AttackStats {
   damageTypes: CountRow[];
 }
 
-export interface SpellbookStats {
+export interface BookStats {
   cardCount: number;
   manaCurve: ManaCurve;
   manaSources: ManaSources;

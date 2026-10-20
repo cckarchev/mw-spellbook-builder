@@ -71,12 +71,6 @@
   border-inline-start: var(--border-width-strong) dashed var(--color-accent);
 }
 
-.note {
-  margin: 0;
-  color: var(--color-text-body);
-  font-size: var(--font-size-sm);
-}
-
 .legend {
   display: inline-block;
   width: var(--space-md);
