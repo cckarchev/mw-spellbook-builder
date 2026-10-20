@@ -4,6 +4,7 @@ import type { Mage, Spellbook } from '@/core/rules/types';
 import { schoolTotal, spellbookStats } from '@/core/stats/spellbookStats';
 import type { SchoolPoints } from '@/core/stats/types';
 import { cardsById } from '@/data/catalog';
+import { EmptyMessage } from '@/features/shared/empty-message/EmptyMessage';
 import { AttacksStat } from './AttacksStat';
 import { countBars } from './countBars';
 import { ManaCurve } from './mana-curve/ManaCurve';
@@ -28,7 +29,7 @@ export const SpellbookStats = ({ spellbook, mage }: SpellbookStatsProps) => {
   const stats = spellbookStats(spellbook, mage, cardsById);
 
   if (stats.cardCount === 0) {
-    return <p className={styles.empty}>Add cards to see stats.</p>;
+    return <EmptyMessage>Add cards to see stats.</EmptyMessage>;
   }
 
   return (

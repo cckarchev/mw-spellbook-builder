@@ -4,12 +4,6 @@
   gap: var(--space-md);
 }
 
-.empty {
-  padding-block: var(--space-lg);
-  color: var(--color-text-dim);
-  text-align: center;
-}
-
 /* The swatch that ties the note to the highlighted part of the bars. */
 .warningKey {
   display: inline-block;
