@@ -1,10 +1,10 @@
-export type BuilderTab = 'cards' | 'book';
+export type BuilderTab = 'cards' | 'spellbook';
 
 /** The mage picker, at the root of the app. */
 export const PICKER_PATH = '/';
 
-/** The path segment that opens the Book tab under a mage's path. */
-export const BOOK_SEGMENT = 'book';
+/** The path segment that opens the Spellbook tab under a mage's path. */
+export const SPELLBOOK_SEGMENT = 'spellbook';
 
 // Accents come apart into a letter plus a combining mark, which the next step drops.
 const COMBINING_MARKS = /\p{M}/gu;
@@ -23,12 +23,12 @@ export const mageSlug = (name: string): string => {
   return dashed.replace(EDGE_DASHES, '');
 };
 
-/** Where the builder shows a mage's book on a tab, such as "/wizard/book". */
+/** Where the builder shows a mage's spellbook on a tab, such as "/wizard/spellbook". */
 export const builderPath = (mageName: string, tab: BuilderTab): string => {
   const magePath = `/${mageSlug(mageName)}`;
 
-  if (tab === 'book') {
-    return `${magePath}/${BOOK_SEGMENT}`;
+  if (tab === 'spellbook') {
+    return `${magePath}/${SPELLBOOK_SEGMENT}`;
   }
 
   return magePath;

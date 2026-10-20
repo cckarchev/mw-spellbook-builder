@@ -87,7 +87,7 @@ export interface Mage {
   statsCardId: string | null;
 }
 
-export interface Book {
+export interface Spellbook {
   mageId: string | null;
   /** Copies per card id. */
   counts: Record<string, number>;

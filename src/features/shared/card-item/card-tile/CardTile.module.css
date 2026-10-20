@@ -16,7 +16,7 @@
   }
 }
 
-.tile[data-in-book='true'] {
+.tile[data-in-spellbook='true'] {
   background: var(--color-bg-selected);
   border-color: var(--color-accent);
 }
@@ -56,7 +56,7 @@
   pointer-events: none;
 }
 
-/* After the in-book border, so a problem shows over it. */
+/* After the in-spellbook border, so a problem shows over it. */
 .tile[data-problem='true'] {
   border-color: var(--color-error);
 }

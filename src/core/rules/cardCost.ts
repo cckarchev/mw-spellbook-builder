@@ -42,7 +42,7 @@ const isWholeCardTrained = (card: Card, mage: Mage): boolean => {
 };
 
 /**
- * Spellbook points for one copy of a card in this mage's book, following the module's
+ * Spellbook points for one copy of a card in this mage's spellbook, following the module's
  * SpellbookValidator: Novice, combo and subtype training beat an opposed school. Unlike the
  * module, each part of an "and" card is charged its own multiplier, as the players confirmed.
  */

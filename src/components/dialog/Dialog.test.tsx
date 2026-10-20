@@ -59,6 +59,20 @@ describe('Dialog close button', () => {
     expect(onClose).toHaveBeenCalledOnce();
   });
 
+  it('focuses a text field before the X, with its text selected', () => {
+    render(
+      <Dialog open={true} title="Save" onClose={() => undefined} closeButton={true}>
+        <input aria-label="Name" defaultValue="Aggro" />
+      </Dialog>,
+    );
+
+    const field = screen.getByRole<HTMLInputElement>('textbox', { name: 'Name' });
+
+    expect(field).toHaveFocus();
+    expect(field.selectionStart).toBe(0);
+    expect(field.selectionEnd).toBe('Aggro'.length);
+  });
+
   it('has no X by default', () => {
     renderDialog();
 

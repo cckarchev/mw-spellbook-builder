@@ -7,7 +7,7 @@ interface DialogProps {
   title: string;
   /** Called on Escape and on a tap outside the panel. */
   onClose: () => void;
-  /** An X in the top right corner that closes the dialog, and takes the focus first. */
+  /** An X in the top right corner that closes the dialog, and takes the focus first unless there is a text field. */
   closeButton?: boolean;
   /** Extra class on the panel, such as one that sets --dialog-width. */
   className?: string;
@@ -42,6 +42,23 @@ const trapTab = (event: KeyboardEvent, panel: HTMLElement) => {
   }
 };
 
+/**
+ * Focuses the first text field, its text selected so typing replaces it, or else the first button.
+ * A field goes first so the player can type at once, and the phone keyboard opens.
+ */
+const focusFirst = (panel: HTMLElement) => {
+  const field = panel.querySelector<HTMLInputElement>('input');
+
+  if (field) {
+    field.focus();
+    field.select();
+
+    return;
+  }
+
+  panel.querySelector<HTMLElement>('button')?.focus();
+};
+
 /** A modal panel over a dimmed page that keeps the focus inside. Renders nothing while closed. */
 export const Dialog = ({
   open,
@@ -63,7 +80,9 @@ export const Dialog = ({
       return;
     }
 
-    panelRef.current?.querySelector<HTMLElement>('button')?.focus();
+    if (panelRef.current) {
+      focusFirst(panelRef.current);
+    }
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {

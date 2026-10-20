@@ -7,7 +7,7 @@ import styles from './CardTile.module.css';
 /** A card image with its points and a stepper, for the grid view. Tapping the image enlarges it. */
 export const CardTile = memo(
   ({ card, count, points, blockedReason, problem = null, onAdd, onRemove }: CardEntryProps) => (
-    <li className={styles.tile} data-in-book={count > 0} data-problem={problem !== null}>
+    <li className={styles.tile} data-in-spellbook={count > 0} data-problem={problem !== null}>
       <div className={styles.art}>
         {card.image ? (
           <ZoomableImage name={card.name} image={card.image} className={styles.image} />

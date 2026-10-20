@@ -1,0 +1,44 @@
+/* The menu hangs from the button, so the wrap is what it is placed against. It lines up with
+   the button's end, so a button at the end of a row keeps its menu on screen. */
+.wrap {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + var(--space-xxs));
+  right: 0;
+  z-index: var(--z-popover);
+  display: flex;
+  flex-direction: column;
+  min-width: max-content;
+  padding-block: var(--space-xxs);
+  background: var(--color-bg-surface);
+  border: var(--border-default);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-panel);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+  min-height: var(--touch-target);
+  padding-inline: var(--space-md);
+  color: var(--color-text-strong);
+  font-size: var(--font-size-md);
+  text-align: start;
+  background: transparent;
+  border: 0;
+}
+
+.item:hover,
+.item:focus-visible {
+  background: var(--color-ghost-bg);
+}
+
+.item:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: calc(-1 * var(--focus-ring-offset));
+}

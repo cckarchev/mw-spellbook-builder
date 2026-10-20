@@ -1,0 +1,9 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  border-top: var(--border-divider);
+}
+
+.empty {
+  color: var(--color-text-dim);
+}

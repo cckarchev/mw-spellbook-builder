@@ -1,9 +1,11 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { readDraft, writeDraft } from '@/core/persistence/drafts';
+import { saveSpellbook } from '@/core/persistence/savedSpellbooks';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
-import { FIREBALL } from '@/features/shared/testBooks';
-import { useBookStore } from '@/store/useBookStore';
+import { FIREBALL, resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 import { MagePicker } from './MagePicker';
 
 /** A "Warlock Only" card, illegal for every other mage. */
@@ -15,7 +17,7 @@ const renderPicker = () => {
     <MemoryRouter initialEntries={['/']}>
       <Routes>
         <Route index={true} element={<MagePicker />} />
-        <Route path=":mageSlug" element={<h1>Build screen</h1>} />
+        <Route path=":mageSlug/*" element={<h1>Build screen</h1>} />
       </Routes>
     </MemoryRouter>,
   );
@@ -28,7 +30,7 @@ const chooseWizard = async () => {
 };
 
 beforeEach(() => {
-  useBookStore.getState().clear();
+  resetSpellbookStore();
   useCatalogFiltersStore.getState().reset();
 });
 
@@ -38,18 +40,20 @@ describe('MagePicker', () => {
 
     await chooseWizard();
 
-    expect(useBookStore.getState().book.mageId).toBe('wizard');
+    expect(useSpellbookStore.getState().spellbook.mageId).toBe('wizard');
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(buildScreen()).toBeInTheDocument();
   });
 
-  it('keeps the book when the player picks the same mage again', async () => {
-    useBookStore.getState().loadBook({ mageId: 'wizard', counts: { [FIREBALL]: ONE_COPY } });
+  it('keeps the spellbook when the player picks the same mage again', async () => {
+    useSpellbookStore
+      .getState()
+      .loadSpellbook({ mageId: 'wizard', counts: { [FIREBALL]: ONE_COPY } });
     renderPicker();
 
     await chooseWizard();
 
-    expect(useBookStore.getState().book.counts).toEqual({ [FIREBALL]: ONE_COPY });
+    expect(useSpellbookStore.getState().spellbook.counts).toEqual({ [FIREBALL]: ONE_COPY });
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(buildScreen()).toBeInTheDocument();
   });
@@ -64,7 +68,7 @@ describe('MagePicker stats card', () => {
     const dialog = screen.getByRole('dialog', { name: 'Wizard stats' });
 
     expect(within(dialog).getByRole('img', { name: 'Wizard stats card' })).toBeInTheDocument();
-    expect(useBookStore.getState().book.mageId).toBeNull();
+    expect(useSpellbookStore.getState().spellbook.mageId).toBeNull();
     expect(buildScreen()).not.toBeInTheDocument();
   });
 
@@ -82,47 +86,122 @@ describe('MagePicker stats card', () => {
 
 describe('MagePicker switching to another mage', () => {
   beforeEach(() => {
-    useBookStore.getState().loadBook({
+    useSpellbookStore.getState().loadSpellbook({
       mageId: 'warlock',
       counts: { [ADRAMELECHS_TORMENT]: ONE_COPY },
     });
   });
 
-  it('asks before starting a new book, and Cancel keeps the old one', async () => {
+  it('opens the other mage without asking and keeps the old spellbook as its draft', async () => {
     renderPicker();
 
     await chooseWizard();
 
-    const dialog = screen.getByRole('dialog', { name: 'Start a new book?' });
+    const warlockDraft = readDraft('warlock');
 
-    expect(dialog).toHaveTextContent('Your Warlock book has 1 card. It will be cleared.');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(useSpellbookStore.getState().spellbook).toEqual({ mageId: 'wizard', counts: {} });
+    expect(warlockDraft?.spellbook.counts).toEqual({ [ADRAMELECHS_TORMENT]: ONE_COPY });
+    expect(buildScreen()).toBeInTheDocument();
+  });
+});
 
-    await userEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }));
+const tile = (name: string) => screen.getByRole('button', { name });
 
-    expect(useBookStore.getState().book.mageId).toBe('warlock');
-    expect(useBookStore.getState().book.counts).toEqual({ [ADRAMELECHS_TORMENT]: ONE_COPY });
-    expect(buildScreen()).not.toBeInTheDocument();
+const badge = (mageName: string) =>
+  screen.queryByRole('button', { name: `Load a saved ${mageName} spellbook` });
+
+const openWizardBadge = async () => {
+  const badgeButton = badge('Wizard');
+
+  if (!badgeButton) {
+    throw new Error('No Wizard badge');
+  }
+
+  await userEvent.click(badgeButton);
+};
+
+describe('MagePicker badges', () => {
+  it("tells each mage's draft and saved spellbooks", () => {
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook);
+    writeDraft({ spellbook: { mageId: 'priest', counts: { [FIREBALL]: ONE_COPY } }, name: null });
+    saveSpellbook('One', { mageId: 'warlock', counts: {} });
+    saveSpellbook('Two', { mageId: 'warlock', counts: {} });
+
+    renderPicker();
+
+    expect(tile('Wizard')).toHaveAccessibleDescription('Draft');
+    expect(tile('Priest')).toHaveAccessibleDescription('Draft');
+    expect(tile('Warlock')).toHaveAccessibleDescription('2 saved spellbooks');
+    expect(tile('Druid')).toHaveAccessibleDescription('');
+    expect(badge('Warlock')).toHaveTextContent('2');
+    expect(badge('Wizard')).not.toBeInTheDocument();
   });
 
-  it('clears the book and switches when confirmed', async () => {
+  it('does not count a saved spellbook with no changes as a draft', () => {
+    saveSpellbook('Tourney', smallSpellbook);
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook, 'Tourney');
+
     renderPicker();
 
-    await chooseWizard();
-    await userEvent.click(screen.getByRole('button', { name: 'Clear and switch' }));
+    expect(tile('Wizard')).toHaveAccessibleDescription('1 saved spellbook');
+  });
+});
 
-    expect(useBookStore.getState().book).toEqual({ mageId: 'wizard', counts: {} });
+describe('MagePicker loading from a badge', () => {
+  it('continues the draft from the badge of a mage with no saved spellbooks', async () => {
+    const draft = { mageId: 'priest', counts: { [FIREBALL]: ONE_COPY } };
+
+    writeDraft({ spellbook: draft, name: null });
+
+    renderPicker();
+
+    await userEvent.click(screen.getByRole('button', { name: 'Continue the Priest draft' }));
+
+    expect(useSpellbookStore.getState().spellbook).toEqual(draft);
     expect(buildScreen()).toBeInTheDocument();
   });
 
-  it('starts the new book with no filters left from an earlier book of that mage', async () => {
-    useCatalogFiltersStore
-      .getState()
-      .setFilters('wizard', (filters) => ({ ...filters, query: 'fire' }));
+  it('loads a saved spellbook from the badge and opens it', async () => {
+    saveSpellbook('Tourney', smallSpellbook);
+
     renderPicker();
 
-    await chooseWizard();
-    await userEvent.click(screen.getByRole('button', { name: 'Clear and switch' }));
+    await openWizardBadge();
 
-    expect(useCatalogFiltersStore.getState().filters.query).toBe('');
+    const dialog = screen.getByRole('dialog', { name: 'Saved Wizard spellbooks' });
+
+    expect(within(dialog).queryByRole('button', { name: /Delete/ })).not.toBeInTheDocument();
+
+    await userEvent.click(within(dialog).getByRole('button', { name: /Tourney/ }));
+
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
+    expect(useSpellbookStore.getState().name).toBe('Tourney');
+    expect(buildScreen()).toBeInTheDocument();
+  });
+
+  it('asks before replacing a draft with unsaved work, and keeps it on cancel', async () => {
+    const draft = { mageId: 'wizard', counts: { [FIREBALL]: ONE_COPY } };
+
+    saveSpellbook('Tourney', smallSpellbook);
+    useSpellbookStore.getState().loadSpellbook(draft);
+
+    renderPicker();
+
+    await openWizardBadge();
+    await userEvent.click(screen.getByRole('button', { name: /Tourney/ }));
+
+    const confirm = screen.getByRole('dialog', { name: 'Replace your Wizard draft?' });
+
+    await userEvent.click(within(confirm).getByRole('button', { name: 'Cancel' }));
+
+    expect(useSpellbookStore.getState().spellbook).toEqual(draft);
+    expect(screen.getByRole('dialog', { name: 'Saved Wizard spellbooks' })).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole('button', { name: /Tourney/ }));
+    await userEvent.click(screen.getByRole('button', { name: 'Replace' }));
+
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
+    expect(buildScreen()).toBeInTheDocument();
   });
 });

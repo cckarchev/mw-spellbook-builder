@@ -1,26 +1,26 @@
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { EMPTY_FILTERS, filterCards } from '@/core/catalog/filterCards';
-import type { Book } from '@/core/rules/types';
+import type { Spellbook } from '@/core/rules/types';
 import { cards } from '@/data/catalog';
-import { LIGHTNING_BOLT, smallBook, wizard } from '@/features/shared/testBooks';
+import { LIGHTNING_BOLT, smallSpellbook, wizard } from '@/features/shared/testSpellbooks';
 import { Catalog } from './Catalog';
 import { useCatalogFiltersStore } from './useCatalogFilters';
 
 const BOLT_LIMIT = 4;
 
-const EMPTY_BOOK: Book = { mageId: wizard.id, counts: {} };
+const EMPTY_SPELLBOOK: Spellbook = { mageId: wizard.id, counts: {} };
 
 beforeEach(() => {
   useCatalogFiltersStore.getState().reset();
   localStorage.clear();
 });
 
-const renderCatalog = (book: Book = smallBook) => {
+const renderCatalog = (spellbook: Spellbook = smallSpellbook) => {
   const onAdd = vi.fn();
   const onRemove = vi.fn();
 
-  render(<Catalog book={book} mage={wizard} onAdd={onAdd} onRemove={onRemove} />);
+  render(<Catalog spellbook={spellbook} mage={wizard} onAdd={onAdd} onRemove={onRemove} />);
 
   return { onAdd, onRemove };
 };
@@ -66,7 +66,7 @@ describe('Catalog listing', () => {
   });
 
   it('groups the cards under type headers with a count', () => {
-    renderCatalog(EMPTY_BOOK);
+    renderCatalog(EMPTY_SPELLBOOK);
 
     const legal = filterCards(cards, EMPTY_FILTERS, wizard);
     const attackCount = legal.filter((card) => card.type === 'Attack').length;
@@ -74,11 +74,11 @@ describe('Catalog listing', () => {
     expect(screen.getByRole('heading', { name: `Attack (${attackCount})` })).toBeInTheDocument();
   });
 
-  it('shows how many copies of each type the book has and their points', () => {
+  it('shows how many copies of each type the spellbook has and their points', () => {
     renderCatalog();
 
-    expect(sectionToggle('Attack')).toHaveTextContent('5 in book · 16 pts');
-    expect(sectionToggle('Creature')).not.toHaveTextContent('in book');
+    expect(sectionToggle('Attack')).toHaveTextContent('5 in spellbook · 16 pts');
+    expect(sectionToggle('Creature')).not.toHaveTextContent('in spellbook');
   });
 
   it('opens the sections while the player searches, to show the matches', async () => {
@@ -94,8 +94,8 @@ describe('Catalog listing', () => {
 describe('Catalog rows', () => {
   it('shows why + is blocked at the copy limit', async () => {
     const { onAdd } = renderCatalog({
-      ...smallBook,
-      counts: { ...smallBook.counts, [LIGHTNING_BOLT]: BOLT_LIMIT },
+      ...smallSpellbook,
+      counts: { ...smallSpellbook.counts, [LIGHTNING_BOLT]: BOLT_LIMIT },
     });
 
     await openSection('Attack');

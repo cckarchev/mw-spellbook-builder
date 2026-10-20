@@ -1,4 +1,4 @@
-import { BOOK_PARAM, buildShareUrl } from './shareUrl';
+import { buildShareUrl, SPELLBOOK_PARAM } from './shareUrl';
 
 const ENCODED = 'eyJ2IjoxfQ';
 const ORIGIN = 'https://mw.example.dev';
@@ -13,7 +13,9 @@ describe('buildShareUrl', () => {
       magePath: MAGE_PATH,
     });
 
-    expect(url).toBe(`https://cckarchev.ar/juegos/magewars/spellbook/?${BOOK_PARAM}=${ENCODED}`);
+    expect(url).toBe(
+      `https://cckarchev.ar/juegos/magewars/spellbook/?${SPELLBOOK_PARAM}=${ENCODED}`,
+    );
   });
 
   it('keeps query params already on the club page', () => {

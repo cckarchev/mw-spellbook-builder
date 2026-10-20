@@ -10,11 +10,38 @@ export const readStored = (key: string): string | null => {
   }
 };
 
-/** Stores the string, silently doing nothing when storage is unavailable. */
-export const writeStored = (key: string, value: string): void => {
+/** Stores the string; false when storage is unavailable, for callers that tell the player. */
+export const writeStored = (key: string, value: string): boolean => {
   try {
     localStorage.setItem(key, value);
+
+    return true;
   } catch {
-    // Persistence is a convenience; the book still lives in memory.
+    // Persistence is a convenience; the spellbook still lives in memory.
+    return false;
+  }
+};
+
+/** Removes the key, silently doing nothing when storage is unavailable. */
+export const removeStored = (key: string): void => {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Nothing to clean up when storage is unavailable.
+  }
+};
+
+/** The stored JSON value, or null when there is none, it is not JSON, or storage is unavailable. */
+export const readStoredJson = (key: string): unknown => {
+  const stored = readStored(key);
+
+  if (stored === null) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(stored);
+  } catch {
+    return null;
   }
 };

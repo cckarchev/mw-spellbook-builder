@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
-import { type BookGroup, bookGroups } from '@/core/catalog/bookGroups';
 import { EMPTY_FILTERS, filterCards, isFiltering } from '@/core/catalog/filterCards';
 import { filterOptions } from '@/core/catalog/filterOptions';
 import { scopeOf } from '@/core/catalog/filterScope';
 import { groupByType } from '@/core/catalog/groupByType';
+import { type SpellbookGroup, spellbookGroups } from '@/core/catalog/spellbookGroups';
 import { cardCost } from '@/core/rules/cardCost';
-import { addCopyBlockedReason } from '@/core/rules/validateBook';
+import { addCopyBlockedReason } from '@/core/rules/validateSpellbook';
 import { plural } from '@/core/text/plural';
 import { cards, cardsById } from '@/data/catalog';
-import type { BookPanelProps } from '@/features/shared/bookPanelProps';
+import type { BuilderPanelProps } from '@/features/shared/builderPanelProps';
 import { CardItem } from '@/features/shared/card-item/CardItem';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
 import { useViewMode } from '@/features/shared/view-switch/useViewMode';
@@ -17,17 +17,17 @@ import styles from './Catalog.module.css';
 import { FilterBar } from './filter-bar/FilterBar';
 import { useCatalogFilters } from './useCatalogFilters';
 
-/** What the book already has of one type, such as "5 in book · 16 pts". Nothing when it has none. */
-const inBookLabel = (bookGroup: BookGroup | undefined): string | undefined => {
-  if (!bookGroup) {
+/** What the spellbook already has of one type, such as "5 in spellbook · 16 pts". Nothing when it has none. */
+const inSpellbookLabel = (spellbookGroup: SpellbookGroup | undefined): string | undefined => {
+  if (!spellbookGroup) {
     return undefined;
   }
 
-  return `${bookGroup.copies} in book · ${bookGroup.points} pts`;
+  return `${spellbookGroup.copies} in spellbook · ${spellbookGroup.points} pts`;
 };
 
 /** Every card the mage can use, filtered and grouped by type, each with its cost and a stepper. */
-export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
+export const Catalog = ({ spellbook, mage, onAdd, onRemove }: BuilderPanelProps) => {
   const { filters, setQuery, toggle, setScope, clearChips } = useCatalogFilters(mage);
   const { view, setView } = useViewMode('catalog');
 
@@ -35,8 +35,11 @@ export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
   const options = useMemo(() => filterOptions(legalCards), [legalCards]);
   const shownCards = useMemo(() => filterCards(cards, filters, mage), [filters, mage]);
   const groups = groupByType(shownCards);
-  const bookGroupsByType = new Map(
-    bookGroups(book, mage, cardsById).map((bookGroup) => [bookGroup.type, bookGroup]),
+  const spellbookGroupsByType = new Map(
+    spellbookGroups(spellbook, mage, cardsById).map((spellbookGroup) => [
+      spellbookGroup.type,
+      spellbookGroup,
+    ]),
   );
 
   // Collapsed to browse by type; open while searching or filtering, so the matches show.
@@ -65,7 +68,7 @@ export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
           key={`${group.type}:${filtering}`}
           title={group.type}
           count={group.items.length}
-          meta={inBookLabel(bookGroupsByType.get(group.type))}
+          meta={inSpellbookLabel(spellbookGroupsByType.get(group.type))}
           defaultExpanded={filtering}
           layout={view}
         >
@@ -74,9 +77,9 @@ export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
               key={card.id}
               view={view}
               card={card}
-              count={book.counts[card.id] ?? 0}
+              count={spellbook.counts[card.id] ?? 0}
               points={cardCost(card, mage)}
-              blockedReason={addCopyBlockedReason(book, card, mage)}
+              blockedReason={addCopyBlockedReason(spellbook, card, mage)}
               onAdd={onAdd}
               onRemove={onRemove}
             />

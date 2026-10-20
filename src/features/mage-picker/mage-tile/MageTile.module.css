@@ -73,3 +73,47 @@
   border-color: var(--color-border-accent);
   box-shadow: inset 0 0 0 100vmax var(--color-bg-accent-tint);
 }
+
+/* Floats over the top left corner of the image, the same height as the stats button opposite:
+   the count of saved spellbooks, in the accent color while the mage has a draft. */
+.badge {
+  position: absolute;
+  top: var(--space-xs);
+  left: var(--space-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box;
+  min-width: 1em;
+  height: 1em;
+  padding: var(--space-xs);
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  line-height: 1;
+  color: var(--color-text-strong);
+  background: var(--color-bg-scrim);
+  border: var(--border-default);
+  border-radius: 1em;
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast);
+}
+
+/* The icon is a little smaller than the digits, which sit at cap height. */
+.badge svg {
+  width: 0.75em;
+  height: 0.75em;
+}
+
+.badge[data-draft='true'] {
+  color: var(--color-accent);
+}
+
+.badge:hover {
+  border-color: var(--color-border-hover);
+}
+
+.badge:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}

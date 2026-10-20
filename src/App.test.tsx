@@ -1,9 +1,11 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
+import { readDraft } from '@/core/persistence/drafts';
+import { sameSpellbook } from '@/core/rules/spellbookChanges';
 import { useCatalogFiltersStore } from '@/features/catalog/useCatalogFilters';
-import { smallBook } from '@/features/shared/testBooks';
-import { useBookStore } from '@/store/useBookStore';
+import { resetSpellbookStore, smallSpellbook } from '@/features/shared/testSpellbooks';
+import { useSpellbookStore } from '@/store/useSpellbookStore';
 import { App } from './App';
 
 const renderAt = (path: string) => {
@@ -15,7 +17,7 @@ const renderAt = (path: string) => {
 };
 
 beforeEach(() => {
-  useBookStore.getState().clear();
+  resetSpellbookStore();
   useCatalogFiltersStore.getState().reset();
 });
 
@@ -41,18 +43,18 @@ describe('App', () => {
 
 describe('App build screen', () => {
   beforeEach(() => {
-    useBookStore.getState().loadBook(smallBook);
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook);
   });
 
-  it('opens the Book tab at the mage book path', () => {
-    renderAt('/wizard/book');
+  it('opens the Spellbook tab at the mage spellbook path', () => {
+    renderAt('/wizard/spellbook');
 
-    expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
     expect(screen.getByRole('tabpanel')).toHaveTextContent('Mana Crystal');
   });
 
   it('switches tabs', async () => {
-    renderAt('/wizard/book');
+    renderAt('/wizard/spellbook');
 
     await userEvent.click(screen.getByRole('tab', { name: 'Cards' }));
 
@@ -60,11 +62,11 @@ describe('App build screen', () => {
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
   });
 
-  it('keeps the search when the player comes back from the Book tab', async () => {
+  it('keeps the search when the player comes back from the Spellbook tab', async () => {
     renderAt('/wizard');
 
     await userEvent.type(screen.getByRole('searchbox', { name: 'Search cards' }), 'fireball');
-    await userEvent.click(screen.getByRole('tab', { name: 'Book' }));
+    await userEvent.click(screen.getByRole('tab', { name: 'Spellbook' }));
     await userEvent.click(screen.getByRole('tab', { name: 'Cards' }));
 
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toHaveValue('fireball');
@@ -75,7 +77,7 @@ describe('App build screen', () => {
 
     await userEvent.type(screen.getByRole('searchbox', { name: 'Search cards' }), 'fireball');
     cleanup();
-    useBookStore.getState().loadBook({ mageId: 'priest', counts: {} });
+    useSpellbookStore.getState().loadSpellbook({ mageId: 'priest', counts: {} });
     renderAt('/priest');
 
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toHaveValue('');
@@ -83,10 +85,10 @@ describe('App build screen', () => {
 });
 
 describe('App opened at another mage', () => {
-  const currentMage = () => useBookStore.getState().book.mageId;
+  const currentMage = () => useSpellbookStore.getState().spellbook.mageId;
 
-  it('switches right away when the book has no cards', () => {
-    useBookStore.getState().loadBook({ mageId: 'wizard', counts: {} });
+  it('switches right away when the spellbook has no cards', () => {
+    useSpellbookStore.getState().loadSpellbook({ mageId: 'wizard', counts: {} });
 
     renderAt('/warlock');
 
@@ -94,28 +96,26 @@ describe('App opened at another mage', () => {
     expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
   });
 
-  it('asks before clearing a book with cards, and Cancel goes back to its mage', async () => {
-    useBookStore.getState().loadBook(smallBook);
+  it('opens the mage without asking and keeps the old spellbook as its draft', () => {
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook);
 
-    renderAt('/warlock/book');
+    renderAt('/warlock/spellbook');
 
-    expect(screen.getByRole('dialog', { name: 'Start a new book?' })).toBeInTheDocument();
+    const wizardDraft = readDraft('wizard');
 
-    await userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-
-    expect(currentMage()).toBe('wizard');
-    expect(screen.getByRole('tab', { name: 'Book' })).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByRole('tabpanel')).toHaveTextContent('Mana Crystal');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(currentMage()).toBe('warlock');
+    expect(wizardDraft && sameSpellbook(wizardDraft.spellbook, smallSpellbook)).toBe(true);
   });
 
-  it('starts a new book for the mage when confirmed', async () => {
-    useBookStore.getState().loadBook(smallBook);
-
+  it('brings the old spellbook back on its mage URL', () => {
+    useSpellbookStore.getState().loadSpellbook(smallSpellbook);
     renderAt('/warlock');
+    cleanup();
 
-    await userEvent.click(screen.getByRole('button', { name: 'Clear and switch' }));
+    renderAt('/wizard/spellbook');
 
-    expect(useBookStore.getState().book).toEqual({ mageId: 'warlock', counts: {} });
-    expect(screen.getByRole('searchbox', { name: 'Search cards' })).toBeInTheDocument();
+    expect(useSpellbookStore.getState().spellbook).toEqual(smallSpellbook);
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('Mana Crystal');
   });
 });

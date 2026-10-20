@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import type { GlossaryEntry } from '@/core/glossary/types';
+import { useDismiss } from '../useDismiss';
 import styles from './GlossaryText.module.css';
 import { useOpenTermStore } from './useOpenTermStore';
-import { useDismiss, usePlacement } from './usePopover';
+import { usePlacement } from './usePopover';
 
 interface GlossaryTermProps {
   /** The words as the card prints them, such as "Aegis 2". */
@@ -23,7 +24,7 @@ export const GlossaryTerm = ({ text, entry }: GlossaryTermProps) => {
   const closeThis = useCallback(() => close(id), [close, id]);
   const placement = usePlacement(isOpen, refs);
 
-  useDismiss(isOpen, refs, closeThis);
+  useDismiss(isOpen, { anchorRef: termRef, popupRef: popoverRef }, closeThis);
 
   // A term that goes away, such as when its card row closes, takes its popover with it.
   useEffect(() => closeThis, [closeThis]);

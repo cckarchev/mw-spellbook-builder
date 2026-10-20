@@ -17,7 +17,7 @@ interface CatalogFiltersStore {
 }
 
 /**
- * Kept outside the catalog so the search and chips survive a trip to the Book tab.
+ * Kept outside the catalog so the search and chips survive a trip to the Spellbook tab.
  * In memory only: a reload starts with no filters.
  */
 export const useCatalogFiltersStore = create<CatalogFiltersStore>()((set, get) => ({
