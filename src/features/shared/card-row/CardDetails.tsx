@@ -1,6 +1,6 @@
-import { type ReactNode, useState } from 'react';
+import type { ReactNode } from 'react';
 import type { Card } from '@/core/rules/types';
-import { CardZoom } from '@/features/shared/card-zoom/CardZoom';
+import { ZoomableImage } from '@/features/shared/card-zoom/ZoomableImage';
 import { GlossaryText } from '@/features/shared/glossary-text/GlossaryText';
 import styles from './CardRow.module.css';
 
@@ -21,26 +21,6 @@ const TraitList = ({ traits }: { traits: string[] }) =>
     </span>
   ));
 
-/** The card image; tapping it shows the image full size. */
-const ZoomableImage = ({ name, image }: { name: string; image: string }) => {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <>
-      <button
-        type="button"
-        className={styles.imageButton}
-        aria-label={`Enlarge ${name}`}
-        aria-haspopup="dialog"
-        onClick={() => setOpen(true)}
-      >
-        <img className={styles.image} src={image} alt={name} loading="lazy" />
-      </button>
-      <CardZoom open={open} title={name} image={image} alt={name} onClose={() => setOpen(false)} />
-    </>
-  );
-};
-
 /** The opened part of a card row: the full card image and its game text, with tappable terms. */
 export const CardDetails = ({ card }: { card: Card }) => {
   const facts = [
@@ -55,7 +35,9 @@ export const CardDetails = ({ card }: { card: Card }) => {
 
   return (
     <div className={styles.expanded}>
-      {card.image ? <ZoomableImage name={card.name} image={card.image} /> : null}
+      {card.image ? (
+        <ZoomableImage name={card.name} image={card.image} className={styles.image} />
+      ) : null}
       <div className={styles.text}>
         <dl className={styles.facts}>
           {facts.map(([label = '', value = '']) => (

@@ -12,8 +12,11 @@ import type { BookPanelProps } from '@/features/shared/bookPanelProps';
 import { CardRow } from '@/features/shared/card-row/CardRow';
 import { TypeSection } from '@/features/shared/type-section/TypeSection';
 import styles from './Catalog.module.css';
+import { CardTile } from './card-tile/CardTile';
 import { FilterBar } from './filter-bar/FilterBar';
 import { useCatalogFilters } from './useCatalogFilters';
+import { useCatalogView } from './view-switch/useCatalogView';
+import { ViewSwitch } from './view-switch/ViewSwitch';
 
 /** What the book already has of one type, such as "5 in book · 16 pts". Nothing when it has none. */
 const inBookLabel = (bookGroup: BookGroup | undefined): string | undefined => {
@@ -27,6 +30,7 @@ const inBookLabel = (bookGroup: BookGroup | undefined): string | undefined => {
 /** Every card the mage can use, filtered and grouped by type, each with its cost and a stepper. */
 export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
   const { filters, setQuery, toggle, setScope, clearChips } = useCatalogFilters(mage);
+  const { view, setView } = useCatalogView();
 
   const legalCards = useMemo(() => filterCards(cards, EMPTY_FILTERS, mage), [mage]);
   const options = useMemo(() => filterOptions(legalCards), [legalCards]);
@@ -49,7 +53,9 @@ export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
         scope={scopeOf(filters, mage)}
         onScopeChange={setScope}
         onClearChips={clearChips}
-      />
+      >
+        <ViewSwitch view={view} onChange={setView} />
+      </FilterBar>
       {filtering ? (
         <p className={styles.count} data-empty={shownCards.length === 0}>
           Showing {shownCards.length} of {plural(legalCards.length, 'card', 'cards')}
@@ -62,18 +68,24 @@ export const Catalog = ({ book, mage, onAdd, onRemove }: BookPanelProps) => {
           count={group.items.length}
           meta={inBookLabel(bookGroupsByType.get(group.type))}
           defaultExpanded={filtering}
+          layout={view}
         >
-          {group.items.map((card) => (
-            <CardRow
-              key={card.id}
-              card={card}
-              count={book.counts[card.id] ?? 0}
-              points={cardCost(card, mage)}
-              blockedReason={addCopyBlockedReason(book, card, mage)}
-              onAdd={onAdd}
-              onRemove={onRemove}
-            />
-          ))}
+          {group.items.map((card) => {
+            const itemProps = {
+              card,
+              count: book.counts[card.id] ?? 0,
+              points: cardCost(card, mage),
+              blockedReason: addCopyBlockedReason(book, card, mage),
+              onAdd,
+              onRemove,
+            };
+
+            if (view === 'grid') {
+              return <CardTile key={card.id} {...itemProps} />;
+            }
+
+            return <CardRow key={card.id} {...itemProps} />;
+          })}
         </TypeSection>
       ))}
     </div>

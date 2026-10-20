@@ -125,6 +125,9 @@
   /* A card shown on its own, such as a mage stats card: the width of the exported images. */
   --card-zoom-width: 480px;
 
+  /* Narrowest card in the catalog grid above phone width, big enough to read the card. */
+  --card-tile-min-width: 220px;
+
   /* Width of a mage tile in the mage picker, above phone width. */
   --mage-tile-width: 180px;
 

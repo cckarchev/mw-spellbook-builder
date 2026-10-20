@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { EMPTY_FILTERS, filterCards } from '@/core/catalog/filterCards';
 import type { Book } from '@/core/rules/types';
@@ -13,6 +13,7 @@ const EMPTY_BOOK: Book = { mageId: wizard.id, counts: {} };
 
 beforeEach(() => {
   useCatalogFiltersStore.getState().reset();
+  localStorage.clear();
 });
 
 const renderCatalog = (book: Book = smallBook) => {
@@ -136,6 +137,76 @@ describe('Catalog rows', () => {
       'src',
       '/cards/d8562a1d.webp',
     );
+  });
+});
+
+describe('Catalog grid', () => {
+  const showGrid = async () => {
+    await userEvent.click(screen.getByRole('button', { name: 'Grid' }));
+  };
+
+  /** The grid tile of a card, found by its image. */
+  const tileOf = (name: string): HTMLElement => {
+    const tile = screen.getByRole('img', { name }).closest('li');
+
+    if (!tile) {
+      throw new Error(`No tile for ${name}`);
+    }
+
+    return tile;
+  };
+
+  it('starts as a list, with the view names as tooltips', () => {
+    renderCatalog();
+
+    expect(screen.getByRole('button', { name: 'Grid' })).toHaveAttribute('title', 'Grid');
+
+    expect(screen.getByRole('button', { name: 'List' })).toHaveAttribute('aria-pressed', 'true');
+  });
+
+  it('shows the cards as images with their cost', async () => {
+    renderCatalog();
+
+    await showGrid();
+    await openSection('Attack');
+
+    const tile = tileOf('Fireball');
+
+    expect(within(tile).getByRole('img')).toHaveAttribute('src', '/cards/d8562a1d.webp');
+    expect(tile).toHaveTextContent('4 pts');
+    expect(rowNames()).toEqual([]);
+  });
+
+  it('adds a copy with +', async () => {
+    const { onAdd } = renderCatalog();
+
+    await showGrid();
+    await openSection('Attack');
+    await userEvent.click(
+      within(tileOf('Fireball')).getByRole('button', { name: 'Add one Fireball' }),
+    );
+
+    expect(onAdd).toHaveBeenCalledWith('d8562a1d-6a95-4ca4-99aa-91c5ca769a33');
+  });
+
+  it('enlarges the card when its image is tapped', async () => {
+    renderCatalog();
+
+    await showGrid();
+    await openSection('Attack');
+    await userEvent.click(screen.getByRole('button', { name: 'Enlarge Fireball' }));
+
+    expect(screen.getByRole('dialog', { name: 'Fireball' })).toBeInTheDocument();
+  });
+
+  it('comes back as a grid the next time', async () => {
+    renderCatalog();
+
+    await showGrid();
+    cleanup();
+    renderCatalog();
+
+    expect(screen.getByRole('button', { name: 'Grid' })).toHaveAttribute('aria-pressed', 'true');
   });
 });
 

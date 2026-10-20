@@ -8,6 +8,8 @@ interface TypeSectionProps {
   meta?: string;
   /** Whether the rows start shown. */
   defaultExpanded?: boolean;
+  /** Rows one under another, or card tiles side by side. */
+  layout?: 'list' | 'grid';
   /** The rows, as list items. */
   children: ReactNode;
 }
@@ -18,6 +20,7 @@ export const TypeSection = ({
   count,
   meta,
   defaultExpanded = true,
+  layout = 'list',
   children,
 }: TypeSectionProps) => {
   const headingId = useId();
@@ -33,7 +36,11 @@ export const TypeSection = ({
         expanded={expanded}
         onToggle={() => setExpanded((isExpanded) => !isExpanded)}
       />
-      {expanded ? <ul className={styles.rows}>{children}</ul> : null}
+      {expanded ? (
+        <ul className={styles.rows} data-layout={layout}>
+          {children}
+        </ul>
+      ) : null}
     </section>
   );
 };

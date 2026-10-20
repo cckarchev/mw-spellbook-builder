@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { type ReactNode, useId, useState } from 'react';
 import { Button } from '@/components/button/Button';
 import { Segmented } from '@/components/segmented/Segmented';
 import { activeFilterCount, type CatalogFilters } from '@/core/catalog/filterCards';
@@ -17,6 +17,8 @@ interface FilterBarProps {
   scope: FilterScope | null;
   onScopeChange: (scope: FilterScope) => void;
   onClearChips: () => void;
+  /** More controls at the end of the search row, such as the view switch. */
+  children?: ReactNode;
 }
 
 const SCOPES: { value: FilterScope; label: string }[] = [
@@ -43,6 +45,7 @@ export const FilterBar = ({
   scope,
   onScopeChange,
   onClearChips,
+  children,
 }: FilterBarProps) => {
   const panelId = useId();
   const [open, setOpen] = useState(false);
@@ -71,6 +74,7 @@ export const FilterBar = ({
         <Button aria-expanded={open} aria-controls={panelId} onClick={togglePanel}>
           {toggleLabel}
         </Button>
+        {children}
       </div>
       {open ? (
         <div id={panelId} className={styles.panel}>

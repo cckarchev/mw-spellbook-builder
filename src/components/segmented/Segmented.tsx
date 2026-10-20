@@ -1,8 +1,11 @@
+import type { ReactNode } from 'react';
 import styles from './Segmented.module.css';
 
 interface SegmentedOption<T extends string> {
   value: T;
   label: string;
+  /** Shown in place of the label, which becomes the name and the tooltip. */
+  icon?: ReactNode;
 }
 
 interface SegmentedProps<T extends string> {
@@ -28,9 +31,11 @@ export const Segmented = <T extends string>({
         type="button"
         className={styles.segment}
         aria-pressed={option.value === value}
+        aria-label={option.icon ? option.label : undefined}
+        title={option.icon ? option.label : undefined}
         onClick={() => onChange(option.value)}
       >
-        {option.label}
+        {option.icon ?? option.label}
       </button>
     ))}
   </fieldset>

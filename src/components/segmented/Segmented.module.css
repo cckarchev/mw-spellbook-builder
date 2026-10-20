@@ -36,3 +36,17 @@
   color: var(--color-text-strong);
   background: var(--color-bg-accent-tint);
 }
+
+/* An icon segment is a square touch target, with the icon bigger than label text. */
+.segment:has(svg) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--touch-target);
+  font-size: var(--font-size-lg);
+}
+
+/* Inline, the icon sits on the text baseline and leaves room below it for descenders. */
+.segment svg {
+  display: block;
+}
