@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Button } from '@/components/button/Button';
 import { Dialog } from '@/components/dialog/Dialog';
 import { mageStatsImage } from '@/core/catalog/mageImage';
 import type { Mage } from '@/core/rules/types';
@@ -44,11 +43,14 @@ export const MageStats = ({ mage, label, className }: MageStatsProps) => {
         {label ? <span className={styles.label}>{label}</span> : null}
         <StatsIcon />
       </button>
-      <Dialog open={open} title={title} onClose={closeStats}>
+      <Dialog
+        open={open}
+        title={title}
+        onClose={closeStats}
+        closeButton={true}
+        className={styles.dialog}
+      >
         <img className={styles.image} src={image} alt={`${mage.name} stats card`} />
-        <div className={styles.actions}>
-          <Button onClick={closeStats}>Close</Button>
-        </div>
       </Dialog>
     </>
   );

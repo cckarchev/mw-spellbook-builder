@@ -121,6 +121,8 @@
   /* Rounded card corners, 3 mm on 63 x 88 mm, so the corner stays round at any size. */
   --card-radius: 4.8% / 3.4%;
   --card-full-width: 280px;
+  /* A card shown on its own, such as a mage stats card: the width of the exported images. */
+  --card-zoom-width: 480px;
 
   /* Width of a mage tile in the mage picker, above phone width. */
   --mage-tile-width: 180px;
