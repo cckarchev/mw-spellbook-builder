@@ -3,35 +3,24 @@ import { letterAnchorId } from '@/core/reference/anchors';
 import { useStickyHeight } from '@/features/shared/useStickyHeight';
 import { scrollBehavior, scrollToElement } from '../jumpToTerm';
 import { letterGroups } from '../sortedGlossary';
-import { useCurrentLetter } from './useCurrentLetter';
-import { useFoldOnScroll } from './useFoldOnScroll';
+import { useShowBackToTop } from './useShowBackToTop';
 
 export const LETTERS = letterGroups.map((group) => group.letter);
 
 const TOP = 0;
-const NO_HEIGHT = 0;
 
 /**
- * Scrolling the Quick reference: the sticky toolbar and the letters floating under it, which
- * fold on the way down, the current letter, letter jumps and the way back to the top.
+ * Scrolling the Quick reference: the sticky toolbar jumps land under, letter jumps and the way
+ * back to the top.
  */
 export const useReferenceScroll = (
   scroller: RefObject<HTMLElement | null>,
   searchRef: RefObject<HTMLInputElement | null>,
   query: string,
 ) => {
-  const showLetters = query === '';
   const { ref: toolbarRef, height: toolbarHeight } = useStickyHeight();
-  const { ref: lettersRef, height: measuredLetters } = useStickyHeight();
-  const lettersHeight = showLetters ? measuredLetters : NO_HEIGHT;
-  // Jumps land under the letters too, since they may unfold over the target.
-  const landingHeight = toolbarHeight + lettersHeight;
-  const { folded, showBackToTop } = useFoldOnScroll(scroller);
-  const currentLetter = useCurrentLetter(scroller, LETTERS, landingHeight);
-  const style = {
-    '--reference-toolbar-height': `${landingHeight}px`,
-    '--reference-letters-height': `${lettersHeight}px`,
-  } as CSSProperties;
+  const showBackToTop = useShowBackToTop(scroller);
+  const style = { '--reference-toolbar-height': `${toolbarHeight}px` } as CSSProperties;
 
   // A new search starts at its first result, and clearing it at the top of the list.
   const lastQueryRef = useRef(query);
@@ -62,11 +51,8 @@ export const useReferenceScroll = (
 
   return {
     toolbarRef,
-    lettersRef,
     style,
-    folded,
     showBackToTop,
-    currentLetter,
     jumpToLetter,
     backToTop,
   };

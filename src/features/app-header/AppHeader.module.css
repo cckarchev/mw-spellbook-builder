@@ -5,6 +5,11 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-sm);
+  /*
+   * The content alone holds a touch target, padding aside, so the header keeps its height
+   * without the Quick reference button too.
+   */
+  box-sizing: content-box;
   min-height: var(--touch-target);
   padding-block: var(--space-sm);
   border-bottom: var(--border-divider);

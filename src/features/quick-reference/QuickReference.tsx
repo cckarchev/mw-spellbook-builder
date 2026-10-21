@@ -73,16 +73,8 @@ export const QuickReference = () => {
             inputRef={searchRef}
             status={statusText(sortedGlossary.length, hasQuery, matches)}
           />
-          {hasQuery ? null : (
-            <LetterGrid
-              ref={scroll.lettersRef}
-              letters={LETTERS}
-              current={scroll.currentLetter}
-              folded={scroll.folded}
-              onJump={scroll.jumpToLetter}
-            />
-          )}
         </div>
+        {hasQuery ? null : <LetterGrid letters={LETTERS} onJump={scroll.jumpToLetter} />}
         <div className={styles.list}>
           {hasQuery ? (
             <ResultList results={results} typed={searched} query={query} onJump={jumpToTerm} />

@@ -1,10 +1,9 @@
 import { act, renderHook } from '@testing-library/react';
-import { BACK_TO_TOP_AFTER, FOLD_AFTER } from '@/core/reference/foldOnScroll';
-import { useFoldOnScroll } from './useFoldOnScroll';
+import { BACK_TO_TOP_AFTER, useShowBackToTop } from './useShowBackToTop';
 
 const STEP = 10;
-const FOLDED = FOLD_AFTER + STEP;
-const FURTHER = FOLDED + STEP;
+const FAR_DOWN = BACK_TO_TOP_AFTER + STEP;
+const FURTHER = FAR_DOWN + STEP;
 const FURTHER_STILL = FURTHER + STEP;
 
 const scrollTo = (element: HTMLElement, top: number) => {
@@ -14,27 +13,27 @@ const scrollTo = (element: HTMLElement, top: number) => {
   });
 };
 
-describe('useFoldOnScroll', () => {
-  it('renders again only when the fold or the back to top button change', () => {
+describe('useShowBackToTop', () => {
+  it('renders again only when the back to top button comes or goes', () => {
     const element = document.createElement('div');
     const scroller = { current: element };
     let renders = 0;
     const { result } = renderHook(() => {
       renders += 1;
 
-      return useFoldOnScroll(scroller);
+      return useShowBackToTop(scroller);
     });
     const rendersAtStart = renders;
 
-    scrollTo(element, FOLDED);
+    scrollTo(element, FAR_DOWN);
     scrollTo(element, FURTHER);
     scrollTo(element, FURTHER_STILL);
 
-    expect(result.current.folded).toBe(true);
+    expect(result.current).toBe(true);
     expect(renders).toBe(rendersAtStart + 1);
 
-    scrollTo(element, BACK_TO_TOP_AFTER + STEP);
+    scrollTo(element, STEP);
 
-    expect(result.current.showBackToTop).toBe(true);
+    expect(result.current).toBe(false);
   });
 });

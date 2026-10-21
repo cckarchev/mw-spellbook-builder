@@ -1,25 +1,8 @@
-/*
- * Floats under the toolbar instead of taking room in it, so folding never moves the list.
- * Folded, it slides up out of sight and out of the tab order.
- */
+/* At the top of the list, scrolling away with it under the toolbar. */
 .grid {
-  position: absolute;
-  top: 100%;
-  inset-inline: 0;
   /* The same space as under the search, on both sides of the divider. */
   padding-block: var(--space-sm);
-  background: var(--color-bg-base);
   border-bottom: var(--border-divider);
-  transition:
-    transform var(--duration-fast),
-    opacity var(--duration-fast),
-    visibility var(--duration-fast);
-}
-
-.grid[data-folded] {
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(calc(-1 * var(--space-md)));
 }
 
 /*
@@ -49,8 +32,7 @@
     border-color var(--duration-fast);
 }
 
-.letter:hover,
-.letter[aria-current='true'] {
+.letter:hover {
   color: var(--color-accent);
   border-color: var(--color-border-accent);
 }

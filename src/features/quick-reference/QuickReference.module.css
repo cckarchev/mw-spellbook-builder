@@ -20,7 +20,7 @@
   padding-inline: var(--page-gutter);
 }
 
-/* Holds the letters, which float just under it. */
+/* The title and the search, always in reach while the list scrolls under them. */
 .toolbar {
   position: sticky;
   top: 0;
@@ -58,8 +58,6 @@
 .list {
   max-width: var(--reading-width);
   margin-inline: auto;
-  /* Room for the letters floating over the top of the list. */
-  padding-top: var(--reference-letters-height);
   padding-bottom: var(--space-xl);
 }
 

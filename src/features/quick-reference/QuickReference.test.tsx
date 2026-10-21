@@ -4,13 +4,13 @@ import { MemoryRouter, useLocation, useNavigationType } from 'react-router-dom';
 import { App } from '@/App';
 import { groupByType } from '@/core/catalog/groupByType';
 import { letterAnchorId, termAnchorId } from '@/core/reference/anchors';
-import { BACK_TO_TOP_AFTER } from '@/core/reference/foldOnScroll';
 import { glossary } from '@/data/glossary';
 import { APP_NAME } from '@/features/app-header/AppHeader';
 import { useOpenTermStore } from '@/features/shared/glossary-text/useOpenTermStore';
 import { smallSpellbook } from '@/features/shared/testSpellbooks';
 import { useSpellbookStore } from '@/store/useSpellbookStore';
 import { resetAppState } from '@/test/renderAppAt';
+import { BACK_TO_TOP_AFTER } from './reference-scroll/useShowBackToTop';
 import { letterGroups } from './sortedGlossary';
 
 // Counts the catalog renders behind the Quick reference, through a call each one makes.
