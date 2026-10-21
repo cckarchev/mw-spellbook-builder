@@ -107,8 +107,24 @@ describe('Catalog rows', () => {
 
     await userEvent.click(add);
 
-    expect(within(row).getByRole('status')).toHaveTextContent('Max 4 copies');
+    expect(screen.getByRole('status')).toHaveTextContent('Max 4 copies');
     expect(onAdd).not.toHaveBeenCalled();
+  });
+
+  it('hides why + is blocked on a tap elsewhere', async () => {
+    renderCatalog({
+      ...smallSpellbook,
+      counts: { ...smallSpellbook.counts, [LIGHTNING_BOLT]: BOLT_LIMIT },
+    });
+
+    await openSection('Attack');
+
+    const row = rowOf('Lightning Bolt');
+
+    await userEvent.click(within(row).getByRole('button', { name: 'Add one Lightning Bolt' }));
+    await userEvent.click(document.body);
+
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 
   it('adds a copy with +', async () => {

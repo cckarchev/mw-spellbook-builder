@@ -3,17 +3,17 @@ import { type Placement, placePopover } from '@/core/layout/placePopover';
 
 // In px, matching --space-xs and --space-xxs.
 const VIEWPORT_GUTTER = 8;
-const TERM_GAP = 4;
+const ANCHOR_GAP = 4;
 
 interface PopoverRefs {
-  termRef: RefObject<HTMLButtonElement | null>;
+  anchorRef: RefObject<HTMLButtonElement | null>;
   popoverRef: RefObject<HTMLDivElement | null>;
 }
 
-/** Where the open popover goes, kept next to its term while the page scrolls or resizes. */
+/** Where the open popover goes, kept next to its button while the page scrolls or resizes. */
 export const usePlacement = (
   isOpen: boolean,
-  { termRef, popoverRef }: PopoverRefs,
+  { anchorRef, popoverRef }: PopoverRefs,
 ): Placement | null => {
   const [placement, setPlacement] = useState<Placement | null>(null);
 
@@ -25,20 +25,20 @@ export const usePlacement = (
     }
 
     const place = () => {
-      const term = termRef.current;
+      const anchor = anchorRef.current;
       const popover = popoverRef.current;
 
-      if (!(term && popover)) {
+      if (!(anchor && popover)) {
         return;
       }
 
       setPlacement(
         placePopover({
-          anchor: term.getBoundingClientRect(),
+          anchor: anchor.getBoundingClientRect(),
           popover: { width: popover.offsetWidth, height: popover.offsetHeight },
           viewport: { width: window.innerWidth, height: window.innerHeight },
           gutter: VIEWPORT_GUTTER,
-          gap: TERM_GAP,
+          gap: ANCHOR_GAP,
         }),
       );
     };
@@ -51,7 +51,7 @@ export const usePlacement = (
       window.removeEventListener('resize', place);
       window.removeEventListener('scroll', place, true);
     };
-  }, [isOpen, termRef, popoverRef]);
+  }, [isOpen, anchorRef, popoverRef]);
 
   return placement;
 };

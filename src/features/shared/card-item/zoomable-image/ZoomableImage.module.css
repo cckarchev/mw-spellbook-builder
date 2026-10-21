@@ -21,3 +21,7 @@
   background: var(--color-bg-tint);
   border-radius: var(--card-radius);
 }
+
+.button[data-landscape='true'] .image {
+  aspect-ratio: var(--card-aspect-landscape);
+}

@@ -11,6 +11,7 @@ import { mages } from '@/data/mages';
 import { applyCorrections, CARD_CORRECTIONS } from './lib/cardCorrections';
 import { buildExpansionMap, type LegacySet } from './lib/expansions';
 import { frameBox } from './lib/frameBox';
+import { applyGlossaryCorrections, GLOSSARY_CORRECTIONS } from './lib/glossaryCorrections';
 import { normalizeCard } from './lib/normalizeCard';
 import { parseCodexXml } from './lib/readCodex';
 import { parseSetXml, readModuleSets } from './lib/readModule';
@@ -19,6 +20,7 @@ import {
   readOfficialDecks,
   resolveOfficialSpellbook,
 } from './lib/readOfficialSpellbooks';
+import { isLandscape } from './lib/whiteFrame';
 
 // Reads the OCTGN Mage Wars module, the community image pack and the Codex from raw-input/
 // and writes src/data/cards.json, src/data/glossary.json, src/data/officialSpellbooks.json
@@ -178,8 +180,11 @@ const assertUniqueCodes = (cards: readonly Card[]): void => {
 const imageFile = (cardId: string): string =>
   path.join(PUBLIC_DIR, cardImagePath(cardCode(cardId)));
 
-/** Cuts the white or transparent frame some pack images have, then resizes to webp. */
-const writeFramelessImage = async (data: Uint8Array, target: string): Promise<void> => {
+/**
+ * Cuts the white or transparent frame some pack images have, then resizes to webp.
+ * Returns whether the card is landscape.
+ */
+const writeFramelessImage = async (data: Uint8Array, target: string): Promise<boolean> => {
   const box = await frameBox(data);
 
   await sharp(data)
@@ -187,19 +192,22 @@ const writeFramelessImage = async (data: Uint8Array, target: string): Promise<vo
     .resize({ width: IMAGE_WIDTH })
     .webp({ quality: IMAGE_QUALITY })
     .toFile(target);
+
+  return isLandscape(box);
 };
 
 /**
  * Converts the pack image of every wanted card id, rewriting existing ones so a change in
- * the conversion reaches them all. Returns the ids that got an image.
+ * the conversion reaches them all. Returns the ids that got an image, each with whether it is
+ * landscape.
  */
-const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Set<string>> => {
+const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Map<string, boolean>> => {
   await mkdir(IMAGE_DIR, { recursive: true });
 
   const entries = unzipSync(await readFile(IMAGE_PACK_PATH), {
     filter: (file) => wantedIds.has(IMAGE_ENTRY_PATTERN.exec(file.name)?.[1] ?? ''),
   });
-  const written = new Set<string>();
+  const written = new Map<string, boolean>();
 
   for (const [name, data] of Object.entries(entries)) {
     const id = IMAGE_ENTRY_PATTERN.exec(name)?.[1] ?? '';
@@ -209,13 +217,15 @@ const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Set<string>>
       continue;
     }
 
+    let landscape: boolean;
+
     try {
-      await writeFramelessImage(data, target);
+      landscape = await writeFramelessImage(data, target);
     } catch (error) {
       throw new Error(`Could not convert the image of card ${id}`, { cause: error });
     }
 
-    written.add(id);
+    written.set(id, landscape);
   }
 
   return written;
@@ -246,7 +256,9 @@ const readGlossary = (): GlossaryEntry[] => {
     maxBuffer: CODEX_MAX_BUFFER,
   });
 
-  return parseCodexXml(xml);
+  const entries = parseCodexXml(xml);
+
+  return applyGlossaryCorrections(entries, GLOSSARY_CORRECTIONS);
 };
 
 const main = async (): Promise<void> => {
@@ -269,10 +281,11 @@ const main = async (): Promise<void> => {
     .filter((id): id is string => id !== null);
   const withImage = await writeImages(new Set([...cards.map((card) => card.id), ...mageCardIds]));
 
-  const removed = await removeStaleImages(withImage);
+  const removed = await removeStaleImages(new Set(withImage.keys()));
 
   for (const card of cards) {
     card.image = withImage.has(card.id) ? cardImagePath(card.code) : null;
+    card.landscape = withImage.get(card.id) ?? false;
   }
 
   await writeJson(CARDS_JSON_PATH, cards);

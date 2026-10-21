@@ -36,7 +36,12 @@ export const CardDetails = ({ card }: { card: Card }) => {
   return (
     <div className={styles.expanded}>
       {card.image ? (
-        <ZoomableImage name={card.name} image={card.image} className={styles.imageButton} />
+        <ZoomableImage
+          name={card.name}
+          image={card.image}
+          landscape={card.landscape}
+          className={styles.imageButton}
+        />
       ) : null}
       <div className={styles.text}>
         <dl className={styles.facts}>

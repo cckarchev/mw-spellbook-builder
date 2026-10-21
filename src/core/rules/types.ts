@@ -53,6 +53,8 @@ export interface Card {
   abilityBar: string;
   /** Public path such as '/cards/<code>.webp'. */
   image: string | null;
+  /** Printed wider than tall, as walls are. */
+  landscape: boolean;
 }
 
 export interface PartialTraining {

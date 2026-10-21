@@ -22,12 +22,24 @@
 }
 
 .art {
+  width: 100%;
+}
+
+/* The card itself, so the points sit on its corner even when it is centered in .art. */
+.frame {
   position: relative;
   width: 100%;
 }
 
 .image {
   width: 100%;
+}
+
+/* A sideways card sits centered in an upright card's space, so the grid rows stay even. */
+.art[data-landscape='true'] {
+  display: flex;
+  align-items: center;
+  aspect-ratio: var(--card-aspect);
 }
 
 /* A card without art still takes a card's shape, with its name on it. */

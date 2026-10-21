@@ -8,13 +8,20 @@ import styles from './CardTile.module.css';
 export const CardTile = memo(
   ({ card, count, points, blockedReason, problem = null, onAdd, onRemove }: CardEntryProps) => (
     <li className={styles.tile} data-in-spellbook={count > 0} data-problem={problem !== null}>
-      <div className={styles.art}>
-        {card.image ? (
-          <ZoomableImage name={card.name} image={card.image} className={styles.image} />
-        ) : (
-          <span className={styles.placeholder}>{card.name}</span>
-        )}
-        <span className={styles.points}>{points} pts</span>
+      <div className={styles.art} data-landscape={card.landscape}>
+        <div className={styles.frame}>
+          {card.image ? (
+            <ZoomableImage
+              name={card.name}
+              image={card.image}
+              landscape={card.landscape}
+              className={styles.image}
+            />
+          ) : (
+            <span className={styles.placeholder}>{card.name}</span>
+          )}
+          <span className={styles.points}>{points} pts</span>
+        </div>
       </div>
       <CardStepper
         card={card}

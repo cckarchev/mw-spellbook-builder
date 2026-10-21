@@ -1,4 +1,4 @@
-import { type RawImage, whiteFrameBox } from './whiteFrame';
+import { isLandscape, type RawImage, whiteFrameBox } from './whiteFrame';
 
 const CHANNELS = 4;
 const FULL = 255;
@@ -105,5 +105,15 @@ describe('whiteFrameBox', () => {
     const image = paint(SIZE, SIZE, (_x, y) => (y === 0 ? LIGHT_ART : ART));
 
     expect(whiteFrameBox(image)).toEqual({ left: 0, top: 0, width: SIZE, height: SIZE });
+  });
+});
+
+describe('isLandscape', () => {
+  const portraitBox = { left: 0, top: 0, width: 480, height: 652 };
+  const landscapeBox = { left: 0, top: 0, width: 480, height: 344 };
+
+  it('tells a wall card, wider than tall, from a portrait one', () => {
+    expect(isLandscape(landscapeBox)).toBe(true);
+    expect(isLandscape(portraitBox)).toBe(false);
   });
 });

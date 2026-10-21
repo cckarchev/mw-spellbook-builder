@@ -6,12 +6,21 @@ interface CardZoomProps {
   title: string;
   image: string;
   alt: string;
+  /** A wall card, printed sideways. */
+  landscape?: boolean;
   onClose: () => void;
 }
 
 /** A card image at its full size, in a dialog closed with the X in its corner. */
-export const CardZoom = ({ open, title, image, alt, onClose }: CardZoomProps) => (
+export const CardZoom = ({
+  open,
+  title,
+  image,
+  alt,
+  landscape = false,
+  onClose,
+}: CardZoomProps) => (
   <Dialog open={open} title={title} onClose={onClose} closeButton={true} className={styles.dialog}>
-    <img className={styles.image} src={image} alt={alt} />
+    <img className={styles.image} src={image} alt={alt} data-landscape={landscape} />
   </Dialog>
 );

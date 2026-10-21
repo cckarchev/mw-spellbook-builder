@@ -135,3 +135,6 @@ export const whiteFrameBox = (image: RawImage): CropBox => {
 
   return cutEdges(image, box, framedSides);
 };
+
+/** Whether a crop box is wider than tall, as wall cards are printed. */
+export const isLandscape = (box: CropBox): boolean => box.width > box.height;

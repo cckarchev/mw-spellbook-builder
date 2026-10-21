@@ -115,5 +115,6 @@ export const normalizeCard = (
     attackBar: property('Attack Bar'),
     abilityBar: property('Ability Bar'),
     image: null,
+    landscape: false,
   };
 };

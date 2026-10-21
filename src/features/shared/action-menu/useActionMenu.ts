@@ -1,5 +1,5 @@
 import { type KeyboardEvent, useCallback, useEffect, useId, useRef, useState } from 'react';
-import { useDismiss } from '../useDismiss';
+import { useDismiss } from '@/components/popover/useDismiss';
 
 const FIRST = 0;
 const ITEM_SELECTOR = '[role="menuitem"]';

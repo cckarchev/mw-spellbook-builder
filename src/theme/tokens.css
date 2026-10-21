@@ -135,9 +135,13 @@
   /* Card art: the full card when a row opens, and the mage tiles.
      Mage Wars cards are 63 x 88 mm. */
   --card-aspect: 63 / 88;
+  /* Walls are printed sideways. */
+  --card-aspect-landscape: 88 / 63;
   /* Rounded card corners, 3 mm on 63 x 88 mm, so the corner stays round at any size. */
   --card-radius: 4.8% / 3.4%;
   --card-full-width: 280px;
+  /* A sideways card as tall as an upright one. */
+  --card-full-width-landscape: calc(var(--card-full-width) / (var(--card-aspect)));
   /* A card shown on its own, such as a mage stats card: the width of the exported images. */
   --card-zoom-width: 480px;
 

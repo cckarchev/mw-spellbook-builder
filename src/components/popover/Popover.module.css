@@ -1,0 +1,25 @@
+/* As wide as its text, up to the popup width: a short message stays small. */
+.popover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-popover);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+  width: max-content;
+  max-width: min(var(--popup-width), var(--popup-max-width));
+  padding: var(--space-sm);
+  color: var(--color-text-body);
+  font-size: var(--font-size-sm);
+  line-height: var(--leading-body);
+  background: var(--color-bg-surface);
+  border: var(--border-default);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-panel);
+}
+
+/* Measured first, then shown in place. */
+.popover[data-placed='false'] {
+  visibility: hidden;
+}

@@ -79,6 +79,13 @@
   width: var(--card-full-width);
 }
 
+/* A sideways card gives up width to the text on a narrow screen, down to an upright card's width. */
+.imageButton[data-landscape='true'] {
+  flex-shrink: 1;
+  width: var(--card-full-width-landscape);
+  min-width: var(--card-full-width);
+}
+
 .text {
   display: flex;
   flex-direction: column;

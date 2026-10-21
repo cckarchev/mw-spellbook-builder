@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useCallback, useId, useRef, useState } from 'react';
+import { Popover } from '@/components/popover/Popover';
 import styles from './Stepper.module.css';
 
 interface StepperProps {
@@ -16,7 +17,7 @@ const LIMIT_REASON = 'Copy limit reached';
 
 /**
  * A − value + control. A blocked + stays tappable (aria-disabled, not disabled),
- * so a tap on a phone can show why it is blocked.
+ * so a tap on a phone can show why it is blocked, in a popover that leaves the page in place.
  */
 export const Stepper = ({
   value,
@@ -27,10 +28,14 @@ export const Stepper = ({
   disabledReason,
 }: StepperProps) => {
   const [showReason, setShowReason] = useState(false);
+  const reasonId = useId();
+  const incrementRef = useRef<HTMLButtonElement>(null);
+  const hideReason = useCallback(() => setShowReason(false), []);
 
   const isAtLimit = value >= max;
   const blockedReason = disabledReason ?? (isAtLimit ? LIMIT_REASON : null);
   const isBlocked = blockedReason !== null;
+  const isReasonShown = isBlocked && showReason;
 
   const handleIncrement = () => {
     if (isBlocked) {
@@ -44,33 +49,37 @@ export const Stepper = ({
 
   return (
     <div className={styles.stepper}>
-      <div className={styles.controls}>
-        <button
-          type="button"
-          className={styles.step}
-          aria-label={`Remove one ${label}`}
-          disabled={value === 0}
-          onClick={onDecrement}
-        >
-          −
-        </button>
-        <span className={styles.value}>{value}</span>
-        <button
-          type="button"
-          className={styles.step}
-          aria-label={`Add one ${label}`}
-          aria-disabled={isBlocked}
-          title={blockedReason ?? undefined}
-          onClick={handleIncrement}
-        >
-          +
-        </button>
-      </div>
-      {isBlocked && showReason ? (
-        <span role="status" className={styles.reason}>
-          {blockedReason}
-        </span>
-      ) : null}
+      <button
+        type="button"
+        className={styles.step}
+        aria-label={`Remove one ${label}`}
+        disabled={value === 0}
+        onClick={onDecrement}
+      >
+        −
+      </button>
+      <span className={styles.value}>{value}</span>
+      <button
+        ref={incrementRef}
+        type="button"
+        className={styles.step}
+        aria-label={`Add one ${label}`}
+        aria-disabled={isBlocked}
+        aria-describedby={isReasonShown ? reasonId : undefined}
+        title={blockedReason ?? undefined}
+        onClick={handleIncrement}
+      >
+        +
+      </button>
+      <Popover
+        id={reasonId}
+        isOpen={isReasonShown}
+        anchorRef={incrementRef}
+        role="status"
+        onClose={hideReason}
+      >
+        {blockedReason}
+      </Popover>
     </div>
   );
 };
