@@ -657,7 +657,7 @@
   },
   {
     "term": "Stagger",
-    "definition": "a Condition that disorients or knocks a Creature off balance. Minor Creatures cannot attack or Guard while Staggered. If they have a Guard marker they lose it, and they cannot choose the Guard action. Major Creatures roll 2 less dice when they make any attack for each Stagger Condition on them (but never less than 1 die). Remove all Stagger Conditions at the end of the Creature’s next activation. If a Creature receives Stagger during its current activation, it must wait until the end of its next activation to remove it. Stagger has a Removal Cost of 2."
+    "definition": "A Condition that disorients or knocks a Creature off balance. Minor Creatures cannot attack or Guard while Staggered. If they have a Guard marker they lose it, and they cannot choose the Guard action. Major Creatures roll 2 less dice when they make any attack for each Stagger Condition on them (but never less than 1 die). Remove all Stagger Conditions at the end of the Creature’s next activation. If a Creature receives Stagger during its current activation, it must wait until the end of its next activation to remove it. Stagger has a Removal Cost of 2."
   },
   {
     "term": "Strongest",

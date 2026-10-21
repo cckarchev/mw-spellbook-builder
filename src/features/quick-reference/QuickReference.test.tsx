@@ -400,3 +400,28 @@ describe('QuickReference term links', () => {
     expect(screen.getByText('Link copied')).toBeInTheDocument();
   });
 });
+
+describe('QuickReference bulleted definitions', () => {
+  it('lists the bulleted items under the intro, highlighting a search match inside one', async () => {
+    renderAt('/reference');
+    await search('deactivate this glyph and gain');
+
+    const glyphs = document.getElementById(termAnchorId('Elemental Glyphs (Elementalist)'));
+
+    if (!glyphs) {
+      throw new Error('missing entry');
+    }
+
+    const items = within(glyphs).getAllByRole('listitem');
+
+    expect(items.map((item) => item.textContent?.split(':')[0])).toEqual([
+      'Air',
+      'Earth',
+      'Fire',
+      'Water',
+    ]);
+    expect(
+      within(items[1] as HTMLElement).getByText(/deactivate this Glyph and gain/),
+    ).toHaveProperty('tagName', 'MARK');
+  });
+});

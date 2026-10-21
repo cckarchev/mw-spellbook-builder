@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useRef } from 'react';
 import { Popover } from '@/components/popover/Popover';
 import type { GlossaryEntry } from '@/core/glossary/types';
+import { Definition } from './Definition';
 import styles from './GlossaryText.module.css';
 import { useOpenTermStore } from './useOpenTermStore';
 
@@ -43,7 +44,7 @@ export const GlossaryTerm = ({ text, entry }: GlossaryTermProps) => {
         onClose={closeThis}
       >
         <strong className={styles.popoverTerm}>{entry.term}</strong>
-        <p>{entry.definition}</p>
+        <Definition text={entry.definition} />
       </Popover>
     </>
   );
