@@ -89,6 +89,19 @@ describe('Catalog listing', () => {
 
     expect(rowNames()).toEqual(['Fireball', 'Twin Fireball']);
   });
+
+  it('clears the search from the clear button', async () => {
+    renderCatalog();
+
+    const search = screen.getByRole('searchbox', { name: 'Search cards' });
+
+    await userEvent.click(search);
+    await userEvent.paste('fireball');
+    await userEvent.click(screen.getByRole('button', { name: 'Clear search' }));
+
+    expect(search).toHaveValue('');
+    expect(search).toHaveFocus();
+  });
 });
 
 describe('Catalog rows', () => {

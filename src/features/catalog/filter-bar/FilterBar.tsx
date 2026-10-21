@@ -1,5 +1,6 @@
 import { type ReactNode, useId, useState } from 'react';
 import { Button } from '@/components/button/Button';
+import { SearchInput } from '@/components/search-input/SearchInput';
 import { Segmented, type SegmentedOption } from '@/components/segmented/Segmented';
 import { activeFilterCount, type CatalogFilters } from '@/core/catalog/filterCards';
 import type { FilterOptions } from '@/core/catalog/filterOptions';
@@ -63,13 +64,13 @@ export const FilterBar = ({
   return (
     <div className={styles.bar}>
       <div className={styles.controls}>
-        <input
-          type="search"
+        <SearchInput
+          size="small"
           className={styles.search}
           placeholder="Search name or text"
           aria-label="Search cards"
           value={filters.query}
-          onChange={(event) => onQueryChange(event.target.value)}
+          onChange={onQueryChange}
         />
         <Button size="small" aria-expanded={open} aria-controls={panelId} onClick={togglePanel}>
           {toggleLabel}
@@ -80,13 +81,13 @@ export const FilterBar = ({
         <div id={panelId} className={styles.panel}>
           <Segmented label="Show" options={SCOPES} value={scope} onChange={onScopeChange} />
           <div className={styles.controls}>
-            <input
-              type="search"
+            <SearchInput
+              size="small"
               className={styles.search}
               placeholder="Find a filter"
               aria-label="Find a filter"
               value={optionQuery}
-              onChange={(event) => setOptionQuery(event.target.value)}
+              onChange={setOptionQuery}
             />
             {activeCount > 0 ? <Button onClick={onClearChips}>Clear</Button> : null}
           </div>
