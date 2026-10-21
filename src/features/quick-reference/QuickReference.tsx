@@ -1,4 +1,4 @@
-import { useId, useMemo, useRef } from 'react';
+import { useDeferredValue, useId, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from '@/components/button/Button';
 import { foldQuery } from '@/core/reference/foldText';
@@ -28,7 +28,9 @@ const TITLE = 'Quick reference';
 export const QuickReference = () => {
   const { close } = useReferenceRoute();
   const [typed, setTyped] = useReferenceQuery();
-  const query = foldQuery(typed);
+  // The list catches up with the field when the phone has time, so typing never waits on it.
+  const searched = useDeferredValue(typed);
+  const query = foldQuery(searched);
   const hasQuery = query !== '';
   const results = useMemo(() => searchGlossary(sortedGlossary, query), [query]);
   const matches = results.byName.length + results.byDefinition.length;
@@ -81,7 +83,7 @@ export const QuickReference = () => {
         </div>
         <div className={styles.list}>
           {hasQuery ? (
-            <ResultList results={results} typed={typed} query={query} onJump={jumpToTerm} />
+            <ResultList results={results} typed={searched} query={query} onJump={jumpToTerm} />
           ) : (
             <EntryList groups={letterGroups} onJump={jumpToTerm} />
           )}

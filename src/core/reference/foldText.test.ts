@@ -1,7 +1,7 @@
-import { foldQuery, foldText } from './foldText';
+import { foldedOnce, foldQuery, foldText } from './foldText';
 
 const PRECOMPOSED = 'Écho';
-const DECOMPOSED = 'Écho';
+const DECOMPOSED = 'E\u0301cho';
 // The accent mark of the decomposed text, which folds away.
 const ACCENT_AT = 1;
 
@@ -23,6 +23,22 @@ describe('foldText', () => {
   it('reads a curly apostrophe as a straight one', () => {
     expect(foldText('Siren’s').folded).toBe("siren's");
   });
+
+  it('folds plain and accented letters in the same text', () => {
+    const text = 'Burn Écho';
+
+    expect(foldText(text)).toEqual({ folded: 'burn echo', origins: everyIndex(text) });
+  });
+});
+
+describe('foldedOnce', () => {
+  it('folds like foldText', () => {
+    expect(foldedOnce(PRECOMPOSED)).toEqual(foldText(PRECOMPOSED));
+  });
+
+  it('folds each text only once', () => {
+    expect(foldedOnce('Flame')).toBe(foldedOnce('Flame'));
+  });
 });
 
 describe('foldQuery', () => {
@@ -32,5 +48,10 @@ describe('foldQuery', () => {
 
   it('trims and folds the query', () => {
     expect(foldQuery('  Écho ')).toBe('echo');
+  });
+
+  it('waits for a second letter, since one matches nearly every term', () => {
+    expect(foldQuery(' a ')).toBe('');
+    expect(foldQuery('Ki')).toBe('ki');
   });
 });

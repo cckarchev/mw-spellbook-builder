@@ -1,4 +1,4 @@
-import { foldText } from './foldText';
+import { foldedOnce } from './foldText';
 
 /** A stretch of a text, from `start` up to but not including `end`. */
 export interface TextRange {
@@ -14,7 +14,7 @@ export const matchRanges = (text: string, query: string): TextRange[] => {
     return [];
   }
 
-  const { folded, origins } = foldText(text);
+  const { folded, origins } = foldedOnce(text);
   const ranges: TextRange[] = [];
   let hit = folded.indexOf(query);
 

@@ -221,7 +221,7 @@ describe('QuickReference search details', () => {
     const dialog = openDialog();
 
     Object.defineProperty(dialog, 'scrollTop', { value: SCROLLED_FAR, writable: true });
-    await search('b');
+    await search('bu');
 
     expect(dialog.scrollTop).toBe(0);
   });

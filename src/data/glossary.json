@@ -173,7 +173,7 @@
   },
   {
     "term": "Destroyed",
-    "definition": "When an Object is Destroyed, everything attached to it is Destroyed and Discarded. This includes damage, Condition markers, tokens, Enchantments, and Conjurations. Ability markers are returned to the Mage. Then, the Object is placed in its owner’s Discard pile. The Object may then resolve a “Destroyed” effect. For example, a Plague Zombie will eXplode. Some effects replace being Discarded such as Cantrip or Obliterate."
+    "definition": "When an Object is Destroyed, everything attached to it is Destroyed and Discarded. This includes damage, Condition markers, tokens, Enchantments, and Conjurations. Ability markers are returned to the Mage. Then, the Object is placed in its owner’s Discard pile. The Object may then resolve a “Destroyed” effect. For example, a Plague Zombie will explode. Some effects replace being Discarded such as Cantrip or Obliterate."
   },
   {
     "term": "Deployment Phase",

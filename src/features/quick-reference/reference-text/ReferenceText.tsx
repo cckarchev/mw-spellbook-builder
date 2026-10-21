@@ -1,11 +1,8 @@
-import { useMemo } from 'react';
-import { splitByTerms } from '@/core/glossary/findTerms';
 import type { GlossaryEntry } from '@/core/glossary/types';
-import { linkOnce } from '@/core/reference/linkOnce';
 import { markSegments } from '@/core/reference/markSegments';
 import { matchRanges } from '@/core/reference/matchRanges';
-import { glossaryIndex } from '@/data/glossary';
 import { MarkedText } from '../marked-text/MarkedText';
+import { linkedSegments } from './linkedSegments';
 import styles from './ReferenceText.module.css';
 
 interface ReferenceTextProps {
@@ -18,10 +15,7 @@ interface ReferenceTextProps {
 
 /** A definition whose terms jump to their own entries, with the search matches highlighted. */
 export const ReferenceText = ({ entry, query, onJump }: ReferenceTextProps) => {
-  const segments = useMemo(
-    () => linkOnce(splitByTerms(entry.definition, glossaryIndex), entry),
-    [entry],
-  );
+  const segments = linkedSegments(entry);
   const marked = markSegments(segments, matchRanges(entry.definition, query));
   let offset = 0;
 

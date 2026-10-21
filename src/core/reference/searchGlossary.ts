@@ -1,12 +1,12 @@
 import type { GlossaryEntry } from '@/core/glossary/types';
-import { foldText } from './foldText';
+import { foldedOnce } from './foldText';
 
 export interface GlossarySearch {
   byName: GlossaryEntry[];
   byDefinition: GlossaryEntry[];
 }
 
-const folded = (text: string): string => foldText(text).folded;
+const folded = (text: string): string => foldedOnce(text).folded;
 
 /**
  * Entries matching an already folded query: names that start with it, then names that contain
