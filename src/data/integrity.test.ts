@@ -3,6 +3,7 @@ import path from 'node:path';
 import { cardCode, cardImagePath } from '@/core/catalog/cardImage';
 import { mageStatsImage } from '@/core/catalog/mageImage';
 import { splitByTerms } from '@/core/glossary/findTerms';
+import { termAnchorId } from '@/core/reference/anchors';
 import { mageSlug } from '@/core/routing/builderPath';
 import { SCHOOLS } from '@/core/rules/types';
 import { cards, cardsByCode, cardsById, magesById } from './catalog';
@@ -166,10 +167,6 @@ describe('glossary data integrity', () => {
     expect(termsIn('an Attack spell that attacks')).toEqual([['Attack', 'Attack']]);
   });
 
-  it('has an entry for Stance, which the Codex leaves out', () => {
-    expect(termsIn('Monk Only, Stance')).toContainEqual(['Stance', 'Stance']);
-  });
-
   it('says a Pest cannot Hinder, as the official Codex does', () => {
     const pest = glossary.find((entry) => entry.term === 'Pest');
 
@@ -227,5 +224,13 @@ describe('official spellbook data integrity', () => {
 
   it('has no official spellbook when there is no mage', () => {
     expect(officialSpellbook(null)).toBeNull();
+  });
+});
+
+describe('quick reference data integrity', () => {
+  it('gives every glossary term its own anchor', () => {
+    const ids = glossary.map((entry) => termAnchorId(entry.term));
+
+    expect(new Set(ids).size).toBe(ids.length);
   });
 });

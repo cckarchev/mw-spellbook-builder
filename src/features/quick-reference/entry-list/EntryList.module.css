@@ -1,0 +1,25 @@
+/* A wide gap and a band per letter, so each letter's terms read as a section of their own. */
+.group {
+  margin-top: var(--space-lg);
+}
+
+.group + .group {
+  margin-top: var(--space-xxl);
+}
+
+/* Lands under the sticky toolbar when a letter is jumped to. */
+.letter {
+  scroll-margin-top: var(--reference-toolbar-height);
+  padding: var(--space-xxs) var(--space-sm);
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: normal;
+  line-height: var(--leading-tight);
+  color: var(--color-accent);
+  background: var(--color-bg-tint);
+  border-left: var(--border-width-strong) solid var(--color-accent);
+}
+
+.letter:focus {
+  outline: none;
+}

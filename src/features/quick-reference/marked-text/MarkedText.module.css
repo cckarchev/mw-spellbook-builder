@@ -1,0 +1,5 @@
+.mark {
+  color: var(--color-text-strong);
+  background: var(--color-bg-accent-tint);
+  box-shadow: 0 var(--border-width) 0 var(--color-border-accent);
+}

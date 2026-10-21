@@ -1,0 +1,44 @@
+/* Each group opens with a band, so the name matches and the definition matches read apart. */
+.group {
+  margin-top: var(--space-lg);
+}
+
+.group + .group {
+  margin-top: var(--space-xl);
+}
+
+.heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-strong);
+  background: var(--color-bg-tint);
+  border-left: var(--border-width-strong) solid var(--color-accent);
+}
+
+/* Lowercase and plain, so it reads as a count rather than part of the title. */
+.count {
+  flex: none;
+  font-weight: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--color-text-dim);
+}
+
+.empty {
+  margin-top: var(--space-xl);
+  line-height: var(--leading-body);
+  color: var(--color-text-body);
+  text-align: center;
+}
+
+.emptyTitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-strong);
+}

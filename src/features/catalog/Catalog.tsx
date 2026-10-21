@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import { EMPTY_FILTERS, filterCards, isFiltering } from '@/core/catalog/filterCards';
 import { filterOptions } from '@/core/catalog/filterOptions';
 import { scopeOf } from '@/core/catalog/filterScope';
@@ -26,8 +26,11 @@ const inSpellbookLabel = (spellbookGroup: SpellbookGroup | undefined): string | 
   return `${spellbookGroup.copies} in spellbook · ${spellbookGroup.points} pts`;
 };
 
-/** Every card the mage can use, filtered and grouped by type, each with its cost and a stepper. */
-export const Catalog = ({ spellbook, mage, onAdd, onRemove }: BuilderPanelProps) => {
+/**
+ * Every card the mage can use, filtered and grouped by type, each with its cost and a stepper.
+ * Memoized so the builder can render again under the Quick reference without redoing the list.
+ */
+export const Catalog = memo(({ spellbook, mage, onAdd, onRemove }: BuilderPanelProps) => {
   const { filters, setQuery, toggle, setScope, clearChips } = useCatalogFilters(mage);
   const { view, setView } = useViewMode('catalog');
 
@@ -88,4 +91,4 @@ export const Catalog = ({ spellbook, mage, onAdd, onRemove }: BuilderPanelProps)
       ))}
     </div>
   );
-};
+});

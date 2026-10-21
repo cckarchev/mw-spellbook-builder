@@ -1,0 +1,56 @@
+/* The clear button sits inside the field, at its right. */
+.box {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  min-height: var(--touch-target);
+  padding-inline: var(--space-sm) var(--touch-target);
+  color: var(--color-text-strong);
+  background: var(--color-bg-surface);
+  border: var(--border-default);
+  border-radius: var(--radius);
+  font: inherit;
+}
+
+.small {
+  min-height: var(--chip-height);
+}
+
+.input::placeholder {
+  color: var(--color-text-dim);
+}
+
+/* The clear button below replaces the browser's own. */
+.input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.input:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.clear {
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: var(--touch-target);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-dim);
+  background: none;
+  border: none;
+  transition: color var(--duration-fast);
+}
+
+.clear:hover {
+  color: var(--color-accent);
+}
+
+.clear:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: calc(-1 * var(--focus-ring-offset));
+}

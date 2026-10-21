@@ -1,4 +1,3 @@
-import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
 import { spellbookText } from '@/core/export/spellbookText';
 import { builderPath } from '@/core/routing/builderPath';
 import type { Mage, Spellbook } from '@/core/rules/types';
@@ -8,7 +7,9 @@ import { buildShareUrl } from '@/core/share-link/shareUrl';
 import { encodeSpellbook } from '@/core/share-link/spellbookCodec';
 import { cardsById } from '@/data/catalog';
 import { ActionMenu, type ActionMenuItem } from '@/features/shared/action-menu/ActionMenu';
-import { CopyIcon, LinkIcon, ShareIcon } from './Icons';
+import { copyWithToast, LINK_COPIED } from '@/features/shared/copyWithToast';
+import { LinkIcon } from '@/features/shared/LinkIcon';
+import { CopyIcon, ShareIcon } from './Icons';
 
 interface ShareActionsProps {
   spellbook: Spellbook;
@@ -16,22 +17,8 @@ interface ShareActionsProps {
   summary: SpellbookSummary;
 }
 
-const COPY_FAILED = 'Could not copy. Try again, or copy the link from the address bar.';
-
-const copyText = async (text: string): Promise<boolean> => {
-  try {
-    await navigator.clipboard.writeText(text);
-
-    return true;
-  } catch {
-    return false;
-  }
-};
-
 /** The Share menu: the share sheet on phones that have one; the copy items work everywhere. */
 export const ShareActions = ({ spellbook, mage, summary }: ShareActionsProps) => {
-  const showToast = useToastStore((state) => state.show);
-
   const url = buildShareUrl({
     encoded: encodeSpellbook(spellbook),
     embedBase: getEmbedBase(),
@@ -39,18 +26,6 @@ export const ShareActions = ({ spellbook, mage, summary }: ShareActionsProps) =>
     magePath: builderPath(mage.name, 'cards'),
   });
   const canShare = typeof navigator.share === 'function';
-
-  const copy = async (text: string, doneMessage: string) => {
-    const copied = await copyText(text);
-
-    if (!copied) {
-      showToast(COPY_FAILED, LONG_TOAST_DURATION_MS);
-
-      return;
-    }
-
-    showToast(doneMessage);
-  };
 
   const share = async () => {
     try {
@@ -62,11 +37,12 @@ export const ShareActions = ({ spellbook, mage, summary }: ShareActionsProps) =>
 
   const shareItem: ActionMenuItem = { label: 'Share…', icon: <ShareIcon />, onSelect: share };
   const copyItems: ActionMenuItem[] = [
-    { label: 'Copy link', icon: <LinkIcon />, onSelect: () => copy(url, 'Link copied') },
+    { label: 'Copy link', icon: <LinkIcon />, onSelect: () => copyWithToast(url, LINK_COPIED) },
     {
       label: 'Copy text',
       icon: <CopyIcon />,
-      onSelect: () => copy(spellbookText(spellbook, mage, summary, cardsById, url), 'Text copied'),
+      onSelect: () =>
+        copyWithToast(spellbookText(spellbook, mage, summary, cardsById, url), 'Text copied'),
     },
   ];
   const items = canShare ? [shareItem, ...copyItems] : copyItems;

@@ -8,6 +8,7 @@ import { Catalog } from '@/features/catalog/Catalog';
 import { ShareActions } from '@/features/share/share-actions/ShareActions';
 import type { BuilderPanelProps } from '@/features/shared/builderPanelProps';
 import { useIsDesktop } from '@/features/shared/useMediaQuery';
+import { useStickyHeight } from '@/features/shared/useStickyHeight';
 import { SpellbookActions } from '@/features/spellbook-actions/SpellbookActions';
 import { SpellbookHeader } from '@/features/spellbook-header/SpellbookHeader';
 import { SpellbookPanel } from '@/features/spellbook-panel/SpellbookPanel';
@@ -17,7 +18,6 @@ import { useSpellbookStore } from '@/store/useSpellbookStore';
 import styles from './Builder.module.css';
 import { SpellbookColumn } from './spellbook-column/SpellbookColumn';
 import { useRouteMage } from './useRouteMage';
-import { useStickyHeight } from './useStickyHeight';
 
 const TAB_ID_PREFIX = 'builder-tab';
 

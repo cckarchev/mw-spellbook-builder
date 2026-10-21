@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { glossary } from '@/data/glossary';
+import { Definition } from './Definition';
 import { GlossaryText } from './GlossaryText';
 
 const ATTACK_BAR = 'Ranged | Lightning | 3d6 | d12 7-8 = Daze, 9+ = Stun | Ethereal, Unavoidable';
@@ -82,5 +83,16 @@ describe('GlossaryText', () => {
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(stun).toHaveFocus();
+  });
+});
+
+describe('Definition', () => {
+  it('lists the bulleted items under the intro', () => {
+    render(<Definition text="Glyphs below. • Air: roll more • Earth: gain armor." />);
+
+    const items = screen.getAllByRole('listitem').map((item) => item.textContent);
+
+    expect(screen.getByText('Glyphs below.')).toBeInTheDocument();
+    expect(items).toEqual(['Air: roll more', 'Earth: gain armor.']);
   });
 });
