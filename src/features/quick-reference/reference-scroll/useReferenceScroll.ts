@@ -1,6 +1,5 @@
-import type { CSSProperties, RefObject } from 'react';
+import { type CSSProperties, type RefObject, useEffect, useRef } from 'react';
 import { letterAnchorId } from '@/core/reference/anchors';
-import { BACK_TO_TOP_AFTER } from '@/core/reference/foldOnScroll';
 import { useStickyHeight } from '@/features/shared/useStickyHeight';
 import { prefersReducedMotion, scrollToElement } from '../jumpToTerm';
 import { letterGroups } from '../sortedGlossary';
@@ -19,19 +18,33 @@ const NO_HEIGHT = 0;
 export const useReferenceScroll = (
   scroller: RefObject<HTMLElement | null>,
   searchRef: RefObject<HTMLInputElement | null>,
-  showLetters: boolean,
+  query: string,
 ) => {
+  const showLetters = query === '';
   const { ref: toolbarRef, height: toolbarHeight } = useStickyHeight();
   const { ref: lettersRef, height: measuredLetters } = useStickyHeight();
   const lettersHeight = showLetters ? measuredLetters : NO_HEIGHT;
   // Jumps land under the letters too, since they may unfold over the target.
   const landingHeight = toolbarHeight + lettersHeight;
-  const { folded, scrollTop } = useFoldOnScroll(scroller);
+  const { folded, showBackToTop } = useFoldOnScroll(scroller);
   const currentLetter = useCurrentLetter(scroller, LETTERS, landingHeight);
   const style = {
     '--reference-toolbar-height': `${landingHeight}px`,
     '--reference-letters-height': `${lettersHeight}px`,
   } as CSSProperties;
+
+  // A new search starts at its first result, and clearing it at the top of the list.
+  const lastQueryRef = useRef(query);
+
+  useEffect(() => {
+    const changed = lastQueryRef.current !== query;
+
+    lastQueryRef.current = query;
+
+    if (changed && scroller.current) {
+      scroller.current.scrollTop = TOP;
+    }
+  }, [scroller, query]);
 
   const jumpToLetter = (letter: string) => {
     const heading = document.getElementById(letterAnchorId(letter));
@@ -54,7 +67,7 @@ export const useReferenceScroll = (
     lettersRef,
     style,
     folded,
-    showBackToTop: scrollTop > BACK_TO_TOP_AFTER,
+    showBackToTop,
     currentLetter,
     jumpToLetter,
     backToTop,

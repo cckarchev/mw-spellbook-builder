@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation, useNavigationType } from 'react-router-dom';
 import { App } from '@/App';
@@ -20,7 +20,11 @@ const NavigationProbe = () => {
   const location = useLocation();
   const navigationType = useNavigationType();
 
-  return <output aria-label="Navigation">{`${navigationType} ${location.pathname}`}</output>;
+  return (
+    <output aria-label="Navigation">
+      {`${navigationType} ${location.pathname}${location.search}`}
+    </output>
+  );
 };
 
 const renderAt = (path: string) => {
@@ -31,6 +35,8 @@ const renderAt = (path: string) => {
     </MemoryRouter>,
   );
 };
+
+const navigation = () => screen.getByRole('status', { name: 'Navigation' });
 
 const reference = () => screen.queryByRole('dialog', { name: TITLE });
 
@@ -167,13 +173,13 @@ describe('QuickReference list', () => {
   });
 });
 
+const searchField = () => within(openDialog()).getByRole('searchbox', { name: SEARCH_LABEL });
+
+const search = async (query: string) => {
+  await userEvent.type(searchField(), query);
+};
+
 describe('QuickReference search', () => {
-  const searchField = () => within(openDialog()).getByRole('searchbox', { name: SEARCH_LABEL });
-
-  const search = async (query: string) => {
-    await userEvent.type(searchField(), query);
-  };
-
   it('shows name matches before definition matches, highlighted', async () => {
     renderAt('/reference');
 
@@ -187,6 +193,40 @@ describe('QuickReference search', () => {
       within(openDialog()).getByRole('region', { name: /In the definition/ }),
     ).toBeInTheDocument();
     expect(firstTerm?.querySelector('mark')).toHaveTextContent('Burn');
+  });
+});
+
+describe('QuickReference search details', () => {
+  it('counts the results of each group', async () => {
+    renderAt('/reference');
+
+    await search('bashed');
+
+    const heading = within(openDialog()).getByRole('heading', { name: 'In the name 1 result' });
+
+    expect(heading).toBeInTheDocument();
+  });
+
+  it('keeps what was typed while the address catches up', async () => {
+    renderAt('/reference');
+
+    await search('bu');
+
+    expect(searchField()).toHaveValue('bu');
+    expect(navigation()).not.toHaveTextContent('?q=');
+    await waitFor(() => {
+      expect(navigation()).toHaveTextContent('REPLACE /reference?q=bu');
+    });
+  });
+
+  it('goes back to the top of the list when the search changes', async () => {
+    renderAt('/reference');
+    const dialog = openDialog();
+
+    Object.defineProperty(dialog, 'scrollTop', { value: SCROLLED_FAR, writable: true });
+    await search('b');
+
+    expect(dialog.scrollTop).toBe(0);
   });
 
   it('says when nothing matches', async () => {

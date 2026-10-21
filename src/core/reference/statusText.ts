@@ -16,3 +16,12 @@ export const statusText = (total: number, hasQuery: boolean, matches: number): s
 
   return `${matches} matches`;
 };
+
+/** The count beside a group of search results. */
+export const resultCountText = (count: number): string => {
+  if (count === ONE) {
+    return '1 result';
+  }
+
+  return `${count} results`;
+};

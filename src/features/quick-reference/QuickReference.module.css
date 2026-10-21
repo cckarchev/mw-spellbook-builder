@@ -8,8 +8,13 @@
   background: var(--color-bg-base);
 }
 
-/* The same column and gutter as the app's own pages. */
+/*
+ * The same column and gutter as the app's own pages. Always a pixel taller than the layer, so
+ * the layer can always scroll: with few results, a swipe would otherwise scroll the page
+ * underneath, and the player would come back to a different place.
+ */
 .page {
+  min-height: calc(100% + 1px);
   max-width: var(--layout-max-width);
   margin-inline: auto;
   padding-inline: var(--page-gutter);

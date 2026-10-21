@@ -1,6 +1,7 @@
-import { useId } from 'react';
+import { memo, useId } from 'react';
 import type { GlossaryEntry } from '@/core/glossary/types';
 import type { GlossarySearch } from '@/core/reference/searchGlossary';
+import { resultCountText } from '@/core/reference/statusText';
 import { Entry } from '../entry/Entry';
 import styles from './ResultList.module.css';
 
@@ -30,7 +31,7 @@ const ResultGroup = ({ title, entries, query, onJump }: ResultGroupProps) => {
   return (
     <section className={styles.group} aria-labelledby={headingId}>
       <h2 id={headingId} className={styles.heading}>
-        {title} <span className={styles.count}>{entries.length}</span>
+        <span>{title}</span> <span className={styles.count}>{resultCountText(entries.length)}</span>
       </h2>
       <dl>
         {entries.map((entry) => (
@@ -41,8 +42,11 @@ const ResultGroup = ({ title, entries, query, onJump }: ResultGroupProps) => {
   );
 };
 
-/** Search results: terms matching by name, then by definition, or a way out when none do. */
-export const ResultList = ({ results, typed, query, onJump }: ResultListProps) => {
+/**
+ * Search results: terms matching by name, then by definition, or a way out when none do.
+ * Memoized, so the letters folding does not render the results again.
+ */
+export const ResultList = memo(({ results, typed, query, onJump }: ResultListProps) => {
   const { byName, byDefinition } = results;
 
   if (byName.length === 0 && byDefinition.length === 0) {
@@ -60,4 +64,4 @@ export const ResultList = ({ results, typed, query, onJump }: ResultListProps) =
       <ResultGroup title="In the definition" entries={byDefinition} query={query} onJump={onJump} />
     </>
   );
-};
+});

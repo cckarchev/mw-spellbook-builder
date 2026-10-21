@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { letterAnchorId } from '@/core/reference/anchors';
 import type { LetterGroup } from '@/core/reference/letterGroups';
 import { Entry } from '../entry/Entry';
@@ -8,8 +9,11 @@ interface EntryListProps {
   onJump: (term: string) => void;
 }
 
-/** Every term at rest, under a heading per first letter. */
-export const EntryList = ({ groups, onJump }: EntryListProps) =>
+/**
+ * Every term at rest, under a heading per first letter. Memoized, since its hundreds of entries
+ * would otherwise render again whenever the letters fold.
+ */
+export const EntryList = memo(({ groups, onJump }: EntryListProps) =>
   groups.map((group) => {
     const headingId = letterAnchorId(group.letter);
 
@@ -25,4 +29,5 @@ export const EntryList = ({ groups, onJump }: EntryListProps) =>
         </dl>
       </section>
     );
-  });
+  }),
+);

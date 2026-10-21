@@ -36,7 +36,7 @@ export const QuickReference = () => {
   const panelRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
-  const scroll = useReferenceScroll(panelRef, searchRef, !hasQuery);
+  const scroll = useReferenceScroll(panelRef, searchRef, query);
   const jumpToTerm = useTermJump(hasQuery, setTyped);
 
   useModalFocus(panelRef, titleRef, close);

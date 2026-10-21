@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { jumpToTerm } from './jumpToTerm';
 
 /**
@@ -17,8 +17,12 @@ export const useTermJump = (hasQuery: boolean, setQuery: (next: string) => void)
     setPendingJump(null);
   }, [pendingJump, hasQuery]);
 
-  return (term: string) => {
-    setQuery('');
-    setPendingJump(term);
-  };
+  // Kept the same across renders, so the memoized list does not render again for it.
+  return useCallback(
+    (term: string) => {
+      setQuery('');
+      setPendingJump(term);
+    },
+    [setQuery],
+  );
 };
