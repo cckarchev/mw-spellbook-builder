@@ -44,7 +44,7 @@
   outline-offset: var(--focus-ring-offset);
 }
 
-/* A quiet button at the right; the accent marks it while the Quick reference is open. */
+/* A quiet button at the right. */
 .reference {
   display: flex;
   flex: none;
@@ -62,8 +62,7 @@
     border-color var(--duration-fast);
 }
 
-.reference:hover,
-.reference[aria-current='page'] {
+.reference:hover {
   color: var(--color-accent);
   border-color: var(--color-border-accent);
 }

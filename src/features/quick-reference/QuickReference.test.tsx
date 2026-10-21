@@ -5,6 +5,7 @@ import { App } from '@/App';
 import { letterAnchorId, termAnchorId } from '@/core/reference/anchors';
 import { BACK_TO_TOP_AFTER } from '@/core/reference/foldOnScroll';
 import { glossary } from '@/data/glossary';
+import { APP_NAME } from '@/features/app-header/AppHeader';
 import { useOpenTermStore } from '@/features/shared/glossary-text/useOpenTermStore';
 import { smallSpellbook } from '@/features/shared/testSpellbooks';
 import { useSpellbookStore } from '@/store/useSpellbookStore';
@@ -103,18 +104,14 @@ describe('QuickReference', () => {
     expect(screen.getByRole('status', { name: 'Navigation' })).toHaveTextContent('REPLACE /');
   });
 
-  it('marks the header button current and closes from it', async () => {
+  it('leaves Back as the only way out on screen, with no second reference button', async () => {
     renderAt('/wizard');
 
     await openReference();
-    const dialog = screen.getByRole('dialog', { name: TITLE });
-    const current = within(dialog).getByRole('link', { name: TITLE });
+    const dialog = openDialog();
 
-    expect(current).toHaveAttribute('aria-current', 'page');
-
-    await userEvent.click(current);
-
-    expect(reference()).not.toBeInTheDocument();
+    expect(within(dialog).queryByRole('link', { name: TITLE })).not.toBeInTheDocument();
+    expect(within(dialog).getByRole('link', { name: APP_NAME })).toBeInTheDocument();
   });
 
   it('moves focus to the title on open and back to the header button on close', async () => {

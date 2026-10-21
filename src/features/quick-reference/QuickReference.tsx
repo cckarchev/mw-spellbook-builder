@@ -52,7 +52,7 @@ export const QuickReference = () => {
       aria-labelledby={titleId}
     >
       <div className={styles.page}>
-        <AppHeader />
+        <AppHeader showReference={false} />
         <div ref={scroll.toolbarRef} className={styles.toolbar}>
           <div className={styles.titleRow}>
             <h1 ref={titleRef} id={titleId} className={styles.title} tabIndex={-1}>

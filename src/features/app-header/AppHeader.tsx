@@ -1,7 +1,5 @@
-import type { MouseEvent } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { REFERENCE_PATH, referenceState } from '@/core/routing/referencePath';
-import { useReferenceRoute } from '@/features/shared/useReferenceRoute';
 import styles from './AppHeader.module.css';
 import { BookIcon } from './BookIcon';
 
@@ -11,22 +9,17 @@ const REFERENCE_LABEL = 'Quick reference';
 
 export const APP_NAME = `${BRAND} ${PRODUCT}`;
 
+interface AppHeaderProps {
+  /** The Quick reference button; left out inside the Quick reference, which has its own Back. */
+  showReference?: boolean;
+}
+
 /**
  * The app name, which goes home to the mage picker; the spellbook stays as its mage's draft. And
- * the Quick reference button, which opens it over this screen, or closes it when it is open.
+ * the Quick reference button, which opens it over this screen.
  */
-export const AppHeader = () => {
+export const AppHeader = ({ showReference = true }: AppHeaderProps) => {
   const location = useLocation();
-  const { isOpen, close } = useReferenceRoute();
-
-  const handleReferenceClick = (event: MouseEvent) => {
-    if (!isOpen) {
-      return;
-    }
-
-    event.preventDefault();
-    close();
-  };
 
   return (
     <header className={styles.header}>
@@ -37,16 +30,12 @@ export const AppHeader = () => {
           <span className={styles.product}>{PRODUCT}</span>
         </span>
       </Link>
-      <Link
-        className={styles.reference}
-        to={REFERENCE_PATH}
-        state={referenceState(location)}
-        aria-current={isOpen ? 'page' : undefined}
-        onClick={handleReferenceClick}
-      >
-        <BookIcon />
-        <span className={styles.referenceLabel}>{REFERENCE_LABEL}</span>
-      </Link>
+      {showReference ? (
+        <Link className={styles.reference} to={REFERENCE_PATH} state={referenceState(location)}>
+          <BookIcon />
+          <span className={styles.referenceLabel}>{REFERENCE_LABEL}</span>
+        </Link>
+      ) : null}
     </header>
   );
 };
