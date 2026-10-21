@@ -1,8 +1,8 @@
-import { memo } from 'react';
-import { letterAnchorId } from '@/core/reference/anchors';
-import type { LetterGroup } from '@/core/reference/letterGroups';
-import { Entry } from '../entry/Entry';
-import styles from './EntryList.module.css';
+import { memo } from "react";
+import { letterAnchorId } from "@/core/reference/anchors";
+import type { LetterGroup } from "@/core/reference/letterGroups";
+import { Entry } from "../entry/Entry";
+import styles from "./EntryList.module.css";
 
 interface EntryListProps {
   groups: readonly LetterGroup[];
@@ -18,7 +18,11 @@ export const EntryList = memo(({ groups, onJump }: EntryListProps) =>
     const headingId = letterAnchorId(group.letter);
 
     return (
-      <section key={group.letter} className={styles.group} aria-labelledby={headingId}>
+      <section
+        key={group.letter}
+        className={styles.group}
+        aria-labelledby={headingId}
+      >
         <h2 id={headingId} className={styles.letter} tabIndex={-1}>
           {group.letter}
         </h2>

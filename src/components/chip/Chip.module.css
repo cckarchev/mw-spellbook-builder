@@ -20,7 +20,7 @@
   outline-offset: var(--focus-ring-offset);
 }
 
-.chip[aria-pressed='true'] {
+.chip[aria-pressed="true"] {
   color: var(--color-text-strong);
   background: var(--color-bg-accent-tint);
   border-color: var(--color-border-accent);

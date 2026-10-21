@@ -1,13 +1,13 @@
-import { Dialog } from '@/components/dialog/Dialog';
-import type { SavedSpellbook } from '@/core/persistence/savedSpellbooks';
-import type { Spellbook } from '@/core/rules/types';
-import styles from './LoadDialog.module.css';
-import { SavedSpellbookRow } from './saved-spellbook-row/SavedSpellbookRow';
+import { Dialog } from "@/components/dialog/Dialog";
+import type { SavedSpellbook } from "@/core/persistence/savedSpellbooks";
+import type { Spellbook } from "@/core/rules/types";
+import styles from "./LoadDialog.module.css";
+import { SavedSpellbookRow } from "./saved-spellbook-row/SavedSpellbookRow";
 
-const DEFAULT_TITLE = 'Saved spellbooks';
-const OFFICIAL_HEADING = 'Official';
-const SAVED_HEADING = 'Saved';
-const OFFICIAL_ROW_NAME = 'Official spellbook';
+const DEFAULT_TITLE = "Saved spellbooks";
+const OFFICIAL_HEADING = "Official";
+const SAVED_HEADING = "Saved";
+const OFFICIAL_ROW_NAME = "Official spellbook";
 
 interface LoadDialogProps {
   open: boolean;
@@ -30,7 +30,9 @@ interface SavedListProps {
 
 const SavedList = ({ saved, onLoad, onDelete }: SavedListProps) => {
   if (saved.length === 0) {
-    return <p className={styles.empty}>No saved spellbooks for this mage yet.</p>;
+    return (
+      <p className={styles.empty}>No saved spellbooks for this mage yet.</p>
+    );
   }
 
   return (
@@ -61,7 +63,9 @@ export const LoadDialog = ({
   onLoadOfficial,
   onClose,
 }: LoadDialogProps) => {
-  const savedList = <SavedList saved={saved} onLoad={onLoad} onDelete={onDelete} />;
+  const savedList = (
+    <SavedList saved={saved} onLoad={onLoad} onDelete={onDelete} />
+  );
 
   if (official === null || !onLoadOfficial) {
     return (
@@ -71,14 +75,20 @@ export const LoadDialog = ({
     );
   }
 
-  const officialRow: SavedSpellbook = { name: OFFICIAL_ROW_NAME, spellbook: official };
+  const officialRow: SavedSpellbook = {
+    name: OFFICIAL_ROW_NAME,
+    spellbook: official,
+  };
 
   return (
     <Dialog open={open} title={title} onClose={onClose} closeButton={true}>
       <section className={styles.section} aria-label={OFFICIAL_HEADING}>
         <h3 className={styles.heading}>{OFFICIAL_HEADING}</h3>
         <ul className={styles.list}>
-          <SavedSpellbookRow savedSpellbook={officialRow} onLoad={() => onLoadOfficial(official)} />
+          <SavedSpellbookRow
+            savedSpellbook={officialRow}
+            onLoad={() => onLoadOfficial(official)}
+          />
         </ul>
       </section>
       <section className={styles.section} aria-label={SAVED_HEADING}>

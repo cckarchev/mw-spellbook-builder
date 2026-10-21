@@ -1,4 +1,4 @@
-import type { GlossaryEntry } from './types';
+import type { GlossaryEntry } from "./types";
 
 /** A piece of card text: a glossary term with its entry, or plain text with none. */
 export interface TextSegment {
@@ -42,12 +42,12 @@ const SPACES_PATTERN = /\s+/g;
 const APOSTROPHES_PATTERN = /['’]/g;
 
 const NUMBER_SOURCE = String.raw`\s+[+-]?(?:\d+|X)`;
-const PLURAL_SOURCE = '(?:e?s)?';
+const PLURAL_SOURCE = "(?:e?s)?";
 const SPACES_SOURCE = String.raw`\s+`;
 const APOSTROPHE_SOURCE = "['’]";
 const WORD_START_SOURCE = String.raw`(?<![\p{L}\p{N}])`;
 const WORD_END_SOURCE = String.raw`(?![\p{L}\p{N}])`;
-const PATTERN_FLAGS = 'giu';
+const PATTERN_FLAGS = "giu";
 
 /** The names a term goes by: its own, without a mage in parentheses, plus any short form. */
 const namesOf = (term: string): string[] => {
@@ -57,7 +57,7 @@ const namesOf = (term: string): string[] => {
     return [term];
   }
 
-  const [, name = term, inside = ''] = parentheses;
+  const [, name = term, inside = ""] = parentheses;
 
   if (SHORT_FORM_PATTERN.test(inside)) {
     return [name, inside];
@@ -66,9 +66,13 @@ const namesOf = (term: string): string[] => {
   return [name];
 };
 
-const formsOf = (entry: GlossaryEntry, options: GlossaryIndexOptions): TermForm[] => {
+const formsOf = (
+  entry: GlossaryEntry,
+  options: GlossaryIndexOptions,
+): TermForm[] => {
   const aliases = options.aliases?.[entry.term] ?? [];
-  const capitalizedOnly = options.capitalizedOnly?.includes(entry.term) ?? false;
+  const capitalizedOnly =
+    options.capitalizedOnly?.includes(entry.term) ?? false;
 
   return [...namesOf(entry.term), ...aliases].map((name) => {
     const takesNumber = NUMBER_SUFFIX_PATTERN.test(name);
@@ -76,7 +80,7 @@ const formsOf = (entry: GlossaryEntry, options: GlossaryIndexOptions): TermForm[
     return {
       entry,
       capitalizedOnly,
-      name: name.replace(NUMBER_SUFFIX_PATTERN, ''),
+      name: name.replace(NUMBER_SUFFIX_PATTERN, ""),
       takesNumber,
     };
   });
@@ -121,13 +125,18 @@ export const buildGlossaryIndex = (
 
     return isNew;
   });
-  const forms = uniqueEntries.flatMap((entry) => formsOf(entry, options)).sort(byPriority);
-  const alternatives = forms.map(formSource).join('|');
+  const forms = uniqueEntries
+    .flatMap((entry) => formsOf(entry, options))
+    .sort(byPriority);
+  const alternatives = forms.map(formSource).join("|");
   const source = `${WORD_START_SOURCE}(?:${alternatives})${WORD_END_SOURCE}`;
 
   return {
     pattern: new RegExp(source, PATTERN_FLAGS),
-    forms: forms.map(({ entry, capitalizedOnly }) => ({ entry, capitalizedOnly })),
+    forms: forms.map(({ entry, capitalizedOnly }) => ({
+      entry,
+      capitalizedOnly,
+    })),
   };
 };
 
@@ -138,7 +147,10 @@ const startsLowercase = (text: string): boolean => {
 };
 
 /** The entry a match stands for, or null when it is a capitalized-only term in lowercase. */
-const entryOf = (match: RegExpMatchArray, index: GlossaryIndex): GlossaryEntry | null => {
+const entryOf = (
+  match: RegExpMatchArray,
+  index: GlossaryIndex,
+): GlossaryEntry | null => {
   const groups = match.slice(1);
   const groupIndex = groups.findIndex((group) => group !== undefined);
   const form = index.forms[groupIndex];
@@ -151,7 +163,10 @@ const entryOf = (match: RegExpMatchArray, index: GlossaryIndex): GlossaryEntry |
 };
 
 /** Splits a text into plain parts and glossary terms, in order, keeping every character. */
-export const splitByTerms = (text: string, index: GlossaryIndex): TextSegment[] => {
+export const splitByTerms = (
+  text: string,
+  index: GlossaryIndex,
+): TextSegment[] => {
   const segments: TextSegment[] = [];
   let position = 0;
 

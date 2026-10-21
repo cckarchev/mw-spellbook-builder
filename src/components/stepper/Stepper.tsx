@@ -1,6 +1,6 @@
-import { useCallback, useId, useRef, useState } from 'react';
-import { Popover } from '@/components/popover/Popover';
-import styles from './Stepper.module.css';
+import { useCallback, useId, useRef, useState } from "react";
+import { Popover } from "@/components/popover/Popover";
+import styles from "./Stepper.module.css";
 
 interface StepperProps {
   value: number;
@@ -13,7 +13,7 @@ interface StepperProps {
   disabledReason: string | null;
 }
 
-const LIMIT_REASON = 'Copy limit reached';
+const LIMIT_REASON = "Copy limit reached";
 
 /**
  * A − value + control. A blocked + stays tappable (aria-disabled, not disabled),

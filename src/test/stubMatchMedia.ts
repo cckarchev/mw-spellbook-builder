@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 type ChangeListener = (event: MediaQueryListEvent) => void;
 
@@ -19,16 +19,16 @@ export const stubMatchMedia = (matches: boolean) => {
         return current;
       },
       media: query,
-      addEventListener: (_type: 'change', listener: ChangeListener) => {
+      addEventListener: (_type: "change", listener: ChangeListener) => {
         listeners.add(listener);
       },
-      removeEventListener: (_type: 'change', listener: ChangeListener) => {
+      removeEventListener: (_type: "change", listener: ChangeListener) => {
         listeners.delete(listener);
       },
     };
   };
 
-  vi.stubGlobal('matchMedia', matchMedia);
+  vi.stubGlobal("matchMedia", matchMedia);
 
   const setMatches = (next: boolean) => {
     current = next;

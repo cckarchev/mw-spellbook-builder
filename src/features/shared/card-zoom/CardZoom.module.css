@@ -11,6 +11,6 @@
   border-radius: var(--card-radius);
 }
 
-.image[data-landscape='true'] {
+.image[data-landscape="true"] {
   aspect-ratio: var(--card-aspect-landscape);
 }

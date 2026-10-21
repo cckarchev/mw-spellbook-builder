@@ -51,12 +51,16 @@ const isFrameLine = (pixels: boolean[]): boolean => {
 };
 
 const rowPixels = (image: RawImage, y: number, box: CropBox): boolean[] =>
-  Array.from({ length: box.width }, (_, index) => isFramePixel(image, box.left + index, y));
+  Array.from({ length: box.width }, (_, index) =>
+    isFramePixel(image, box.left + index, y),
+  );
 
 const columnPixels = (image: RawImage, x: number, box: CropBox): boolean[] =>
-  Array.from({ length: box.height }, (_, index) => isFramePixel(image, x, box.top + index));
+  Array.from({ length: box.height }, (_, index) =>
+    isFramePixel(image, x, box.top + index),
+  );
 
-type Side = 'top' | 'bottom' | 'left' | 'right';
+type Side = "top" | "bottom" | "left" | "right";
 
 interface LineCut {
   box: CropBox;
@@ -68,16 +72,21 @@ const cutFrameLine = (image: RawImage, box: CropBox): LineCut => {
   const right = box.left + box.width - 1;
   const bottom = box.top + box.height - 1;
   const cutTop = box.height > 1 && isFrameLine(rowPixels(image, box.top, box));
-  const cutBottom = box.height > 1 + Number(cutTop) && isFrameLine(rowPixels(image, bottom, box));
-  const cutLeft = box.width > 1 && isFrameLine(columnPixels(image, box.left, box));
-  const cutRight = box.width > 1 + Number(cutLeft) && isFrameLine(columnPixels(image, right, box));
+  const cutBottom =
+    box.height > 1 + Number(cutTop) &&
+    isFrameLine(rowPixels(image, bottom, box));
+  const cutLeft =
+    box.width > 1 && isFrameLine(columnPixels(image, box.left, box));
+  const cutRight =
+    box.width > 1 + Number(cutLeft) &&
+    isFrameLine(columnPixels(image, right, box));
 
   const sides: Side[] = [];
   const flags: [Side, boolean][] = [
-    ['top', cutTop],
-    ['bottom', cutBottom],
-    ['left', cutLeft],
-    ['right', cutRight],
+    ["top", cutTop],
+    ["bottom", cutBottom],
+    ["left", cutLeft],
+    ["right", cutRight],
   ];
 
   for (const [side, cut] of flags) {
@@ -98,13 +107,17 @@ const cutFrameLine = (image: RawImage, box: CropBox): LineCut => {
 };
 
 /** The soft edge to cut on each framed side, unless that would leave nothing of the image. */
-const cutEdges = (image: RawImage, box: CropBox, sides: ReadonlySet<Side>): CropBox => {
+const cutEdges = (
+  image: RawImage,
+  box: CropBox,
+  sides: ReadonlySet<Side>,
+): CropBox => {
   const rowEdge = Math.round(image.height * EDGE_SHARE);
   const columnEdge = Math.round(image.width * EDGE_SHARE);
-  const top = sides.has('top') ? rowEdge : 0;
-  const bottom = sides.has('bottom') ? rowEdge : 0;
-  const left = sides.has('left') ? columnEdge : 0;
-  const right = sides.has('right') ? columnEdge : 0;
+  const top = sides.has("top") ? rowEdge : 0;
+  const bottom = sides.has("bottom") ? rowEdge : 0;
+  const left = sides.has("left") ? columnEdge : 0;
+  const right = sides.has("right") ? columnEdge : 0;
   const width = box.width - left - right;
   const height = box.height - top - bottom;
 
@@ -117,7 +130,12 @@ const cutEdges = (image: RawImage, box: CropBox, sides: ReadonlySet<Side>): Crop
 
 /** The part of the image inside its white or transparent frame; the whole image when it has none. */
 export const whiteFrameBox = (image: RawImage): CropBox => {
-  let box: CropBox = { left: 0, top: 0, width: image.width, height: image.height };
+  let box: CropBox = {
+    left: 0,
+    top: 0,
+    width: image.width,
+    height: image.height,
+  };
   const framedSides = new Set<Side>();
   let cutting = true;
 

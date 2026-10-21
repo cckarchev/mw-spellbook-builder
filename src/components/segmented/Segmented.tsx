@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
-import styles from './Segmented.module.css';
+import type { ReactNode } from "react";
+import styles from "./Segmented.module.css";
 
 export interface SegmentedOption<T extends string> {
   value: T;

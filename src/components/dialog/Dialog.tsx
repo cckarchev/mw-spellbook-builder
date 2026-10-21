@@ -1,8 +1,8 @@
-import { type ReactNode, useEffect, useId, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import { CloseIcon } from './CloseIcon';
-import styles from './Dialog.module.css';
-import { trapTab } from './trapTab';
+import { type ReactNode, useEffect, useId, useRef } from "react";
+import { createPortal } from "react-dom";
+import { CloseIcon } from "./CloseIcon";
+import styles from "./Dialog.module.css";
+import { trapTab } from "./trapTab";
 
 interface DialogProps {
   open: boolean;
@@ -21,7 +21,7 @@ interface DialogProps {
  * A field goes first so the player can type at once, and the phone keyboard opens.
  */
 const focusFirst = (panel: HTMLElement) => {
-  const field = panel.querySelector<HTMLInputElement>('input');
+  const field = panel.querySelector<HTMLInputElement>("input");
 
   if (field) {
     field.focus();
@@ -30,7 +30,7 @@ const focusFirst = (panel: HTMLElement) => {
     return;
   }
 
-  panel.querySelector<HTMLElement>('button')?.focus();
+  panel.querySelector<HTMLElement>("button")?.focus();
 };
 
 /** A modal panel over a dimmed page that keeps the focus inside. Renders nothing while closed. */
@@ -59,19 +59,19 @@ export const Dialog = ({
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onCloseRef.current();
       }
 
-      if (event.key === 'Tab' && panelRef.current) {
+      if (event.key === "Tab" && panelRef.current) {
         trapTab(event, panelRef.current);
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [open]);
 
@@ -79,7 +79,7 @@ export const Dialog = ({
     return null;
   }
 
-  const panelClasses = [styles.panel, className].filter(Boolean).join(' ');
+  const panelClasses = [styles.panel, className].filter(Boolean).join(" ");
 
   // On the body, so a sticky or positioned parent cannot trap the scrim under the sticky header.
   return createPortal(
@@ -103,7 +103,12 @@ export const Dialog = ({
             {title}
           </h2>
           {closeButton ? (
-            <button type="button" className={styles.close} aria-label="Close" onClick={onClose}>
+            <button
+              type="button"
+              className={styles.close}
+              aria-label="Close"
+              onClick={onClose}
+            >
               <CloseIcon />
             </button>
           ) : null}

@@ -1,6 +1,6 @@
-import type { TextRange } from '@/core/reference/matchRanges';
+import type { TextRange } from "@/core/reference/matchRanges";
 
-const BULLET = '•';
+const BULLET = "•";
 const LEADING_SPACE = /^\s*/;
 const TRAILING_SPACE = /\s*$/;
 

@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useId, useRef } from 'react';
-import { Popover } from '@/components/popover/Popover';
-import type { GlossaryEntry } from '@/core/glossary/types';
-import { Definition } from './Definition';
-import styles from './GlossaryText.module.css';
-import { useOpenTermStore } from './useOpenTermStore';
+import { useCallback, useEffect, useId, useRef } from "react";
+import { Popover } from "@/components/popover/Popover";
+import type { GlossaryEntry } from "@/core/glossary/types";
+import { Definition } from "./Definition";
+import styles from "./GlossaryText.module.css";
+import { useOpenTermStore } from "./useOpenTermStore";
 
 interface GlossaryTermProps {
   /** The words as the card prints them, such as "Aegis 2". */

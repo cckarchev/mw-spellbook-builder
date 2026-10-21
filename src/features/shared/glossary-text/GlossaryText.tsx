@@ -1,7 +1,7 @@
-import { memo, useMemo } from 'react';
-import { splitByTerms } from '@/core/glossary/findTerms';
-import { glossaryIndex } from '@/data/glossary';
-import { GlossaryTerm } from './GlossaryTerm';
+import { memo, useMemo } from "react";
+import { splitByTerms } from "@/core/glossary/findTerms";
+import { glossaryIndex } from "@/data/glossary";
+import { GlossaryTerm } from "./GlossaryTerm";
 
 /** Card text with every Codex term in it tappable, to show what the term means. */
 export const GlossaryText = memo(({ text }: { text: string }) => {

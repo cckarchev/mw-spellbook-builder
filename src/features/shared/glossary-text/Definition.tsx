@@ -1,5 +1,5 @@
-import { bulletBlocks } from '@/core/glossary/bulletBlocks';
-import { BulletList } from './bullet-list/BulletList';
+import { bulletBlocks } from "@/core/glossary/bulletBlocks";
+import { BulletList } from "./bullet-list/BulletList";
 
 /** A definition as plain text, with the Codex's inline "•" bullets as a list under the intro. */
 export const Definition = ({ text }: { text: string }) => {

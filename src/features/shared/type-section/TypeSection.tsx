@@ -1,7 +1,7 @@
-import { type ReactNode, useId, useState } from 'react';
-import { SectionHeader } from '@/components/section-header/SectionHeader';
-import type { ViewMode } from '../view-switch/useViewMode';
-import styles from './TypeSection.module.css';
+import { type ReactNode, useId, useState } from "react";
+import { SectionHeader } from "@/components/section-header/SectionHeader";
+import type { ViewMode } from "../view-switch/useViewMode";
+import styles from "./TypeSection.module.css";
 
 interface TypeSectionProps {
   title: string;

@@ -1,6 +1,6 @@
-import { type RefObject, useId } from 'react';
-import { SearchInput } from '@/components/search-input/SearchInput';
-import styles from './SearchField.module.css';
+import { type RefObject, useId } from "react";
+import { SearchInput } from "@/components/search-input/SearchInput";
+import styles from "./SearchField.module.css";
 
 interface SearchFieldProps {
   value: string;
@@ -11,11 +11,16 @@ interface SearchFieldProps {
   status: string;
 }
 
-const LABEL = 'Search terms and rules';
-const PLACEHOLDER = 'Burn, Flying, Guard';
+const LABEL = "Search terms and rules";
+const PLACEHOLDER = "Burn, Flying, Guard";
 
 /** The Quick reference search, filtering as the player types, with a button to clear it. */
-export const SearchField = ({ value, onChange, inputRef, status }: SearchFieldProps) => {
+export const SearchField = ({
+  value,
+  onChange,
+  inputRef,
+  status,
+}: SearchFieldProps) => {
   const id = useId();
 
   return (

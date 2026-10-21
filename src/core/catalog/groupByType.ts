@@ -1,12 +1,12 @@
-import type { CardType } from '@/core/rules/types';
+import type { CardType } from "@/core/rules/types";
 
 export const TYPE_ORDER: CardType[] = [
-  'Attack',
-  'Conjuration',
-  'Creature',
-  'Enchantment',
-  'Equipment',
-  'Incantation',
+  "Attack",
+  "Conjuration",
+  "Creature",
+  "Enchantment",
+  "Equipment",
+  "Incantation",
 ];
 
 interface TypeGroup<T> {
@@ -20,7 +20,9 @@ export const groupByType = <T extends { type: CardType; name: string }>(
 ): TypeGroup<T>[] => {
   const groups = TYPE_ORDER.map((type) => {
     const ofType = items.filter((item) => item.type === type);
-    const sorted = [...ofType].sort((left, right) => left.name.localeCompare(right.name));
+    const sorted = [...ofType].sort((left, right) =>
+      left.name.localeCompare(right.name),
+    );
 
     return { type, items: sorted };
   });

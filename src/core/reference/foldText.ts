@@ -13,7 +13,8 @@ const LAST_ASCII = 0x7f;
 // One letter matches nearly every term, so search waits for a second.
 const MIN_QUERY_LENGTH = 2;
 
-const isAscii = (character: string): boolean => (character.codePointAt(0) ?? 0) <= LAST_ASCII;
+const isAscii = (character: string): boolean =>
+  (character.codePointAt(0) ?? 0) <= LAST_ASCII;
 
 const foldCharacter = (character: string): string => {
   const lowercase = character.toLowerCase();
@@ -22,22 +23,24 @@ const foldCharacter = (character: string): string => {
     return lowercase;
   }
 
-  const decomposed = lowercase.normalize('NFD');
-  const withoutAccents = decomposed.replace(COMBINING_MARKS, '');
+  const decomposed = lowercase.normalize("NFD");
+  const withoutAccents = decomposed.replace(COMBINING_MARKS, "");
 
   return withoutAccents.replace(CURLY_APOSTROPHE, STRAIGHT_APOSTROPHE);
 };
 
 /** Lowercases, drops accents and reads `’` as `'`, one character at a time. */
 export const foldText = (text: string): FoldedText => {
-  let folded = '';
+  let folded = "";
   const origins: number[] = [];
   let position = 0;
 
   for (const character of text) {
     const foldedCharacter = foldCharacter(character);
 
-    const characterOrigins = new Array<number>(foldedCharacter.length).fill(position);
+    const characterOrigins = new Array<number>(foldedCharacter.length).fill(
+      position,
+    );
 
     folded += foldedCharacter;
     origins.push(...characterOrigins);
@@ -76,7 +79,7 @@ export const foldQuery = (query: string): string => {
   const { folded } = foldText(trimmed);
 
   if (folded.length < MIN_QUERY_LENGTH) {
-    return '';
+    return "";
   }
 
   return folded;

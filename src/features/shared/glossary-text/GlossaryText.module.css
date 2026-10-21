@@ -13,7 +13,7 @@
 }
 
 .term:hover,
-.term[aria-expanded='true'] {
+.term[aria-expanded="true"] {
   color: var(--color-accent);
 }
 

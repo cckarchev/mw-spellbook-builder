@@ -1,8 +1,11 @@
-import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
-import { spellbookMage } from '@/data/catalog';
-import { CURRENT_MAGE_FALLBACK, KEEP_SPELLBOOK_HINT } from '@/features/shared/SpellbookLossNote';
-import { IncomingIssues } from './incoming-issues/IncomingIssues';
-import { useIncomingSpellbook } from './useIncomingSpellbook';
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { spellbookMage } from "@/data/catalog";
+import {
+  CURRENT_MAGE_FALLBACK,
+  KEEP_SPELLBOOK_HINT,
+} from "@/features/shared/SpellbookLossNote";
+import { IncomingIssues } from "./incoming-issues/IncomingIssues";
+import { useIncomingSpellbook } from "./useIncomingSpellbook";
 
 const replaceBody = (mageName: string) =>
   `This link opens another spellbook. Your ${mageName} spellbook will be replaced. ${KEEP_SPELLBOOK_HINT}`;
@@ -11,7 +14,9 @@ const replaceBody = (mageName: string) =>
 export const IncomingLink = () => {
   const { problems, dismiss, pendingReplace, confirmReplace, cancelReplace } =
     useIncomingSpellbook();
-  const replacedMage = pendingReplace ? spellbookMage(pendingReplace.spellbook) : undefined;
+  const replacedMage = pendingReplace
+    ? spellbookMage(pendingReplace.spellbook)
+    : undefined;
   const replacedMageName = replacedMage?.name ?? CURRENT_MAGE_FALLBACK;
 
   return (

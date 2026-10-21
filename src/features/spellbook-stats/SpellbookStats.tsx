@@ -1,16 +1,16 @@
-import { BarList, type BarRow } from '@/components/bar-list/BarList';
-import { SplitBar } from '@/components/split-bar/SplitBar';
-import type { Mage, Spellbook } from '@/core/rules/types';
-import { schoolTotal, spellbookStats } from '@/core/stats/spellbookStats';
-import type { SchoolPoints } from '@/core/stats/types';
-import { cardsById } from '@/data/catalog';
-import { EmptyMessage } from '@/features/shared/empty-message/EmptyMessage';
-import { AttacksStat } from './AttacksStat';
-import { countBars } from './countBars';
-import { ManaCurve } from './mana-curve/ManaCurve';
-import styles from './SpellbookStats.module.css';
-import { StatNote } from './stat-note/StatNote';
-import { StatSection } from './stat-section/StatSection';
+import { BarList, type BarRow } from "@/components/bar-list/BarList";
+import { SplitBar } from "@/components/split-bar/SplitBar";
+import type { Mage, Spellbook } from "@/core/rules/types";
+import { schoolTotal, spellbookStats } from "@/core/stats/spellbookStats";
+import type { SchoolPoints } from "@/core/stats/types";
+import { cardsById } from "@/data/catalog";
+import { EmptyMessage } from "@/features/shared/empty-message/EmptyMessage";
+import { AttacksStat } from "./AttacksStat";
+import { countBars } from "./countBars";
+import { ManaCurve } from "./mana-curve/ManaCurve";
+import styles from "./SpellbookStats.module.css";
+import { StatNote } from "./stat-note/StatNote";
+import { StatSection } from "./stat-section/StatSection";
 
 interface SpellbookStatsProps {
   spellbook: Spellbook;
@@ -44,8 +44,9 @@ export const SpellbookStats = ({ spellbook, mage }: SpellbookStatsProps) => {
         <BarList rows={schoolBars(stats.schools)} label="Points by school" />
         {stats.untrainedPoints > 0 ? (
           <StatNote>
-            <span className={styles.warningKey} aria-hidden="true" /> {stats.untrainedPoints} of{' '}
-            {mage.budget} points go to untrained schools.
+            <span className={styles.warningKey} aria-hidden="true" />{" "}
+            {stats.untrainedPoints} of {mage.budget} points go to untrained
+            schools.
           </StatNote>
         ) : null}
       </StatSection>

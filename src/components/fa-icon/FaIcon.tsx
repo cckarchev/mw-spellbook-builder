@@ -13,7 +13,12 @@ interface FaIconProps {
 
 /** A Font Awesome icon. Takes the text color and the font size, and is hidden from screen readers. */
 export const FaIcon = ({ width, path }: FaIconProps) => (
-  <svg width="1em" height="1em" viewBox={`0 0 ${width} ${ICON_HEIGHT}`} aria-hidden="true">
+  <svg
+    width="1em"
+    height="1em"
+    viewBox={`0 0 ${width} ${ICON_HEIGHT}`}
+    aria-hidden="true"
+  >
     <path fill="currentColor" d={path} />
   </svg>
 );

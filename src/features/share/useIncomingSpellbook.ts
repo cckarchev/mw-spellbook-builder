@@ -1,32 +1,52 @@
-import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { hasUnsavedDraft, readDraft } from '@/core/persistence/drafts';
-import { builderPath, PICKER_PATH } from '@/core/routing/builderPath';
-import { sameSpellbook } from '@/core/rules/spellbookChanges';
-import type { Spellbook } from '@/core/rules/types';
-import { summarizeSpellbook } from '@/core/rules/validateSpellbook';
-import { SPELLBOOK_PARAM } from '@/core/share-link/shareUrl';
-import { type DecodedSpellbook, decodeSpellbook } from '@/core/share-link/spellbookCodec';
-import { incomingProblems, noMageProblems } from '@/core/share-link/spellbookNotes';
-import { cardsById, spellbookMage } from '@/data/catalog';
-import { currentSpellbookPath } from '@/features/shared/currentSpellbookPath';
-import { useSpellbookStore } from '@/store/useSpellbookStore';
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { hasUnsavedDraft, readDraft } from "@/core/persistence/drafts";
+import { builderPath, PICKER_PATH } from "@/core/routing/builderPath";
+import { sameSpellbook } from "@/core/rules/spellbookChanges";
+import type { Spellbook } from "@/core/rules/types";
+import { summarizeSpellbook } from "@/core/rules/validateSpellbook";
+import { SPELLBOOK_PARAM } from "@/core/share-link/shareUrl";
+import {
+  type DecodedSpellbook,
+  decodeSpellbook,
+} from "@/core/share-link/spellbookCodec";
+import {
+  incomingProblems,
+  noMageProblems,
+} from "@/core/share-link/spellbookNotes";
+import { cardsById, spellbookMage } from "@/data/catalog";
+import { currentSpellbookPath } from "@/features/shared/currentSpellbookPath";
+import { useSpellbookStore } from "@/store/useSpellbookStore";
 
-const UNREADABLE = 'This link could not be read. Your current spellbook is unchanged.';
+const UNREADABLE =
+  "This link could not be read. Your current spellbook is unchanged.";
 
 /** Where a spellbook opened from a link goes, and what to tell the player about it. */
-const openedSpellbook = ({ spellbook, unknownCodes, unknownMage }: DecodedSpellbook) => {
+const openedSpellbook = ({
+  spellbook,
+  unknownCodes,
+  unknownMage,
+}: DecodedSpellbook) => {
   const mage = spellbookMage(spellbook);
 
   if (!mage) {
-    return { path: PICKER_PATH, problems: noMageProblems(unknownMage, unknownCodes) };
+    return {
+      path: PICKER_PATH,
+      problems: noMageProblems(unknownMage, unknownCodes),
+    };
   }
 
   const { issues } = summarizeSpellbook(spellbook, mage, cardsById);
 
   return {
-    path: builderPath(mage.name, 'spellbook'),
-    problems: incomingProblems(unknownCodes, issues, mage, spellbook.counts, cardsById),
+    path: builderPath(mage.name, "spellbook"),
+    problems: incomingProblems(
+      unknownCodes,
+      issues,
+      mage,
+      spellbook.counts,
+      cardsById,
+    ),
   };
 };
 
@@ -56,7 +76,9 @@ export const useIncomingSpellbook = () => {
   const handled = useRef(false);
 
   const [problems, setProblems] = useState<string[]>([]);
-  const [pendingReplace, setPendingReplace] = useState<DecodedSpellbook | null>(null);
+  const [pendingReplace, setPendingReplace] = useState<DecodedSpellbook | null>(
+    null,
+  );
 
   const open = (decoded: DecodedSpellbook) => {
     const { path, problems: found } = openedSpellbook(decoded);
@@ -80,7 +102,7 @@ export const useIncomingSpellbook = () => {
 
     if (!decoded) {
       setProblems([UNREADABLE]);
-      navigate(currentSpellbookPath(current, 'cards'), { replace: true });
+      navigate(currentSpellbookPath(current, "cards"), { replace: true });
 
       return;
     }
@@ -88,7 +110,7 @@ export const useIncomingSpellbook = () => {
     if (replacesWork(decoded.spellbook)) {
       // The current spellbook stays on screen while the player decides.
       setPendingReplace(decoded);
-      navigate(currentSpellbookPath(current, 'spellbook'), { replace: true });
+      navigate(currentSpellbookPath(current, "spellbook"), { replace: true });
 
       return;
     }

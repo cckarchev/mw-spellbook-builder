@@ -1,4 +1,4 @@
-import type { School } from '@/core/rules/types';
+import type { School } from "@/core/rules/types";
 
 export interface CountRow {
   label: string;

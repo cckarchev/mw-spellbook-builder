@@ -10,7 +10,7 @@
 }
 
 /* Nothing left to show: the filters went too far. */
-.count[data-empty='true'] {
+.count[data-empty="true"] {
   color: var(--color-error);
   font-weight: var(--font-weight-semibold);
 }

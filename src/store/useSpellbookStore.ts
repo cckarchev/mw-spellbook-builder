@@ -1,16 +1,16 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 import {
   migrateLegacySpellbook,
   readCurrentMageId,
   readDraft,
   writeCurrentMageId,
   writeDraft,
-} from '@/core/persistence/drafts';
-import { saveSpellbook } from '@/core/persistence/savedSpellbooks';
-import { emptySpellbook } from '@/core/rules/spellbookChanges';
-import type { Spellbook } from '@/core/rules/types';
-import { canAddCopy } from '@/core/rules/validateSpellbook';
-import { cardsById, spellbookMage } from '@/data/catalog';
+} from "@/core/persistence/drafts";
+import { saveSpellbook } from "@/core/persistence/savedSpellbooks";
+import { emptySpellbook } from "@/core/rules/spellbookChanges";
+import type { Spellbook } from "@/core/rules/types";
+import { canAddCopy } from "@/core/rules/validateSpellbook";
+import { cardsById, spellbookMage } from "@/data/catalog";
 
 interface SpellbookStore {
   /** The spellbook being built, kept as its mage's draft so it survives a reload and a mage switch. */
@@ -53,7 +53,10 @@ const readInitialState = (): InitialState => {
   return draft ?? { spellbook: noSpellbook(), name: null };
 };
 
-const withoutCard = (counts: Spellbook['counts'], cardId: string): Spellbook['counts'] => {
+const withoutCard = (
+  counts: Spellbook["counts"],
+  cardId: string,
+): Spellbook["counts"] => {
   const remaining = { ...counts };
 
   delete remaining[cardId];
@@ -77,7 +80,12 @@ export const createSpellbookStore = () => {
 
       const count = spellbook.counts[cardId] ?? 0;
 
-      set({ spellbook: { ...spellbook, counts: { ...spellbook.counts, [cardId]: count + 1 } } });
+      set({
+        spellbook: {
+          ...spellbook,
+          counts: { ...spellbook.counts, [cardId]: count + 1 },
+        },
+      });
     },
 
     removeCopy: (cardId) => {

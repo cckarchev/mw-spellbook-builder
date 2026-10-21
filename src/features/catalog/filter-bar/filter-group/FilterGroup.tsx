@@ -1,8 +1,8 @@
-import { useId, useState } from 'react';
-import { Chip } from '@/components/chip/Chip';
-import { matchesText } from '@/core/catalog/textSearch';
-import type { FilterValue } from '../../useCatalogFilters';
-import styles from './FilterGroup.module.css';
+import { useId, useState } from "react";
+import { Chip } from "@/components/chip/Chip";
+import { matchesText } from "@/core/catalog/textSearch";
+import type { FilterValue } from "../../useCatalogFilters";
+import styles from "./FilterGroup.module.css";
 
 interface FilterGroupProps {
   title: string;
@@ -40,7 +40,7 @@ export const FilterGroup = ({
   }
 
   const expanded = searching || open;
-  const selectedNote = selected.length > 0 ? ` (${selected.length})` : '';
+  const selectedNote = selected.length > 0 ? ` (${selected.length})` : "";
 
   return (
     <fieldset className={styles.group}>

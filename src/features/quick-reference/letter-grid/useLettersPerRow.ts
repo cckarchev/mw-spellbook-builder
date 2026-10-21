@@ -1,8 +1,8 @@
-import { useLayoutEffect, useState } from 'react';
-import { lettersPerRow } from '@/core/reference/lettersPerRow';
+import { useLayoutEffect, useState } from "react";
+import { lettersPerRow } from "@/core/reference/lettersPerRow";
 
 // Read from the stylesheet: the narrowest a letter button gets, and the space between buttons.
-const CELL_PROPERTY = '--touch-target';
+const CELL_PROPERTY = "--touch-target";
 const NO_LENGTH = 0;
 
 const lengthOf = (value: string): number => {

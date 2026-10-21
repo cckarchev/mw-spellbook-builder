@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
-import { ActionButton } from '@/features/shared/action-button/ActionButton';
-import { LoadDialog } from '@/features/shared/load-dialog/LoadDialog';
-import { LoadIcon } from '../Icons';
-import { useSavedSpellbooks } from './useSavedSpellbooks';
+import { useState } from "react";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { ActionButton } from "@/features/shared/action-button/ActionButton";
+import { LoadDialog } from "@/features/shared/load-dialog/LoadDialog";
+import { LoadIcon } from "../Icons";
+import { useSavedSpellbooks } from "./useSavedSpellbooks";
 
-const LOAD_TITLE = 'Load spellbook';
+const LOAD_TITLE = "Load spellbook";
 
 /**
  * The Load button, the official and saved spellbooks, and the questions before replacing or
@@ -19,7 +19,8 @@ export const LoadAction = () => {
   };
 
   const spellbooks = useSavedSpellbooks(close);
-  const isConfirming = spellbooks.pendingLoad !== null || spellbooks.pendingDelete !== null;
+  const isConfirming =
+    spellbooks.pendingLoad !== null || spellbooks.pendingDelete !== null;
 
   const open = () => {
     spellbooks.refresh();
@@ -50,7 +51,7 @@ export const LoadAction = () => {
       />
       <ConfirmDialog
         open={spellbooks.pendingDelete !== null}
-        title={`Delete "${spellbooks.pendingDelete ?? ''}"?`}
+        title={`Delete "${spellbooks.pendingDelete ?? ""}"?`}
         body={<p>This saved spellbook will be removed permanently.</p>}
         confirmLabel="Delete"
         onConfirm={spellbooks.confirmDelete}

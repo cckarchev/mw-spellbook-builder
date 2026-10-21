@@ -27,13 +27,13 @@
 }
 
 .toggle::before {
-  content: '▾';
+  content: "▾";
   display: inline-block;
   margin-inline-end: var(--space-xxs);
   transition: transform var(--duration-fast);
 }
 
-.toggle[aria-expanded='false']::before {
+.toggle[aria-expanded="false"]::before {
   transform: rotate(-90deg);
 }
 

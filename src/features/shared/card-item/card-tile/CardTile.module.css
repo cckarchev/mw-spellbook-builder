@@ -1,4 +1,4 @@
-@import '@/theme/breakpoints.css';
+@import "@/theme/breakpoints.css";
 
 .tile {
   display: flex;
@@ -16,7 +16,7 @@
   }
 }
 
-.tile[data-in-spellbook='true'] {
+.tile[data-in-spellbook="true"] {
   background: var(--color-bg-selected);
   border-color: var(--color-accent);
 }
@@ -36,7 +36,7 @@
 }
 
 /* A sideways card sits centered in an upright card's space, so the grid rows stay even. */
-.art[data-landscape='true'] {
+.art[data-landscape="true"] {
   display: flex;
   align-items: center;
   aspect-ratio: var(--card-aspect);
@@ -69,7 +69,7 @@
 }
 
 /* After the in-spellbook border, so a problem shows over it. */
-.tile[data-problem='true'] {
+.tile[data-problem="true"] {
   border-color: var(--color-error);
 }
 

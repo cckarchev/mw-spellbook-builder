@@ -1,5 +1,5 @@
-import { clearWhiteCorners } from './whiteCorners';
-import type { CropBox, RawImage } from './whiteFrame';
+import { clearWhiteCorners } from "./whiteCorners";
+import type { CropBox, RawImage } from "./whiteFrame";
 
 const CHANNELS = 4;
 const ALPHA = 3;
@@ -49,8 +49,8 @@ const roundedScan = (x: number, y: number): number[] => {
 const alphaAt = (image: RawImage, x: number, y: number): number =>
   image.data[(y * image.width + x) * image.channels + ALPHA];
 
-describe('clearWhiteCorners', () => {
-  it('makes the white rounded corners of a scan transparent, soft edge included', () => {
+describe("clearWhiteCorners", () => {
+  it("makes the white rounded corners of a scan transparent, soft edge included", () => {
     const cleared = clearWhiteCorners(paint(roundedScan), WHOLE);
 
     expect(alphaAt(cleared, 0, 0)).toBe(0);
@@ -60,7 +60,7 @@ describe('clearWhiteCorners', () => {
     expect(alphaAt(cleared, SIZE / 2, SIZE / 2)).toBe(FULL);
   });
 
-  it('leaves the image it was given untouched', () => {
+  it("leaves the image it was given untouched", () => {
     const image = paint(roundedScan);
 
     clearWhiteCorners(image, WHOLE);
@@ -68,15 +68,19 @@ describe('clearWhiteCorners', () => {
     expect(alphaAt(image, 0, 0)).toBe(FULL);
   });
 
-  it('keeps a light grey corner that has no white, such as a stone border', () => {
-    const image = paint((x, y) => (cornerDistance(x, y) < CORNER ? BLEND : ART));
+  it("keeps a light grey corner that has no white, such as a stone border", () => {
+    const image = paint((x, y) =>
+      cornerDistance(x, y) < CORNER ? BLEND : ART,
+    );
     const cleared = clearWhiteCorners(image, WHOLE);
 
     expect(alphaAt(cleared, 0, 0)).toBe(FULL);
   });
 
-  it('takes only one pixel of soft edge past the white', () => {
-    const image = paint((x, y) => (cornerDistance(x, y) < CORNER ? WHITE : BLEND));
+  it("takes only one pixel of soft edge past the white", () => {
+    const image = paint((x, y) =>
+      cornerDistance(x, y) < CORNER ? WHITE : BLEND,
+    );
     const cleared = clearWhiteCorners(image, WHOLE);
     const pastEdge = CORNER + 1;
 
@@ -84,7 +88,7 @@ describe('clearWhiteCorners', () => {
     expect(alphaAt(cleared, pastEdge, pastEdge)).toBe(FULL);
   });
 
-  it('keeps white that fills most of a corner, as art does', () => {
+  it("keeps white that fills most of a corner, as art does", () => {
     const sky = 50;
     const image = paint((x, y) => (x < sky && y < sky ? WHITE : ART));
     const cleared = clearWhiteCorners(image, WHOLE);
@@ -92,7 +96,7 @@ describe('clearWhiteCorners', () => {
     expect(alphaAt(cleared, 0, 0)).toBe(FULL);
   });
 
-  it('works on the corners of the box, not of the whole image', () => {
+  it("works on the corners of the box, not of the whole image", () => {
     const frame = 10;
     const box: CropBox = {
       left: frame,
@@ -101,7 +105,8 @@ describe('clearWhiteCorners', () => {
       height: SIZE - frame * 2,
     };
     const image = paint((x, y) => {
-      const inBox = x >= frame && y >= frame && x < SIZE - frame && y < SIZE - frame;
+      const inBox =
+        x >= frame && y >= frame && x < SIZE - frame && y < SIZE - frame;
       const atBoxCorner = x === frame && y === frame;
 
       return inBox && !atBoxCorner ? ART : WHITE;

@@ -1,10 +1,10 @@
-import type { ReactNode } from 'react';
-import type { Card } from '@/core/rules/types';
-import { GlossaryText } from '@/features/shared/glossary-text/GlossaryText';
-import { ZoomableImage } from '../zoomable-image/ZoomableImage';
-import styles from './CardRow.module.css';
+import type { ReactNode } from "react";
+import type { Card } from "@/core/rules/types";
+import { GlossaryText } from "@/features/shared/glossary-text/GlossaryText";
+import { ZoomableImage } from "../zoomable-image/ZoomableImage";
+import styles from "./CardRow.module.css";
 
-const TRAIT_SEPARATOR = ', ';
+const TRAIT_SEPARATOR = ", ";
 
 const Fact = ({ label, children }: { label: string; children: ReactNode }) => (
   <div className={styles.fact}>
@@ -24,13 +24,15 @@ const TraitList = ({ traits }: { traits: string[] }) =>
 /** The opened part of a card row: the full card image and its game text, with tappable terms. */
 export const CardDetails = ({ card }: { card: Card }) => {
   const facts = [
-    ['Type', card.type],
-    ['Action', card.action],
-    ['Range', card.range],
-    ['Target', card.target],
-    ['Mana', card.manaCost],
-  ].filter(([, value]) => value !== '');
-  const printedText = [card.attackBar, card.abilityBar, card.effect].filter((text) => text !== '');
+    ["Type", card.type],
+    ["Action", card.action],
+    ["Range", card.range],
+    ["Target", card.target],
+    ["Mana", card.manaCost],
+  ].filter(([, value]) => value !== "");
+  const printedText = [card.attackBar, card.abilityBar, card.effect].filter(
+    (text) => text !== "",
+  );
   const hasTraits = card.traits.length > 0;
 
   return (
@@ -45,7 +47,7 @@ export const CardDetails = ({ card }: { card: Card }) => {
       ) : null}
       <div className={styles.text}>
         <dl className={styles.facts}>
-          {facts.map(([label = '', value = '']) => (
+          {facts.map(([label = "", value = ""]) => (
             <Fact key={label} label={label}>
               <GlossaryText text={value} />
             </Fact>

@@ -1,5 +1,5 @@
-import { parseManaCost } from './manaCost';
-import type { CountRow, ManaCurve, ManaSources } from './types';
+import { parseManaCost } from "./manaCost";
+import type { CountRow, ManaCurve, ManaSources } from "./types";
 
 interface CostBucket {
   label: string;
@@ -7,17 +7,17 @@ interface CostBucket {
 }
 
 const COST_BUCKETS: CostBucket[] = [
-  { label: '0-2', max: 2 },
-  { label: '3-4', max: 4 },
-  { label: '5-6', max: 6 },
-  { label: '7-8', max: 8 },
-  { label: '9-10', max: 10 },
-  { label: '11-12', max: 12 },
-  { label: '13+', max: Number.POSITIVE_INFINITY },
+  { label: "0-2", max: 2 },
+  { label: "3-4", max: 4 },
+  { label: "5-6", max: 6 },
+  { label: "7-8", max: 8 },
+  { label: "9-10", max: 10 },
+  { label: "11-12", max: 12 },
+  { label: "13+", max: Number.POSITIVE_INFINITY },
 ];
 
 // Cards that add a flat +1 channeling per copy once in play, in display order.
-const FLAT_MANA_SOURCES = ['Mana Crystal', 'Mana Flower', 'Harmonize'];
+const FLAT_MANA_SOURCES = ["Mana Crystal", "Mana Flower", "Harmonize"];
 const CHANNELING_PER_SOURCE = 1;
 
 interface CostedCopies {
@@ -27,8 +27,14 @@ interface CostedCopies {
 }
 
 /** Copies per cost bucket and against the channeling; variable costs are counted apart. */
-export const manaCurveOf = (copies: CostedCopies[], channeling: number): ManaCurve => {
-  const buckets: CountRow[] = COST_BUCKETS.map((bucket) => ({ label: bucket.label, count: 0 }));
+export const manaCurveOf = (
+  copies: CostedCopies[],
+  channeling: number,
+): ManaCurve => {
+  const buckets: CountRow[] = COST_BUCKETS.map((bucket) => ({
+    label: bucket.label,
+    count: 0,
+  }));
   let variable = 0;
   let atOrBelow = 0;
   let above = 0;
@@ -40,7 +46,7 @@ export const manaCurveOf = (copies: CostedCopies[], channeling: number): ManaCur
       continue;
     }
 
-    if (cost === 'X') {
+    if (cost === "X") {
       variable += count;
       continue;
     }
@@ -59,7 +65,9 @@ export const manaCurveOf = (copies: CostedCopies[], channeling: number): ManaCur
     }
   }
 
-  const channelingBucket = COST_BUCKETS.findIndex((bucket) => channeling <= bucket.max);
+  const channelingBucket = COST_BUCKETS.findIndex(
+    (bucket) => channeling <= bucket.max,
+  );
 
   return { buckets, variable, channeling, channelingBucket, atOrBelow, above };
 };
@@ -74,7 +82,10 @@ export const manaSourcesOf = (copies: CostedCopies[]): ManaSources => {
     return { name, count };
   }).filter((source) => source.count > 0);
 
-  const total = cards.reduce((sum, source) => sum + source.count * CHANNELING_PER_SOURCE, 0);
+  const total = cards.reduce(
+    (sum, source) => sum + source.count * CHANNELING_PER_SOURCE,
+    0,
+  );
 
   return { cards, total };
 };

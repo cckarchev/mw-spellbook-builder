@@ -1,10 +1,13 @@
-import { useState } from 'react';
-import { type SavedSpellbook, savedSpellbooks } from '@/core/persistence/savedSpellbooks';
-import type { Spellbook } from '@/core/rules/types';
-import { officialSpellbook } from '@/data/officialSpellbooks';
-import { useSpellbookStatus } from '@/store/useSpellbookStatus';
-import { useSpellbookStore } from '@/store/useSpellbookStore';
-import { useDeleteSavedSpellbook } from './useDeleteSavedSpellbook';
+import { useState } from "react";
+import {
+  type SavedSpellbook,
+  savedSpellbooks,
+} from "@/core/persistence/savedSpellbooks";
+import type { Spellbook } from "@/core/rules/types";
+import { officialSpellbook } from "@/data/officialSpellbooks";
+import { useSpellbookStatus } from "@/store/useSpellbookStatus";
+import { useSpellbookStore } from "@/store/useSpellbookStore";
+import { useDeleteSavedSpellbook } from "./useDeleteSavedSpellbook";
 
 /** A spellbook to load and the name it carries once loaded; null for the official spellbook. */
 interface LoadChoice {
@@ -26,7 +29,9 @@ export const useSavedSpellbooks = (onLoaded: () => void) => {
   const [pendingLoad, setPendingLoad] = useState<LoadChoice | null>(null);
 
   const readSaved = () => {
-    setSaved(spellbook.mageId === null ? [] : savedSpellbooks(spellbook.mageId));
+    setSaved(
+      spellbook.mageId === null ? [] : savedSpellbooks(spellbook.mageId),
+    );
   };
 
   const deletion = useDeleteSavedSpellbook(readSaved);
@@ -56,7 +61,10 @@ export const useSavedSpellbooks = (onLoaded: () => void) => {
   };
 
   const requestLoad = (savedSpellbook: SavedSpellbook) => {
-    requestChoice({ spellbook: savedSpellbook.spellbook, name: savedSpellbook.name });
+    requestChoice({
+      spellbook: savedSpellbook.spellbook,
+      name: savedSpellbook.name,
+    });
   };
 
   /** The official spellbook loads unnamed: saving it later makes the player's own copy. */

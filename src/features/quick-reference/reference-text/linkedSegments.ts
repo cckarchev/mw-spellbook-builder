@@ -1,7 +1,7 @@
-import { splitByTerms, type TextSegment } from '@/core/glossary/findTerms';
-import type { GlossaryEntry } from '@/core/glossary/types';
-import { linkOnce } from '@/core/reference/linkOnce';
-import { glossaryIndex } from '@/data/glossary';
+import { splitByTerms, type TextSegment } from "@/core/glossary/findTerms";
+import type { GlossaryEntry } from "@/core/glossary/types";
+import { linkOnce } from "@/core/reference/linkOnce";
+import { glossaryIndex } from "@/data/glossary";
 
 const known = new Map<GlossaryEntry, TextSegment[]>();
 
@@ -16,7 +16,10 @@ export const linkedSegments = (entry: GlossaryEntry): TextSegment[] => {
     return cached;
   }
 
-  const segments = linkOnce(splitByTerms(entry.definition, glossaryIndex), entry);
+  const segments = linkOnce(
+    splitByTerms(entry.definition, glossaryIndex),
+    entry,
+  );
 
   known.set(entry, segments);
 

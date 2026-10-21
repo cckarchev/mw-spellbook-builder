@@ -1,66 +1,73 @@
-import { execFileSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
-import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
-import path from 'node:path';
-import { unzipSync } from 'fflate';
-import sharp from 'sharp';
-import { cardCode, cardImagePath } from '@/core/catalog/cardImage';
-import type { GlossaryEntry } from '@/core/glossary/types';
-import type { Card, Format } from '@/core/rules/types';
-import { mages } from '@/data/mages';
-import { applyCorrections, CARD_CORRECTIONS } from './lib/cardCorrections';
-import { decodeImage } from './lib/decodeImage';
-import { buildExpansionMap, type LegacySet } from './lib/expansions';
-import { applyGlossaryCorrections, GLOSSARY_CORRECTIONS } from './lib/glossaryCorrections';
-import { cutImageBox } from './lib/imageCorrections';
-import { normalizeCard } from './lib/normalizeCard';
-import { parseCodexXml } from './lib/readCodex';
-import { parseSetXml, readModuleSets } from './lib/readModule';
+import { execFileSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { unzipSync } from "fflate";
+import sharp from "sharp";
+import { cardCode, cardImagePath } from "@/core/catalog/cardImage";
+import type { GlossaryEntry } from "@/core/glossary/types";
+import type { Card, Format } from "@/core/rules/types";
+import { mages } from "@/data/mages";
+import { applyCorrections, CARD_CORRECTIONS } from "./lib/cardCorrections";
+import { decodeImage } from "./lib/decodeImage";
+import { buildExpansionMap, type LegacySet } from "./lib/expansions";
+import {
+  applyGlossaryCorrections,
+  GLOSSARY_CORRECTIONS,
+} from "./lib/glossaryCorrections";
+import { cutImageBox } from "./lib/imageCorrections";
+import { normalizeCard } from "./lib/normalizeCard";
+import { parseCodexXml } from "./lib/readCodex";
+import { parseSetXml, readModuleSets } from "./lib/readModule";
 import {
   parseDeckXml,
   readOfficialDecks,
   resolveOfficialSpellbook,
-} from './lib/readOfficialSpellbooks';
-import { clearWhiteCorners } from './lib/whiteCorners';
-import { isLandscape, whiteFrameBox } from './lib/whiteFrame';
+} from "./lib/readOfficialSpellbooks";
+import { clearWhiteCorners } from "./lib/whiteCorners";
+import { isLandscape, whiteFrameBox } from "./lib/whiteFrame";
 
 // Reads the OCTGN Mage Wars module, the community image pack and the Codex from raw-input/
 // and writes src/data/cards.json, src/data/glossary.json, src/data/officialSpellbooks.json
 // and public/cards/<code>.webp.
 // Run with `npm run data`. Reading the Codex needs `pdftohtml`, from poppler-utils.
 
-const RAW_DIR = 'raw-input';
-const MODULE_PATH = path.join(RAW_DIR, 'mage-wars-3.1.4.1.nupkg');
+const RAW_DIR = "raw-input";
+const MODULE_PATH = path.join(RAW_DIR, "mage-wars-3.1.4.1.nupkg");
 const MODULE_URL =
-  'https://www.myget.org/F/octgngamedirectory/api/v2/package/9acef3d0-efa8-4d3f-a10c-54812baecdda/3.1.4.1';
-const LEGACY_DIR = path.join(RAW_DIR, 'legacy-sets');
+  "https://www.myget.org/F/octgngamedirectory/api/v2/package/9acef3d0-efa8-4d3f-a10c-54812baecdda/3.1.4.1";
+const LEGACY_DIR = path.join(RAW_DIR, "legacy-sets");
 const LEGACY_SETS_API =
-  'https://api.github.com/repos/sIKE23/Mage-Wars/contents/GameDatabase/9acef3d0-efa8-4d3f-a10c-54812baecdda/Sets';
+  "https://api.github.com/repos/sIKE23/Mage-Wars/contents/GameDatabase/9acef3d0-efa8-4d3f-a10c-54812baecdda/Sets";
 const LEGACY_RAW_BASE =
-  'https://raw.githubusercontent.com/sIKE23/Mage-Wars/master/GameDatabase/9acef3d0-efa8-4d3f-a10c-54812baecdda/Sets';
-const IMAGE_PACK_PATH = path.join(RAW_DIR, 'MW_Card_Image_Pack.o8c');
+  "https://raw.githubusercontent.com/sIKE23/Mage-Wars/master/GameDatabase/9acef3d0-efa8-4d3f-a10c-54812baecdda/Sets";
+const IMAGE_PACK_PATH = path.join(RAW_DIR, "MW_Card_Image_Pack.o8c");
 
-const CODEX_PATH = path.join(RAW_DIR, 'Mage_Wars_Codex.pdf');
+const CODEX_PATH = path.join(RAW_DIR, "Mage_Wars_Codex.pdf");
 const MEGABYTE = 1_048_576;
 /** The Codex XML passes the default 1 MB buffer of execFileSync. */
 const CODEX_MAX_BUFFER_MEGABYTES = 16;
 const CODEX_MAX_BUFFER = CODEX_MAX_BUFFER_MEGABYTES * MEGABYTE;
 
-const CARDS_JSON_PATH = path.join('src', 'data', 'cards.json');
-const GLOSSARY_JSON_PATH = path.join('src', 'data', 'glossary.json');
-const OFFICIAL_SPELLBOOKS_JSON_PATH = path.join('src', 'data', 'officialSpellbooks.json');
-const PUBLIC_DIR = 'public';
-const IMAGE_DIR = path.join(PUBLIC_DIR, 'cards');
+const CARDS_JSON_PATH = path.join("src", "data", "cards.json");
+const GLOSSARY_JSON_PATH = path.join("src", "data", "glossary.json");
+const OFFICIAL_SPELLBOOKS_JSON_PATH = path.join(
+  "src",
+  "data",
+  "officialSpellbooks.json",
+);
+const PUBLIC_DIR = "public";
+const IMAGE_DIR = path.join(PUBLIC_DIR, "cards");
 const IMAGE_WIDTH = 480;
 const IMAGE_QUALITY = 80;
 /** Decoded images always carry red, green, blue and alpha. */
 const RAW_CHANNELS = 4 as const;
 const JSON_INDENT = 2;
-const BIOME_BIN = path.join('node_modules', '.bin', 'biome');
+const BIOME_BIN = path.join("node_modules", ".bin", "biome");
 
 const SETS: { id: string; format: Format }[] = [
-  { id: '36d0ba97-faee-4117-895c-2c08eed318eb', format: 'arena' },
-  { id: '85c1fe26-1bed-4efe-9756-a8d4e01079c5', format: 'academy' },
+  { id: "36d0ba97-faee-4117-895c-2c08eed318eb", format: "arena" },
+  { id: "85c1fe26-1bed-4efe-9756-a8d4e01079c5", format: "academy" },
 ];
 
 const IMAGE_ENTRY_PATTERN = /\/Cards\/([0-9a-f-]+)\.(jpe?g|png)$/i;
@@ -93,10 +100,12 @@ const ensureLegacySets = async (): Promise<void> => {
     return;
   }
 
-  log('Downloading legacy set files from sIKE23/Mage-Wars');
+  log("Downloading legacy set files from sIKE23/Mage-Wars");
   await mkdir(LEGACY_DIR, { recursive: true });
 
-  const listing = JSON.parse(new TextDecoder().decode(await download(LEGACY_SETS_API))) as {
+  const listing = JSON.parse(
+    new TextDecoder().decode(await download(LEGACY_SETS_API)),
+  ) as {
     name: string;
   }[];
 
@@ -109,11 +118,15 @@ const ensureLegacySets = async (): Promise<void> => {
 };
 
 const readLegacySets = async (): Promise<LegacySet[]> => {
-  const files = (await readdir(LEGACY_DIR)).filter((file) => file.endsWith('.xml')).sort();
+  const files = (await readdir(LEGACY_DIR))
+    .filter((file) => file.endsWith(".xml"))
+    .sort();
   const sets: LegacySet[] = [];
 
   for (const file of files) {
-    const set = parseSetXml(await readFile(path.join(LEGACY_DIR, file), 'utf8'));
+    const set = parseSetXml(
+      await readFile(path.join(LEGACY_DIR, file), "utf8"),
+    );
 
     sets.push({ name: set.name, cardIds: set.cards.map((card) => card.id) });
   }
@@ -139,14 +152,18 @@ const readCards = async (): Promise<Card[]> => {
     }
   }
 
-  const sorted = cards.sort((a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id));
+  const sorted = cards.sort(
+    (a, b) => a.name.localeCompare(b.name) || a.id.localeCompare(b.id),
+  );
 
   return applyCorrections(sorted, CARD_CORRECTIONS);
 };
 
 /** Sorts an object's keys, so the generated JSON diffs cleanly between runs. */
 const sortedByKey = <T>(record: Record<string, T>): Record<string, T> =>
-  Object.fromEntries(Object.entries(record).sort(([a], [b]) => a.localeCompare(b)));
+  Object.fromEntries(
+    Object.entries(record).sort(([a], [b]) => a.localeCompare(b)),
+  );
 
 /** The module's official spellbooks as mage id to card id counts, one per mage. */
 const readOfficialSpellbooks = async (
@@ -156,7 +173,12 @@ const readOfficialSpellbooks = async (
   const spellbooks: Record<string, Record<string, number>> = {};
 
   for (const [fileName, xml] of decks) {
-    const { mageId, counts } = resolveOfficialSpellbook(parseDeckXml(xml), fileName, cards, mages);
+    const { mageId, counts } = resolveOfficialSpellbook(
+      parseDeckXml(xml),
+      fileName,
+      cards,
+      mages,
+    );
 
     if (Object.hasOwn(spellbooks, mageId)) {
       throw new Error(`Two official spellbooks for ${mageId}`);
@@ -197,7 +219,11 @@ const writeFramelessImage = async (
   const image = await decodeImage(data);
   const box = cutImageBox(whiteFrameBox(image), cardId);
   const cleared = clearWhiteCorners(image, box);
-  const raw = { width: cleared.width, height: cleared.height, channels: RAW_CHANNELS };
+  const raw = {
+    width: cleared.width,
+    height: cleared.height,
+    channels: RAW_CHANNELS,
+  };
 
   await sharp(cleared.data, { raw })
     .extract(box)
@@ -213,16 +239,19 @@ const writeFramelessImage = async (
  * the conversion reaches them all. Returns the ids that got an image, each with whether it is
  * landscape.
  */
-const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Map<string, boolean>> => {
+const writeImages = async (
+  wantedIds: ReadonlySet<string>,
+): Promise<Map<string, boolean>> => {
   await mkdir(IMAGE_DIR, { recursive: true });
 
   const entries = unzipSync(await readFile(IMAGE_PACK_PATH), {
-    filter: (file) => wantedIds.has(IMAGE_ENTRY_PATTERN.exec(file.name)?.[1] ?? ''),
+    filter: (file) =>
+      wantedIds.has(IMAGE_ENTRY_PATTERN.exec(file.name)?.[1] ?? ""),
   });
   const written = new Map<string, boolean>();
 
   for (const [name, data] of Object.entries(entries)) {
-    const id = IMAGE_ENTRY_PATTERN.exec(name)?.[1] ?? '';
+    const id = IMAGE_ENTRY_PATTERN.exec(name)?.[1] ?? "";
     const target = imageFile(id);
 
     if (written.has(id)) {
@@ -234,7 +263,9 @@ const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Map<string, 
     try {
       landscape = await writeFramelessImage(data, id, target);
     } catch (error) {
-      throw new Error(`Could not convert the image of card ${id}`, { cause: error });
+      throw new Error(`Could not convert the image of card ${id}`, {
+        cause: error,
+      });
     }
 
     written.set(id, landscape);
@@ -244,9 +275,15 @@ const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Map<string, 
 };
 
 /** Removes images left from cards that are no longer in the catalog. */
-const removeStaleImages = async (keptIds: ReadonlySet<string>): Promise<number> => {
-  const keptFiles = new Set([...keptIds].map((id) => path.basename(imageFile(id))));
-  const stale = (await readdir(IMAGE_DIR)).filter((file) => !keptFiles.has(file));
+const removeStaleImages = async (
+  keptIds: ReadonlySet<string>,
+): Promise<number> => {
+  const keptFiles = new Set(
+    [...keptIds].map((id) => path.basename(imageFile(id))),
+  );
+  const stale = (await readdir(IMAGE_DIR)).filter(
+    (file) => !keptFiles.has(file),
+  );
 
   for (const file of stale) {
     await rm(path.join(IMAGE_DIR, file));
@@ -258,15 +295,19 @@ const removeStaleImages = async (keptIds: ReadonlySet<string>): Promise<number> 
 const writeJson = async (filePath: string, data: unknown): Promise<void> => {
   await writeFile(filePath, `${JSON.stringify(data, null, JSON_INDENT)}\n`);
   // Match the repo formatter so `npm run lint` checks the generated file too.
-  execFileSync(BIOME_BIN, ['format', '--write', filePath], { stdio: 'ignore' });
+  execFileSync(BIOME_BIN, ["format", "--write", filePath], { stdio: "ignore" });
 };
 
 /** The Codex glossary, read through the XML output of pdftohtml, which keeps each run's font. */
 const readGlossary = (): GlossaryEntry[] => {
-  const xml = execFileSync('pdftohtml', ['-xml', '-i', '-q', '-stdout', CODEX_PATH], {
-    encoding: 'utf8',
-    maxBuffer: CODEX_MAX_BUFFER,
-  });
+  const xml = execFileSync(
+    "pdftohtml",
+    ["-xml", "-i", "-q", "-stdout", CODEX_PATH],
+    {
+      encoding: "utf8",
+      maxBuffer: CODEX_MAX_BUFFER,
+    },
+  );
 
   const entries = parseCodexXml(xml);
 
@@ -291,7 +332,9 @@ const main = async (): Promise<void> => {
   const mageCardIds = mages
     .flatMap((mage) => [mage.imageCardId, mage.statsCardId])
     .filter((id): id is string => id !== null);
-  const withImage = await writeImages(new Set([...cards.map((card) => card.id), ...mageCardIds]));
+  const withImage = await writeImages(
+    new Set([...cards.map((card) => card.id), ...mageCardIds]),
+  );
 
   const removed = await removeStaleImages(new Set(withImage.keys()));
 
@@ -308,14 +351,18 @@ const main = async (): Promise<void> => {
   await writeJson(OFFICIAL_SPELLBOOKS_JSON_PATH, officialSpellbooks);
 
   const missingImages = cards.filter((card) => card.image === null);
-  const unknownExpansion = cards.filter((card) => card.expansion === 'Unknown');
+  const unknownExpansion = cards.filter((card) => card.expansion === "Unknown");
 
   log(`Cards: ${cards.length}`);
   log(`With image: ${cards.length - missingImages.length}`);
-  log(`Without image: ${missingImages.map((card) => card.name).join(', ') || 'none'}`);
+  log(
+    `Without image: ${missingImages.map((card) => card.name).join(", ") || "none"}`,
+  );
   log(`Without expansion: ${unknownExpansion.length}`);
   log(`Stale images removed: ${removed}`);
-  log(`Mages without image: ${mageCardIds.filter((id) => !withImage.has(id)).length}`);
+  log(
+    `Mages without image: ${mageCardIds.filter((id) => !withImage.has(id)).length}`,
+  );
   log(`Glossary terms: ${glossary.length}`);
   log(`Official spellbooks: ${Object.keys(officialSpellbooks).length}`);
 };

@@ -1,7 +1,7 @@
-import { savedCopy } from '@/core/persistence/savedSpellbooks';
-import { hasUnsavedChanges } from '@/core/rules/spellbookChanges';
-import { officialSpellbook } from '@/data/officialSpellbooks';
-import { useSpellbookStore } from './useSpellbookStore';
+import { savedCopy } from "@/core/persistence/savedSpellbooks";
+import { hasUnsavedChanges } from "@/core/rules/spellbookChanges";
+import { officialSpellbook } from "@/data/officialSpellbooks";
+import { useSpellbookStore } from "./useSpellbookStore";
 
 interface SpellbookStatus {
   /** The saved spellbook's name, null when the spellbook has none or its saved copy is gone. */

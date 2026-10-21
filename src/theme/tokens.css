@@ -3,7 +3,7 @@
  * the app. Components read them with var(--token). The palette follows the
  * cckarchev site (cckarchev-web/src/styles/theme.ts).
  */
-@import './breakpoints.css';
+@import "./breakpoints.css";
 
 :root {
   /* RGB channels. Compose a color at any opacity with rgb(var(--rgb-x) / 0.5)
@@ -87,8 +87,8 @@
   --font-size-xl: 28px;
   --font-size-xxl: 40px;
 
-  --font-display: 'Big Noodle Titling', 'Oswald', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: "Big Noodle Titling", "Oswald", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
 
   --font-weight-semibold: 600;
 
@@ -149,7 +149,10 @@
   --card-radius: 4.8% / 3.4%;
   --card-full-width: 280px;
   /* A sideways card as tall as an upright one. */
-  --card-full-width-landscape: calc(var(--card-full-width) / (var(--card-aspect)));
+  --card-full-width-landscape: calc(
+    var(--card-full-width) /
+    (var(--card-aspect))
+  );
   /* A card shown on its own, such as a mage stats card: the width of the exported images. */
   --card-zoom-width: 480px;
 

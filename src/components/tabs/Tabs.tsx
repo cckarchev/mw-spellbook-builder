@@ -1,4 +1,4 @@
-import styles from './Tabs.module.css';
+import styles from "./Tabs.module.css";
 
 export interface Tab<T extends string> {
   id: T;
@@ -14,7 +14,12 @@ interface TabsProps<T extends string> {
 }
 
 /** A row of tabs. The caller renders the active panel with tabPanelProps. */
-export const Tabs = <T extends string>({ tabs, active, onChange, idPrefix }: TabsProps<T>) => (
+export const Tabs = <T extends string>({
+  tabs,
+  active,
+  onChange,
+  idPrefix,
+}: TabsProps<T>) => (
   <div role="tablist" className={styles.tabs}>
     {tabs.map((tab) => (
       <button
@@ -36,6 +41,6 @@ export const Tabs = <T extends string>({ tabs, active, onChange, idPrefix }: Tab
 /** Props for the element holding the active tab's content. */
 export const tabPanelProps = (idPrefix: string, active: string) => ({
   id: `${idPrefix}-panel`,
-  role: 'tabpanel',
-  'aria-labelledby': `${idPrefix}-${active}`,
+  role: "tabpanel",
+  "aria-labelledby": `${idPrefix}-${active}`,
 });

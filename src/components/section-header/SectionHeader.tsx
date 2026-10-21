@@ -1,4 +1,4 @@
-import styles from './SectionHeader.module.css';
+import styles from "./SectionHeader.module.css";
 
 interface SectionHeaderProps {
   /** Id of the heading, so the section can be labelled by it. */
@@ -21,13 +21,18 @@ export const SectionHeader = ({
   onToggle,
 }: SectionHeaderProps) => (
   <h2 id={id} className={styles.heading}>
-    <button type="button" className={styles.toggle} aria-expanded={expanded} onClick={onToggle}>
+    <button
+      type="button"
+      className={styles.toggle}
+      aria-expanded={expanded}
+      onClick={onToggle}
+    >
       <span className={styles.title}>
         {title} ({count})
       </span>
       {meta ? (
         <>
-          {' '}
+          {" "}
           <span className={styles.meta}>{meta}</span>
         </>
       ) : null}

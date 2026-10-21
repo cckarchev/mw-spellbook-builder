@@ -1,5 +1,5 @@
-import type { MarkedSegment } from './markSegments';
-import type { TextRange } from './matchRanges';
+import type { MarkedSegment } from "./markSegments";
+import type { TextRange } from "./matchRanges";
 
 /** The part of each segment inside a range of the whole text, leaving out what falls outside. */
 export const sliceSegments = (

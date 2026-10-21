@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import styles from './Toast.module.css';
-import { useToastStore } from './useToastStore';
+import { useEffect } from "react";
+import styles from "./Toast.module.css";
+import { useToastStore } from "./useToastStore";
 
 /** Shows the toast message at the bottom of the screen for a moment. Mounted once, at the app root. */
 export const Toast = () => {

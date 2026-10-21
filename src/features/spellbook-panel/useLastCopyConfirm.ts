@@ -1,5 +1,5 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import type { Spellbook } from '@/core/rules/types';
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
+import type { Spellbook } from "@/core/rules/types";
 
 const LAST_COPY = 1;
 
@@ -7,7 +7,10 @@ const LAST_COPY = 1;
  * Removes a copy right away while others stay. The last copy waits in pendingCardId
  * until the player confirms, since the card then leaves the spellbook.
  */
-export const useLastCopyConfirm = (spellbook: Spellbook, onRemove: (cardId: string) => void) => {
+export const useLastCopyConfirm = (
+  spellbook: Spellbook,
+  onRemove: (cardId: string) => void,
+) => {
   const [pendingCardId, setPendingCardId] = useState<string | null>(null);
   const spellbookRef = useRef(spellbook);
 

@@ -32,7 +32,7 @@
   outline-offset: calc(-1 * var(--focus-ring-offset));
 }
 
-.segment[aria-pressed='true'] {
+.segment[aria-pressed="true"] {
   color: var(--color-text-strong);
   background: var(--color-bg-accent-tint);
 }

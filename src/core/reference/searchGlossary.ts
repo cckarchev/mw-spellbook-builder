@@ -1,5 +1,5 @@
-import type { GlossaryEntry } from '@/core/glossary/types';
-import { foldedOnce } from './foldText';
+import type { GlossaryEntry } from "@/core/glossary/types";
+import { foldedOnce } from "./foldText";
 
 export interface GlossarySearch {
   byName: GlossaryEntry[];
@@ -16,7 +16,7 @@ export const searchGlossary = (
   entries: readonly GlossaryEntry[],
   query: string,
 ): GlossarySearch => {
-  if (query === '') {
+  if (query === "") {
     return { byName: [], byDefinition: [] };
   }
 

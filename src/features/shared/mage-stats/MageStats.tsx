@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { mageStatsImage } from '@/core/catalog/mageImage';
-import type { Mage } from '@/core/rules/types';
-import { CardZoom } from '@/features/shared/card-zoom/CardZoom';
-import styles from './MageStats.module.css';
-import { StatsIcon } from './StatsIcon';
+import { useState } from "react";
+import { mageStatsImage } from "@/core/catalog/mageImage";
+import type { Mage } from "@/core/rules/types";
+import { CardZoom } from "@/features/shared/card-zoom/CardZoom";
+import styles from "./MageStats.module.css";
+import { StatsIcon } from "./StatsIcon";
 
 interface MageStatsProps {
   mage: Mage;
@@ -22,7 +22,7 @@ export const MageStats = ({ mage, label, className }: MageStatsProps) => {
     return label ?? null;
   }
 
-  const classes = [styles.trigger, className].filter(Boolean).join(' ');
+  const classes = [styles.trigger, className].filter(Boolean).join(" ");
   const openStats = () => {
     setOpen(true);
   };

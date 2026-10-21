@@ -1,24 +1,29 @@
-import type { Card } from '@/core/rules/types';
+import type { Card } from "@/core/rules/types";
 
 // Combining marks left after NFD decomposition, such as the accent in "É".
 const COMBINING_MARKS = /[\u0300-\u036f]/g;
 const WHITESPACE = /\s+/;
-const PART_SEPARATOR = '\n';
+const PART_SEPARATOR = "\n";
 
 /** Lowercases and strips accents so "Éter" and "eter" compare equal. */
 const foldText = (text: string): string =>
-  text.normalize('NFD').replace(COMBINING_MARKS, '').toLowerCase();
+  text.normalize("NFD").replace(COMBINING_MARKS, "").toLowerCase();
 
 const queryWords = (query: string): string[] =>
   foldText(query)
     .split(WHITESPACE)
-    .filter((word) => word !== '');
+    .filter((word) => word !== "");
 
 /** Everything printed on the card that a player might search for. */
 const searchableText = (card: Card): string =>
-  [card.name, card.effect, card.attackBar, card.abilityBar, ...card.traits, ...card.subtypes].join(
-    PART_SEPARATOR,
-  );
+  [
+    card.name,
+    card.effect,
+    card.attackBar,
+    card.abilityBar,
+    ...card.traits,
+    ...card.subtypes,
+  ].join(PART_SEPARATOR);
 
 /** Whether every word of the query appears somewhere in the text. An empty query matches. */
 export const matchesText = (text: string, query: string): boolean => {

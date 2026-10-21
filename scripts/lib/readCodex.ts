@@ -1,4 +1,4 @@
-import type { GlossaryEntry } from '@/core/glossary/types';
+import type { GlossaryEntry } from "@/core/glossary/types";
 
 // Reads the glossary out of the Mage Wars Codex PDF, as `pdftohtml -xml` prints it: every
 // run of text is a <text> tag with its position and font. Terms are the large bold runs that
@@ -15,18 +15,18 @@ const TAG_PATTERN =
   /<fontspec id="(\d+)" size="(\d+)"[^>]*>|<text top="(\d+)" left="(\d+)"[^>]*font="(\d+)">(.*?)<\/text>/g;
 const INNER_TAG_PATTERN = /<[^>]+>/g;
 const WHITESPACE_PATTERN = /\s+/g;
-const HYPHEN = '-';
+const HYPHEN = "-";
 /** The Codex prints a lowercase x as a capital, as in "teXt boX": an X touching a lowercase letter. */
 const MISCASED_X_PATTERN = /(?<=[a-z])X|X(?=[a-z])/g;
-const LOWERCASE_X = 'x';
+const LOWERCASE_X = "x";
 
 const ENTITIES: Record<string, string> = {
-  '&amp;': '&',
-  '&lt;': '<',
-  '&gt;': '>',
-  '&quot;': '"',
-  '&#39;': "'",
-  '&apos;': "'",
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&quot;": '"',
+  "&#39;": "'",
+  "&apos;": "'",
 };
 const ENTITY_PATTERN = /&(amp|lt|gt|quot|apos|#39);/g;
 
@@ -47,11 +47,14 @@ interface Draft {
 
 const decode = (text: string): string =>
   text
-    .replace(INNER_TAG_PATTERN, '')
+    .replace(INNER_TAG_PATTERN, "")
     .replace(ENTITY_PATTERN, (entity) => ENTITIES[entity] ?? entity);
 
 const tidy = (text: string): string =>
-  text.replace(WHITESPACE_PATTERN, ' ').replace(MISCASED_X_PATTERN, LOWERCASE_X).trim();
+  text
+    .replace(WHITESPACE_PATTERN, " ")
+    .replace(MISCASED_X_PATTERN, LOWERCASE_X)
+    .trim();
 
 /** Every text run in document order, with the size of its font. */
 const readRuns = (xml: string): Run[] => {
@@ -69,8 +72,8 @@ const readRuns = (xml: string): Run[] => {
     runs.push({
       top: Number(top),
       left: Number(left),
-      size: sizes.get(font ?? '') ?? 0,
-      text: decode(content ?? ''),
+      size: sizes.get(font ?? "") ?? 0,
+      text: decode(content ?? ""),
     });
   }
 
@@ -90,7 +93,7 @@ const appendBody = (run: Run, draft: Draft): void => {
   draft.termOpen = false;
 
   if (isBodyText && isOnNewLine(run, draft) && !endsInHyphen) {
-    draft.definition += ' ';
+    draft.definition += " ";
   }
 
   draft.definition += run.text;
@@ -105,12 +108,13 @@ const toEntry = (draft: Draft): GlossaryEntry => ({
   definition: tidy(draft.definition),
 });
 
-const isBlank = (run: Run): boolean => run.text.trim() === '';
+const isBlank = (run: Run): boolean => run.text.trim() === "";
 
 /** A run in the term size: more of the term on its line, a new term, or a space. */
 const readTermSizedRun = (run: Run, drafts: Draft[]): void => {
   const current = drafts.at(-1);
-  const continuesTerm = current?.termOpen === true && run.top === current.termTop;
+  const continuesTerm =
+    current?.termOpen === true && run.top === current.termTop;
   const startsTerm = !isBlank(run) && run.left <= LINE_START_MAX_LEFT;
 
   if (current && continuesTerm) {
@@ -124,7 +128,7 @@ const readTermSizedRun = (run: Run, drafts: Draft[]): void => {
       term: run.text,
       termTop: run.top,
       termOpen: true,
-      definition: '',
+      definition: "",
       lastTop: run.top,
     });
 
@@ -159,5 +163,5 @@ export const parseCodexXml = (xml: string): GlossaryEntry[] => {
     }
   }
 
-  return drafts.map(toEntry).filter((entry) => entry.definition !== '');
+  return drafts.map(toEntry).filter((entry) => entry.definition !== "");
 };

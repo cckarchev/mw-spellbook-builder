@@ -1,5 +1,5 @@
-import { Dialog } from '@/components/dialog/Dialog';
-import styles from './CardZoom.module.css';
+import { Dialog } from "@/components/dialog/Dialog";
+import styles from "./CardZoom.module.css";
 
 interface CardZoomProps {
   open: boolean;
@@ -20,7 +20,18 @@ export const CardZoom = ({
   landscape = false,
   onClose,
 }: CardZoomProps) => (
-  <Dialog open={open} title={title} onClose={onClose} closeButton={true} className={styles.dialog}>
-    <img className={styles.image} src={image} alt={alt} data-landscape={landscape} />
+  <Dialog
+    open={open}
+    title={title}
+    onClose={onClose}
+    closeButton={true}
+    className={styles.dialog}
+  >
+    <img
+      className={styles.image}
+      src={image}
+      alt={alt}
+      data-landscape={landscape}
+    />
   </Dialog>
 );

@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 interface OpenTermStore {
   /** The glossary term whose definition is showing, or null. */

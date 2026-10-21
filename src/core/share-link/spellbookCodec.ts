@@ -1,6 +1,6 @@
-import type { Spellbook } from '@/core/rules/types';
-import { cardsByCode, cardsById, magesById } from '@/data/catalog';
-import { fromBase64Url, toBase64Url } from './base64Url';
+import type { Spellbook } from "@/core/rules/types";
+import { cardsByCode, cardsById, magesById } from "@/data/catalog";
+import { fromBase64Url, toBase64Url } from "./base64Url";
 
 // Wire format: base64url JSON of { v: 1, m: mageId, c: { [cardCode]: qty } }.
 // Older links may also carry s (the Wizard's element, no longer chosen); it is ignored.
@@ -44,7 +44,7 @@ export const encodeSpellbook = (spellbook: Spellbook): string => {
 };
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === 'object' && value !== null && !Array.isArray(value);
+  typeof value === "object" && value !== null && !Array.isArray(value);
 
 const parseWire = (encoded: string): Record<string, unknown> | null => {
   try {
@@ -57,15 +57,15 @@ const parseWire = (encoded: string): Record<string, unknown> | null => {
 };
 
 const isQuantity = (value: unknown): value is number =>
-  typeof value === 'number' && Number.isInteger(value) && value > 0;
+  typeof value === "number" && Number.isInteger(value) && value > 0;
 
 interface DecodedCounts {
-  counts: Spellbook['counts'];
+  counts: Spellbook["counts"];
   unknownCodes: string[];
 }
 
 const decodeCounts = (wireCounts: Record<string, unknown>): DecodedCounts => {
-  const counts: Spellbook['counts'] = {};
+  const counts: Spellbook["counts"] = {};
   const unknownCodes: string[] = [];
 
   for (const [code, quantity] of Object.entries(wireCounts)) {
@@ -92,7 +92,7 @@ export const decodeSpellbook = (encoded: string): DecodedSpellbook | null => {
     return null;
   }
 
-  const namedMage = typeof wire.m === 'string' ? wire.m : null;
+  const namedMage = typeof wire.m === "string" ? wire.m : null;
   const isKnownMage = namedMage !== null && magesById.has(namedMage);
   const mageId = isKnownMage ? namedMage : null;
   const unknownMage = isKnownMage ? null : namedMage;

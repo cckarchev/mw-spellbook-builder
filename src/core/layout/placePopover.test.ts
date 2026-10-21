@@ -1,4 +1,4 @@
-import { placePopover } from './placePopover';
+import { placePopover } from "./placePopover";
 
 const GUTTER = 8;
 const GAP = 4;
@@ -22,13 +22,21 @@ const anchorAt = (left: number, top: number) => ({
 const place = (
   anchor: ReturnType<typeof anchorAt>,
   viewport: { width: number; height: number } = PHONE,
-) => placePopover({ anchor, popover: POPOVER, viewport, gutter: GUTTER, gap: GAP });
+) =>
+  placePopover({
+    anchor,
+    popover: POPOVER,
+    viewport,
+    gutter: GUTTER,
+    gap: GAP,
+  });
 
-const centeredLeft = (termLeft: number) => termLeft + TERM_WIDTH / 2 - POPOVER.width / 2;
+const centeredLeft = (termLeft: number) =>
+  termLeft + TERM_WIDTH / 2 - POPOVER.width / 2;
 const belowTop = (termTop: number) => termTop + TERM_HEIGHT + GAP;
 
-describe('placePopover', () => {
-  it('centers the popover below the anchor', () => {
+describe("placePopover", () => {
+  it("centers the popover below the anchor", () => {
     const termLeft = PHONE.width / 2 - TERM_WIDTH / 2;
 
     expect(place(anchorAt(termLeft, MIDDLE_ROW))).toEqual({
@@ -37,27 +45,31 @@ describe('placePopover', () => {
     });
   });
 
-  it('keeps the gutter on the left edge', () => {
+  it("keeps the gutter on the left edge", () => {
     expect(place(anchorAt(GUTTER, MIDDLE_ROW)).left).toBe(GUTTER);
   });
 
-  it('keeps the gutter on the right edge', () => {
+  it("keeps the gutter on the right edge", () => {
     const termLeft = PHONE.width - TERM_WIDTH - GUTTER;
 
-    expect(place(anchorAt(termLeft, MIDDLE_ROW)).left).toBe(PHONE.width - GUTTER - POPOVER.width);
+    expect(place(anchorAt(termLeft, MIDDLE_ROW)).left).toBe(
+      PHONE.width - GUTTER - POPOVER.width,
+    );
   });
 
-  it('goes above the anchor when there is no room below', () => {
-    expect(place(anchorAt(GUTTER, BOTTOM_ROW)).top).toBe(BOTTOM_ROW - GAP - POPOVER.height);
+  it("goes above the anchor when there is no room below", () => {
+    expect(place(anchorAt(GUTTER, BOTTOM_ROW)).top).toBe(
+      BOTTOM_ROW - GAP - POPOVER.height,
+    );
   });
 
-  it('stays below when there is no room above either', () => {
+  it("stays below when there is no room above either", () => {
     const short = { width: PHONE.width, height: POPOVER.height + TERM_HEIGHT };
 
     expect(place(anchorAt(GUTTER, GUTTER), short).top).toBe(belowTop(GUTTER));
   });
 
-  it('starts at the gutter when the popover is wider than the viewport', () => {
+  it("starts at the gutter when the popover is wider than the viewport", () => {
     const narrow = { width: POPOVER.width - GUTTER, height: PHONE.height };
 
     expect(place(anchorAt(GUTTER, MIDDLE_ROW), narrow).left).toBe(GUTTER);

@@ -1,24 +1,24 @@
 export type School =
-  | 'Air'
-  | 'Arcane'
-  | 'Dark'
-  | 'Earth'
-  | 'Fire'
-  | 'Holy'
-  | 'Mind'
-  | 'Nature'
-  | 'War'
-  | 'Water';
+  | "Air"
+  | "Arcane"
+  | "Dark"
+  | "Earth"
+  | "Fire"
+  | "Holy"
+  | "Mind"
+  | "Nature"
+  | "War"
+  | "Water";
 
 export type CardType =
-  | 'Attack'
-  | 'Conjuration'
-  | 'Creature'
-  | 'Enchantment'
-  | 'Equipment'
-  | 'Incantation';
+  | "Attack"
+  | "Conjuration"
+  | "Creature"
+  | "Enchantment"
+  | "Equipment"
+  | "Incantation";
 
-export type Format = 'arena' | 'academy';
+export type Format = "arena" | "academy";
 
 export interface SchoolPart {
   school: School;
@@ -34,7 +34,7 @@ export interface Card {
   type: CardType;
   subtypes: string[];
   /** `+` in the source data is "and" (every part counts), `/` is "or" (pick one). */
-  schoolMode: 'and' | 'or';
+  schoolMode: "and" | "or";
   schools: SchoolPart[];
   traits: string[];
   /** From an "X Only" trait, such as 'Warlock' or 'Dark Mage'. */
@@ -98,14 +98,14 @@ export interface Spellbook {
 }
 
 export const SCHOOLS: readonly School[] = [
-  'Air',
-  'Arcane',
-  'Dark',
-  'Earth',
-  'Fire',
-  'Holy',
-  'Mind',
-  'Nature',
-  'War',
-  'Water',
+  "Air",
+  "Arcane",
+  "Dark",
+  "Earth",
+  "Fire",
+  "Holy",
+  "Mind",
+  "Nature",
+  "War",
+  "Water",
 ];

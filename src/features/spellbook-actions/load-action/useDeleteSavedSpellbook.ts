@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { deleteSavedSpellbook } from '@/core/persistence/savedSpellbooks';
-import { useSpellbookStore } from '@/store/useSpellbookStore';
+import { useState } from "react";
+import { deleteSavedSpellbook } from "@/core/persistence/savedSpellbooks";
+import { useSpellbookStore } from "@/store/useSpellbookStore";
 
 /** Deleting one of the mage's saved spellbooks behind its confirm. `onDeleted` runs after each delete. */
 export const useDeleteSavedSpellbook = (onDeleted: () => void) => {

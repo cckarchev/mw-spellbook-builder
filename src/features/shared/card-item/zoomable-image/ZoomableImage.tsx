@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { CardZoom } from '../../card-zoom/CardZoom';
-import styles from './ZoomableImage.module.css';
+import { useState } from "react";
+import { CardZoom } from "../../card-zoom/CardZoom";
+import styles from "./ZoomableImage.module.css";
 
 interface ZoomableImageProps {
   name: string;
@@ -12,7 +12,12 @@ interface ZoomableImageProps {
 }
 
 /** A card image; tapping it shows the image full size. */
-export const ZoomableImage = ({ name, image, landscape, className }: ZoomableImageProps) => {
+export const ZoomableImage = ({
+  name,
+  image,
+  landscape,
+  className,
+}: ZoomableImageProps) => {
   const [open, setOpen] = useState(false);
 
   return (

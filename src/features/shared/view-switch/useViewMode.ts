@@ -1,22 +1,23 @@
-import { useState } from 'react';
-import { readStored, writeStored } from '@/core/persistence/storage';
+import { useState } from "react";
+import { readStored, writeStored } from "@/core/persistence/storage";
 
-export type ViewMode = 'list' | 'grid';
+export type ViewMode = "list" | "grid";
 
 /** A panel that remembers its own view mode. */
-export type ViewPanel = 'catalog' | 'spellbook';
+export type ViewPanel = "catalog" | "spellbook";
 
-const STORAGE_PREFIX = 'mw-spellbook-builder:view:';
+const STORAGE_PREFIX = "mw-spellbook-builder:view:";
 
-const DEFAULT_MODE: ViewMode = 'list';
+const DEFAULT_MODE: ViewMode = "list";
 
 /** Where a panel's view mode is stored, such as "mw-spellbook-builder:view:catalog". */
-export const viewModeStorageKey = (panel: ViewPanel): string => `${STORAGE_PREFIX}${panel}`;
+export const viewModeStorageKey = (panel: ViewPanel): string =>
+  `${STORAGE_PREFIX}${panel}`;
 
 const readMode = (panel: ViewPanel): ViewMode => {
   const stored = readStored(viewModeStorageKey(panel));
 
-  if (stored === 'grid' || stored === 'list') {
+  if (stored === "grid" || stored === "list") {
     return stored;
   }
 

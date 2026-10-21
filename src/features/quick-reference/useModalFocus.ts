@@ -1,6 +1,6 @@
-import { type RefObject, useEffect, useRef, useState } from 'react';
-import { trapTab } from '@/components/dialog/trapTab';
-import { useOpenTermStore } from '@/features/shared/glossary-text/useOpenTermStore';
+import { type RefObject, useEffect, useRef, useState } from "react";
+import { trapTab } from "@/components/dialog/trapTab";
+import { useOpenTermStore } from "@/features/shared/glossary-text/useOpenTermStore";
 
 /**
  * Keeps the Quick reference modal: focus starts on the title, Tab stays inside, Escape closes,
@@ -25,19 +25,19 @@ export const useModalFocus = (
 
     const handleKeyDown = (event: KeyboardEvent) => {
       // A field may have used the Escape already, such as the search clearing its text.
-      if (event.key === 'Escape' && !event.defaultPrevented) {
+      if (event.key === "Escape" && !event.defaultPrevented) {
         closeRef.current();
       }
 
-      if (event.key === 'Tab' && panelRef.current) {
+      if (event.key === "Tab" && panelRef.current) {
         trapTab(event, panelRef.current);
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
 
       if (opener instanceof HTMLElement) {
         opener.focus({ preventScroll: true });

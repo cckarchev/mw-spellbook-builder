@@ -1,7 +1,7 @@
-import { totalLevel } from '@/core/rules/cardCost';
-import { isLegalFor } from '@/core/rules/legality';
-import type { Card, CardType, Mage, School } from '@/core/rules/types';
-import { matchesQuery } from './textSearch';
+import { totalLevel } from "@/core/rules/cardCost";
+import { isLegalFor } from "@/core/rules/legality";
+import type { Card, CardType, Mage, School } from "@/core/rules/types";
+import { matchesQuery } from "./textSearch";
 
 /** Each list is OR within itself; the query and the lists are ANDed. Empty means "any". */
 export interface CatalogFilters {
@@ -16,7 +16,7 @@ export interface CatalogFilters {
 }
 
 export const EMPTY_FILTERS: CatalogFilters = {
-  query: '',
+  query: "",
   types: [],
   schools: [],
   subtypes: [],
@@ -27,13 +27,19 @@ export const EMPTY_FILTERS: CatalogFilters = {
 
 /** Selects a value that is not selected, and unselects one that is. */
 export const toggleValue = <T>(selected: T[], value: T): T[] =>
-  selected.includes(value) ? selected.filter((item) => item !== value) : [...selected, value];
+  selected.includes(value)
+    ? selected.filter((item) => item !== value)
+    : [...selected, value];
 
 /** How many chips are selected across the groups, plus one for the "Only" filter. The search query is not counted. */
 export const activeFilterCount = (filters: CatalogFilters): number => {
   const { types, schools, subtypes, expansions, levels, onlyCards } = filters;
   const chipCount =
-    types.length + schools.length + subtypes.length + expansions.length + levels.length;
+    types.length +
+    schools.length +
+    subtypes.length +
+    expansions.length +
+    levels.length;
   const onlyCount = onlyCards ? 1 : 0;
 
   return chipCount + onlyCount;
@@ -70,7 +76,11 @@ const matchesFilters = (card: Card, filters: CatalogFilters): boolean => {
 };
 
 /** The catalog cards the mage can use that match the filters, in input order. */
-export const filterCards = (cards: Card[], filters: CatalogFilters, mage: Mage): Card[] => {
+export const filterCards = (
+  cards: Card[],
+  filters: CatalogFilters,
+  mage: Mage,
+): Card[] => {
   const legalCards = cards.filter((card) => isLegalFor(card, mage));
 
   return legalCards.filter((card) => matchesFilters(card, filters));

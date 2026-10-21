@@ -1,4 +1,4 @@
-import type { Card } from '@/core/rules/types';
+import type { Card } from "@/core/rules/types";
 
 /** What a card row and a card tile both show of one card, and how they change its copies. */
 export interface CardEntryProps {

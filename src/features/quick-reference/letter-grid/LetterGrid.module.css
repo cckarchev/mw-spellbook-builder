@@ -19,7 +19,11 @@
 }
 
 .letter {
-  flex: 0 0 calc((100% - (var(--letters-per-row) - 1) * var(--letter-gap)) / var(--letters-per-row));
+  flex: 0 0
+    calc(
+      (100% - (var(--letters-per-row) - 1) * var(--letter-gap)) /
+      var(--letters-per-row)
+    );
   min-width: var(--touch-target);
   min-height: var(--touch-target);
   font-family: var(--font-display);

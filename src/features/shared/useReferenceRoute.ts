@@ -1,7 +1,7 @@
-import { useCallback } from 'react';
-import { type Location, useLocation, useNavigate } from 'react-router-dom';
-import { PICKER_PATH } from '@/core/routing/builderPath';
-import { backgroundOf, REFERENCE_PATH } from '@/core/routing/referencePath';
+import { useCallback } from "react";
+import { type Location, useLocation, useNavigate } from "react-router-dom";
+import { PICKER_PATH } from "@/core/routing/builderPath";
+import { backgroundOf, REFERENCE_PATH } from "@/core/routing/referencePath";
 
 const ONE_STEP_BACK = -1;
 

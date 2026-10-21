@@ -10,7 +10,9 @@
 /* Label, bar and value in columns that line up across rows. */
 .row {
   display: grid;
-  grid-template-columns: var(--bar-label-width) minmax(0, 1fr) var(--bar-value-width);
+  grid-template-columns: var(--bar-label-width) minmax(0, 1fr) var(
+      --bar-value-width
+    );
   align-items: center;
   gap: var(--space-xs);
   font-size: var(--font-size-sm);

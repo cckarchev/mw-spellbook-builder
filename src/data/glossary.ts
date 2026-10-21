@@ -1,17 +1,22 @@
-import { buildGlossaryIndex, type GlossaryIndex } from '@/core/glossary/findTerms';
-import type { GlossaryEntry } from '@/core/glossary/types';
-import { SCHOOLS } from '@/core/rules/types';
-import { DAMAGE_TYPES } from '@/core/stats/attackLines';
-import glossaryJson from './glossary.json';
-import { mages } from './mages';
+import {
+  buildGlossaryIndex,
+  type GlossaryIndex,
+} from "@/core/glossary/findTerms";
+import type { GlossaryEntry } from "@/core/glossary/types";
+import { SCHOOLS } from "@/core/rules/types";
+import { DAMAGE_TYPES } from "@/core/stats/attackLines";
+import glossaryJson from "./glossary.json";
+import { mages } from "./mages";
 
 // Rules the official Codex 3.1 states and the generated glossary drops, appended by hand.
 const ADDED_FROM_OFFICIAL_CODEX: { term: string; addition: string }[] = [
-  { term: 'Pest', addition: 'A Pest cannot Hinder enemies.' },
+  { term: "Pest", addition: "A Pest cannot Hinder enemies." },
 ];
 
 const withOfficialAddition = (entry: GlossaryEntry): GlossaryEntry => {
-  const added = ADDED_FROM_OFFICIAL_CODEX.find((candidate) => candidate.term === entry.term);
+  const added = ADDED_FROM_OFFICIAL_CODEX.find(
+    (candidate) => candidate.term === entry.term,
+  );
 
   if (!added) {
     return entry;
@@ -24,16 +29,16 @@ const withOfficialAddition = (entry: GlossaryEntry): GlossaryEntry => {
 export const glossary: GlossaryEntry[] = glossaryJson.map(withOfficialAddition);
 
 // The Codex explains damage types once, generically; cards name the type itself.
-const DAMAGE_TYPE_TERM = 'Damage Type +/- X';
-const IMMUNITY_TERM = 'Immunity';
-const MAGE_ONLY_TERM = 'Mage Only';
+const DAMAGE_TYPE_TERM = "Damage Type +/- X";
+const IMMUNITY_TERM = "Immunity";
+const MAGE_ONLY_TERM = "Mage Only";
 
 const terms = new Set(glossary.map((entry) => entry.term));
 
 // Some immunities, such as Psychic Immunity, have an entry of their own.
-const immunityNames = DAMAGE_TYPES.map((type) => `${type} ${IMMUNITY_TERM}`).filter(
-  (name) => !terms.has(name),
-);
+const immunityNames = DAMAGE_TYPES.map(
+  (type) => `${type} ${IMMUNITY_TERM}`,
+).filter((name) => !terms.has(name));
 const damageTypeNames = DAMAGE_TYPES.map((type) => `${type} +X`);
 const onlyNames = [
   ...new Set([
@@ -49,5 +54,5 @@ export const glossaryIndex: GlossaryIndex = buildGlossaryIndex(glossary, {
     [MAGE_ONLY_TERM]: onlyNames,
   },
   // The spell type; in lowercase, "attack" is the action.
-  capitalizedOnly: ['Attack'],
+  capitalizedOnly: ["Attack"],
 });

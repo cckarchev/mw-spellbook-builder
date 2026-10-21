@@ -1,19 +1,31 @@
-import { ConfirmDialog } from '@/components/confirm-dialog/ConfirmDialog';
-import { type SpellbookGroup, spellbookGroups } from '@/core/catalog/spellbookGroups';
-import { addCopyBlockedReason, type SpellbookSummary } from '@/core/rules/validateSpellbook';
-import { cardProblems, spellbookProblems } from '@/core/share-link/spellbookNotes';
-import { cardsById } from '@/data/catalog';
-import type { BuilderPanelProps } from '@/features/shared/builderPanelProps';
-import { CardItem } from '@/features/shared/card-item/CardItem';
-import { EmptyMessage } from '@/features/shared/empty-message/EmptyMessage';
-import { TypeSection } from '@/features/shared/type-section/TypeSection';
-import { useViewMode, type ViewMode } from '@/features/shared/view-switch/useViewMode';
-import { ViewSwitch } from '@/features/shared/view-switch/ViewSwitch';
-import styles from './SpellbookPanel.module.css';
-import { useLastCopyConfirm } from './useLastCopyConfirm';
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import {
+  type SpellbookGroup,
+  spellbookGroups,
+} from "@/core/catalog/spellbookGroups";
+import {
+  addCopyBlockedReason,
+  type SpellbookSummary,
+} from "@/core/rules/validateSpellbook";
+import {
+  cardProblems,
+  spellbookProblems,
+} from "@/core/share-link/spellbookNotes";
+import { cardsById } from "@/data/catalog";
+import type { BuilderPanelProps } from "@/features/shared/builderPanelProps";
+import { CardItem } from "@/features/shared/card-item/CardItem";
+import { EmptyMessage } from "@/features/shared/empty-message/EmptyMessage";
+import { TypeSection } from "@/features/shared/type-section/TypeSection";
+import {
+  useViewMode,
+  type ViewMode,
+} from "@/features/shared/view-switch/useViewMode";
+import { ViewSwitch } from "@/features/shared/view-switch/ViewSwitch";
+import styles from "./SpellbookPanel.module.css";
+import { useLastCopyConfirm } from "./useLastCopyConfirm";
 
 /** On its own tab, or as the column next to the catalog on desktop. */
-export type SpellbookPanelVariant = 'tab' | 'column';
+export type SpellbookPanelVariant = "tab" | "column";
 
 interface SpellbookPanelProps extends BuilderPanelProps {
   summary: SpellbookSummary;
@@ -21,12 +33,12 @@ interface SpellbookPanelProps extends BuilderPanelProps {
 }
 
 const EMPTY_TEXT: Record<SpellbookPanelVariant, string> = {
-  tab: 'No cards yet. Add some from the Cards tab.',
-  column: 'No cards yet. Add some from the catalog.',
+  tab: "No cards yet. Add some from the Cards tab.",
+  column: "No cards yet. Add some from the catalog.",
 };
 
 /** The desktop column is too narrow for card images, so it always shows rows. */
-const COLUMN_VIEW: ViewMode = 'list';
+const COLUMN_VIEW: ViewMode = "list";
 
 interface GroupsProps extends BuilderPanelProps {
   groups: SpellbookGroup[];
@@ -35,7 +47,15 @@ interface GroupsProps extends BuilderPanelProps {
 }
 
 /** The spellbook's cards under one section per type, with the problem of each card. */
-const Groups = ({ groups, spellbook, mage, summary, view, onAdd, onRemove }: GroupsProps) => {
+const Groups = ({
+  groups,
+  spellbook,
+  mage,
+  summary,
+  view,
+  onAdd,
+  onRemove,
+}: GroupsProps) => {
   const rowProblems = cardProblems(summary.issues, mage);
 
   return groups.map((group) => (
@@ -70,18 +90,21 @@ export const SpellbookPanel = ({
   summary,
   onAdd,
   onRemove,
-  variant = 'tab',
+  variant = "tab",
 }: SpellbookPanelProps) => {
-  const { view: storedView, setView } = useViewMode('spellbook');
+  const { view: storedView, setView } = useViewMode("spellbook");
   const groups = spellbookGroups(spellbook, mage, cardsById);
-  const problems = spellbookProblems(summary.issues, mage, spellbook.counts, cardsById);
-  const { pendingCardId, requestRemove, confirmRemove, cancelRemove } = useLastCopyConfirm(
-    spellbook,
-    onRemove,
+  const problems = spellbookProblems(
+    summary.issues,
+    mage,
+    spellbook.counts,
+    cardsById,
   );
+  const { pendingCardId, requestRemove, confirmRemove, cancelRemove } =
+    useLastCopyConfirm(spellbook, onRemove);
   const pendingCard = pendingCardId ? cardsById.get(pendingCardId) : undefined;
 
-  const isColumn = variant === 'column';
+  const isColumn = variant === "column";
   const view = isColumn ? COLUMN_VIEW : storedView;
 
   // An empty spellbook has nothing to show either way, so it gets no view switch.
@@ -114,7 +137,7 @@ export const SpellbookPanel = ({
       />
       <ConfirmDialog
         open={pendingCard !== undefined}
-        title={`Remove ${pendingCard?.name ?? 'card'}?`}
+        title={`Remove ${pendingCard?.name ?? "card"}?`}
         body={<p>It is the last copy, so the card leaves the spellbook.</p>}
         confirmLabel="Remove"
         onConfirm={confirmRemove}

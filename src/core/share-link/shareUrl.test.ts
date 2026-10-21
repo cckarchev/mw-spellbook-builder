@@ -1,10 +1,10 @@
-import { buildShareUrl, SPELLBOOK_PARAM } from './shareUrl';
+import { buildShareUrl, SPELLBOOK_PARAM } from "./shareUrl";
 
-const ENCODED = 'eyJ2IjoxfQ';
-const ORIGIN = 'https://mw.example.dev';
-const MAGE_PATH = '/sistarran-wizard';
+const ENCODED = "eyJ2IjoxfQ";
+const ORIGIN = "https://mw.example.dev";
+const MAGE_PATH = "/sistarran-wizard";
 
-describe('buildShareUrl', () => {
+describe("buildShareUrl", () => {
   it("points at the mage in this app's builder", () => {
     const url = buildShareUrl({
       encoded: ENCODED,

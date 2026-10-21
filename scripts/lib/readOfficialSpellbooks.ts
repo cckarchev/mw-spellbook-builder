@@ -1,6 +1,6 @@
-import { XMLParser } from 'fast-xml-parser';
-import { unzipSync } from 'fflate';
-import type { Card, Mage } from '@/core/rules/types';
+import { XMLParser } from "fast-xml-parser";
+import { unzipSync } from "fflate";
+import type { Card, Mage } from "@/core/rules/types";
 
 export interface DeckCard {
   id: string;
@@ -21,13 +21,13 @@ export interface OfficialSpellbook {
 }
 
 interface XmlCard {
-  '@_qty': string;
-  '@_id': string;
-  '#text': string;
+  "@_qty": string;
+  "@_id": string;
+  "#text": string;
 }
 
 interface XmlSection {
-  '@_name': string;
+  "@_name": string;
   card?: XmlCard[];
 }
 
@@ -35,14 +35,14 @@ interface XmlDeck {
   deck: { section?: XmlSection[] };
 }
 
-const MAGE_SECTION = 'Mage';
-const OFFICIAL_FOLDER = 'def/Decks/Official%20Spellbooks/';
+const MAGE_SECTION = "Mage";
+const OFFICIAL_FOLDER = "def/Decks/Official%20Spellbooks/";
 const BYTE_ORDER_MARK = /^﻿/;
-const ARRAY_PATHS = new Set(['deck.section', 'deck.section.card']);
+const ARRAY_PATHS = new Set(["deck.section", "deck.section.card"]);
 
 const parser = new XMLParser({
   ignoreAttributes: false,
-  attributeNamePrefix: '@_',
+  attributeNamePrefix: "@_",
   parseTagValue: false,
   parseAttributeValue: false,
   // A card element always has an attribute, so its name always lands in #text.
@@ -51,18 +51,19 @@ const parser = new XMLParser({
 });
 
 const toDeckCard = (card: XmlCard): DeckCard => ({
-  id: card['@_id'],
-  name: card['#text'].trim(),
-  count: Number(card['@_qty']),
+  id: card["@_id"],
+  name: card["#text"].trim(),
+  count: Number(card["@_qty"]),
 });
 
 export const parseDeckXml = (xml: string): RawDeck => {
-  const parsed = parser.parse(xml.replace(BYTE_ORDER_MARK, '')) as XmlDeck;
+  const parsed = parser.parse(xml.replace(BYTE_ORDER_MARK, "")) as XmlDeck;
   const deck: RawDeck = { mageCards: [], cards: [] };
 
   for (const section of parsed.deck.section ?? []) {
     const sectionCards = (section.card ?? []).map(toDeckCard);
-    const target = section['@_name'] === MAGE_SECTION ? deck.mageCards : deck.cards;
+    const target =
+      section["@_name"] === MAGE_SECTION ? deck.mageCards : deck.cards;
 
     target.push(...sectionCards);
   }
@@ -72,12 +73,16 @@ export const parseDeckXml = (xml: string): RawDeck => {
 
 /** The official spellbooks in an OCTGN game package (`.nupkg`, a zip), by decoded file name. */
 export const readOfficialDecks = (archive: Uint8Array): Map<string, string> => {
-  const entries = unzipSync(archive, { filter: (file) => file.name.startsWith(OFFICIAL_FOLDER) });
+  const entries = unzipSync(archive, {
+    filter: (file) => file.name.startsWith(OFFICIAL_FOLDER),
+  });
   const decoder = new TextDecoder();
   const decks = new Map<string, string>();
 
   for (const [entryName, content] of Object.entries(entries)) {
-    const fileName = decodeURIComponent(entryName.slice(OFFICIAL_FOLDER.length));
+    const fileName = decodeURIComponent(
+      entryName.slice(OFFICIAL_FOLDER.length),
+    );
 
     decks.set(fileName, decoder.decode(content));
   }
@@ -86,7 +91,11 @@ export const readOfficialDecks = (archive: Uint8Array): Map<string, string> => {
 };
 
 /** The deck's mage: by its picture or stats card id, else by the name of one of its cards. */
-const resolveMage = (deck: RawDeck, fileName: string, mages: readonly Mage[]): Mage => {
+const resolveMage = (
+  deck: RawDeck,
+  fileName: string,
+  mages: readonly Mage[],
+): Mage => {
   const deckIds = new Set(deck.mageCards.map((card) => card.id));
   const deckNames = new Set(deck.mageCards.map((card) => card.name));
 
@@ -105,8 +114,12 @@ const resolveMage = (deck: RawDeck, fileName: string, mages: readonly Mage[]): M
 };
 
 /** The Arena catalog card for a deck card: by id, else by exact name. */
-const resolveCard = (deckCard: DeckCard, fileName: string, cards: readonly Card[]): Card => {
-  const arenaCards = cards.filter((card) => card.format === 'arena');
+const resolveCard = (
+  deckCard: DeckCard,
+  fileName: string,
+  cards: readonly Card[],
+): Card => {
+  const arenaCards = cards.filter((card) => card.format === "arena");
   const byId = arenaCards.find((card) => card.id === deckCard.id);
 
   if (byId) {
@@ -116,7 +129,9 @@ const resolveCard = (deckCard: DeckCard, fileName: string, cards: readonly Card[
   const byName = arenaCards.filter((card) => card.name === deckCard.name);
 
   if (byName.length > 1) {
-    throw new Error(`${fileName}: "${deckCard.name}" matches more than one card`);
+    throw new Error(
+      `${fileName}: "${deckCard.name}" matches more than one card`,
+    );
   }
 
   const [card] = byName;

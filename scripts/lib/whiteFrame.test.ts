@@ -1,4 +1,4 @@
-import { isLandscape, type RawImage, whiteFrameBox } from './whiteFrame';
+import { isLandscape, type RawImage, whiteFrameBox } from "./whiteFrame";
 
 const CHANNELS = 4;
 const FULL = 255;
@@ -14,7 +14,11 @@ const FRAME = 2;
 const INNER_SIZE = SIZE - FRAME * 2;
 
 /** An image painted by a function of each pixel's column and row. */
-const paint = (width: number, height: number, colorAt: (x: number, y: number) => number[]) => {
+const paint = (
+  width: number,
+  height: number,
+  colorAt: (x: number, y: number) => number[],
+) => {
   const data = new Uint8Array(width * height * CHANNELS);
 
   for (let y = 0; y < height; y += 1) {
@@ -28,29 +32,18 @@ const paint = (width: number, height: number, colorAt: (x: number, y: number) =>
   return image;
 };
 
-const isInFrame = (x: number, y: number, size: number, frame: number): boolean =>
-  x < frame || y < frame || x >= size - frame || y >= size - frame;
+const isInFrame = (
+  x: number,
+  y: number,
+  size: number,
+  frame: number,
+): boolean => x < frame || y < frame || x >= size - frame || y >= size - frame;
 
-describe('whiteFrameBox', () => {
-  it('keeps an image with no frame whole', () => {
-    const image = paint(SIZE, SIZE, () => ART);
-
-    expect(whiteFrameBox(image)).toEqual({ left: 0, top: 0, width: SIZE, height: SIZE });
-  });
-
-  it('cuts a white frame on every side', () => {
-    const image = paint(SIZE, SIZE, (x, y) => (isInFrame(x, y, SIZE, FRAME) ? WHITE : ART));
-
-    expect(whiteFrameBox(image)).toEqual({
-      left: FRAME,
-      top: FRAME,
-      width: INNER_SIZE,
-      height: INNER_SIZE,
-    });
-  });
-
-  it('cuts a transparent frame too', () => {
-    const image = paint(SIZE, SIZE, (x, y) => (isInFrame(x, y, SIZE, FRAME) ? CLEAR : ART));
+describe("whiteFrameBox cutting frames", () => {
+  it("cuts a white frame on every side", () => {
+    const image = paint(SIZE, SIZE, (x, y) =>
+      isInFrame(x, y, SIZE, FRAME) ? WHITE : ART,
+    );
 
     expect(whiteFrameBox(image)).toEqual({
       left: FRAME,
@@ -60,7 +53,20 @@ describe('whiteFrameBox', () => {
     });
   });
 
-  it('also cuts the blended line next to a frame, on the sides that had one', () => {
+  it("cuts a transparent frame too", () => {
+    const image = paint(SIZE, SIZE, (x, y) =>
+      isInFrame(x, y, SIZE, FRAME) ? CLEAR : ART,
+    );
+
+    expect(whiteFrameBox(image)).toEqual({
+      left: FRAME,
+      top: FRAME,
+      width: INNER_SIZE,
+      height: INNER_SIZE,
+    });
+  });
+
+  it("also cuts the blended line next to a frame, on the sides that had one", () => {
     const size = 200;
     const frame = 10;
     // 1% of the size, the soft edge where a frame meets the art.
@@ -81,8 +87,21 @@ describe('whiteFrameBox', () => {
       height: size - frame - blend,
     });
   });
+});
 
-  it('keeps at least one pixel of an image that is all white', () => {
+describe("whiteFrameBox keeping the art", () => {
+  it("keeps an image with no frame whole", () => {
+    const image = paint(SIZE, SIZE, () => ART);
+
+    expect(whiteFrameBox(image)).toEqual({
+      left: 0,
+      top: 0,
+      width: SIZE,
+      height: SIZE,
+    });
+  });
+
+  it("keeps at least one pixel of an image that is all white", () => {
     const size = 300;
     const image = paint(size, size, () => WHITE);
     const box = whiteFrameBox(image);
@@ -93,26 +112,36 @@ describe('whiteFrameBox', () => {
     expect(box.top + box.height).toBeLessThanOrEqual(size);
   });
 
-  it('keeps an edge that only has white corners', () => {
+  it("keeps an edge that only has white corners", () => {
     const isCorner = (x: number, y: number) =>
       (x === 0 || x === SIZE - 1) && (y === 0 || y === SIZE - 1);
     const image = paint(SIZE, SIZE, (x, y) => (isCorner(x, y) ? WHITE : ART));
 
-    expect(whiteFrameBox(image)).toEqual({ left: 0, top: 0, width: SIZE, height: SIZE });
+    expect(whiteFrameBox(image)).toEqual({
+      left: 0,
+      top: 0,
+      width: SIZE,
+      height: SIZE,
+    });
   });
 
-  it('keeps an edge where the art itself is light but not white', () => {
+  it("keeps an edge where the art itself is light but not white", () => {
     const image = paint(SIZE, SIZE, (_x, y) => (y === 0 ? LIGHT_ART : ART));
 
-    expect(whiteFrameBox(image)).toEqual({ left: 0, top: 0, width: SIZE, height: SIZE });
+    expect(whiteFrameBox(image)).toEqual({
+      left: 0,
+      top: 0,
+      width: SIZE,
+      height: SIZE,
+    });
   });
 });
 
-describe('isLandscape', () => {
+describe("isLandscape", () => {
   const portraitBox = { left: 0, top: 0, width: 480, height: 652 };
   const landscapeBox = { left: 0, top: 0, width: 480, height: 344 };
 
-  it('tells a wall card, wider than tall, from a portrait one', () => {
+  it("tells a wall card, wider than tall, from a portrait one", () => {
     expect(isLandscape(landscapeBox)).toBe(true);
     expect(isLandscape(portraitBox)).toBe(false);
   });

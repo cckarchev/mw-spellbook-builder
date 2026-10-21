@@ -1,12 +1,13 @@
-import { type FormEvent, useId } from 'react';
-import { Button } from '@/components/button/Button';
-import { Dialog } from '@/components/dialog/Dialog';
-import styles from './SaveDialog.module.css';
+import { type FormEvent, useId } from "react";
+import { Button } from "@/components/button/Button";
+import { Dialog } from "@/components/dialog/Dialog";
+import styles from "./SaveDialog.module.css";
 
 /** Long enough for "Tourney 2026 Fire Wizard", short enough for the header line. */
 const NAME_MAX_LENGTH = 40;
 /** Saved spellbooks live in localStorage, so players are told they do not follow them around. */
-const STORAGE_NOTE = 'Saved in this browser only. To use it on another device, share its link.';
+const STORAGE_NOTE =
+  "Saved in this browser only. To use it on another device, share its link.";
 
 interface SaveDialogProps {
   open: boolean;
@@ -35,7 +36,12 @@ export const SaveDialog = ({
   };
 
   return (
-    <Dialog open={open} title="Save spellbook" onClose={onClose} closeButton={true}>
+    <Dialog
+      open={open}
+      title="Save spellbook"
+      onClose={onClose}
+      closeButton={true}
+    >
       <form className={styles.form} onSubmit={submit} noValidate={true}>
         <label className={styles.label} htmlFor={inputId}>
           Spellbook name

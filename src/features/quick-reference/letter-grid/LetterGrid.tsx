@@ -1,6 +1,6 @@
-import type { CSSProperties } from 'react';
-import styles from './LetterGrid.module.css';
-import { useLettersPerRow } from './useLettersPerRow';
+import type { CSSProperties } from "react";
+import styles from "./LetterGrid.module.css";
+import { useLettersPerRow } from "./useLettersPerRow";
 
 interface LetterGridProps {
   letters: readonly string[];
@@ -10,7 +10,7 @@ interface LetterGridProps {
 /** Large letter buttons that jump to the terms under each letter, in even, centered rows. */
 export const LetterGrid = ({ letters, onJump }: LetterGridProps) => {
   const { ref: rowsRef, perRow } = useLettersPerRow(letters.length);
-  const rowsStyle = { '--letters-per-row': perRow } as CSSProperties;
+  const rowsStyle = { "--letters-per-row": perRow } as CSSProperties;
 
   return (
     <nav className={styles.grid} aria-label="Jump to letter">

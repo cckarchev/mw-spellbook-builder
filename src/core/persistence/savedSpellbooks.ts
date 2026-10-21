@@ -1,8 +1,11 @@
-import type { Spellbook } from '@/core/rules/types';
-import { decodeSpellbook, encodeSpellbook } from '@/core/share-link/spellbookCodec';
-import { readStoredJson, removeStored, writeStored } from './storage';
+import type { Spellbook } from "@/core/rules/types";
+import {
+  decodeSpellbook,
+  encodeSpellbook,
+} from "@/core/share-link/spellbookCodec";
+import { readStoredJson, removeStored, writeStored } from "./storage";
 
-export const SAVED_PREFIX = 'mw-spellbook-builder:saved:';
+export const SAVED_PREFIX = "mw-spellbook-builder:saved:";
 
 export interface SavedSpellbook {
   name: string;
@@ -16,7 +19,8 @@ export interface SavedSpellbook {
  */
 const readSavedMap = (mageId: string): Map<string, string> => {
   const parsed = readStoredJson(SAVED_PREFIX + mageId);
-  const isObject = typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed);
+  const isObject =
+    typeof parsed === "object" && parsed !== null && !Array.isArray(parsed);
 
   if (!isObject) {
     return new Map();
@@ -24,7 +28,7 @@ const readSavedMap = (mageId: string): Map<string, string> => {
 
   const entries = Object.entries(parsed);
   const textEntries = entries.filter(
-    (entry): entry is [string, string] => typeof entry[1] === 'string',
+    (entry): entry is [string, string] => typeof entry[1] === "string",
   );
 
   return new Map(textEntries);
@@ -56,7 +60,7 @@ const decodeFor = (mageId: string, encoded: string): Spellbook | null => {
 
 /** Case-insensitive alphabetical order for spellbook names. */
 const byName = (first: SavedSpellbook, second: SavedSpellbook): number =>
-  first.name.localeCompare(second.name, undefined, { sensitivity: 'base' });
+  first.name.localeCompare(second.name, undefined, { sensitivity: "base" });
 
 /** The mage's saved spellbooks that can be read, sorted by name. */
 export const savedSpellbooks = (mageId: string): SavedSpellbook[] => {
@@ -73,7 +77,10 @@ export const savedSpellbooks = (mageId: string): SavedSpellbook[] => {
   return spellbooks.sort(byName);
 };
 
-export const loadSavedSpellbook = (mageId: string, name: string): Spellbook | null => {
+export const loadSavedSpellbook = (
+  mageId: string,
+  name: string,
+): Spellbook | null => {
   const encoded = readSavedMap(mageId).get(name);
 
   if (encoded === undefined) {
@@ -84,7 +91,10 @@ export const loadSavedSpellbook = (mageId: string, name: string): Spellbook | nu
 };
 
 /** The saved copy of a spellbook under its name, null when it has no name or the copy is gone. */
-export const savedCopy = (spellbook: Spellbook, name: string | null): Spellbook | null => {
+export const savedCopy = (
+  spellbook: Spellbook,
+  name: string | null,
+): Spellbook | null => {
   const { mageId } = spellbook;
 
   if (mageId === null || name === null) {

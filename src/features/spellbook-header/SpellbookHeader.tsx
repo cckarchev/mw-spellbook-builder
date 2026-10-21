@@ -1,8 +1,8 @@
-import type { Mage } from '@/core/rules/types';
-import type { SpellbookSummary } from '@/core/rules/validateSpellbook';
-import { plural } from '@/core/text/plural';
-import { MageStats } from '@/features/shared/mage-stats/MageStats';
-import styles from './SpellbookHeader.module.css';
+import type { Mage } from "@/core/rules/types";
+import type { SpellbookSummary } from "@/core/rules/validateSpellbook";
+import { plural } from "@/core/text/plural";
+import { MageStats } from "@/features/shared/mage-stats/MageStats";
+import styles from "./SpellbookHeader.module.css";
 
 interface SpellbookHeaderProps {
   mage: Mage;
@@ -12,22 +12,22 @@ interface SpellbookHeaderProps {
   unsaved: boolean;
 }
 
-type SpellbookState = 'valid' | 'over' | 'invalid';
+type SpellbookState = "valid" | "over" | "invalid";
 
 const spellbookState = (summary: SpellbookSummary): SpellbookState => {
   if (summary.overBy > 0) {
-    return 'over';
+    return "over";
   }
 
   if (summary.issues.length > 0) {
-    return 'invalid';
+    return "invalid";
   }
 
-  return 'valid';
+  return "valid";
 };
 
-const VALID_LABEL = 'Valid';
-const LABEL_SEPARATOR = ' · ';
+const VALID_LABEL = "Valid";
+const LABEL_SEPARATOR = " · ";
 
 /** What is wrong, all of it: "4 over · 2 problems". */
 const stateLabel = (summary: SpellbookSummary): string => {
@@ -38,7 +38,7 @@ const stateLabel = (summary: SpellbookSummary): string => {
   }
 
   if (summary.issues.length > 0) {
-    parts.push(plural(summary.issues.length, 'problem', 'problems'));
+    parts.push(plural(summary.issues.length, "problem", "problems"));
   }
 
   if (parts.length === 0) {
@@ -48,22 +48,37 @@ const stateLabel = (summary: SpellbookSummary): string => {
   return parts.join(LABEL_SEPARATOR);
 };
 
-const UNSAVED_LABEL = 'unsaved';
+const UNSAVED_LABEL = "unsaved";
 
 /** The mage, the saved spellbook's name, the points used out of the budget, and whether the spellbook is valid. */
-export const SpellbookHeader = ({ mage, summary, name, unsaved }: SpellbookHeaderProps) => {
+export const SpellbookHeader = ({
+  mage,
+  summary,
+  name,
+  unsaved,
+}: SpellbookHeaderProps) => {
   const state = spellbookState(summary);
 
   return (
-    <section className={styles.header} data-state={state} aria-label="Spellbook summary">
+    <section
+      className={styles.header}
+      data-state={state}
+      aria-label="Spellbook summary"
+    >
       <div className={styles.titles}>
         <h1 className={styles.mageName}>
-          <MageStats mage={mage} label={mage.name} className={styles.mageButton} />
+          <MageStats
+            mage={mage}
+            label={mage.name}
+            className={styles.mageButton}
+          />
         </h1>
         {name === null ? null : (
           <p className={styles.spellbookName}>
             <span className={styles.nameText}>{name}</span>
-            {unsaved ? <span className={styles.unsaved}>{UNSAVED_LABEL}</span> : null}
+            {unsaved ? (
+              <span className={styles.unsaved}>{UNSAVED_LABEL}</span>
+            ) : null}
           </p>
         )}
       </div>

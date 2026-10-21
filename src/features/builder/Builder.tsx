@@ -1,30 +1,31 @@
-import type { CSSProperties } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { type Tab, Tabs, tabPanelProps } from '@/components/tabs/Tabs';
-import { type BuilderTab, builderPath, PICKER_PATH } from '@/core/routing/builderPath';
-import { summarizeSpellbook } from '@/core/rules/validateSpellbook';
-import { cardsById, magesBySlug, spellbookMage } from '@/data/catalog';
-import { Catalog } from '@/features/catalog/Catalog';
-import { ShareActions } from '@/features/share/share-actions/ShareActions';
-import type { BuilderPanelProps } from '@/features/shared/builderPanelProps';
-import { useIsDesktop } from '@/features/shared/useMediaQuery';
-import { useStickyHeight } from '@/features/shared/useStickyHeight';
-import { SpellbookActions } from '@/features/spellbook-actions/SpellbookActions';
-import { SpellbookHeader } from '@/features/spellbook-header/SpellbookHeader';
-import { SpellbookPanel } from '@/features/spellbook-panel/SpellbookPanel';
-import { SpellbookStats } from '@/features/spellbook-stats/SpellbookStats';
-import { useSpellbookStatus } from '@/store/useSpellbookStatus';
-import { useSpellbookStore } from '@/store/useSpellbookStore';
-import styles from './Builder.module.css';
-import { SpellbookColumn } from './spellbook-column/SpellbookColumn';
-import { useRouteMage } from './useRouteMage';
+import type { CSSProperties } from "react";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { type Tab, Tabs, tabPanelProps } from "@/components/tabs/Tabs";
+import {
+  type BuilderTab,
+  builderPath,
+  PICKER_PATH,
+} from "@/core/routing/builderPath";
+import { summarizeSpellbook } from "@/core/rules/validateSpellbook";
+import { cardsById, magesBySlug, spellbookMage } from "@/data/catalog";
+import { Catalog } from "@/features/catalog/Catalog";
+import type { BuilderPanelProps } from "@/features/shared/builderPanelProps";
+import { useIsDesktop } from "@/features/shared/useMediaQuery";
+import { useStickyHeight } from "@/features/shared/useStickyHeight";
+import { SpellbookPanel } from "@/features/spellbook-panel/SpellbookPanel";
+import { SpellbookStats } from "@/features/spellbook-stats/SpellbookStats";
+import { useSpellbookStore } from "@/store/useSpellbookStore";
+import styles from "./Builder.module.css";
+import { SpellbookColumn } from "./spellbook-column/SpellbookColumn";
+import { TopBar } from "./top-bar/TopBar";
+import { useRouteMage } from "./useRouteMage";
 
-const TAB_ID_PREFIX = 'builder-tab';
+const TAB_ID_PREFIX = "builder-tab";
 
 const TABS: Tab<BuilderTab>[] = [
-  { id: 'cards', label: 'Cards' },
-  { id: 'spellbook', label: 'Spellbook' },
-  { id: 'stats', label: 'Stats' },
+  { id: "cards", label: "Cards" },
+  { id: "spellbook", label: "Spellbook" },
+  { id: "stats", label: "Stats" },
 ];
 
 /**
@@ -33,7 +34,7 @@ const TABS: Tab<BuilderTab>[] = [
  * switches between the spellbook and its stats.
  */
 export const Builder = ({ tab }: { tab: BuilderTab }) => {
-  const { mageSlug = '' } = useParams();
+  const { mageSlug = "" } = useParams();
   const navigate = useNavigate();
   const spellbook = useSpellbookStore((state) => state.spellbook);
   const addCopy = useSpellbookStore((state) => state.addCopy);
@@ -44,8 +45,6 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
   const routeMage = magesBySlug.get(mageSlug);
 
   useRouteMage(routeMage);
-
-  const { name, unsaved } = useSpellbookStatus();
 
   const mage = spellbookMage(spellbook);
 
@@ -64,26 +63,29 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
     navigate(builderPath(mage.name, next), { replace: true });
   };
 
-  const panelProps: BuilderPanelProps = { onAdd: addCopy, onRemove: removeCopy, spellbook, mage };
+  const panelProps: BuilderPanelProps = {
+    onAdd: addCopy,
+    onRemove: removeCopy,
+    spellbook,
+    mage,
+  };
 
   // The spellbook column sticks right under the header, however tall its actions wrap.
-  const stickyStyle = { '--builder-sticky-height': `${stickyHeight}px` } as CSSProperties;
+  const stickyStyle = {
+    "--builder-sticky-height": `${stickyHeight}px`,
+  } as CSSProperties;
 
   return (
     <div className={styles.builder} style={stickyStyle}>
       <div className={styles.sticky} ref={stickyRef}>
-        <div className={styles.topBar}>
-          <div className={styles.summary}>
-            <SpellbookHeader mage={mage} summary={summary} name={name} unsaved={unsaved} />
-          </div>
-          <div className={styles.actions}>
-            <SpellbookActions />
-            <span className={styles.divider} aria-hidden="true" />
-            <ShareActions spellbook={spellbook} mage={mage} summary={summary} />
-          </div>
-        </div>
+        <TopBar spellbook={spellbook} mage={mage} summary={summary} />
         {isDesktop ? null : (
-          <Tabs tabs={TABS} active={tab} onChange={showTab} idPrefix={TAB_ID_PREFIX} />
+          <Tabs
+            tabs={TABS}
+            active={tab}
+            onChange={showTab}
+            idPrefix={TAB_ID_PREFIX}
+          />
         )}
       </div>
       {isDesktop ? (
@@ -91,13 +93,22 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
           <section className={styles.panel} aria-label="Catalog">
             <Catalog {...panelProps} />
           </section>
-          <SpellbookColumn {...panelProps} tab={tab} summary={summary} onShowTab={showTab} />
+          <SpellbookColumn
+            {...panelProps}
+            tab={tab}
+            summary={summary}
+            onShowTab={showTab}
+          />
         </main>
       ) : (
         <main className={styles.panel} {...tabPanelProps(TAB_ID_PREFIX, tab)}>
-          {tab === 'cards' ? <Catalog {...panelProps} /> : null}
-          {tab === 'spellbook' ? <SpellbookPanel {...panelProps} summary={summary} /> : null}
-          {tab === 'stats' ? <SpellbookStats spellbook={spellbook} mage={mage} /> : null}
+          {tab === "cards" ? <Catalog {...panelProps} /> : null}
+          {tab === "spellbook" ? (
+            <SpellbookPanel {...panelProps} summary={summary} />
+          ) : null}
+          {tab === "stats" ? (
+            <SpellbookStats spellbook={spellbook} mage={mage} />
+          ) : null}
         </main>
       )}
     </div>

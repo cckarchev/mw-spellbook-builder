@@ -20,6 +20,6 @@
 }
 
 /* Measured first, then shown in place. */
-.popover[data-placed='false'] {
+.popover[data-placed="false"] {
   visibility: hidden;
 }

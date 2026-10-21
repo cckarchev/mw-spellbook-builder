@@ -1,25 +1,28 @@
-import { useDeferredValue, useId, useMemo, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import { Button } from '@/components/button/Button';
-import { foldQuery } from '@/core/reference/foldText';
-import { searchGlossary } from '@/core/reference/searchGlossary';
-import { statusText } from '@/core/reference/statusText';
-import { AppHeader } from '@/features/app-header/AppHeader';
-import { useReferenceRoute } from '@/features/shared/useReferenceRoute';
-import { ArrowLeftIcon } from './ArrowLeftIcon';
-import { BackToTop } from './back-to-top/BackToTop';
-import { EntryList } from './entry-list/EntryList';
-import { LetterGrid } from './letter-grid/LetterGrid';
-import styles from './QuickReference.module.css';
-import { LETTERS, useReferenceScroll } from './reference-scroll/useReferenceScroll';
-import { ResultList } from './result-list/ResultList';
-import { SearchField } from './search-field/SearchField';
-import { letterGroups, sortedGlossary } from './sortedGlossary';
-import { useModalFocus } from './useModalFocus';
-import { useReferenceQuery } from './useReferenceQuery';
-import { useTermJump } from './useTermJump';
+import { useDeferredValue, useId, useMemo, useRef } from "react";
+import { createPortal } from "react-dom";
+import { Button } from "@/components/button/Button";
+import { foldQuery } from "@/core/reference/foldText";
+import { searchGlossary } from "@/core/reference/searchGlossary";
+import { statusText } from "@/core/reference/statusText";
+import { AppHeader } from "@/features/app-header/AppHeader";
+import { useReferenceRoute } from "@/features/shared/useReferenceRoute";
+import { ArrowLeftIcon } from "./ArrowLeftIcon";
+import { BackToTop } from "./back-to-top/BackToTop";
+import { EntryList } from "./entry-list/EntryList";
+import { LetterGrid } from "./letter-grid/LetterGrid";
+import styles from "./QuickReference.module.css";
+import {
+  LETTERS,
+  useReferenceScroll,
+} from "./reference-scroll/useReferenceScroll";
+import { ResultList } from "./result-list/ResultList";
+import { SearchField } from "./search-field/SearchField";
+import { letterGroups, sortedGlossary } from "./sortedGlossary";
+import { useModalFocus } from "./useModalFocus";
+import { useReferenceQuery } from "./useReferenceQuery";
+import { useTermJump } from "./useTermJump";
 
-const TITLE = 'Quick reference';
+const TITLE = "Quick reference";
 
 /**
  * Every glossary term on a full screen layer over the screen the player was on. Focus starts on
@@ -31,7 +34,7 @@ export const QuickReference = () => {
   // The list catches up with the field when the phone has time, so typing never waits on it.
   const searched = useDeferredValue(typed);
   const query = foldQuery(searched);
-  const hasQuery = query !== '';
+  const hasQuery = query !== "";
   const results = useMemo(() => searchGlossary(sortedGlossary, query), [query]);
   const matches = results.byName.length + results.byDefinition.length;
   const titleId = useId();
@@ -59,7 +62,12 @@ export const QuickReference = () => {
         <AppHeader showReference={false} />
         <div ref={scroll.toolbarRef} className={styles.toolbar}>
           <div className={styles.titleRow}>
-            <h1 ref={titleRef} id={titleId} className={styles.title} tabIndex={-1}>
+            <h1
+              ref={titleRef}
+              id={titleId}
+              className={styles.title}
+              tabIndex={-1}
+            >
               {TITLE}
             </h1>
             <Button size="small" className={styles.back} onClick={close}>
@@ -74,10 +82,17 @@ export const QuickReference = () => {
             status={statusText(sortedGlossary.length, hasQuery, matches)}
           />
         </div>
-        {hasQuery ? null : <LetterGrid letters={LETTERS} onJump={scroll.jumpToLetter} />}
+        {hasQuery ? null : (
+          <LetterGrid letters={LETTERS} onJump={scroll.jumpToLetter} />
+        )}
         <div className={styles.list}>
           {hasQuery ? (
-            <ResultList results={results} typed={searched} query={query} onJump={jumpToTerm} />
+            <ResultList
+              results={results}
+              typed={searched}
+              query={query}
+              onJump={jumpToTerm}
+            />
           ) : (
             <EntryList groups={letterGroups} onJump={jumpToTerm} />
           )}
