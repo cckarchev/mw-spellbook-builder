@@ -15,7 +15,6 @@ import { ShareActions } from './ShareActions';
 const shareUrlOf = (spellbook: Spellbook): string =>
   buildShareUrl({
     encoded: encodeSpellbook(spellbook),
-    embedBase: null,
     origin: window.location.origin,
     magePath: builderPath(wizard.name, 'cards'),
   });

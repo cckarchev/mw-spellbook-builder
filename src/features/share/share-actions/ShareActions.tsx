@@ -2,7 +2,6 @@ import { spellbookText } from '@/core/export/spellbookText';
 import { builderPath } from '@/core/routing/builderPath';
 import type { Mage, Spellbook } from '@/core/rules/types';
 import type { SpellbookSummary } from '@/core/rules/validateSpellbook';
-import { getEmbedBase } from '@/core/share-link/embed';
 import { buildShareUrl } from '@/core/share-link/shareUrl';
 import { encodeSpellbook } from '@/core/share-link/spellbookCodec';
 import { cardsById } from '@/data/catalog';
@@ -21,7 +20,6 @@ interface ShareActionsProps {
 export const ShareActions = ({ spellbook, mage, summary }: ShareActionsProps) => {
   const url = buildShareUrl({
     encoded: encodeSpellbook(spellbook),
-    embedBase: getEmbedBase(),
     origin: window.location.origin,
     magePath: builderPath(mage.name, 'cards'),
   });
