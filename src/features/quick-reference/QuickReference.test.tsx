@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen, waitFor, within } from '@testing-librar
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation, useNavigationType } from 'react-router-dom';
 import { App } from '@/App';
+import { groupByType } from '@/core/catalog/groupByType';
 import { letterAnchorId, termAnchorId } from '@/core/reference/anchors';
 import { BACK_TO_TOP_AFTER } from '@/core/reference/foldOnScroll';
 import { glossary } from '@/data/glossary';
@@ -11,6 +12,13 @@ import { smallSpellbook } from '@/features/shared/testSpellbooks';
 import { useSpellbookStore } from '@/store/useSpellbookStore';
 import { resetAppState } from '@/test/renderAppAt';
 import { letterGroups } from './sortedGlossary';
+
+// Counts the catalog renders behind the Quick reference, through a call each one makes.
+vi.mock('@/core/catalog/groupByType', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@/core/catalog/groupByType')>();
+
+  return { ...original, groupByType: vi.fn(original.groupByType) };
+});
 
 const TITLE = 'Quick reference';
 const SEARCH_LABEL = 'Search terms and rules';
@@ -190,6 +198,21 @@ describe('QuickReference search', () => {
       within(openDialog()).getByRole('region', { name: /In the definition/ }),
     ).toBeInTheDocument();
     expect(firstTerm?.querySelector('mark')).toHaveTextContent('Burn');
+  });
+});
+
+describe('QuickReference over the builder', () => {
+  it('leaves the catalog underneath alone while the address catches up', async () => {
+    renderAt('/wizard');
+    await openReference();
+    const catalogRenders = vi.mocked(groupByType).mock.calls.length;
+
+    await search('bu');
+    await waitFor(() => {
+      expect(navigation()).toHaveTextContent('?q=bu');
+    });
+
+    expect(vi.mocked(groupByType).mock.calls.length).toBe(catalogRenders);
   });
 });
 
