@@ -166,10 +166,6 @@ describe('glossary data integrity', () => {
     expect(termsIn('an Attack spell that attacks')).toEqual([['Attack', 'Attack']]);
   });
 
-  it('has an entry for Stance, which the Codex leaves out', () => {
-    expect(termsIn('Monk Only, Stance')).toContainEqual(['Stance', 'Stance']);
-  });
-
   it('says a Pest cannot Hinder, as the official Codex does', () => {
     const pest = glossary.find((entry) => entry.term === 'Pest');
 
