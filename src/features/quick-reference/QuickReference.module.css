@@ -1,0 +1,67 @@
+/* A layer of its own over the whole screen, scrolling apart from the page underneath. */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-reference);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--color-bg-base);
+}
+
+/* The same column and gutter as the app's own pages. */
+.page {
+  max-width: var(--layout-max-width);
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+
+/* Holds the letters, which float just under it. */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  padding-block: var(--space-sm);
+  background: var(--color-bg-base);
+  border-bottom: var(--border-divider);
+}
+
+.titleRow {
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: normal;
+  letter-spacing: var(--tracking-caps);
+  line-height: var(--leading-tight);
+  text-transform: uppercase;
+}
+
+.status {
+  margin-top: var(--space-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-dim);
+}
+
+/* One centered reading column, also on desktop. */
+.list {
+  max-width: var(--reading-width);
+  margin-inline: auto;
+  /* Room for the letters floating over the top of the list. */
+  padding-top: var(--reference-letters-height);
+  padding-bottom: var(--space-xl);
+}
+
+.title:focus {
+  outline: none;
+}

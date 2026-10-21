@@ -3,6 +3,8 @@
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
   min-height: var(--touch-target);
   padding-block: var(--space-sm);
   border-bottom: var(--border-divider);
@@ -42,6 +44,39 @@
   outline-offset: var(--focus-ring-offset);
 }
 
+/* A quiet button at the right; the accent marks it while the Quick reference is open. */
+.reference {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-width: var(--touch-target);
+  min-height: var(--touch-target);
+  padding-inline: var(--space-sm);
+  color: var(--color-text-body);
+  text-decoration: none;
+  border: var(--border-default);
+  transition:
+    color var(--duration-fast),
+    border-color var(--duration-fast);
+}
+
+.reference:hover,
+.reference[aria-current='page'] {
+  color: var(--color-accent);
+  border-color: var(--color-border-accent);
+}
+
+.reference:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.reference svg {
+  font-size: var(--font-size-lg);
+}
+
 @media (--phone) {
   .name {
     font-size: var(--font-size-lg);
@@ -49,5 +84,19 @@
 
   .logo {
     height: var(--font-size-xl);
+  }
+
+  /* Only the icon fits; the label stays as the button's name. */
+  .reference {
+    padding-inline: 0;
+  }
+
+  .referenceLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }

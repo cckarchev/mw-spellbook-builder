@@ -1,0 +1,27 @@
+/* Clear of the phone's rounded corners and home bar. */
+.button {
+  position: fixed;
+  right: calc(var(--page-gutter) + env(safe-area-inset-right));
+  bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+  z-index: var(--z-sticky);
+  display: grid;
+  place-items: center;
+  width: var(--back-to-top-size);
+  height: var(--back-to-top-size);
+  font-size: var(--font-size-lg);
+  color: var(--color-accent-ink);
+  background: var(--color-accent);
+  border: none;
+  border-radius: 50%;
+  box-shadow: var(--shadow-panel);
+  transition: opacity var(--duration-fast);
+}
+
+.button:hover {
+  opacity: var(--opacity-hover);
+}
+
+.button:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}

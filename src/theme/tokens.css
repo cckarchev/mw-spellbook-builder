@@ -104,6 +104,8 @@
   /* Duration for every hover, expand and reveal transition. Dropped to zero
      below for people who ask the system for reduced motion. */
   --duration-fast: 0.12s;
+  /* How long a jumped-to Quick reference entry stays highlighted. */
+  --duration-flash: 1.2s;
 
   --shadow-panel: 0 2px 8px rgb(var(--rgb-black) / 0.35);
 
@@ -111,6 +113,9 @@
   --focus-ring-offset: 2px;
 
   --layout-max-width: 1200px;
+
+  /* A comfortable line length for long text, such as the Quick reference definitions. */
+  --reading-width: 65ch;
 
   /* Narrowest the spellbook column next to the catalog gets on desktop. */
   --spellbook-column-min-width: 320px;
@@ -121,6 +126,8 @@
 
   /* Smallest comfortable touch target. */
   --touch-target: 44px;
+  /* The round Quick reference button back to the top, larger than a touch target to stand out. */
+  --back-to-top-size: 56px;
   /* Filter chips come by the dozen, so they are shorter than a touch target. */
   --chip-height: 32px;
 
@@ -161,6 +168,8 @@
   --z-sticky: 40;
   --z-dialog: 100;
   --z-popover: 110;
+  /* The Quick reference covers popovers underneath, and toasts still show over it. */
+  --z-reference: 115;
   --z-toast: 120;
 }
 
@@ -180,5 +189,6 @@
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0s;
+    --duration-flash: 0s;
   }
 }

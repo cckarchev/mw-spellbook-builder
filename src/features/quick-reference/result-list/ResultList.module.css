@@ -1,0 +1,29 @@
+.group {
+  margin-top: var(--space-lg);
+}
+
+.heading {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+  border-bottom: var(--border-default);
+  padding-bottom: var(--space-xxs);
+}
+
+.count {
+  color: var(--color-accent);
+}
+
+.empty {
+  margin-top: var(--space-xl);
+  line-height: var(--leading-body);
+  color: var(--color-text-body);
+  text-align: center;
+}
+
+.emptyTitle {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-strong);
+}

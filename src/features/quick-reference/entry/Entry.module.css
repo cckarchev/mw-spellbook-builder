@@ -1,0 +1,42 @@
+/* Lands under the sticky toolbar when jumped to, and flashes so the eye finds it. */
+.entry {
+  padding-block: var(--space-sm);
+  scroll-margin-top: var(--reference-toolbar-height);
+  border-bottom: var(--border-divider);
+}
+
+.entry:focus {
+  outline: none;
+}
+
+.entry:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.entry[data-flash] {
+  animation: flash var(--duration-flash) ease-out;
+}
+
+.term {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-strong);
+}
+
+.definition {
+  margin-top: var(--space-xxs);
+  font-size: var(--font-size-md);
+  line-height: var(--leading-body);
+  color: var(--color-text-body);
+}
+
+@keyframes flash {
+  from {
+    background: var(--color-bg-accent-tint);
+  }
+
+  to {
+    background: transparent;
+  }
+}
