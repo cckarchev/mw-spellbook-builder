@@ -7,7 +7,7 @@ import { buildShareUrl } from '@/core/share-link/shareUrl';
 import { encodeSpellbook } from '@/core/share-link/spellbookCodec';
 import { cardsById } from '@/data/catalog';
 import { ActionMenu, type ActionMenuItem } from '@/features/shared/action-menu/ActionMenu';
-import { copyWithToast } from '@/features/shared/copyWithToast';
+import { copyWithToast, LINK_COPIED } from '@/features/shared/copyWithToast';
 import { LinkIcon } from '@/features/shared/LinkIcon';
 import { CopyIcon, ShareIcon } from './Icons';
 
@@ -37,7 +37,7 @@ export const ShareActions = ({ spellbook, mage, summary }: ShareActionsProps) =>
 
   const shareItem: ActionMenuItem = { label: 'Share…', icon: <ShareIcon />, onSelect: share };
   const copyItems: ActionMenuItem[] = [
-    { label: 'Copy link', icon: <LinkIcon />, onSelect: () => copyWithToast(url, 'Link copied') },
+    { label: 'Copy link', icon: <LinkIcon />, onSelect: () => copyWithToast(url, LINK_COPIED) },
     {
       label: 'Copy text',
       icon: <CopyIcon />,

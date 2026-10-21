@@ -3,6 +3,7 @@ import { letterAnchorId } from '@/core/reference/anchors';
 
 // A heading this close under the toolbar already counts as reached, past rounding.
 const REACHED_SLACK = 1;
+const NO_LETTER = '';
 
 /**
  * The letter whose heading last went under the toolbar, as the Quick reference scrolls, or the
@@ -13,7 +14,8 @@ export const useCurrentLetter = (
   letters: readonly string[],
   toolbarHeight: number,
 ): string => {
-  const [current, setCurrent] = useState(letters[0] ?? '');
+  const firstLetter = letters[0] ?? NO_LETTER;
+  const [current, setCurrent] = useState(firstLetter);
 
   useEffect(() => {
     const element = scroller.current;
@@ -32,7 +34,7 @@ export const useCurrentLetter = (
         return heading !== null && heading.getBoundingClientRect().top <= line;
       });
 
-      setCurrent(reached.at(-1) ?? letters[0] ?? '');
+      setCurrent(reached.at(-1) ?? firstLetter);
     };
 
     const handleScroll = () => {
@@ -46,7 +48,7 @@ export const useCurrentLetter = (
       cancelAnimationFrame(frame);
       element.removeEventListener('scroll', handleScroll);
     };
-  }, [scroller, letters, toolbarHeight]);
+  }, [scroller, letters, firstLetter, toolbarHeight]);
 
   return current;
 };

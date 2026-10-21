@@ -1,9 +1,7 @@
 import { termLink } from '@/core/reference/anchors';
-import { copyWithToast } from '@/features/shared/copyWithToast';
+import { copyWithToast, LINK_COPIED } from '@/features/shared/copyWithToast';
 import { LinkIcon } from '@/features/shared/LinkIcon';
 import styles from './Entry.module.css';
-
-const LINK_COPIED = 'Link copied';
 
 /** Copies the link straight to a term, to share it in a chat. */
 export const CopyLinkButton = ({ term }: { term: string }) => {

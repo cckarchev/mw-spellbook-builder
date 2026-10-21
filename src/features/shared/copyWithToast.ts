@@ -1,5 +1,8 @@
 import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
 
+/** The toast after copying a link, from the Share menu or a Quick reference entry. */
+export const LINK_COPIED = 'Link copied';
+
 const COPY_FAILED = 'Could not copy. Try again, or copy the link from the address bar.';
 
 const copyText = async (text: string): Promise<boolean> => {

@@ -1,7 +1,7 @@
 import { type CSSProperties, type RefObject, useEffect, useRef } from 'react';
 import { letterAnchorId } from '@/core/reference/anchors';
 import { useStickyHeight } from '@/features/shared/useStickyHeight';
-import { prefersReducedMotion, scrollToElement } from '../jumpToTerm';
+import { scrollBehavior, scrollToElement } from '../jumpToTerm';
 import { letterGroups } from '../sortedGlossary';
 import { useCurrentLetter } from './useCurrentLetter';
 import { useFoldOnScroll } from './useFoldOnScroll';
@@ -56,9 +56,7 @@ export const useReferenceScroll = (
   };
 
   const backToTop = () => {
-    const behavior: ScrollBehavior = prefersReducedMotion() ? 'auto' : 'smooth';
-
-    scroller.current?.scrollTo({ top: TOP, behavior });
+    scroller.current?.scrollTo({ top: TOP, behavior: scrollBehavior() });
     searchRef.current?.focus({ preventScroll: true });
   };
 
