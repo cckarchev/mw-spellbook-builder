@@ -105,7 +105,7 @@
   },
   {
     "term": "Conjuration Attack Actions",
-    "definition": "If a Conjuration has an attack bar, then once per round, before or after any Friendly Creature’s Action Phase, it can make that attack. Use a Ready Marker to keep track of making that attack. Unless the spell teXt says otherwise, you can make the attack once per round, and the Conjuration can make its attack the same round it comes into play."
+    "definition": "If a Conjuration has an attack bar, then once per round, before or after any Friendly Creature’s Action Phase, it can make that attack. Use a Ready Marker to keep track of making that attack. Unless the spell text says otherwise, you can make the attack once per round, and the Conjuration can make its attack the same round it comes into play."
   },
   {
     "term": "Controller",
@@ -117,7 +117,7 @@
   },
   {
     "term": "Corrode",
-    "definition": "An acid Condition which wears away Armor. For each Corrode Condition marker on a Creature or Conjuration, it receives Armor -1. Objects can never have Corrode markers on them which would reduce their Armor to below zero (any eXtra markers are immediately Destroyed). If an Object would receive Corrode Condition markers that would reduce its Armor to less than zero, instead it receives only enough Corrode markers to reduce its Armor to zero, and takes one point of direct acid damage for each excess marker. Corrode has no effect on Incorporeal Objects. Replacement Armor can be cast which will first Discard the old, worn Armor (and Corrode tokens) and replace with the new one. The marker has a Removal Cost of 2."
+    "definition": "An acid Condition which wears away Armor. For each Corrode Condition marker on a Creature or Conjuration, it receives Armor -1. Objects can never have Corrode markers on them which would reduce their Armor to below zero (any extra markers are immediately Destroyed). If an Object would receive Corrode Condition markers that would reduce its Armor to less than zero, instead it receives only enough Corrode markers to reduce its Armor to zero, and takes one point of direct acid damage for each excess marker. Corrode has no effect on Incorporeal Objects. Replacement Armor can be cast which will first Discard the old, worn Armor (and Corrode tokens) and replace with the new one. The marker has a Removal Cost of 2."
   },
   {
     "term": "Counter",
@@ -169,7 +169,7 @@
   },
   {
     "term": "Defrost",
-    "definition": "This is a trait of Flame attacks. It will be defined in a future eXpansion of the game in which frost damage is introduced."
+    "definition": "This is a trait of Flame attacks. It will be defined in a future expansion of the game in which frost damage is introduced."
   },
   {
     "term": "Destroyed",
@@ -189,7 +189,7 @@
   },
   {
     "term": "Disable",
-    "definition": "Prevents an Object from functioning. If an Object has one or more Disable markers on it, it is Disabled. Disabled Objects lose all attack bars, action bars, and non-trait abilities. (An ability is anything in the card’s teXt boX, except what defines “X” for cards that have an attribute or mana cost dependent on X.) It does not lose any of its attributes or it’s subtypes (attributes include Life, Armor, Defenses and Channeling). Each Reset Phase, remove one Disable marker from each Object, unless that Disable marker was placed during that Ready Phase. For Objects with multiple Disable markers on them, remove only one each Reset Phase. Disable does not have a Removal Cost and cannot be removed by spells or abilities which remove Condition markers."
+    "definition": "Prevents an Object from functioning. If an Object has one or more Disable markers on it, it is Disabled. Disabled Objects lose all attack bars, action bars, and non-trait abilities. (An ability is anything in the card’s text box, except what defines “X” for cards that have an attribute or mana cost dependent on X.) It does not lose any of its attributes or it’s subtypes (attributes include Life, Armor, Defenses and Channeling). Each Reset Phase, remove one Disable marker from each Object, unless that Disable marker was placed during that Ready Phase. For Objects with multiple Disable markers on them, remove only one each Reset Phase. Disable does not have a Removal Cost and cannot be removed by spells or abilities which remove Condition markers."
   },
   {
     "term": "Discard Pile",

@@ -23,6 +23,7 @@ vi.mock('@/core/catalog/groupByType', async (importOriginal) => {
 const TITLE = 'Quick reference';
 const SEARCH_LABEL = 'Search terms and rules';
 const SCROLLED_FAR = BACK_TO_TOP_AFTER * 2;
+const DESTROYED_PATH = '/reference#term-destroyed';
 
 /** Shows how the last navigation changed the history, for the test to read. */
 const NavigationProbe = () => {
@@ -31,7 +32,7 @@ const NavigationProbe = () => {
 
   return (
     <output aria-label="Navigation">
-      {`${navigationType} ${location.pathname}${location.search}`}
+      {`${navigationType} ${location.pathname}${location.search}${location.hash}`}
     </output>
   );
 };
@@ -341,5 +342,61 @@ describe('QuickReference letters and back to top', () => {
 
     expect(scrollTo).toHaveBeenCalledWith(expect.objectContaining({ top: 0 }));
     expect(within(dialog).getByRole('searchbox')).toHaveFocus();
+  });
+});
+
+describe('QuickReference term links', () => {
+  const destroyedEntry = () => {
+    const entry = document.getElementById(termAnchorId('Destroyed'));
+
+    if (!entry) {
+      throw new Error('missing entry');
+    }
+
+    return entry;
+  };
+
+  const termLink = (term: string) => within(openDialog()).getByRole('link', { name: term });
+
+  it('opens a shared link at its term', () => {
+    renderAt(DESTROYED_PATH);
+
+    expect(scrollIntoView.mock.contexts).toContain(destroyedEntry());
+    expect(destroyedEntry()).toHaveFocus();
+  });
+
+  it('puts a tapped term in the address and keeps the screen underneath', async () => {
+    renderAt('/wizard/spellbook');
+    await openReference();
+
+    await userEvent.click(termLink('Destroyed'));
+
+    expect(navigation()).toHaveTextContent(`REPLACE ${DESTROYED_PATH}`);
+    expect(scrollIntoView.mock.contexts).toContain(destroyedEntry());
+
+    await clickBack();
+
+    expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
+  });
+
+  it('clears the search when a found term is tapped', async () => {
+    renderAt('/reference');
+    await search('destroyed');
+
+    await userEvent.click(termLink('Destroyed'));
+
+    expect(searchField()).toHaveValue('');
+    expect(navigation()).toHaveTextContent(`REPLACE ${DESTROYED_PATH}`);
+    expect(scrollIntoView.mock.contexts).toContain(destroyedEntry());
+  });
+
+  it('copies the link straight to a term', async () => {
+    const user = userEvent.setup();
+    renderAt('/reference');
+
+    await user.click(within(openDialog()).getByRole('button', { name: 'Copy link to Destroyed' }));
+
+    expect(await navigator.clipboard.readText()).toBe(`${window.location.origin}${DESTROYED_PATH}`);
+    expect(screen.getByText('Link copied')).toBeInTheDocument();
   });
 });

@@ -16,6 +16,18 @@ export const GLOSSARY_CORRECTIONS: GlossaryEntry[] = [
     definition:
       'When an Object is Destroyed, everything attached to it is Destroyed and Discarded. This includes damage, Condition markers, tokens, Enchantments, and Conjurations. Ability markers are returned to the Mage. Then, the Object is placed in its owner’s Discard pile. The Object may then resolve a “Destroyed” effect. For example, a Plague Zombie will explode. Some effects replace being Discarded such as Cantrip or Obliterate.',
   },
+  // The Codex writes "teXt".
+  {
+    term: 'Conjuration Attack Actions',
+    definition:
+      'If a Conjuration has an attack bar, then once per round, before or after any Friendly Creature’s Action Phase, it can make that attack. Use a Ready Marker to keep track of making that attack. Unless the spell text says otherwise, you can make the attack once per round, and the Conjuration can make its attack the same round it comes into play.',
+  },
+  // The Codex writes "eXtra".
+  {
+    term: 'Corrode',
+    definition:
+      'An acid Condition which wears away Armor. For each Corrode Condition marker on a Creature or Conjuration, it receives Armor -1. Objects can never have Corrode markers on them which would reduce their Armor to below zero (any extra markers are immediately Destroyed). If an Object would receive Corrode Condition markers that would reduce its Armor to less than zero, instead it receives only enough Corrode markers to reduce its Armor to zero, and takes one point of direct acid damage for each excess marker. Corrode has no effect on Incorporeal Objects. Replacement Armor can be cast which will first Discard the old, worn Armor (and Corrode tokens) and replace with the new one. The marker has a Removal Cost of 2.',
+  },
 ];
 
 /** The glossary with each corrected term's definition replaced. Throws on a correction that matches no term. */

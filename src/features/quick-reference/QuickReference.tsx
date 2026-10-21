@@ -39,9 +39,11 @@ export const QuickReference = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const scroll = useReferenceScroll(panelRef, searchRef, query);
-  const jumpToTerm = useTermJump(hasQuery, setTyped);
 
+  // Before the jump, so a shared link focuses its term rather than the title.
   useModalFocus(panelRef, titleRef, close);
+
+  const jumpToTerm = useTermJump(hasQuery, setTyped);
 
   // On the body, above everything the inert app holds.
   return createPortal(
