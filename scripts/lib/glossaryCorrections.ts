@@ -28,6 +28,12 @@ export const GLOSSARY_CORRECTIONS: GlossaryEntry[] = [
     definition:
       'An acid Condition which wears away Armor. For each Corrode Condition marker on a Creature or Conjuration, it receives Armor -1. Objects can never have Corrode markers on them which would reduce their Armor to below zero (any extra markers are immediately Destroyed). If an Object would receive Corrode Condition markers that would reduce its Armor to less than zero, instead it receives only enough Corrode markers to reduce its Armor to zero, and takes one point of direct acid damage for each excess marker. Corrode has no effect on Incorporeal Objects. Replacement Armor can be cast which will first Discard the old, worn Armor (and Corrode tokens) and replace with the new one. The marker has a Removal Cost of 2.',
   },
+  // The Codex starts it with a lowercase "a".
+  {
+    term: 'Stagger',
+    definition:
+      'A Condition that disorients or knocks a Creature off balance. Minor Creatures cannot attack or Guard while Staggered. If they have a Guard marker they lose it, and they cannot choose the Guard action. Major Creatures roll 2 less dice when they make any attack for each Stagger Condition on them (but never less than 1 die). Remove all Stagger Conditions at the end of the Creature’s next activation. If a Creature receives Stagger during its current activation, it must wait until the end of its next activation to remove it. Stagger has a Removal Cost of 2.',
+  },
 ];
 
 /** The glossary with each corrected term's definition replaced. Throws on a correction that matches no term. */
