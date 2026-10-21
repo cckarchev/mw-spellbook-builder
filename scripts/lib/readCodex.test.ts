@@ -125,6 +125,17 @@ describe('parseCodexXml', () => {
     ]);
   });
 
+  it('lowercases an X the Codex prints inside a lowercase word', () => {
+    const xml = codexXml([
+      { top: 10, font: TERM_FONT, text: 'Disable' },
+      { top: 12, left: 200, font: BODY_FONT, text: 'The teXt boX, eXcept what defines “X” or X.' },
+    ]);
+
+    expect(parseCodexXml(xml)).toEqual([
+      { term: 'Disable', definition: 'The text box, except what defines “X” or X.' },
+    ]);
+  });
+
   it('stops at the first section heading', () => {
     const xml = codexXml([
       { top: 10, font: TERM_FONT, text: 'Zone' },

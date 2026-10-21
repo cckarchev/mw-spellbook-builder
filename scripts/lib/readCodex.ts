@@ -16,6 +16,9 @@ const TAG_PATTERN =
 const INNER_TAG_PATTERN = /<[^>]+>/g;
 const WHITESPACE_PATTERN = /\s+/g;
 const HYPHEN = '-';
+/** The Codex prints a lowercase x as a capital, as in "teXt boX": an X touching a lowercase letter. */
+const MISCASED_X_PATTERN = /(?<=[a-z])X|X(?=[a-z])/g;
+const LOWERCASE_X = 'x';
 
 const ENTITIES: Record<string, string> = {
   '&amp;': '&',
@@ -47,7 +50,8 @@ const decode = (text: string): string =>
     .replace(INNER_TAG_PATTERN, '')
     .replace(ENTITY_PATTERN, (entity) => ENTITIES[entity] ?? entity);
 
-const tidy = (text: string): string => text.replace(WHITESPACE_PATTERN, ' ').trim();
+const tidy = (text: string): string =>
+  text.replace(WHITESPACE_PATTERN, ' ').replace(MISCASED_X_PATTERN, LOWERCASE_X).trim();
 
 /** Every text run in document order, with the size of its font. */
 const readRuns = (xml: string): Run[] => {
