@@ -7,13 +7,15 @@ interface SearchFieldProps {
   onChange: (next: string) => void;
   /** The input, for the back to top button to focus. */
   inputRef: RefObject<HTMLInputElement | null>;
+  /** How many terms show, beside the label, announced to screen readers as it changes. */
+  status: string;
 }
 
 const LABEL = 'Search terms and rules';
 const PLACEHOLDER = 'Burn, Flying, Guard';
 
 /** The Quick reference search, filtering as the player types, with a button to clear it. */
-export const SearchField = ({ value, onChange, inputRef }: SearchFieldProps) => {
+export const SearchField = ({ value, onChange, inputRef, status }: SearchFieldProps) => {
   const id = useId();
   const hasText = value !== '';
 
@@ -32,9 +34,12 @@ export const SearchField = ({ value, onChange, inputRef }: SearchFieldProps) => 
 
   return (
     <div className={styles.field}>
-      <label htmlFor={id} className={styles.label}>
-        {LABEL}
-      </label>
+      <div className={styles.labelRow}>
+        <label htmlFor={id}>{LABEL}</label>
+        <p className={styles.status} role="status">
+          {status}
+        </p>
+      </div>
       <div className={styles.box}>
         <input
           ref={inputRef}

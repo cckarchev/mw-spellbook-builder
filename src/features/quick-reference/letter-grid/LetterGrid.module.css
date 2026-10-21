@@ -6,7 +6,8 @@
   position: absolute;
   top: 100%;
   inset-inline: 0;
-  padding-block: var(--space-xs);
+  /* The same space as under the search, on both sides of the divider. */
+  padding-block: var(--space-sm);
   background: var(--color-bg-base);
   border-bottom: var(--border-divider);
   transition:

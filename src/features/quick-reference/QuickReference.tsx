@@ -63,10 +63,12 @@ export const QuickReference = () => {
               Back
             </Button>
           </div>
-          <SearchField value={typed} onChange={setTyped} inputRef={searchRef} />
-          <p className={styles.status} role="status">
-            {statusText(sortedGlossary.length, hasQuery, matches)}
-          </p>
+          <SearchField
+            value={typed}
+            onChange={setTyped}
+            inputRef={searchRef}
+            status={statusText(sortedGlossary.length, hasQuery, matches)}
+          />
           {hasQuery ? null : (
             <LetterGrid
               ref={scroll.lettersRef}

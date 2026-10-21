@@ -54,12 +54,6 @@
   text-transform: uppercase;
 }
 
-.status {
-  margin-top: var(--space-xs);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-dim);
-}
-
 /* One centered reading column, also on desktop. */
 .list {
   max-width: var(--reading-width);
