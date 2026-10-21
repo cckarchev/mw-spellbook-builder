@@ -30,10 +30,12 @@
   border-bottom: var(--border-divider);
 }
 
+/* The title at the left and Back at the right, under the app header's own button. */
 .titleRow {
   margin-bottom: var(--space-sm);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-md);
 }
 

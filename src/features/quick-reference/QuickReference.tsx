@@ -55,13 +55,13 @@ export const QuickReference = () => {
         <AppHeader />
         <div ref={scroll.toolbarRef} className={styles.toolbar}>
           <div className={styles.titleRow}>
+            <h1 ref={titleRef} id={titleId} className={styles.title} tabIndex={-1}>
+              {TITLE}
+            </h1>
             <Button size="small" className={styles.back} onClick={close}>
               <ArrowLeftIcon />
               Back
             </Button>
-            <h1 ref={titleRef} id={titleId} className={styles.title} tabIndex={-1}>
-              {TITLE}
-            </h1>
           </div>
           <SearchField value={typed} onChange={setTyped} inputRef={searchRef} />
           <p className={styles.status} role="status">
