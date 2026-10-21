@@ -1,5 +1,6 @@
 import sharp from 'sharp';
-import { frameBox } from './frameBox';
+import { decodeImage } from './decodeImage';
+import { whiteFrameBox } from './whiteFrame';
 
 const SIZE = 100;
 const FRAME = 10;
@@ -27,9 +28,9 @@ const greyFramedPng = async (): Promise<Uint8Array> => {
   return new Uint8Array(png);
 };
 
-describe('frameBox', () => {
-  it('finds the frame of a greyscale image', async () => {
-    const box = await frameBox(await greyFramedPng());
+describe('decodeImage', () => {
+  it('decodes a greyscale image so its frame can be found', async () => {
+    const box = whiteFrameBox(await decodeImage(await greyFramedPng()));
 
     expect(box).toEqual({
       left: FRAME + EDGE,

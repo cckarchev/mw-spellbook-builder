@@ -9,9 +9,10 @@ import type { GlossaryEntry } from '@/core/glossary/types';
 import type { Card, Format } from '@/core/rules/types';
 import { mages } from '@/data/mages';
 import { applyCorrections, CARD_CORRECTIONS } from './lib/cardCorrections';
+import { decodeImage } from './lib/decodeImage';
 import { buildExpansionMap, type LegacySet } from './lib/expansions';
-import { frameBox } from './lib/frameBox';
 import { applyGlossaryCorrections, GLOSSARY_CORRECTIONS } from './lib/glossaryCorrections';
+import { cutImageBox } from './lib/imageCorrections';
 import { normalizeCard } from './lib/normalizeCard';
 import { parseCodexXml } from './lib/readCodex';
 import { parseSetXml, readModuleSets } from './lib/readModule';
@@ -20,7 +21,8 @@ import {
   readOfficialDecks,
   resolveOfficialSpellbook,
 } from './lib/readOfficialSpellbooks';
-import { isLandscape } from './lib/whiteFrame';
+import { clearWhiteCorners } from './lib/whiteCorners';
+import { isLandscape, whiteFrameBox } from './lib/whiteFrame';
 
 // Reads the OCTGN Mage Wars module, the community image pack and the Codex from raw-input/
 // and writes src/data/cards.json, src/data/glossary.json, src/data/officialSpellbooks.json
@@ -51,6 +53,8 @@ const PUBLIC_DIR = 'public';
 const IMAGE_DIR = path.join(PUBLIC_DIR, 'cards');
 const IMAGE_WIDTH = 480;
 const IMAGE_QUALITY = 80;
+/** Decoded images always carry red, green, blue and alpha. */
+const RAW_CHANNELS = 4 as const;
 const JSON_INDENT = 2;
 const BIOME_BIN = path.join('node_modules', '.bin', 'biome');
 
@@ -181,13 +185,21 @@ const imageFile = (cardId: string): string =>
   path.join(PUBLIC_DIR, cardImagePath(cardCode(cardId)));
 
 /**
- * Cuts the white or transparent frame some pack images have, then resizes to webp.
+ * Cuts the white or transparent frame some pack images have, and any hand measured blemish,
+ * makes the white around scanned rounded corners transparent, then resizes to webp.
  * Returns whether the card is landscape.
  */
-const writeFramelessImage = async (data: Uint8Array, target: string): Promise<boolean> => {
-  const box = await frameBox(data);
+const writeFramelessImage = async (
+  data: Uint8Array,
+  cardId: string,
+  target: string,
+): Promise<boolean> => {
+  const image = await decodeImage(data);
+  const box = cutImageBox(whiteFrameBox(image), cardId);
+  const cleared = clearWhiteCorners(image, box);
+  const raw = { width: cleared.width, height: cleared.height, channels: RAW_CHANNELS };
 
-  await sharp(data)
+  await sharp(cleared.data, { raw })
     .extract(box)
     .resize({ width: IMAGE_WIDTH })
     .webp({ quality: IMAGE_QUALITY })
@@ -220,7 +232,7 @@ const writeImages = async (wantedIds: ReadonlySet<string>): Promise<Map<string, 
     let landscape: boolean;
 
     try {
-      landscape = await writeFramelessImage(data, target);
+      landscape = await writeFramelessImage(data, id, target);
     } catch (error) {
       throw new Error(`Could not convert the image of card ${id}`, { cause: error });
     }
