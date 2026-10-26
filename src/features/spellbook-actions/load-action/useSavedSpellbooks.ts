@@ -9,15 +9,19 @@ import { useSpellbookStatus } from "@/store/useSpellbookStatus";
 import { useSpellbookStore } from "@/store/useSpellbookStore";
 import { useDeleteSavedSpellbook } from "./useDeleteSavedSpellbook";
 
-/** A spellbook to load and the name it carries once loaded; null for the official spellbook. */
+/**
+ * A spellbook to load and the name it carries once loaded; null for the
+ * official spellbook.
+ */
 interface LoadChoice {
   spellbook: Spellbook;
   name: string | null;
 }
 
 /**
- * The mage's saved spellbooks and official spellbook for the Load dialog, with loading and
- * deleting them behind their confirms. `onLoaded` runs after a spellbook replaces the current one.
+ * The mage's saved spellbooks and official spellbook for the Load dialog, with
+ * loading and deleting them behind their confirms. `onLoaded` runs after a
+ * spellbook replaces the current one.
  */
 export const useSavedSpellbooks = (onLoaded: () => void) => {
   const spellbook = useSpellbookStore((state) => state.spellbook);
@@ -36,7 +40,9 @@ export const useSavedSpellbooks = (onLoaded: () => void) => {
 
   const deletion = useDeleteSavedSpellbook(readSaved);
 
-  /** Re-reads the saved and official spellbooks and drops any pending confirm. */
+  /**
+   * Re-reads the saved and official spellbooks and drops any pending confirm.
+   */
   const refresh = () => {
     readSaved();
     setOfficial(officialSpellbook(spellbook.mageId));
@@ -67,7 +73,10 @@ export const useSavedSpellbooks = (onLoaded: () => void) => {
     });
   };
 
-  /** The official spellbook loads unnamed: saving it later makes the player's own copy. */
+  /**
+   * The official spellbook loads unnamed: saving it later makes the player's
+   * own copy.
+   */
   const requestLoadOfficial = (officialToLoad: Spellbook) => {
     requestChoice({ spellbook: officialToLoad, name: null });
   };

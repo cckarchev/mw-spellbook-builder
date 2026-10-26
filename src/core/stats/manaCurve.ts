@@ -26,7 +26,10 @@ interface CostedCopies {
   count: number;
 }
 
-/** Copies per cost bucket and against the channeling; variable costs are counted apart. */
+/**
+ * Copies per cost bucket and against the channeling; variable costs are counted
+ * apart.
+ */
 export const manaCurveOf = (
   copies: CostedCopies[],
   channeling: number,
@@ -72,7 +75,10 @@ export const manaCurveOf = (
   return { buckets, variable, channeling, channelingBucket, atOrBelow, above };
 };
 
-/** The flat channeling sources in the book, with the channeling they would add together. */
+/**
+ * The flat channeling sources in the book, with the channeling they would add
+ * together.
+ */
 export const manaSourcesOf = (copies: CostedCopies[]): ManaSources => {
   const cards = FLAT_MANA_SOURCES.map((name) => {
     const count = copies

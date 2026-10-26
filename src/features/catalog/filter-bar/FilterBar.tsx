@@ -47,7 +47,10 @@ const GROUPS: {
   { key: "expansions", title: "Expansion", defaultExpanded: false },
 ];
 
-/** The search box, always shown, and the quick picks and filter chips, folded away behind a toggle. */
+/**
+ * The search box, always shown, and the quick picks and filter chips, folded
+ * away behind a toggle.
+ */
 export const FilterBar = ({
   filters,
   options,

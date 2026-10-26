@@ -13,8 +13,9 @@ import { useReferenceRoute } from "@/features/shared/useReferenceRoute";
 import { Layout } from "@/layout/Layout";
 
 /**
- * While the Quick reference is open, the routes keep showing the screen it was opened over, or
- * the mage picker without one, so going back finds that screen as the player left it.
+ * While the Quick reference is open, the routes keep showing the screen it was
+ * opened over, or the mage picker without one, so going back finds that screen
+ * as the player left it.
  */
 export const App = () => {
   const location = useLocation();

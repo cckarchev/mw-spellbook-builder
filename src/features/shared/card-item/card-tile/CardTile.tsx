@@ -4,7 +4,10 @@ import type { CardEntryProps } from "../cardEntryProps";
 import { ZoomableImage } from "../zoomable-image/ZoomableImage";
 import styles from "./CardTile.module.css";
 
-/** A card image with its points and a stepper, for the grid view. Tapping the image enlarges it. */
+/**
+ * A card image with its points and a stepper, for the grid view. Tapping the
+ * image enlarges it.
+ */
 export const CardTile = memo(
   ({
     card,

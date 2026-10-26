@@ -1,6 +1,9 @@
 const ONE = 1;
 
-/** What the Quick reference status line says, and screen readers announce, about the list. */
+/**
+ * What the Quick reference status line says, and screen readers announce, about
+ * the list.
+ */
 export const statusText = (
   total: number,
   hasQuery: boolean,

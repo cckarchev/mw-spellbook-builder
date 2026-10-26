@@ -21,7 +21,10 @@ const TraitList = ({ traits }: { traits: string[] }) =>
     </span>
   ));
 
-/** The opened part of a card row: the full card image and its game text, with tappable terms. */
+/**
+ * The opened part of a card row: the full card image and its game text, with
+ * tappable terms.
+ */
 export const CardDetails = ({ card }: { card: Card }) => {
   const facts = [
     ["Type", card.type],
@@ -57,7 +60,8 @@ export const CardDetails = ({ card }: { card: Card }) => {
               <TraitList traits={card.traits} />
             </Fact>
           ) : null}
-          {/* Expansion names, such as "Forcemaster vs Warlord", are not game terms. */}
+          {/* Expansion names, such as "Forcemaster vs Warlord", are not game
+              terms. */}
           <Fact label="Expansion">{card.expansion}</Fact>
         </dl>
         {printedText.map((text) => (

@@ -16,7 +16,8 @@ const PALADIN_HOLY_LEVEL = 2;
 const PALADIN_WAR_LEVEL = 2;
 const SCHOOL_MAGE_NAMES = new Set(SCHOOLS.map((school) => `${school} Mage`));
 const MAGE_ONLY_NAMES = new Set(mages.flatMap((mage) => mage.onlyNames));
-// "Makes the above attack", "immediately attacks", "gains a Damage Barrier", "Orchid's attack targets".
+// "Makes the above attack", "immediately attacks", "gains a Damage Barrier",
+// "Orchid's attack targets".
 const REFERS_TO_ATTACK_PATTERN =
   /above attack|immediately attacks|gains a Damage Barrier|'s attack targets/i;
 

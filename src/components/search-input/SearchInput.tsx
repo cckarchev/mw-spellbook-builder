@@ -21,7 +21,10 @@ interface SearchInputProps
   inputRef?: RefObject<HTMLInputElement | null>;
 }
 
-/** A search field with a button inside it to clear the text. Escape clears it too. */
+/**
+ * A search field with a button inside it to clear the text. Escape clears it
+ * too.
+ */
 export const SearchInput = ({
   value,
   onChange,
@@ -43,7 +46,8 @@ export const SearchInput = ({
     ref.current?.focus();
   };
 
-  // Escape empties a field with text, and is used up so nothing around it closes as well.
+  // Escape empties a field with text, and is used up so nothing around it
+  // closes as well.
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Escape" && hasText) {
       event.preventDefault();

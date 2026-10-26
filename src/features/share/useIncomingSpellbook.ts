@@ -21,7 +21,10 @@ import { useSpellbookStore } from "@/store/useSpellbookStore";
 const UNREADABLE =
   "This link could not be read. Your current spellbook is unchanged.";
 
-/** Where a spellbook opened from a link goes, and what to tell the player about it. */
+/**
+ * Where a spellbook opened from a link goes, and what to tell the player about
+ * it.
+ */
 const openedSpellbook = ({
   spellbook,
   unknownCodes,
@@ -50,7 +53,10 @@ const openedSpellbook = ({
   };
 };
 
-/** Whether opening the spellbook would replace unsaved work in a draft of its mage. */
+/**
+ * Whether opening the spellbook would replace unsaved work in a draft of its
+ * mage.
+ */
 const replacesWork = (spellbook: Spellbook): boolean => {
   const { mageId } = spellbook;
 
@@ -64,10 +70,11 @@ const replacesWork = (spellbook: Spellbook): boolean => {
 };
 
 /**
- * Loads the spellbook from a share link (?b=) once at startup and opens it on the Spellbook tab.
- * A draft of the link's mage with unsaved work is only replaced once the player confirms
- * it in pendingReplace; the drafts of other mages are never touched.
- * Returns the problems found in the link's spellbook, for the player to see, until dismissed.
+ * Loads the spellbook from a share link (?b=) once at startup and opens it on
+ * the Spellbook tab. A draft of the link's mage with unsaved work is only
+ * replaced once the player confirms it in pendingReplace; the drafts of other
+ * mages are never touched. Returns the problems found in the link's spellbook,
+ * for the player to see, until dismissed.
  */
 export const useIncomingSpellbook = () => {
   const location = useLocation();

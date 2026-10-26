@@ -7,7 +7,10 @@ import { TrashIcon } from "@/features/shared/TrashIcon";
 import { useSpellbookStatus } from "@/store/useSpellbookStatus";
 import { useSpellbookStore } from "@/store/useSpellbookStore";
 
-/** The Clear button: empties the spellbook and drops its name, after a confirm when unsaved work would go. */
+/**
+ * The Clear button: empties the spellbook and drops its name, after a confirm
+ * when unsaved work would go.
+ */
 export const ClearAction = () => {
   const spellbook = useSpellbookStore((state) => state.spellbook);
   const name = useSpellbookStore((state) => state.name);

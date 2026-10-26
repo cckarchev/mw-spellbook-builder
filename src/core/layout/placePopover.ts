@@ -27,8 +27,8 @@ export interface Placement {
 }
 
 /**
- * Where to put a popover so it stays on screen: centered under the anchor, or above it when it
- * does not fit below, and pushed in from the side edges.
+ * Where to put a popover so it stays on screen: centered under the anchor, or
+ * above it when it does not fit below, and pushed in from the side edges.
  */
 export const placePopover = ({
   anchor,

@@ -5,7 +5,10 @@ import type { CardEntryProps } from "../cardEntryProps";
 import { CardDetails } from "./CardDetails";
 import styles from "./CardRow.module.css";
 
-/** A card with its points and a stepper. Tapping it opens the card image and text. */
+/**
+ * A card with its points and a stepper. Tapping it opens the card image and
+ * text.
+ */
 export const CardRow = memo(
   ({
     card,

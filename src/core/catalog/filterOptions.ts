@@ -7,7 +7,9 @@ import {
 } from "@/core/rules/types";
 import { TYPE_ORDER } from "./groupByType";
 
-/** The values a filter group can offer: only those some card in the list has. */
+/**
+ * The values a filter group can offer: only those some card in the list has.
+ */
 export interface FilterOptions {
   types: CardType[];
   schools: School[];

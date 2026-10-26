@@ -7,7 +7,8 @@ const FIREBALL_COPIES = 3;
 const BOLT_COPIES = 2;
 const CRYSTAL_COPIES = 2;
 
-// Wizard (Arcane, Air): Fireball (untrained Fire) 3 x 4, Lightning Bolt 2 x 2, Mana Crystal 2 x 1.
+// Wizard (Arcane, Air): Fireball (untrained Fire) 3 x 4, Lightning Bolt 2 x 2,
+// Mana Crystal 2 x 1.
 const FIREBALL_POINTS = 12;
 const ATTACK_POINTS = 16;
 const CONJURATION_POINTS = 2;

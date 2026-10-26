@@ -15,7 +15,10 @@ import { FilterBar } from "./filter-bar/FilterBar";
 import { useCatalogCards } from "./useCatalogCards";
 import { useCatalogFilters } from "./useCatalogFilters";
 
-/** What the spellbook already has of one type, such as "5 in spellbook · 16 pts". Nothing when it has none. */
+/**
+ * What the spellbook already has of one type, such as "5 in spellbook · 16
+ * pts". Nothing when it has none.
+ */
 const inSpellbookLabel = (
   spellbookGroup: SpellbookGroup | undefined,
 ): string | undefined => {
@@ -27,8 +30,9 @@ const inSpellbookLabel = (
 };
 
 /**
- * Every card the mage can use, filtered and grouped by type, each with its cost and a stepper.
- * Memoized so the builder can render again under the Quick reference without redoing the list.
+ * Every card the mage can use, filtered and grouped by type, each with its cost
+ * and a stepper. Memoized so the builder can render again under the Quick
+ * reference without redoing the list.
  */
 export const Catalog = memo(
   ({ spellbook, mage, onAdd, onRemove }: BuilderPanelProps) => {
@@ -38,7 +42,8 @@ export const Catalog = memo(
     const { legalCards, options, shownCards, groups, spellbookGroupsByType } =
       useCatalogCards(spellbook, mage, filters);
 
-    // Collapsed to browse by type; open while searching or filtering, so the matches show.
+    // Collapsed to browse by type; open while searching or filtering, so the
+    // matches show.
     const filtering = isFiltering(filters);
 
     return (

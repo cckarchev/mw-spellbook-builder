@@ -7,12 +7,18 @@ import { StatsIcon } from "./StatsIcon";
 
 interface MageStatsProps {
   mage: Mage;
-  /** Text before the icon. Without it the button is the icon alone, named "<Mage> stats". */
+  /**
+   * Text before the icon. Without it the button is the icon alone, named
+   * "<Mage> stats".
+   */
   label?: string;
   className?: string;
 }
 
-/** A button that opens the mage stats card in a dialog. Without a stats card, just the label. */
+/**
+ * A button that opens the mage stats card in a dialog. Without a stats card,
+ * just the label.
+ */
 export const MageStats = ({ mage, label, className }: MageStatsProps) => {
   const [open, setOpen] = useState(false);
   const image = mageStatsImage(mage);

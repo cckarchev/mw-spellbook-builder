@@ -10,14 +10,19 @@ interface MageTileProps {
   mage: Mage;
   /** The mage of the spellbook being built. */
   current: boolean;
-  /** What the mage already has: a draft, saved spellbooks, or null for nothing. */
+  /**
+   * What the mage already has: a draft, saved spellbooks, or null for nothing.
+   */
   badge: MageBadge | null;
   onSelect: (mage: Mage) => void;
   /** Opens the mage's saved spellbooks, from the badge when it counts them. */
   onOpenSaved: (mage: Mage) => void;
 }
 
-/** The badge opens the saved spellbooks when there are any, or else the mage and its draft. */
+/**
+ * The badge opens the saved spellbooks when there are any, or else the mage and
+ * its draft.
+ */
 const badgeLabel = (mage: Mage, badge: MageBadge): string =>
   badge.hasSaved
     ? `Load a saved ${mage.name} spellbook`
@@ -64,7 +69,8 @@ export const MageTile = ({
           </span>
         )}
       </button>
-      {/* Siblings, not inside the tile, so the stats and the saved spellbooks open without picking the mage. */}
+      {/* Siblings, not inside the tile, so the stats and the saved spellbooks
+          open without picking the mage. */}
       {badge === null ? null : (
         <button
           type="button"

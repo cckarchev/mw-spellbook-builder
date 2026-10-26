@@ -12,7 +12,10 @@ interface ActionButtonProps
   ref?: Ref<HTMLButtonElement>;
 }
 
-/** A small icon button; the label shows beside the icon above phone width, and as a tooltip. */
+/**
+ * A small icon button; the label shows beside the icon above phone width, and
+ * as a tooltip.
+ */
 export const ActionButton = ({
   icon,
   label,

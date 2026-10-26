@@ -3,8 +3,9 @@ import { vi } from "vitest";
 type ChangeListener = (event: MediaQueryListEvent) => void;
 
 /**
- * Stubs window.matchMedia so every query reports `matches`, and lets a test flip it
- * as if the window crossed a breakpoint. Undo it with vi.unstubAllGlobals().
+ * Stubs window.matchMedia so every query reports `matches`, and lets a test
+ * flip it as if the window crossed a breakpoint. Undo it with
+ * vi.unstubAllGlobals().
  */
 export const stubMatchMedia = (matches: boolean) => {
   const listeners = new Set<ChangeListener>();

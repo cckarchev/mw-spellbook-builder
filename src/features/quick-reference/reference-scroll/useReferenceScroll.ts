@@ -10,8 +10,8 @@ export const LETTERS = letterGroups.map((group) => group.letter);
 const TOP = 0;
 
 /**
- * Scrolling the Quick reference: the sticky toolbar jumps land under, letter jumps and the way
- * back to the top.
+ * Scrolling the Quick reference: the sticky toolbar jumps land under, letter
+ * jumps and the way back to the top.
  */
 export const useReferenceScroll = (
   scroller: RefObject<HTMLElement | null>,
@@ -24,7 +24,8 @@ export const useReferenceScroll = (
     "--reference-toolbar-height": `${toolbarHeight}px`,
   } as CSSProperties;
 
-  // A new search starts at its first result, and clearing it at the top of the list.
+  // A new search starts at its first result, and clearing it at the top of the
+  // list.
   const lastQueryRef = useRef(query);
 
   useEffect(() => {

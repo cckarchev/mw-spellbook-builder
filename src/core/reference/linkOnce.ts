@@ -2,8 +2,9 @@ import type { TextSegment } from "@/core/glossary/findTerms";
 import type { GlossaryEntry } from "@/core/glossary/types";
 
 /**
- * Keeps a link only on the first mention of each term, and never on the entry's own term, so a
- * definition does not turn into a field of links. Plain text next to plain text merges.
+ * Keeps a link only on the first mention of each term, and never on the entry's
+ * own term, so a definition does not turn into a field of links. Plain text
+ * next to plain text merges.
  */
 export const linkOnce = (
   segments: readonly TextSegment[],

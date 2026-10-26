@@ -8,7 +8,10 @@ export interface TextRange {
 
 const NOT_FOUND = -1;
 
-/** Where an already folded query appears in a text, in the text's own indices, without overlaps. */
+/**
+ * Where an already folded query appears in a text, in the text's own indices,
+ * without overlaps.
+ */
 export const matchRanges = (text: string, query: string): TextRange[] => {
   if (query === "") {
     return [];

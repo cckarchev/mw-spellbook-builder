@@ -1,5 +1,5 @@
-// Finds the white (or transparent) frame some pack images have around the card art,
-// so it can be cut before the image is resized.
+// Finds the white (or transparent) frame some pack images have around the card
+// art, so it can be cut before the image is resized.
 
 export interface RawImage {
   data: Uint8Array;
@@ -20,10 +20,16 @@ export interface CropBox {
 const WHITE_MIN = 240;
 /** Alpha below this counts as transparent. */
 const CLEAR_MAX_ALPHA = 32;
-/** A row or column is frame when at least this share of its pixels is white or transparent. */
+/**
+ * A row or column is frame when at least this share of its pixels is white or
+ * transparent.
+ */
 const FRAME_SHARE = 0.5;
 
-/** Once a side had a frame, this share of the image is also cut there: the frame's soft edge. */
+/**
+ * Once a side had a frame, this share of the image is also cut there: the
+ * frame's soft edge.
+ */
 const EDGE_SHARE = 0.01;
 
 const ALPHA_INDEX = 3;
@@ -67,7 +73,10 @@ interface LineCut {
   sides: Side[];
 }
 
-/** Cuts one frame line from each side that has one, and says which sides those were. */
+/**
+ * Cuts one frame line from each side that has one, and says which sides those
+ * were.
+ */
 const cutFrameLine = (image: RawImage, box: CropBox): LineCut => {
   const right = box.left + box.width - 1;
   const bottom = box.top + box.height - 1;
@@ -106,7 +115,10 @@ const cutFrameLine = (image: RawImage, box: CropBox): LineCut => {
   };
 };
 
-/** The soft edge to cut on each framed side, unless that would leave nothing of the image. */
+/**
+ * The soft edge to cut on each framed side, unless that would leave nothing of
+ * the image.
+ */
 const cutEdges = (
   image: RawImage,
   box: CropBox,
@@ -128,7 +140,10 @@ const cutEdges = (
   return { left: box.left + left, top: box.top + top, width, height };
 };
 
-/** The part of the image inside its white or transparent frame; the whole image when it has none. */
+/**
+ * The part of the image inside its white or transparent frame; the whole image
+ * when it has none.
+ */
 export const whiteFrameBox = (image: RawImage): CropBox => {
   let box: CropBox = {
     left: 0,

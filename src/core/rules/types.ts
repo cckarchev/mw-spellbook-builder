@@ -28,12 +28,18 @@ export interface SchoolPart {
 export interface Card {
   /** OCTGN GUID. */
   id: string;
-  /** First 8 hex chars of the id, unique across the catalog; used in share links. */
+  /**
+   * First 8 hex chars of the id, unique across the catalog; used in share
+   * links.
+   */
   code: string;
   name: string;
   type: CardType;
   subtypes: string[];
-  /** `+` in the source data is "and" (every part counts), `/` is "or" (pick one). */
+  /**
+   * `+` in the source data is "and" (every part counts), `/` is "or" (pick
+   * one).
+   */
   schoolMode: "and" | "or";
   schools: SchoolPart[];
   traits: string[];
@@ -47,7 +53,10 @@ export interface Card {
   range: string;
   target: string;
   effect: string;
-  /** The printed attack lines, such as 'Ranged | Flame | 6d6 | ...'. Empty when none. */
+  /**
+   * The printed attack lines, such as 'Ranged | Flame | 6d6 | ...'. Empty when
+   * none.
+   */
   attackBar: string;
   /** The printed ability lines of creatures and conjurations that have them. */
   abilityBar: string;

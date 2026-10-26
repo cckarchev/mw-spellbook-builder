@@ -25,7 +25,10 @@ export const magesBySlug: ReadonlyMap<string, Mage> = new Map(
   mages.map((mage) => [mageSlug(mage.name), mage]),
 );
 
-/** The spellbook's mage, or undefined when it has none or names one not in the catalog. */
+/**
+ * The spellbook's mage, or undefined when it has none or names one not in the
+ * catalog.
+ */
 export const spellbookMage = (spellbook: Spellbook): Mage | undefined => {
   if (spellbook.mageId === null) {
     return undefined;

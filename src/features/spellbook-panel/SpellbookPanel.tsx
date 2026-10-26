@@ -37,7 +37,9 @@ const EMPTY_TEXT: Record<SpellbookPanelVariant, string> = {
   column: "No cards yet. Add some from the catalog.",
 };
 
-/** The desktop column is too narrow for card images, so it always shows rows. */
+/**
+ * The desktop column is too narrow for card images, so it always shows rows.
+ */
 const COLUMN_VIEW: ViewMode = "list";
 
 interface GroupsProps extends BuilderPanelProps {
@@ -46,7 +48,10 @@ interface GroupsProps extends BuilderPanelProps {
   view: ViewMode;
 }
 
-/** The spellbook's cards under one section per type, with the problem of each card. */
+/**
+ * The spellbook's cards under one section per type, with the problem of each
+ * card.
+ */
 const Groups = ({
   groups,
   spellbook,
@@ -83,7 +88,10 @@ const Groups = ({
   ));
 };
 
-/** The spellbook's cards, grouped by type with copies and points per group, and what is wrong. */
+/**
+ * The spellbook's cards, grouped by type with copies and points per group, and
+ * what is wrong.
+ */
 export const SpellbookPanel = ({
   spellbook,
   mage,
@@ -107,7 +115,8 @@ export const SpellbookPanel = ({
   const isColumn = variant === "column";
   const view = isColumn ? COLUMN_VIEW : storedView;
 
-  // An empty spellbook has nothing to show either way, so it gets no view switch.
+  // An empty spellbook has nothing to show either way, so it gets no view
+  // switch.
   const isEmpty = groups.length === 0;
   const showViewSwitch = !isEmpty && !isColumn;
 

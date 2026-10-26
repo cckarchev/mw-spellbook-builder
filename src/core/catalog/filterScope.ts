@@ -2,7 +2,10 @@ import { trainedSchools } from "@/core/rules/legality";
 import type { Mage } from "@/core/rules/types";
 import type { CatalogFilters } from "./filterCards";
 
-/** A quick pick over the catalog: every card, the mage's schools, or the mage's "Only" cards. */
+/**
+ * A quick pick over the catalog: every card, the mage's schools, or the mage's
+ * "Only" cards.
+ */
 export type FilterScope = "all" | "trained" | "only";
 
 const sameSchools = (left: string[], right: string[]): boolean => {
@@ -31,7 +34,10 @@ export const scopeOf = (
   return null;
 };
 
-/** The filters with a quick pick applied. Only the school chips and the "Only" filter change. */
+/**
+ * The filters with a quick pick applied. Only the school chips and the "Only"
+ * filter change.
+ */
 export const withScope = (
   filters: CatalogFilters,
   scope: FilterScope,

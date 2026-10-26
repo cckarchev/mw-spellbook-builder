@@ -19,10 +19,10 @@ const searchFor = (query: string): string => {
 };
 
 /**
- * The search as the player types it, kept in the field's own state so no key is lost, and
- * written to the address after a pause so it survives a reload. Each write replaces the history
- * entry, so Back still leaves the Quick reference in one step, and keeps the navigation state,
- * which holds the screen underneath.
+ * The search as the player types it, kept in the field's own state so no key is
+ * lost, and written to the address after a pause so it survives a reload. Each
+ * write replaces the history entry, so Back still leaves the Quick reference in
+ * one step, and keeps the navigation state, which holds the screen underneath.
  */
 export const useReferenceQuery = (): [
   query: string,

@@ -6,8 +6,8 @@
 }
 
 /*
- * Rows split evenly by --letters-per-row, set from the measured width, and a shorter last row
- * centered under the others.
+ * Rows split evenly by --letters-per-row, set from the measured width, and a
+ * shorter last row centered under the others.
  */
 .rows {
   --letter-gap: var(--space-xxs);

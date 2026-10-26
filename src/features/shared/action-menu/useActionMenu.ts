@@ -12,7 +12,10 @@ const FIRST = 0;
 const ITEM_SELECTOR = '[role="menuitem"]';
 const MOVE_KEYS = new Set(["ArrowDown", "ArrowUp", "Home", "End"]);
 
-/** Where an arrow, Home or End key moves the focus from the current item, wrapping at both ends. */
+/**
+ * Where an arrow, Home or End key moves the focus from the current item,
+ * wrapping at both ends.
+ */
 const nextIndex = (key: string, current: number, last: number): number => {
   switch (key) {
     case "ArrowDown":
@@ -35,8 +38,9 @@ const focusItem = (menu: HTMLElement, key: string) => {
 };
 
 /**
- * A menu button's open state and keyboard: the menu opens on its first item, the arrow keys
- * move through the items, and Escape, Tab, a tap outside or picking an item close it.
+ * A menu button's open state and keyboard: the menu opens on its first item,
+ * the arrow keys move through the items, and Escape, Tab, a tap outside or
+ * picking an item close it.
  */
 export const useActionMenu = () => {
   const menuId = useId();

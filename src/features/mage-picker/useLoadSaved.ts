@@ -10,9 +10,9 @@ import type { Mage } from "@/core/rules/types";
 import { useSpellbookStore } from "@/store/useSpellbookStore";
 
 /**
- * Loading a mage's saved spellbook straight from the picker: the list of one mage's saved
- * spellbooks, and a confirm when loading one would replace unsaved work in that mage's draft.
- * A loaded spellbook opens on the Spellbook tab.
+ * Loading a mage's saved spellbook straight from the picker: the list of one
+ * mage's saved spellbooks, and a confirm when loading one would replace unsaved
+ * work in that mage's draft. A loaded spellbook opens on the Spellbook tab.
  */
 export const useLoadSaved = () => {
   const navigate = useNavigate();

@@ -9,7 +9,10 @@ interface PopoverProps {
   isOpen: boolean;
   /** The button the popover opens next to. */
   anchorRef: RefObject<HTMLButtonElement | null>;
-  /** 'dialog' for content opened on purpose, 'status' for a message about what was just tapped. */
+  /**
+   * 'dialog' for content opened on purpose, 'status' for a message about what
+   * was just tapped.
+   */
   role: "dialog" | "status";
   label?: string;
   onClose: () => void;

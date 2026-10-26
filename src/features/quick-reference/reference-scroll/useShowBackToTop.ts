@@ -4,16 +4,17 @@ import { type RefObject, useEffect, useRef, useState } from "react";
 export const BACK_TO_TOP_AFTER = 1200;
 
 /**
- * Whether the Quick reference is scrolled far enough down for the back to top button. The
- * scroll itself is only compared, never stored in state, so the list renders again only when
- * the button comes or goes, which keeps scrolling smooth on slow phones.
+ * Whether the Quick reference is scrolled far enough down for the back to top
+ * button. The scroll itself is only compared, never stored in state, so the
+ * list renders again only when the button comes or goes, which keeps scrolling
+ * smooth on slow phones.
  */
 export const useShowBackToTop = (
   scroller: RefObject<HTMLElement | null>,
 ): boolean => {
   const [shown, setShown] = useState(false);
-  // What the last render showed, compared before setting state, so a scroll that changes
-  // nothing visible does not even start a render.
+  // What the last render showed, compared before setting state, so a scroll
+  // that changes nothing visible does not even start a render.
   const shownRef = useRef(false);
 
   useEffect(() => {

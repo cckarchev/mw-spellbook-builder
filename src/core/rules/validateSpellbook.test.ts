@@ -13,7 +13,8 @@ const FIRE_COPIES = 3;
 const ARCANE_COPIES = 2;
 const POINTS_OF_FIRE_AND_ARCANE = 14;
 
-// A level 2 Fire card costs 4 points for the Wizard, who is trained in Arcane and Air.
+// A level 2 Fire card costs 4 points for the Wizard, who is trained in Arcane
+// and Air.
 const UNTRAINED_FIRE_COST = 4;
 const OVER_BUDGET_POINTS = 124;
 const OVER_BY = 4;

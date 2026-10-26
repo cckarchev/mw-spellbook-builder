@@ -13,24 +13,34 @@ import { canAddCopy } from "@/core/rules/validateSpellbook";
 import { cardsById, spellbookMage } from "@/data/catalog";
 
 interface SpellbookStore {
-  /** The spellbook being built, kept as its mage's draft so it survives a reload and a mage switch. */
+  /**
+   * The spellbook being built, kept as its mage's draft so it survives a reload
+   * and a mage switch.
+   */
   spellbook: Spellbook;
-  /** The name of the saved spellbook this one was saved as or loaded from, null for none. */
+  /**
+   * The name of the saved spellbook this one was saved as or loaded from, null
+   * for none.
+   */
   name: string | null;
   /**
-   * Goes up on every save. A save can leave the spellbook and its name as they were, so this is
-   * what tells readers of the saved copy to read it again.
+   * Goes up on every save. A save can leave the spellbook and its name as they
+   * were, so this is what tells readers of the saved copy to read it again.
    */
   savedRevision: number;
   /** Adds one copy, unless the + control would be disabled for it. */
   addCopy: (cardId: string) => void;
   removeCopy: (cardId: string) => void;
-  /** Switches to the mage's draft, or a new spellbook for it; the current spellbook stays as its draft. */
+  /**
+   * Switches to the mage's draft, or a new spellbook for it; the current
+   * spellbook stays as its draft.
+   */
   openMage: (mageId: string) => void;
   loadSpellbook: (spellbook: Spellbook, name?: string | null) => void;
   /**
-   * Saves the spellbook under the name, replacing a saved spellbook with that name, and names it.
-   * False, with nothing changed, when storage would not keep it.
+   * Saves the spellbook under the name, replacing a saved spellbook with that
+   * name, and names it. False, with nothing changed, when storage would not
+   * keep it.
    */
   save: (name: string) => boolean;
   /** Empties the spellbook and drops its name; the mage stays. */

@@ -3,7 +3,8 @@
   flex-direction: column;
 }
 
-/* The header, and the tabs below desktop, stay on screen while the page scrolls under them. */
+/* The header, and the tabs below desktop, stay on screen while the page scrolls
+   under them. */
 .sticky {
   position: sticky;
   top: 0;

@@ -50,8 +50,9 @@ const SavedList = ({ saved, onLoad, onDelete }: SavedListProps) => {
 };
 
 /**
- * The mage's saved spellbooks, to load one, or delete it when `onDelete` is given. With an
- * official spellbook, it comes first in its own section and cannot be deleted.
+ * The mage's saved spellbooks, to load one, or delete it when `onDelete` is
+ * given. With an official spellbook, it comes first in its own section and
+ * cannot be deleted.
  */
 export const LoadDialog = ({
   open,

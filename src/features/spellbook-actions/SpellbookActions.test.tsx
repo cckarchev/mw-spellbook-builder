@@ -27,7 +27,10 @@ const openLoad = async () => {
   return screen.getByRole("dialog", { name: LOAD_TITLE });
 };
 
-/** Shows whether the spellbook has unsaved changes, as the spellbook header reads it. */
+/**
+ * Shows whether the spellbook has unsaved changes, as the spellbook header
+ * reads it.
+ */
 const StatusProbe = () => {
   const { unsaved } = useSpellbookStatus();
 
@@ -290,7 +293,7 @@ const officialRow = (dialog: HTMLElement) => {
   });
 };
 
-describe("SpellbookActions official section", () => {
+describe("SpellbookActions Load official section", () => {
   it("shows the official spellbook first for a mage that has one", async () => {
     saveSpellbook(NAME, smallSpellbook);
     render(<SpellbookActions />);

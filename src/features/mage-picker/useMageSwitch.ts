@@ -3,7 +3,10 @@ import { builderPath } from "@/core/routing/builderPath";
 import type { Mage } from "@/core/rules/types";
 import { useSpellbookStore } from "@/store/useSpellbookStore";
 
-/** Opens the builder on the mage's draft; the spellbook left behind stays as its own mage's draft. */
+/**
+ * Opens the builder on the mage's draft; the spellbook left behind stays as its
+ * own mage's draft.
+ */
 export const useMageSwitch = () => {
   const navigate = useNavigate();
   const spellbook = useSpellbookStore((state) => state.spellbook);

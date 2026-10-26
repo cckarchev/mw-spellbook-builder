@@ -10,13 +10,17 @@ const REFERENCE_LABEL = "Quick reference";
 export const APP_NAME = `${BRAND} ${PRODUCT}`;
 
 interface AppHeaderProps {
-  /** The Quick reference button; left out inside the Quick reference, which has its own Back. */
+  /**
+   * The Quick reference button; left out inside the Quick reference, which has
+   * its own Back.
+   */
   showReference?: boolean;
 }
 
 /**
- * The app name, which goes home to the mage picker; the spellbook stays as its mage's draft. And
- * the Quick reference button, which opens it over this screen.
+ * The app name, which goes home to the mage picker; the spellbook stays as its
+ * mage's draft. And the Quick reference button, which opens it over this
+ * screen.
  */
 export const AppHeader = ({ showReference = true }: AppHeaderProps) => {
   const location = useLocation();

@@ -29,9 +29,10 @@ const TABS: Tab<BuilderTab>[] = [
 ];
 
 /**
- * The build screen of the mage in the URL: a sticky header and spellbook actions, then tabs over
- * the catalog, the spellbook or its stats. On desktop the catalog sits beside a column that
- * switches between the spellbook and its stats.
+ * The build screen of the mage in the URL: a sticky header and spellbook
+ * actions, then tabs over the catalog, the spellbook or its stats. On desktop
+ * the catalog sits beside a column that switches between the spellbook and its
+ * stats.
  */
 export const Builder = ({ tab }: { tab: BuilderTab }) => {
   const { mageSlug = "" } = useParams();
@@ -52,7 +53,8 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
     return <Navigate to={PICKER_PATH} replace={true} />;
   }
 
-  // The spellbook follows the URL's mage in an effect, so for one render it is still the old mage's.
+  // The spellbook follows the URL's mage in an effect, so for one render it is
+  // still the old mage's.
   if (mage?.id !== routeMage.id) {
     return null;
   }
@@ -70,7 +72,8 @@ export const Builder = ({ tab }: { tab: BuilderTab }) => {
     mage,
   };
 
-  // The spellbook column sticks right under the header, however tall its actions wrap.
+  // The spellbook column sticks right under the header, however tall its
+  // actions wrap.
   const stickyStyle = {
     "--builder-sticky-height": `${stickyHeight}px`,
   } as CSSProperties;

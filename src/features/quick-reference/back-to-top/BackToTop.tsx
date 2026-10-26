@@ -10,7 +10,10 @@ interface BackToTopProps {
   onClick: () => void;
 }
 
-/** A round button at the bottom right, shown far down the list, back to the top and the search. */
+/**
+ * A round button at the bottom right, shown far down the list, back to the top
+ * and the search.
+ */
 export const BackToTop = ({ visible, onClick }: BackToTopProps) => {
   if (!visible) {
     return null;

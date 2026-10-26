@@ -50,7 +50,10 @@ const stateLabel = (summary: SpellbookSummary): string => {
 
 const UNSAVED_LABEL = "unsaved";
 
-/** The mage, the saved spellbook's name, the points used out of the budget, and whether the spellbook is valid. */
+/**
+ * The mage, the saved spellbook's name, the points used out of the budget, and
+ * whether the spellbook is valid.
+ */
 export const SpellbookHeader = ({
   mage,
   summary,

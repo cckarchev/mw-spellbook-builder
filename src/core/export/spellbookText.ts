@@ -5,7 +5,8 @@ import {
 import type { Card, Mage, Spellbook } from "@/core/rules/types";
 import type { SpellbookSummary } from "@/core/rules/validateSpellbook";
 
-// Plain lines with no markdown, so the text reads the same pasted into WhatsApp on a phone.
+// Plain lines with no markdown, so the text reads the same pasted into WhatsApp
+// on a phone.
 
 const headerLine = (mage: Mage, summary: SpellbookSummary): string => {
   const over = summary.overBy > 0 ? ` (${summary.overBy} over)` : "";
@@ -22,7 +23,10 @@ const groupBlock = (group: SpellbookGroup): string => {
   return [heading, ...entries].join("\n");
 };
 
-/** The spellbook as plain text for pasting into a chat, ending with its share link. */
+/**
+ * The spellbook as plain text for pasting into a chat, ending with its share
+ * link.
+ */
 export const spellbookText = (
   spellbook: Spellbook,
   mage: Mage,

@@ -8,13 +8,19 @@ export interface DeckCard {
   count: number;
 }
 
-/** An OCTGN deck: the cards of its "Mage" section apart from its spellbook cards. */
+/**
+ * An OCTGN deck: the cards of its "Mage" section apart from its spellbook
+ * cards.
+ */
 export interface RawDeck {
   mageCards: DeckCard[];
   cards: DeckCard[];
 }
 
-/** An official spellbook in the app's terms: its mage and the copies of each catalog card. */
+/**
+ * An official spellbook in the app's terms: its mage and the copies of each
+ * catalog card.
+ */
 export interface OfficialSpellbook {
   mageId: string;
   counts: Record<string, number>;
@@ -71,7 +77,10 @@ export const parseDeckXml = (xml: string): RawDeck => {
   return deck;
 };
 
-/** The official spellbooks in an OCTGN game package (`.nupkg`, a zip), by decoded file name. */
+/**
+ * The official spellbooks in an OCTGN game package (`.nupkg`, a zip), by
+ * decoded file name.
+ */
 export const readOfficialDecks = (archive: Uint8Array): Map<string, string> => {
   const entries = unzipSync(archive, {
     filter: (file) => file.name.startsWith(OFFICIAL_FOLDER),
@@ -90,7 +99,10 @@ export const readOfficialDecks = (archive: Uint8Array): Map<string, string> => {
   return decks;
 };
 
-/** The deck's mage: by its picture or stats card id, else by the name of one of its cards. */
+/**
+ * The deck's mage: by its picture or stats card id, else by the name of one of
+ * its cards.
+ */
 const resolveMage = (
   deck: RawDeck,
   fileName: string,
@@ -143,7 +155,10 @@ const resolveCard = (
   return card;
 };
 
-/** Resolves a deck against the catalog; throws naming the file and the card when anything is unknown. */
+/**
+ * Resolves a deck against the catalog; throws naming the file and the card when
+ * anything is unknown.
+ */
 export const resolveOfficialSpellbook = (
   deck: RawDeck,
   fileName: string,

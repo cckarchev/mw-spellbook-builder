@@ -15,10 +15,15 @@ import {
 
 export const DRAFT_PREFIX = "mw-spellbook-builder:draft:";
 export const CURRENT_MAGE_KEY = "mw-spellbook-builder:current-mage";
-/** Where the one spellbook in progress lived before there was a draft per mage. */
+/**
+ * Where the one spellbook in progress lived before there was a draft per mage.
+ */
 export const LEGACY_SPELLBOOK_KEY = "mw-spellbook-builder:current";
 
-/** The spellbook in progress for one mage, and the name of the saved spellbook it came from. */
+/**
+ * The spellbook in progress for one mage, and the name of the saved spellbook
+ * it came from.
+ */
 export interface Draft {
   spellbook: Spellbook;
   name: string | null;
@@ -58,7 +63,10 @@ export const readDraft = (mageId: string): Draft | null => {
   return { spellbook: decoded.spellbook, name: parsed.n };
 };
 
-/** Stores the draft under its spellbook's mage; an empty unnamed spellbook leaves nothing behind. */
+/**
+ * Stores the draft under its spellbook's mage; an empty unnamed spellbook
+ * leaves nothing behind.
+ */
 export const writeDraft = ({ spellbook, name }: Draft): void => {
   const { mageId } = spellbook;
 
@@ -80,8 +88,8 @@ export const writeDraft = ({ spellbook, name }: Draft): void => {
 };
 
 /**
- * Whether the mage's draft holds work that neither its saved copy nor the mage's official
- * spellbook has, and would be lost if replaced.
+ * Whether the mage's draft holds work that neither its saved copy nor the
+ * mage's official spellbook has, and would be lost if replaced.
  */
 export const hasUnsavedDraft = (mageId: string): boolean => {
   const draft = readDraft(mageId);

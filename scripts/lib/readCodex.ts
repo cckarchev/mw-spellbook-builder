@@ -1,14 +1,21 @@
 import type { GlossaryEntry } from "@/core/glossary/types";
 
-// Reads the glossary out of the Mage Wars Codex PDF, as `pdftohtml -xml` prints it: every
-// run of text is a <text> tag with its position and font. Terms are the large bold runs that
-// start a line, their definitions the body text that follows.
+// Reads the glossary out of the Mage Wars Codex PDF, as `pdftohtml -xml` prints
+// it: every run of text is a <text> tag with its position and font. Terms are
+// the large bold runs that start a line, their definitions the body text that
+// follows.
 
 const TERM_SIZE = 15;
 const BODY_SIZE = 12;
-/** Terms start at the left margin; bold runs further right are blanks or references. */
+/**
+ * Terms start at the left margin; bold runs further right are blanks or
+ * references.
+ */
 const LINE_START_MAX_LEFT = 40;
-/** Runs on one line differ a few points in top; a new line is a whole line height lower. */
+/**
+ * Runs on one line differ a few points in top; a new line is a whole line
+ * height lower.
+ */
 const SAME_LINE_TOLERANCE = 4;
 
 const TAG_PATTERN =
@@ -16,7 +23,10 @@ const TAG_PATTERN =
 const INNER_TAG_PATTERN = /<[^>]+>/g;
 const WHITESPACE_PATTERN = /\s+/g;
 const HYPHEN = "-";
-/** The Codex prints a lowercase x as a capital, as in "teXt boX": an X touching a lowercase letter. */
+/**
+ * The Codex prints a lowercase x as a capital, as in "teXt boX": an X touching
+ * a lowercase letter.
+ */
 const MISCASED_X_PATTERN = /(?<=[a-z])X|X(?=[a-z])/g;
 const LOWERCASE_X = "x";
 
@@ -84,10 +94,12 @@ const isOnNewLine = (run: Run, draft: Draft): boolean =>
   Math.abs(run.top - draft.lastTop) > SAME_LINE_TOLERANCE;
 
 const appendBody = (run: Run, draft: Draft): void => {
-  // Smaller runs are superscripts, such as the "nd" of "2nd": they stick to the word before.
+  // Smaller runs are superscripts, such as the "nd" of "2nd": they stick to the
+  // word before.
   const isBodyText = run.size >= BODY_SIZE;
 
-  // A word broken with a hyphen at the end of a line goes on without a space, as "non-Flying".
+  // A word broken with a hyphen at the end of a line goes on without a space,
+  // as "non-Flying".
   const endsInHyphen = draft.definition.endsWith(HYPHEN);
 
   draft.termOpen = false;
@@ -110,7 +122,9 @@ const toEntry = (draft: Draft): GlossaryEntry => ({
 
 const isBlank = (run: Run): boolean => run.text.trim() === "";
 
-/** A run in the term size: more of the term on its line, a new term, or a space. */
+/**
+ * A run in the term size: more of the term on its line, a new term, or a space.
+ */
 const readTermSizedRun = (run: Run, drafts: Draft[]): void => {
   const current = drafts.at(-1);
   const continuesTerm =
@@ -141,7 +155,10 @@ const readTermSizedRun = (run: Run, drafts: Draft[]): void => {
   }
 };
 
-/** The glossary entries of the Codex, up to the first section heading after them. */
+/**
+ * The glossary entries of the Codex, up to the first section heading after
+ * them.
+ */
 export const parseCodexXml = (xml: string): GlossaryEntry[] => {
   const drafts: Draft[] = [];
 

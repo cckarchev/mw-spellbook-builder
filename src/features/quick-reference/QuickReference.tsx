@@ -25,13 +25,15 @@ import { useTermJump } from "./useTermJump";
 const TITLE = "Quick reference";
 
 /**
- * Every glossary term on a full screen layer over the screen the player was on. Focus starts on
- * the title rather than the search, so the phone keyboard does not cover the list.
+ * Every glossary term on a full screen layer over the screen the player was on.
+ * Focus starts on the title rather than the search, so the phone keyboard does
+ * not cover the list.
  */
 export const QuickReference = () => {
   const { close } = useReferenceRoute();
   const [typed, setTyped] = useReferenceQuery();
-  // The list catches up with the field when the phone has time, so typing never waits on it.
+  // The list catches up with the field when the phone has time, so typing never
+  // waits on it.
   const searched = useDeferredValue(typed);
   const query = foldQuery(searched);
   const hasQuery = query !== "";

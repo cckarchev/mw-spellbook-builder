@@ -6,7 +6,10 @@ interface DismissRefs {
   popupRef: RefObject<HTMLElement | null>;
 }
 
-/** Closes the open popup on a tap outside it and its button, or on Escape, which refocuses the button. */
+/**
+ * Closes the open popup on a tap outside it and its button, or on Escape, which
+ * refocuses the button.
+ */
 export const useDismiss = (
   isOpen: boolean,
   { anchorRef, popupRef }: DismissRefs,
@@ -17,7 +20,8 @@ export const useDismiss = (
       return;
     }
 
-    // A tap on another button closes this popup here, then opens the other with its own click.
+    // A tap on another button closes this popup here, then opens the other with
+    // its own click.
     const handlePointerDown = (event: PointerEvent) => {
       const target = event.target as Node;
       const isInside =

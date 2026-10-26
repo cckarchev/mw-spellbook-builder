@@ -344,9 +344,6 @@ describe("Catalog filter panel", () => {
   });
 });
 
-const legal = filterCards(cards, EMPTY_FILTERS, wizard);
-const onlyCount = legal.filter((card) => card.onlyFor !== null).length;
-
 const pick = async (label: string) => {
   await userEvent.click(screen.getByRole("button", { name: /^Filters/ }));
 
@@ -354,8 +351,6 @@ const pick = async (label: string) => {
 
   await userEvent.click(within(picks).getByRole("button", { name: label }));
 };
-
-const count = () => screen.getByText(/^Showing /);
 
 describe("Catalog quick picks", () => {
   it("shows no count and keeps the quick picks folded away while nothing is filtered", () => {
@@ -403,13 +398,18 @@ describe("Catalog quick picks", () => {
 });
 
 describe("Catalog count", () => {
+  const legalCards = filterCards(cards, EMPTY_FILTERS, wizard);
+  const onlyCount = legalCards.filter((card) => card.onlyFor !== null).length;
+
+  const count = () => screen.getByText(/^Showing /);
+
   it('shows only the "Only" cards of the mage, with how many of all', async () => {
     renderCatalog();
 
     await pick("Mage only");
 
     expect(count()).toHaveTextContent(
-      `Showing ${onlyCount} of ${legal.length} cards`,
+      `Showing ${onlyCount} of ${legalCards.length} cards`,
     );
     expect(count()).toHaveAttribute("data-empty", "false");
   });
@@ -422,7 +422,9 @@ describe("Catalog count", () => {
     );
     await userEvent.paste("zzzz");
 
-    expect(count()).toHaveTextContent(`Showing 0 of ${legal.length} cards`);
+    expect(count()).toHaveTextContent(
+      `Showing 0 of ${legalCards.length} cards`,
+    );
     expect(count()).toHaveAttribute("data-empty", "true");
   });
 });

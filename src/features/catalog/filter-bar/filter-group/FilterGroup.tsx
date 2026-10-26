@@ -8,7 +8,9 @@ interface FilterGroupProps {
   title: string;
   options: FilterValue[];
   selected: FilterValue[];
-  /** Narrows the chips to the values that match it. Selected chips always show. */
+  /**
+   * Narrows the chips to the values that match it. Selected chips always show.
+   */
   query: string;
   /** Whether the chips start shown. A query shows them anyway. */
   defaultExpanded?: boolean;

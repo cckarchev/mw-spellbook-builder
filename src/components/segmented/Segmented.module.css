@@ -37,7 +37,8 @@
   background: var(--color-bg-accent-tint);
 }
 
-/* An icon segment is a square touch target, with the icon bigger than label text. */
+/* An icon segment is a square touch target, with the icon bigger than label
+   text. */
 .segment:has(svg) {
   display: flex;
   align-items: center;
@@ -46,7 +47,8 @@
   font-size: var(--font-size-lg);
 }
 
-/* Inline, the icon sits on the text baseline and leaves room below it for descenders. */
+/* Inline, the icon sits on the text baseline and leaves room below it for
+   descenders. */
 .segment svg {
   display: block;
 }

@@ -1,19 +1,27 @@
-// Makes the white around a scanned card's rounded corners transparent, so the corners look
-// like those of the cards that come cut out. Nothing is cropped: scans are not always straight,
-// and any straight cut deep enough for the corners would eat into the card's border.
+// Makes the white around a scanned card's rounded corners transparent, so the
+// corners look like those of the cards that come cut out. Nothing is cropped:
+// scans are not always straight, and any straight cut deep enough for the
+// corners would eat into the card's border.
 
 import type { CropBox, RawImage } from "./whiteFrame";
 
-/** Each of red, green and blue at least this bright is the white around a corner. */
+/**
+ * Each of red, green and blue at least this bright is the white around a
+ * corner.
+ */
 const CORNER_WHITE_MIN = 240;
 /**
- * The one pixel ring past the white this bright is the soft edge where it meets the card. Only
- * that ring: a corner of light grey stone with no white is the card itself.
+ * The one pixel ring past the white this bright is the soft edge where it meets
+ * the card. Only that ring: a corner of light grey stone with no white is the
+ * card itself.
  */
 const SOFT_EDGE_MIN = 200;
 /** A rounded corner fits in a square of this share of the shorter side. */
 const CORNER_REGION_SHARE = 0.06;
-/** White over more than this share of a corner's square is the art itself, such as a pale sky. */
+/**
+ * White over more than this share of a corner's square is the art itself, such
+ * as a pale sky.
+ */
 const MAX_FILL_SHARE = 0.5;
 
 const ALPHA_INDEX = 3;
@@ -56,8 +64,9 @@ const isInRegion = (region: Region, x: number, y: number): boolean =>
   y <= region.bottom;
 
 /**
- * The pixels of the white reaching in from a corner, as indexes into the image, or none when
- * the white fills too much of the corner's square to be a rounded corner.
+ * The pixels of the white reaching in from a corner, as indexes into the image,
+ * or none when the white fills too much of the corner's square to be a rounded
+ * corner.
  */
 const cornerFill = (
   image: RawImage,
@@ -108,7 +117,10 @@ const cornerFill = (
   return [...filled, ...softEdge];
 };
 
-/** A copy of the image with the white of each of the box's corners made transparent. */
+/**
+ * A copy of the image with the white of each of the box's corners made
+ * transparent.
+ */
 export const clearWhiteCorners = (image: RawImage, box: CropBox): RawImage => {
   const hasAlpha = image.channels > ALPHA_INDEX;
 

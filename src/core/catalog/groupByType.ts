@@ -14,7 +14,10 @@ interface TypeGroup<T> {
   items: T[];
 }
 
-/** Groups items in TYPE_ORDER, dropping empty groups, with each group sorted by name. */
+/**
+ * Groups items in TYPE_ORDER, dropping empty groups, with each group sorted by
+ * name.
+ */
 export const groupByType = <T extends { type: CardType; name: string }>(
   items: T[],
 ): TypeGroup<T>[] => {

@@ -23,7 +23,8 @@
   transition: color var(--duration-fast);
 }
 
-/* The icon is the hint that the name opens the stats card, so it stays quiet. */
+/* The icon is the hint that the name opens the stats card, so it stays
+   quiet. */
 .mageButton svg {
   font-size: var(--font-size-lg);
   color: var(--color-text-dim);

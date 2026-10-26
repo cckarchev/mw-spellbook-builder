@@ -11,8 +11,9 @@ import type { Mage, Spellbook } from "@/core/rules/types";
 import { cards, cardsById } from "@/data/catalog";
 
 /**
- * The cards the catalog shows: every card the mage can use, the ones the filters leave, grouped by
- * type, and what the spellbook already has of each type.
+ * The cards the catalog shows: every card the mage can use, the ones the
+ * filters leave, grouped by type, and what the spellbook already has of each
+ * type.
  */
 export const useCatalogCards = (
   spellbook: Spellbook,

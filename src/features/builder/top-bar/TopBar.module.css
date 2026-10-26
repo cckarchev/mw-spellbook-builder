@@ -1,6 +1,6 @@
 /*
- * The summary and the actions share one line when they fit. When they do not, the actions
- * wrap to a line of their own under the points, at the end.
+ * The summary and the actions share one line when they fit. When they do not,
+ * the actions wrap to a line of their own under the points, at the end.
  */
 .topBar {
   display: flex;
@@ -9,7 +9,8 @@
   column-gap: var(--space-lg);
 }
 
-/* Starts at its natural width, so the line wraps before the mage name gets cut, then fills the line. */
+/* Starts at its natural width, so the line wraps before the mage name gets cut,
+   then fills the line. */
 .summary {
   flex: 1 1 auto;
   min-width: 0;

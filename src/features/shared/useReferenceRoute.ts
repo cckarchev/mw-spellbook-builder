@@ -7,15 +7,18 @@ const ONE_STEP_BACK = -1;
 
 interface ReferenceRoute {
   isOpen: boolean;
-  /** The screen the Quick reference was opened over, or null when it was opened directly. */
+  /**
+   * The screen the Quick reference was opened over, or null when it was opened
+   * directly.
+   */
   background: Location | null;
   /** Back to the screen underneath, or to the mage picker without one. */
   close: () => void;
 }
 
 /**
- * Whether the Quick reference is open. Inside the app's routes the location is the screen
- * underneath, so there it always reads closed.
+ * Whether the Quick reference is open. Inside the app's routes the location is
+ * the screen underneath, so there it always reads closed.
  */
 export const useReferenceRoute = (): ReferenceRoute => {
   const location = useLocation();

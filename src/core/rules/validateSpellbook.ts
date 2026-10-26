@@ -13,7 +13,10 @@ export type SpellbookIssue =
 export interface SpellbookSummary {
   points: number;
   budget: number;
-  /** Points above the budget, 0 when within it. Over budget is allowed while building. */
+  /**
+   * Points above the budget, 0 when within it. Over budget is allowed while
+   * building.
+   */
   overBy: number;
   cardCount: number;
   issues: SpellbookIssue[];
@@ -69,7 +72,10 @@ export const summarizeSpellbook = (
   return { points, budget: mage.budget, overBy, cardCount, issues };
 };
 
-/** Why the + control for a card is blocked, or null when it is not. Going over budget does not block it. */
+/**
+ * Why the + control for a card is blocked, or null when it is not. Going over
+ * budget does not block it.
+ */
 export const addCopyBlockedReason = (
   spellbook: Spellbook,
   card: Card,

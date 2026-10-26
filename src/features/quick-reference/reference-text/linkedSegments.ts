@@ -6,8 +6,8 @@ import { glossaryIndex } from "@/data/glossary";
 const known = new Map<GlossaryEntry, TextSegment[]>();
 
 /**
- * A definition split at the terms it links, worked out once per entry: switching between the
- * full list and search results mounts every entry again.
+ * A definition split at the terms it links, worked out once per entry:
+ * switching between the full list and search results mounts every entry again.
  */
 export const linkedSegments = (entry: GlossaryEntry): TextSegment[] => {
   const cached = known.get(entry);

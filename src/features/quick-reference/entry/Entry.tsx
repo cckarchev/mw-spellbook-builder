@@ -17,7 +17,10 @@ interface EntryProps {
   onJump: (term: string) => void;
 }
 
-/** A plain click stays in the app; a click asking for a new tab or window keeps the browser's own. */
+/**
+ * A plain click stays in the app; a click asking for a new tab or window keeps
+ * the browser's own.
+ */
 const isPlainClick = (event: MouseEvent): boolean => {
   const withModifier =
     event.metaKey || event.ctrlKey || event.shiftKey || event.altKey;
@@ -25,7 +28,10 @@ const isPlainClick = (event: MouseEvent): boolean => {
   return event.button === MAIN_BUTTON && !withModifier;
 };
 
-/** One term and its whole definition, the target of jumps and shared links to that term. */
+/**
+ * One term and its whole definition, the target of jumps and shared links to
+ * that term.
+ */
 export const Entry = ({ entry, query, onJump }: EntryProps) => {
   const termSegment = { text: entry.term, entry: null };
   const [markedTerm] = markSegments(

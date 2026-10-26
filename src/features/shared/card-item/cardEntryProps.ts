@@ -1,10 +1,16 @@
 import type { Card } from "@/core/rules/types";
 
-/** What a card row and a card tile both show of one card, and how they change its copies. */
+/**
+ * What a card row and a card tile both show of one card, and how they change
+ * its copies.
+ */
 export interface CardEntryProps {
   card: Card;
   count: number;
-  /** Points shown on the card: one copy in the catalog, every copy in the spellbook. */
+  /**
+   * Points shown on the card: one copy in the catalog, every copy in the
+   * spellbook.
+   */
   points: number;
   /** Why + is blocked, or null. */
   blockedReason: string | null;

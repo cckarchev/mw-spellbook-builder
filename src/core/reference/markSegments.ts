@@ -17,7 +17,10 @@ export interface MarkedSegment {
 const isMarked = (position: number, ranges: readonly TextRange[]): boolean =>
   ranges.some((range) => range.start <= position && position < range.end);
 
-/** The positions inside `[start, end)` where a range starts or ends, plus both edges. */
+/**
+ * The positions inside `[start, end)` where a range starts or ends, plus both
+ * edges.
+ */
 const cutsWithin = (
   start: number,
   end: number,
@@ -29,7 +32,10 @@ const cutsWithin = (
   return [...new Set([start, ...inside, end])].sort((a, b) => a - b);
 };
 
-/** Splits each segment at highlight edges, so a highlight can fall inside or across a term. */
+/**
+ * Splits each segment at highlight edges, so a highlight can fall inside or
+ * across a term.
+ */
 export const markSegments = (
   segments: readonly TextSegment[],
   ranges: readonly TextRange[],

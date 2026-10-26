@@ -25,7 +25,10 @@ const searchableText = (card: Card): string =>
     ...card.subtypes,
   ].join(PART_SEPARATOR);
 
-/** Whether every word of the query appears somewhere in the text. An empty query matches. */
+/**
+ * Whether every word of the query appears somewhere in the text. An empty query
+ * matches.
+ */
 export const matchesText = (text: string, query: string): boolean => {
   const words = queryWords(query);
   const searchable = foldText(text);
@@ -33,6 +36,8 @@ export const matchesText = (text: string, query: string): boolean => {
   return words.every((word) => searchable.includes(word));
 };
 
-/** Whether every word of the query appears somewhere in the card's printed text. */
+/**
+ * Whether every word of the query appears somewhere in the card's printed text.
+ */
 export const matchesQuery = (card: Card, query: string): boolean =>
   matchesText(searchableText(card), query);

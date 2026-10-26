@@ -17,7 +17,10 @@ export const isTrainedIn = (school: School, mage: Mage): boolean => {
   return isFull || isPartial;
 };
 
-/** The schools the mage is trained in: fully trained first, then partially trained. */
+/**
+ * The schools the mage is trained in: fully trained first, then partially
+ * trained.
+ */
 export const trainedSchools = (mage: Mage): School[] => {
   const partialSchools = mage.training.partial.map((partial) => partial.school);
 

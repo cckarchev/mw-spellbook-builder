@@ -14,7 +14,10 @@ const RENAMES = new Map<string, string>([
 const DROPPED_SETS = new Set(["Gameboards"]);
 const PLAYTEST_PREFIX = "Playtest:";
 
-/** The display name of a legacy OCTGN set, or null for sets that are not an expansion. */
+/**
+ * The display name of a legacy OCTGN set, or null for sets that are not an
+ * expansion.
+ */
 export const expansionName = (setName: string): string | null => {
   if (DROPPED_SETS.has(setName) || setName.startsWith(PLAYTEST_PREFIX)) {
     return null;
@@ -23,7 +26,10 @@ export const expansionName = (setName: string): string | null => {
   return RENAMES.get(setName) ?? setName;
 };
 
-/** Card id to expansion. When a card is in several sets, the first one listed wins. */
+/**
+ * Card id to expansion. When a card is in several sets, the first one listed
+ * wins.
+ */
 export const buildExpansionMap = (
   sets: readonly LegacySet[],
 ): Map<string, string> => {

@@ -1,5 +1,5 @@
-// localStorage can throw (private mode, blocked site data, quota), so every access is
-// guarded and a failure reads as "nothing stored".
+// localStorage can throw (private mode, blocked site data, quota), so every
+// access is guarded and a failure reads as "nothing stored".
 
 /** The stored string, or null when there is none or storage is unavailable. */
 export const readStored = (key: string): string | null => {
@@ -10,7 +10,10 @@ export const readStored = (key: string): string | null => {
   }
 };
 
-/** Stores the string; false when storage is unavailable, for callers that tell the player. */
+/**
+ * Stores the string; false when storage is unavailable, for callers that tell
+ * the player.
+ */
 export const writeStored = (key: string, value: string): boolean => {
   try {
     localStorage.setItem(key, value);
@@ -31,7 +34,10 @@ export const removeStored = (key: string): void => {
   }
 };
 
-/** The stored JSON value, or null when there is none, it is not JSON, or storage is unavailable. */
+/**
+ * The stored JSON value, or null when there is none, it is not JSON, or storage
+ * is unavailable.
+ */
 export const readStoredJson = (key: string): unknown => {
   const stored = readStored(key);
 

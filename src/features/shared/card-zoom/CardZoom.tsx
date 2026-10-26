@@ -11,7 +11,9 @@ interface CardZoomProps {
   onClose: () => void;
 }
 
-/** A card image at its full size, in a dialog closed with the X in its corner. */
+/**
+ * A card image at its full size, in a dialog closed with the X in its corner.
+ */
 export const CardZoom = ({
   open,
   title,

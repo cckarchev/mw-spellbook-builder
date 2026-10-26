@@ -19,7 +19,10 @@ interface ShareActionsProps {
   summary: SpellbookSummary;
 }
 
-/** The Share menu: the share sheet on phones that have one; the copy items work everywhere. */
+/**
+ * The Share menu: the share sheet on phones that have one; the copy items work
+ * everywhere.
+ */
 export const ShareActions = ({
   spellbook,
   mage,

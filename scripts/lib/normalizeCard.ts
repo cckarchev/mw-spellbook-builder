@@ -28,7 +28,8 @@ const TYPES = new Map<string, CardType>([
 const AND_SEPARATOR = "+";
 const OR_SEPARATOR = "/";
 const SCHOOL_SEPARATOR_PATTERN = /[+/]/;
-// Bullets separate traits, but some cards break the line between two traits instead.
+// Bullets separate traits, but some cards break the line between two traits
+// instead.
 const TRAIT_SEPARATOR = /[•\n]/;
 const SUBTYPE_SEPARATOR = ",";
 const ONLY_TRAIT_PATTERN = /^(.+) Only$/;
@@ -75,7 +76,10 @@ const readOnlyFor = (traits: readonly string[]): string | null => {
   return null;
 };
 
-/** A spell card for the catalog, or null for anything that does not go in a spellbook. */
+/**
+ * A spell card for the catalog, or null for anything that does not go in a
+ * spellbook.
+ */
 export const normalizeCard = (
   raw: RawCard,
   format: Format,

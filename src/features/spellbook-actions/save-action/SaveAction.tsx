@@ -9,8 +9,9 @@ import { SaveDialog } from "./save-dialog/SaveDialog";
 import { useSaveSpellbook } from "./useSaveSpellbook";
 
 /**
- * The Save button, its name dialog, and the question before overwriting a saved spellbook. The
- * button only works when there is something new to keep: cards, with unsaved changes.
+ * The Save button, its name dialog, and the question before overwriting a saved
+ * spellbook. The button only works when there is something new to keep: cards,
+ * with unsaved changes.
  */
 export const SaveAction = () => {
   const spellbook = useSpellbookStore((state) => state.spellbook);

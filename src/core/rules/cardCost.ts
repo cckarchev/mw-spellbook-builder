@@ -9,7 +9,10 @@ const NOVICE_TRAIT = "Novice";
 // Talos says it costs no spellpoints; the module matches it by name too.
 const FREE_CARD_NAMES = new Set(["Talos"]);
 
-/** Total level of a card: "and" cards add their parts, "or" cards use the highest. */
+/**
+ * Total level of a card: "and" cards add their parts, "or" cards use the
+ * highest.
+ */
 export const totalLevel = (card: Card): number => {
   const levels = card.schools.map((part) => part.level);
 
@@ -30,7 +33,10 @@ const isPartTrained = (part: SchoolPart, mage: Mage): boolean =>
   mage.training.full.includes(part.school) ||
   isWithinPartialTraining(part, mage);
 
-/** Novice, a trained school and type combo, or a trained subtype make the whole card trained. */
+/**
+ * Novice, a trained school and type combo, or a trained subtype make the whole
+ * card trained.
+ */
 const isWholeCardTrained = (card: Card, mage: Mage): boolean => {
   const { training } = mage;
   const isNovice = card.traits.includes(NOVICE_TRAIT);
@@ -46,7 +52,10 @@ const isWholeCardTrained = (card: Card, mage: Mage): boolean => {
   return isNovice || matchesCombo || matchesSubtype;
 };
 
-/** Points one school part of a card is charged: its level times the mage's rate for it. */
+/**
+ * Points one school part of a card is charged: its level times the mage's rate
+ * for it.
+ */
 export interface SchoolCharge {
   school: School;
   level: number;
@@ -55,10 +64,11 @@ export interface SchoolCharge {
 }
 
 /**
- * The school parts a card is charged for, following the module's SpellbookValidator: Novice,
- * combo and subtype training beat an opposed school. Unlike the module, each part of an "and"
- * card is charged its own multiplier, as the players confirmed. An "or" card is charged only
- * at its cheapest part, the first listed on a tie.
+ * The school parts a card is charged for, following the module's
+ * SpellbookValidator: Novice, combo and subtype training beat an opposed
+ * school. Unlike the module, each part of an "and" card is charged its own
+ * multiplier, as the players confirmed. An "or" card is charged only at its
+ * cheapest part, the first listed on a tie.
  */
 export const schoolCharges = (card: Card, mage: Mage): SchoolCharge[] => {
   if (FREE_CARD_NAMES.has(card.name)) {

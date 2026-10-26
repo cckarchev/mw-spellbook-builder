@@ -13,6 +13,9 @@ const imageFor = (cardId: string | null): string | null => {
 export const mageImage = (mage: Mage): string | null =>
   imageFor(mage.imageCardId);
 
-/** Public path of the mage stats card image, or null when the mage has no stats card. */
+/**
+ * Public path of the mage stats card image, or null when the mage has no stats
+ * card.
+ */
 export const mageStatsImage = (mage: Mage): string | null =>
   imageFor(mage.statsCardId);

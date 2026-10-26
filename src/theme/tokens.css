@@ -23,7 +23,8 @@
   --color-bg-accent-tint: rgb(var(--rgb-accent) / 0.15);
   /* Fainter accent wash behind a whole row that is in the spellbook. */
   --color-bg-selected: rgb(var(--rgb-accent) / 0.06);
-  /* Faint wash on every other row of a list, so long lists are easier to follow. */
+  /* Faint wash on every other row of a list, so long lists are easier to
+     follow. */
   --color-bg-stripe: rgb(var(--rgb-white) / 0.06);
   /* Recessed well that frames a block inside a row, such as card details. */
   --color-bg-inset: rgb(var(--rgb-black) / 0.25);
@@ -64,7 +65,8 @@
   --color-error: #de6456;
   --color-success: #46af73;
 
-  /* Stats charts: bars, their lighter tone, and the part charged above the trained rate. */
+  /* Stats charts: bars, their lighter tone, and the part charged above the
+     trained rate. */
   --color-bar: rgb(var(--rgb-teal) / 0.75);
   --color-bar-muted: rgb(var(--rgb-teal) / 0.4);
   --color-warning: var(--color-gold);
@@ -115,7 +117,8 @@
 
   --layout-max-width: 1200px;
 
-  /* A comfortable line length for long text, such as the Quick reference definitions. */
+  /* A comfortable line length for long text, such as the Quick reference
+     definitions. */
   --reading-width: 65ch;
 
   /* Narrowest the spellbook column next to the catalog gets on desktop. */
@@ -127,7 +130,8 @@
 
   /* Smallest comfortable touch target. */
   --touch-target: 44px;
-  /* The round Quick reference button back to the top, larger than a touch target to stand out. */
+  /* The round Quick reference button back to the top, larger than a touch
+     target to stand out. */
   --back-to-top-size: 56px;
   /* Filter chips come by the dozen, so they are shorter than a touch target. */
   --chip-height: 32px;
@@ -145,7 +149,8 @@
   --card-aspect: 63 / 88;
   /* Walls are printed sideways. */
   --card-aspect-landscape: 88 / 63;
-  /* Rounded card corners, 3 mm on 63 x 88 mm, so the corner stays round at any size. */
+  /* Rounded card corners, 3 mm on 63 x 88 mm, so the corner stays round at any
+     size. */
   --card-radius: 4.8% / 3.4%;
   --card-full-width: 280px;
   /* A sideways card as tall as an upright one. */
@@ -153,10 +158,12 @@
     var(--card-full-width) /
     (var(--card-aspect))
   );
-  /* A card shown on its own, such as a mage stats card: the width of the exported images. */
+  /* A card shown on its own, such as a mage stats card: the width of the
+     exported images. */
   --card-zoom-width: 480px;
 
-  /* Narrowest card in the catalog grid above phone width, big enough to read the card. */
+  /* Narrowest card in the catalog grid above phone width, big enough to read
+     the card. */
   --card-tile-min-width: 220px;
 
   /* Width of a mage tile in the mage picker, above phone width. */
@@ -172,7 +179,8 @@
   --z-sticky: 40;
   --z-dialog: 100;
   --z-popover: 110;
-  /* The Quick reference covers popovers underneath, and toasts still show over it. */
+  /* The Quick reference covers popovers underneath, and toasts still show over
+     it. */
   --z-reference: 115;
   --z-toast: 120;
 }
@@ -183,7 +191,8 @@
   }
 }
 
-/* Wider on desktop, so the catalog grid keeps room for its tiles next to the spellbook. */
+/* Wider on desktop, so the catalog grid keeps room for its tiles next to the
+   spellbook. */
 @media (--desktop-up) {
   :root {
     --layout-max-width: 1440px;

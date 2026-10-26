@@ -8,7 +8,9 @@ interface OpenTermStore {
   close: (id: string) => void;
 }
 
-/** Shared by every glossary term on the page, so opening one closes the others. */
+/**
+ * Shared by every glossary term on the page, so opening one closes the others.
+ */
 export const useOpenTermStore = create<OpenTermStore>()((set, get) => ({
   openId: null,
 

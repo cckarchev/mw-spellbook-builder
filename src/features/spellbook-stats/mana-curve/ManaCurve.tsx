@@ -44,7 +44,10 @@ const channelingSentence = (curve: ManaCurveStats): string => {
   return `Channeling ${channeling}: ${atOrBelow} ${fitting}, ${above} ${costing} more.`;
 };
 
-/** Copies per mana cost, with a dashed mark after the column the mage's channeling falls in. */
+/**
+ * Copies per mana cost, with a dashed mark after the column the mage's
+ * channeling falls in.
+ */
 export const ManaCurve = ({ curve, sources }: ManaCurveProps) => {
   const columns: CurveColumn[] = [
     ...curve.buckets.map((bucket) => ({ ...bucket, variable: false })),

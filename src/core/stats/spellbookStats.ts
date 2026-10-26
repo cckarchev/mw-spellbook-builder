@@ -85,7 +85,10 @@ const schoolPointsOf = (copies: CardCopies[], mage: Mage): SchoolPoints[] => {
     );
 };
 
-/** Every stat of the Stats view, per copy, skipping card ids the catalog does not have. */
+/**
+ * Every stat of the Stats view, per copy, skipping card ids the catalog does
+ * not have.
+ */
 export const spellbookStats = (
   spellbook: Spellbook,
   mage: Mage,

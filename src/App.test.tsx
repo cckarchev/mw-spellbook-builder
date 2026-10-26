@@ -144,16 +144,11 @@ describe("App opened at another mage", () => {
 
 const spellbookColumn = () =>
   screen.getByRole("complementary", { name: "Spellbook" });
-const catalogColumn = () => screen.getByRole("region", { name: "Catalog" });
 
-const searchCards = async (text: string) => {
-  await userEvent.type(
-    screen.getByRole("searchbox", { name: "Search cards" }),
-    text,
-  );
-};
-
-/** Runs every test of the calling describe on a desktop window, with the small spellbook loaded. */
+/**
+ * Runs every test of the calling describe on a desktop window, with the small
+ * spellbook loaded.
+ */
 const onDesktop = () => {
   beforeEach(() => {
     stubMatchMedia(true);
@@ -213,6 +208,15 @@ describe("App build screen on desktop", () => {
 
 describe("App build screen on desktop, editing from the catalog", () => {
   onDesktop();
+
+  const catalogColumn = () => screen.getByRole("region", { name: "Catalog" });
+
+  const searchCards = async (text: string) => {
+    await userEvent.type(
+      screen.getByRole("searchbox", { name: "Search cards" }),
+      text,
+    );
+  };
 
   it("adds a card from the catalog to the spellbook column", async () => {
     renderAppAt("/wizard");

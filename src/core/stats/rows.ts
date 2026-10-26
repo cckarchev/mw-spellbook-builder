@@ -6,7 +6,10 @@ export interface CardCopies {
   count: number;
 }
 
-/** Copies per label, where a card may carry several labels and counts once in each. */
+/**
+ * Copies per label, where a card may carry several labels and counts once in
+ * each.
+ */
 export const tally = (
   copies: CardCopies[],
   labelsOf: (card: Card) => string[],

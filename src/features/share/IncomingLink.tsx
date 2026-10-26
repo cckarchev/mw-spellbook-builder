@@ -10,7 +10,10 @@ import { useIncomingSpellbook } from "./useIncomingSpellbook";
 const replaceBody = (mageName: string) =>
   `This link opens another spellbook. Your ${mageName} spellbook will be replaced. ${KEEP_SPELLBOOK_HINT}`;
 
-/** Opens a spellbook from a share link: asks before replacing a spellbook in progress, then lists its problems. */
+/**
+ * Opens a spellbook from a share link: asks before replacing a spellbook in
+ * progress, then lists its problems.
+ */
 export const IncomingLink = () => {
   const { problems, dismiss, pendingReplace, confirmReplace, cancelReplace } =
     useIncomingSpellbook();

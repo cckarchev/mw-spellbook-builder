@@ -1,7 +1,8 @@
 import type { CropBox } from "./whiteFrame";
 
-// A few pack images have a blemish at an edge that is neither white nor a frame, so the
-// automatic cut leaves it. These cuts are measured by hand on the pack image, in its own pixels.
+// A few pack images have a blemish at an edge that is neither white nor a
+// frame, so the automatic cut leaves it. These cuts are measured by hand on the
+// pack image, in its own pixels.
 
 type Side = "top" | "bottom" | "left" | "right";
 
@@ -15,7 +16,10 @@ export const IMAGE_CUTS: Record<string, ImageCut> = {
 
 const NO_CUT = 0;
 
-/** The box with the hand measured cut of a card taken off, or the same box when it has none. */
+/**
+ * The box with the hand measured cut of a card taken off, or the same box when
+ * it has none.
+ */
 export const cutImageBox = (box: CropBox, cardId: string): CropBox => {
   const cut = IMAGE_CUTS[cardId];
 

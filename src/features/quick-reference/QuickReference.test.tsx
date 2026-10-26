@@ -20,13 +20,21 @@ import { resetAppState } from "@/test/renderAppAt";
 import { BACK_TO_TOP_AFTER } from "./reference-scroll/useShowBackToTop";
 import { letterGroups } from "./sortedGlossary";
 
-// Counts the catalog renders behind the Quick reference, through a call each one makes.
+// Counts the catalog renders behind the Quick reference, through a call each
+// one makes.
 vi.mock("@/core/catalog/groupByType", async (importOriginal) => {
   const original =
     await importOriginal<typeof import("@/core/catalog/groupByType")>();
 
   return { ...original, groupByType: vi.fn(original.groupByType) };
 });
+
+// The open reference holds the whole glossary, some 6000 nodes, so every role
+// query inside it takes a few hundred milliseconds. A test here runs up to 2.5s
+// on a full suite run and past the 5s default when the machine is busy.
+const QUICK_REFERENCE_TEST_TIMEOUT_MS = 15_000;
+
+vi.setConfig({ testTimeout: QUICK_REFERENCE_TEST_TIMEOUT_MS });
 
 const TITLE = "Quick reference";
 const SEARCH_LABEL = "Search terms and rules";
@@ -283,15 +291,15 @@ describe("QuickReference search results", () => {
       "No matches",
     );
   });
+});
 
+describe("QuickReference search input", () => {
   it("opens with the query from the address", () => {
     renderAt("/reference?q=burn");
 
     expect(searchField()).toHaveValue("burn");
   });
-});
 
-describe("QuickReference search input", () => {
   it("keeps what was typed while the address catches up", async () => {
     renderAt("/reference");
 

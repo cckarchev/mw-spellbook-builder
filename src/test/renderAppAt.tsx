@@ -13,7 +13,10 @@ export const renderAppAt = (path: string) => {
   );
 };
 
-/** Empties the spellbook and the catalog filters, for a test to start from a fresh app. */
+/**
+ * Empties the spellbook and the catalog filters, for a test to start from a
+ * fresh app.
+ */
 export const resetAppState = () => {
   resetSpellbookStore();
   useCatalogFiltersStore.getState().reset();

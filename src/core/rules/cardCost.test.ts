@@ -105,7 +105,7 @@ describe("cardCost with partial training", () => {
   });
 });
 
-describe("cardCost with special training by school and type", () => {
+describe("cardCost of a free card", () => {
   it("charges nothing for Talos, which says it costs no spellpoints", () => {
     const talos = makeCard({
       name: "Talos",
@@ -114,7 +114,9 @@ describe("cardCost with special training by school and type", () => {
 
     expect(cardCost(talos, warlock)).toBe(0);
   });
+});
 
+describe("cardCost with special training by school and type", () => {
   it("treats a trained school and type combo as trained", () => {
     const card = makeCard({
       type: "Creature",

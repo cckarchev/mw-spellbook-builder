@@ -7,7 +7,10 @@ import {
 import { type FilterScope, withScope } from "@/core/catalog/filterScope";
 import type { Mage } from "@/core/rules/types";
 
-/** A chip group in the filter bar: every filter but the search query and the "Only" switch. */
+/**
+ * A chip group in the filter bar: every filter but the search query and the
+ * "Only" switch.
+ */
 export type FilterGroupKey = Exclude<
   keyof CatalogFilters,
   "query" | "onlyCards"
@@ -27,8 +30,8 @@ interface CatalogFiltersStore {
 }
 
 /**
- * Kept outside the catalog so the search and chips survive a trip to the Spellbook tab.
- * In memory only: a reload starts with no filters.
+ * Kept outside the catalog so the search and chips survive a trip to the
+ * Spellbook tab. In memory only: a reload starts with no filters.
  */
 export const useCatalogFiltersStore = create<CatalogFiltersStore>()(
   (set, get) => ({

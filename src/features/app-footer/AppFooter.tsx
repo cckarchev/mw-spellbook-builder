@@ -8,7 +8,10 @@ const ARCANE_WONDERS_URL = "https://www.arcanewonders.com/";
 const MAGE_WARS_ARENA_URL =
   "https://www.arcanewonders.com/product/mage-wars-arena/";
 
-/** The disclaimer at the bottom of every page, with the full notice one tap away. */
+/**
+ * The disclaimer at the bottom of every page, with the full notice one tap
+ * away.
+ */
 export const AppFooter = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
 

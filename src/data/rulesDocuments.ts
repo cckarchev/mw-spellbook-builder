@@ -6,7 +6,10 @@ export interface RulesDocument {
 const ARCANE_WONDERS_UPLOADS =
   "https://www.arcanewonders.com/wp-content/uploads/2021/05";
 
-/** The official rules PDFs, linked rather than copied so Arcane Wonders' site stays the source. */
+/**
+ * The official rules PDFs, linked rather than copied so Arcane Wonders' site
+ * stays the source.
+ */
 export const RULES_DOCUMENTS: RulesDocument[] = [
   {
     label: "Rulebook",

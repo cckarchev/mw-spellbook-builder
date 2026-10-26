@@ -1,6 +1,9 @@
 import type { Spellbook } from "./types";
 
-/** Whether a spellbook holds at least one card; a spellbook with only a mage counts as empty. */
+/**
+ * Whether a spellbook holds at least one card; a spellbook with only a mage
+ * counts as empty.
+ */
 export const hasCards = (spellbook: Spellbook): boolean =>
   Object.keys(spellbook.counts).length > 0;
 
@@ -27,9 +30,10 @@ export const emptySpellbook = (mageId: string): Spellbook => ({
 });
 
 /**
- * Whether the spellbook would lose work if replaced. `saved` is the saved copy of the spellbook's
- * name, null when it has no name: then any card counts as unsaved work. `official` is the mage's
- * official spellbook, if any: a spellbook equal to it loses nothing, since it can be loaded again.
+ * Whether the spellbook would lose work if replaced. `saved` is the saved copy
+ * of the spellbook's name, null when it has no name: then any card counts as
+ * unsaved work. `official` is the mage's official spellbook, if any: a
+ * spellbook equal to it loses nothing, since it can be loaded again.
  */
 export const hasUnsavedChanges = (
   spellbook: Spellbook,

@@ -67,7 +67,8 @@ describe("SpellbookStats", () => {
   });
 
   it("notes untrained points", () => {
-    // Three Fireballs, level 2 Fire, which the Wizard is not trained in: 3 x 2 x 2.
+    // Three Fireballs, level 2 Fire, which the Wizard is not trained in: 3 x 2
+    // x 2.
     renderStats(smallSpellbook);
 
     expect(

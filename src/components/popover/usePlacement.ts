@@ -10,7 +10,10 @@ interface PopoverRefs {
   popoverRef: RefObject<HTMLDivElement | null>;
 }
 
-/** Where the open popover goes, kept next to its button while the page scrolls or resizes. */
+/**
+ * Where the open popover goes, kept next to its button while the page scrolls
+ * or resizes.
+ */
 export const usePlacement = (
   isOpen: boolean,
   { anchorRef, popoverRef }: PopoverRefs,

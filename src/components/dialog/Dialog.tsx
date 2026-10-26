@@ -9,7 +9,10 @@ interface DialogProps {
   title: string;
   /** Called on Escape and on a tap outside the panel. */
   onClose: () => void;
-  /** An X in the top right corner that closes the dialog, and takes the focus first unless there is a text field. */
+  /**
+   * An X in the top right corner that closes the dialog, and takes the focus
+   * first unless there is a text field.
+   */
   closeButton?: boolean;
   /** Extra class on the panel, such as one that sets --dialog-width. */
   className?: string;
@@ -17,8 +20,9 @@ interface DialogProps {
 }
 
 /**
- * Focuses the first text field, its text selected so typing replaces it, or else the first button.
- * A field goes first so the player can type at once, and the phone keyboard opens.
+ * Focuses the first text field, its text selected so typing replaces it, or
+ * else the first button. A field goes first so the player can type at once, and
+ * the phone keyboard opens.
  */
 const focusFirst = (panel: HTMLElement) => {
   const field = panel.querySelector<HTMLInputElement>("input");
@@ -33,7 +37,10 @@ const focusFirst = (panel: HTMLElement) => {
   panel.querySelector<HTMLElement>("button")?.focus();
 };
 
-/** A modal panel over a dimmed page that keeps the focus inside. Renders nothing while closed. */
+/**
+ * A modal panel over a dimmed page that keeps the focus inside. Renders nothing
+ * while closed.
+ */
 export const Dialog = ({
   open,
   title,
@@ -44,7 +51,8 @@ export const Dialog = ({
 }: DialogProps) => {
   const titleId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
-  // Read through a ref, so a new onClose from a re-render does not refocus the first button.
+  // Read through a ref, so a new onClose from a re-render does not refocus the
+  // first button.
   const onCloseRef = useRef(onClose);
 
   onCloseRef.current = onClose;
@@ -81,7 +89,8 @@ export const Dialog = ({
 
   const panelClasses = [styles.panel, className].filter(Boolean).join(" ");
 
-  // On the body, so a sticky or positioned parent cannot trap the scrim under the sticky header.
+  // On the body, so a sticky or positioned parent cannot trap the scrim under
+  // the sticky header.
   return createPortal(
     <div className={styles.scrim}>
       <button

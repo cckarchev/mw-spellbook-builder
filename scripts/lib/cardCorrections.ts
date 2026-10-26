@@ -1,7 +1,8 @@
 import type { Card } from "@/core/rules/types";
 
-// The module's printed text gets a few cards wrong. These fixes are copied by hand from the card
-// images. The engine data in the module is no better: it misses effects that the cards print.
+// The module's printed text gets a few cards wrong. These fixes are copied by
+// hand from the card images. The engine data in the module is no better: it
+// misses effects that the cards print.
 
 interface CardCorrection extends Partial<Pick<Card, "attackBar" | "traits">> {
   code: string;
@@ -87,7 +88,10 @@ export const CARD_CORRECTIONS: CardCorrection[] = [
   },
 ];
 
-/** The cards with their corrections applied. Throws on a correction that matches no card. */
+/**
+ * The cards with their corrections applied. Throws on a correction that matches
+ * no card.
+ */
 export const applyCorrections = (
   cards: readonly Card[],
   corrections: readonly CardCorrection[],

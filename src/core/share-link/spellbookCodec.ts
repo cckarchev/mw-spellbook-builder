@@ -3,9 +3,9 @@ import { cardsByCode, cardsById, magesById } from "@/data/catalog";
 import { fromBase64Url, toBase64Url } from "./base64Url";
 
 // Wire format: base64url JSON of { v: 1, m: mageId, c: { [cardCode]: qty } }.
-// Older links may also carry s (the Wizard's element, no longer chosen); it is ignored.
-// Card codes (8 hex chars) keep links short; quantities are kept as sent so validation
-// can report a hand-edited count above the copy limit.
+// Older links may also carry s (the Wizard's element, no longer chosen); it is
+// ignored. Card codes (8 hex chars) keep links short; quantities are kept as
+// sent so validation can report a hand-edited count above the copy limit.
 
 const WIRE_VERSION = 1;
 
@@ -17,9 +17,13 @@ interface Wire {
 
 export interface DecodedSpellbook {
   spellbook: Spellbook;
-  /** Codes in the link that match no card, such as cards removed from the data. */
+  /**
+   * Codes in the link that match no card, such as cards removed from the data.
+   */
   unknownCodes: string[];
-  /** The mage id the link names when the catalog has no such mage, else null. */
+  /**
+   * The mage id the link names when the catalog has no such mage, else null.
+   */
   unknownMage: string | null;
 }
 
@@ -84,7 +88,10 @@ const decodeCounts = (wireCounts: Record<string, unknown>): DecodedCounts => {
   return { counts, unknownCodes };
 };
 
-/** Reads a share link's spellbook. Returns null when the link cannot be read at all. */
+/**
+ * Reads a share link's spellbook. Returns null when the link cannot be read at
+ * all.
+ */
 export const decodeSpellbook = (encoded: string): DecodedSpellbook | null => {
   const wire = parseWire(encoded);
 

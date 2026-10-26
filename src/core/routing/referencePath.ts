@@ -15,7 +15,10 @@ export const referenceState = (background: Location): ReferenceState => ({
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null;
 
-/** The screen underneath the Quick reference, or null when it was opened directly. */
+/**
+ * The screen underneath the Quick reference, or null when it was opened
+ * directly.
+ */
 export const backgroundOf = (state: unknown): Location | null => {
   if (!isObject(state)) {
     return null;

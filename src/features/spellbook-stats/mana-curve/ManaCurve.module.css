@@ -18,7 +18,8 @@
   list-style: none;
 }
 
-/* Bar growing up from the baseline with its count right on top, cost under it. */
+/* Bar growing up from the baseline with its count right on top, cost under
+   it. */
 .column,
 .variableColumn {
   display: grid;

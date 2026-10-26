@@ -1,5 +1,5 @@
-// Card.code is the start of the card's OCTGN GUID: short enough for share links and still
-// unique across the catalog. Card images are named by it.
+// Card.code is the start of the card's OCTGN GUID: short enough for share links
+// and still unique across the catalog. Card images are named by it.
 
 const CODE_LENGTH = 8;
 

@@ -10,8 +10,9 @@ interface EntryListProps {
 }
 
 /**
- * Every term at rest, under a heading per first letter. Memoized, since its hundreds of entries
- * would otherwise render again whenever the back to top button comes or goes.
+ * Every term at rest, under a heading per first letter. Memoized, since its
+ * hundreds of entries would otherwise render again whenever the back to top
+ * button comes or goes.
  */
 export const EntryList = memo(({ groups, onJump }: EntryListProps) =>
   groups.map((group) => {

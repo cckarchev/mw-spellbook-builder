@@ -7,7 +7,10 @@ interface LetterGridProps {
   onJump: (letter: string) => void;
 }
 
-/** Large letter buttons that jump to the terms under each letter, in even, centered rows. */
+/**
+ * Large letter buttons that jump to the terms under each letter, in even,
+ * centered rows.
+ */
 export const LetterGrid = ({ letters, onJump }: LetterGridProps) => {
   const { ref: rowsRef, perRow } = useLettersPerRow(letters.length);
   const rowsStyle = { "--letters-per-row": perRow } as CSSProperties;

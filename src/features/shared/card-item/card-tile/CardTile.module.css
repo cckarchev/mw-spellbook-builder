@@ -25,7 +25,8 @@
   width: 100%;
 }
 
-/* The card itself, so the points sit on its corner even when it is centered in .art. */
+/* The card itself, so the points sit on its corner even when it is centered in
+   .art. */
 .frame {
   position: relative;
   width: 100%;
@@ -35,7 +36,8 @@
   width: 100%;
 }
 
-/* A sideways card sits centered in an upright card's space, so the grid rows stay even. */
+/* A sideways card sits centered in an upright card's space, so the grid rows
+   stay even. */
 .art[data-landscape="true"] {
   display: flex;
   align-items: center;

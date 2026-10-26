@@ -27,7 +27,8 @@ export const jumpToTerm = (term: string) => {
   scrollToElement(target);
   target.focus({ preventScroll: true });
 
-  // Taken off and put back on the next frame, so a second jump to the same term flashes again.
+  // Taken off and put back on the next frame, so a second jump to the same term
+  // flashes again.
   target.removeAttribute(FLASH_ATTRIBUTE);
   requestAnimationFrame(() => {
     target.setAttribute(FLASH_ATTRIBUTE, "");

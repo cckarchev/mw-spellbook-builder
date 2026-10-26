@@ -1,15 +1,24 @@
 import type { GlossaryEntry } from "./types";
 
-/** A piece of card text: a glossary term with its entry, or plain text with none. */
+/**
+ * A piece of card text: a glossary term with its entry, or plain text with
+ * none.
+ */
 export interface TextSegment {
   text: string;
   entry: GlossaryEntry | null;
 }
 
 export interface GlossaryIndexOptions {
-  /** Extra names by term, written like terms: "Flame +X" for "Damage Type +/- X". */
+  /**
+   * Extra names by term, written like terms: "Flame +X" for "Damage Type +/-
+   * X".
+   */
   aliases?: Readonly<Record<string, readonly string[]>>;
-  /** Terms that only count with a capital, such as "Attack", the spell type, over "attacks". */
+  /**
+   * Terms that only count with a capital, such as "Attack", the spell type,
+   * over "attacks".
+   */
   capitalizedOnly?: readonly string[];
 }
 
@@ -31,9 +40,11 @@ interface TermForm extends IndexedForm {
   takesNumber: boolean;
 }
 
-// "Bloodreaper (Warlock)" names a mage; "Line of Sight (LoS)" gives a short form.
+// "Bloodreaper (Warlock)" names a mage; "Line of Sight (LoS)" gives a short
+// form.
 const PARENTHESES_PATTERN = /^(.+?)\s*\(([^)]+)\)$/;
-// A short form is one word with a capital after its first letter, such as "LoS".
+// A short form is one word with a capital after its first letter, such as
+// "LoS".
 const SHORT_FORM_PATTERN = /^[A-Za-z][A-Za-z]*[A-Z][A-Za-z]*$/;
 // "Aegis X", "Melee +X", "Tough -X" and "Armor +/- X".
 const NUMBER_SUFFIX_PATTERN = /\s+(?:\+\/-\s*|[+-])?X$/;
@@ -49,7 +60,10 @@ const WORD_START_SOURCE = String.raw`(?<![\p{L}\p{N}])`;
 const WORD_END_SOURCE = String.raw`(?![\p{L}\p{N}])`;
 const PATTERN_FLAGS = "giu";
 
-/** The names a term goes by: its own, without a mage in parentheses, plus any short form. */
+/**
+ * The names a term goes by: its own, without a mage in parentheses, plus any
+ * short form.
+ */
 const namesOf = (term: string): string[] => {
   const parentheses = PARENTHESES_PATTERN.exec(term);
 
@@ -99,8 +113,9 @@ const formSource = (form: TermForm): string => {
 };
 
 /**
- * Longest name first, since the pattern takes the first alternative that matches. On the same
- * name the numbered form goes first, so "Armor +2" reaches "Armor +/- X" before "Armor".
+ * Longest name first, since the pattern takes the first alternative that
+ * matches. On the same name the numbered form goes first, so "Armor +2" reaches
+ * "Armor +/- X" before "Armor".
  */
 const byPriority = (a: TermForm, b: TermForm): number => {
   const byLength = b.name.length - a.name.length;
@@ -112,7 +127,10 @@ const byPriority = (a: TermForm, b: TermForm): number => {
   return Number(b.takesNumber) - Number(a.takesNumber);
 };
 
-/** Compiles the glossary once into a single pattern. A repeated term keeps its first entry. */
+/**
+ * Compiles the glossary once into a single pattern. A repeated term keeps its
+ * first entry.
+ */
 export const buildGlossaryIndex = (
   glossary: readonly GlossaryEntry[],
   options: GlossaryIndexOptions = {},
@@ -146,7 +164,10 @@ const startsLowercase = (text: string): boolean => {
   return first !== first.toUpperCase();
 };
 
-/** The entry a match stands for, or null when it is a capitalized-only term in lowercase. */
+/**
+ * The entry a match stands for, or null when it is a capitalized-only term in
+ * lowercase.
+ */
 const entryOf = (
   match: RegExpMatchArray,
   index: GlossaryIndex,
@@ -162,7 +183,10 @@ const entryOf = (
   return form.entry;
 };
 
-/** Splits a text into plain parts and glossary terms, in order, keeping every character. */
+/**
+ * Splits a text into plain parts and glossary terms, in order, keeping every
+ * character.
+ */
 export const splitByTerms = (
   text: string,
   index: GlossaryIndex,

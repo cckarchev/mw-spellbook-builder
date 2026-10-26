@@ -18,7 +18,10 @@ export interface SpellbookGroup {
   points: number;
 }
 
-/** The spellbook's cards grouped by type, with points per card and per group. Unknown cards are skipped. */
+/**
+ * The spellbook's cards grouped by type, with points per card and per group.
+ * Unknown cards are skipped.
+ */
 export const spellbookGroups = (
   spellbook: Spellbook,
   mage: Mage,

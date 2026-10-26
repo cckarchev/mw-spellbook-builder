@@ -34,7 +34,10 @@ const index = buildGlossaryIndex([
   unavoidable,
 ]);
 
-/** The matched words and the terms they point at, leaving out the plain text between them. */
+/**
+ * The matched words and the terms they point at, leaving out the plain text
+ * between them.
+ */
 const matches = (text: string) =>
   splitByTerms(text, index).flatMap((segment) =>
     segment.entry ? [[segment.text, segment.entry.term]] : [],

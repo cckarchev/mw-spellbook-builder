@@ -8,8 +8,8 @@ import { useSavedSpellbooks } from "./useSavedSpellbooks";
 const LOAD_TITLE = "Load spellbook";
 
 /**
- * The Load button, the official and saved spellbooks, and the questions before replacing or
- * deleting one.
+ * The Load button, the official and saved spellbooks, and the questions before
+ * replacing or deleting one.
  */
 export const LoadAction = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +30,8 @@ export const LoadAction = () => {
   return (
     <>
       <ActionButton icon={<LoadIcon />} label="Load" onClick={open} />
-      {/* The list steps aside while a confirm asks, so only one dialog is open at a time. */}
+      {/* The list steps aside while a confirm asks, so only one dialog is open
+          at a time. */}
       <LoadDialog
         open={isOpen && !isConfirming}
         title={LOAD_TITLE}

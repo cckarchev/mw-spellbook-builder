@@ -11,7 +11,10 @@ interface GlossaryTermProps {
   entry: GlossaryEntry;
 }
 
-/** A tappable glossary term. Tapping it shows its definition in a popover over the page. */
+/**
+ * A tappable glossary term. Tapping it shows its definition in a popover over
+ * the page.
+ */
 export const GlossaryTerm = ({ text, entry }: GlossaryTermProps) => {
   const id = useId();
   const isOpen = useOpenTermStore((state) => state.openId === id);
@@ -20,7 +23,8 @@ export const GlossaryTerm = ({ text, entry }: GlossaryTermProps) => {
   const termRef = useRef<HTMLButtonElement>(null);
   const closeThis = useCallback(() => close(id), [close, id]);
 
-  // A term that goes away, such as when its card row closes, takes its popover with it.
+  // A term that goes away, such as when its card row closes, takes its popover
+  // with it.
   useEffect(() => closeThis, [closeThis]);
 
   return (

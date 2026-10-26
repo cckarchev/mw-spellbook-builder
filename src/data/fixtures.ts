@@ -3,7 +3,9 @@ import { officialSpellbook } from "./officialSpellbooks";
 
 // Test fixtures read from the generated data.
 
-/** The Wizard's official spellbook; throws if the data ever stops having one. */
+/**
+ * The Wizard's official spellbook; throws if the data ever stops having one.
+ */
 export const officialWizardSpellbook = (): Spellbook => {
   const official = officialSpellbook("wizard");
 

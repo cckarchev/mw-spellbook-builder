@@ -13,9 +13,10 @@ export interface SavedSpellbook {
 }
 
 /**
- * The mage's saved spellbooks as name to encodeSpellbook string; empty when there are none or they
- * cannot be read. A Map rather than the stored object, because names are typed by the
- * player: on a plain object "constructor" would read as an inherited value.
+ * The mage's saved spellbooks as name to encodeSpellbook string; empty when
+ * there are none or they cannot be read. A Map rather than the stored object,
+ * because names are typed by the player: on a plain object "constructor" would
+ * read as an inherited value.
  */
 const readSavedMap = (mageId: string): Map<string, string> => {
   const parsed = readStoredJson(SAVED_PREFIX + mageId);
@@ -47,7 +48,10 @@ const writeSavedMap = (mageId: string, saved: Map<string, string>): boolean => {
   return writeStored(key, JSON.stringify(Object.fromEntries(saved)));
 };
 
-/** The spellbook an encodeSpellbook string holds, when it decodes to a spellbook of this mage. */
+/**
+ * The spellbook an encodeSpellbook string holds, when it decodes to a spellbook
+ * of this mage.
+ */
 const decodeFor = (mageId: string, encoded: string): Spellbook | null => {
   const spellbook = decodeSpellbook(encoded)?.spellbook;
 
@@ -90,7 +94,10 @@ export const loadSavedSpellbook = (
   return decodeFor(mageId, encoded);
 };
 
-/** The saved copy of a spellbook under its name, null when it has no name or the copy is gone. */
+/**
+ * The saved copy of a spellbook under its name, null when it has no name or the
+ * copy is gone.
+ */
 export const savedCopy = (
   spellbook: Spellbook,
   name: string | null,
@@ -105,8 +112,9 @@ export const savedCopy = (
 };
 
 /**
- * Saves the spellbook under the name for its mage, replacing a spellbook with the same name.
- * False when it was not stored: the spellbook has no mage, or storage is unavailable.
+ * Saves the spellbook under the name for its mage, replacing a spellbook with
+ * the same name. False when it was not stored: the spellbook has no mage, or
+ * storage is unavailable.
  */
 export const saveSpellbook = (name: string, spellbook: Spellbook): boolean => {
   const { mageId } = spellbook;

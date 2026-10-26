@@ -35,14 +35,20 @@ const wizardSpellbook = (counts: Spellbook["counts"]): Spellbook => ({
   counts,
 });
 
-/** 18 / 120: Fireball 3 x 4 (Fire, untrained), Lightning Bolt 2 x 2, Mana Crystal 2 x 1. */
+/**
+ * 18 / 120: Fireball 3 x 4 (Fire, untrained), Lightning Bolt 2 x 2, Mana
+ * Crystal 2 x 1.
+ */
 export const smallSpellbook = wizardSpellbook({
   [FIREBALL]: FIREBALL_COPIES,
   [LIGHTNING_BOLT]: BOLT_COPIES,
   [MANA_CRYSTAL]: CRYSTAL_COPIES,
 });
 
-/** 122 / 120: the small spellbook with 4 Lightning Bolts, 4 Alfiya (16 each) and 3 Water Elementals (12 each). */
+/**
+ * 122 / 120: the small spellbook with 4 Lightning Bolts, 4 Alfiya (16 each) and
+ * 3 Water Elementals (12 each).
+ */
 export const overBudgetSpellbook = wizardSpellbook({
   [FIREBALL]: FIREBALL_COPIES,
   [LIGHTNING_BOLT]: BOLT_LIMIT,
@@ -51,7 +57,9 @@ export const overBudgetSpellbook = wizardSpellbook({
   [WATER_ELEMENTAL]: ELEMENTAL_COPIES,
 });
 
-/** The small spellbook with 5 Fireballs: 26 / 120, one problem (max 4 copies). */
+/**
+ * The small spellbook with 5 Fireballs: 26 / 120, one problem (max 4 copies).
+ */
 export const tooManyCopiesSpellbook = wizardSpellbook({
   [FIREBALL]: FIREBALL_OVER_LIMIT,
   [LIGHTNING_BOLT]: BOLT_COPIES,
@@ -64,7 +72,10 @@ export const overWithProblemSpellbook = {
   counts: { ...overBudgetSpellbook.counts, [FIREBALL]: FIREBALL_OVER_LIMIT },
 };
 
-/** Empties the app's spellbook store and its storage, for a test to start from no spellbook. */
+/**
+ * Empties the app's spellbook store and its storage, for a test to start from
+ * no spellbook.
+ */
 export const resetSpellbookStore = () => {
   localStorage.clear();
   useSpellbookStore.setState({

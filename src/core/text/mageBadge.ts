@@ -4,7 +4,10 @@ const DRAFT_LABEL = "Draft";
 const DESCRIPTION_SEPARATOR = ", ";
 
 export interface MageBadge {
-  /** How many spellbooks the mage has saved; with none, the badge marks the draft instead. */
+  /**
+   * How many spellbooks the mage has saved; with none, the badge marks the
+   * draft instead.
+   */
   savedCount: number;
   /** What the badge means, for screen readers: "Draft, 3 saved spellbooks". */
   description: string;
@@ -13,7 +16,10 @@ export interface MageBadge {
   hasSaved: boolean;
 }
 
-/** The badge on a mage tile: how many spellbooks the mage has saved, and whether it has a draft. */
+/**
+ * The badge on a mage tile: how many spellbooks the mage has saved, and whether
+ * it has a draft.
+ */
 export const mageBadge = (
   hasDraft: boolean,
   savedCount: number,

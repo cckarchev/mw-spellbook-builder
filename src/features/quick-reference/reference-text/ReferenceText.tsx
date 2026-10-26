@@ -56,8 +56,8 @@ const SegmentRun = ({ segments, onJump }: SegmentRunProps) => {
 };
 
 /**
- * A definition whose terms jump to their own entries, with the search matches highlighted. The
- * Codex's inline "•" bullets become a list under the intro.
+ * A definition whose terms jump to their own entries, with the search matches
+ * highlighted. The Codex's inline "•" bullets become a list under the intro.
  */
 export const ReferenceText = ({ entry, query, onJump }: ReferenceTextProps) => {
   const segments = linkedSegments(entry);

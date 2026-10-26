@@ -5,7 +5,9 @@ import styles from "./Stepper.module.css";
 interface StepperProps {
   value: number;
   max: number;
-  /** What is being counted, such as the card name; used in the button labels. */
+  /**
+   * What is being counted, such as the card name; used in the button labels.
+   */
   label: string;
   onIncrement: () => void;
   onDecrement: () => void;
@@ -16,8 +18,9 @@ interface StepperProps {
 const LIMIT_REASON = "Copy limit reached";
 
 /**
- * A − value + control. A blocked + stays tappable (aria-disabled, not disabled),
- * so a tap on a phone can show why it is blocked, in a popover that leaves the page in place.
+ * A − value + control. A blocked + stays tappable (aria-disabled, not
+ * disabled), so a tap on a phone can show why it is blocked, in a popover that
+ * leaves the page in place.
  */
 export const Stepper = ({
   value,

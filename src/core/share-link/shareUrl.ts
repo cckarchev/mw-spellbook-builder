@@ -10,7 +10,9 @@ interface ShareUrlInput {
   magePath: string;
 }
 
-/** The link the Share button copies: the spellbook's mage in this app's builder. */
+/**
+ * The link the Share button copies: the spellbook's mage in this app's builder.
+ */
 export const buildShareUrl = ({
   encoded,
   origin,

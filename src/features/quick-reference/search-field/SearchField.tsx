@@ -7,14 +7,20 @@ interface SearchFieldProps {
   onChange: (next: string) => void;
   /** The input, for the back to top button to focus. */
   inputRef: RefObject<HTMLInputElement | null>;
-  /** How many terms show, beside the label, announced to screen readers as it changes. */
+  /**
+   * How many terms show, beside the label, announced to screen readers as it
+   * changes.
+   */
   status: string;
 }
 
 const LABEL = "Search terms and rules";
 const PLACEHOLDER = "Burn, Flying, Guard";
 
-/** The Quick reference search, filtering as the player types, with a button to clear it. */
+/**
+ * The Quick reference search, filtering as the player types, with a button to
+ * clear it.
+ */
 export const SearchField = ({
   value,
   onChange,

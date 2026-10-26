@@ -9,7 +9,8 @@ export const SPELLBOOK_SEGMENT = "spellbook";
 /** The path segment that opens the Stats tab under a mage's path. */
 export const STATS_SEGMENT = "stats";
 
-// Accents come apart into a letter plus a combining mark, which the next step drops.
+// Accents come apart into a letter plus a combining mark, which the next step
+// drops.
 const COMBINING_MARKS = /\p{M}/gu;
 const APOSTROPHES = /['’]/g;
 const NON_ALPHANUMERIC_RUNS = /[^a-z0-9]+/g;
@@ -32,7 +33,10 @@ const TAB_SEGMENTS: Record<BuilderTab, string | null> = {
   stats: STATS_SEGMENT,
 };
 
-/** Where the builder shows a mage's spellbook on a tab, such as "/wizard/spellbook". */
+/**
+ * Where the builder shows a mage's spellbook on a tab, such as
+ * "/wizard/spellbook".
+ */
 export const builderPath = (mageName: string, tab: BuilderTab): string => {
   const magePath = `/${mageSlug(mageName)}`;
   const segment = TAB_SEGMENTS[tab];

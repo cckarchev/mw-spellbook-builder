@@ -57,7 +57,10 @@ export const spellbookProblems = (
   return lines;
 };
 
-/** One line per problem in a spellbook opened from a link, for the player to fix. */
+/**
+ * One line per problem in a spellbook opened from a link, for the player to
+ * fix.
+ */
 export const incomingProblems = (
   unknownCodes: string[],
   issues: SpellbookIssue[],

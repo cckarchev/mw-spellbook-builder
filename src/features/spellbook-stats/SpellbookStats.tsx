@@ -24,7 +24,10 @@ const schoolBars = (schools: SchoolPoints[]): BarRow[] =>
     highlight: row.extraRatePoints,
   }));
 
-/** The numbers behind the spellbook: mana curve, counts, points by school and attacks. */
+/**
+ * The numbers behind the spellbook: mana curve, counts, points by school and
+ * attacks.
+ */
 export const SpellbookStats = ({ spellbook, mage }: SpellbookStatsProps) => {
   const stats = spellbookStats(spellbook, mage, cardsById);
 

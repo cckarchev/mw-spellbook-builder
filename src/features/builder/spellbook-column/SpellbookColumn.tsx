@@ -21,7 +21,10 @@ interface SpellbookColumnProps extends BuilderPanelProps {
   onShowTab: (tab: ColumnTab) => void;
 }
 
-/** The desktop column beside the catalog: the spellbook, or its stats, under their own tabs. */
+/**
+ * The desktop column beside the catalog: the spellbook, or its stats, under
+ * their own tabs.
+ */
 export const SpellbookColumn = ({
   tab,
   summary,

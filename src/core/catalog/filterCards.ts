@@ -3,7 +3,10 @@ import { isLegalFor } from "@/core/rules/legality";
 import type { Card, CardType, Mage, School } from "@/core/rules/types";
 import { matchesQuery } from "./textSearch";
 
-/** Each list is OR within itself; the query and the lists are ANDed. Empty means "any". */
+/**
+ * Each list is OR within itself; the query and the lists are ANDed. Empty means
+ * "any".
+ */
 export interface CatalogFilters {
   query: string;
   types: CardType[];
@@ -31,7 +34,10 @@ export const toggleValue = <T>(selected: T[], value: T): T[] =>
     ? selected.filter((item) => item !== value)
     : [...selected, value];
 
-/** How many chips are selected across the groups, plus one for the "Only" filter. The search query is not counted. */
+/**
+ * How many chips are selected across the groups, plus one for the "Only"
+ * filter. The search query is not counted.
+ */
 export const activeFilterCount = (filters: CatalogFilters): number => {
   const { types, schools, subtypes, expansions, levels, onlyCards } = filters;
   const chipCount =
@@ -75,7 +81,9 @@ const matchesFilters = (card: Card, filters: CatalogFilters): boolean => {
   );
 };
 
-/** The catalog cards the mage can use that match the filters, in input order. */
+/**
+ * The catalog cards the mage can use that match the filters, in input order.
+ */
 export const filterCards = (
   cards: Card[],
   filters: CatalogFilters,

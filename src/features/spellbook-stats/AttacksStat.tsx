@@ -4,7 +4,10 @@ import type { AttackStats } from "@/core/stats/types";
 import { countBars } from "./countBars";
 import { StatNote } from "./stat-note/StatNote";
 
-/** Melee against ranged, then copies per damage type, or a line saying there are none. */
+/**
+ * Melee against ranged, then copies per damage type, or a line saying there are
+ * none.
+ */
 export const AttacksStat = ({ attacks }: { attacks: AttackStats }) => {
   const reaches = [
     { label: "Melee", count: attacks.melee },

@@ -41,7 +41,10 @@ const reachOf = (fields: string[]): Reach | null => {
   return null;
 };
 
-/** The attacks printed on a card's attack bar. Lines without a "|" name an attack and are skipped. */
+/**
+ * The attacks printed on a card's attack bar. Lines without a "|" name an
+ * attack and are skipped.
+ */
 export const parseAttackLines = (attackBar: string): AttackLine[] =>
   attackBar
     .split("\n")

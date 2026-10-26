@@ -10,7 +10,10 @@ interface SavedSpellbookRowProps {
   onDelete?: (name: string) => void;
 }
 
-/** One saved spellbook: load it by its name, or delete it when `onDelete` is given. */
+/**
+ * One saved spellbook: load it by its name, or delete it when `onDelete` is
+ * given.
+ */
 export const SavedSpellbookRow = ({
   savedSpellbook,
   onLoad,

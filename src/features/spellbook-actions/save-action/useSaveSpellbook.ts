@@ -11,8 +11,9 @@ const SAVE_FAILED =
   "Could not save. This browser is not letting the site store data.";
 
 /**
- * The Save dialog's state: the draft name, its error, and the overwrite question.
- * `onSaved` runs after a save, to close the dialog; a save the browser would not store shows a toast.
+ * The Save dialog's state: the draft name, its error, and the overwrite
+ * question. `onSaved` runs after a save, to close the dialog; a save the
+ * browser would not store shows a toast.
  */
 export const useSaveSpellbook = (onSaved: () => void) => {
   const spellbook = useSpellbookStore((state) => state.spellbook);
@@ -59,7 +60,8 @@ export const useSaveSpellbook = (onSaved: () => void) => {
     const { mageId } = spellbook;
     const nameTaken =
       mageId !== null && loadSavedSpellbook(mageId, trimmedName) !== null;
-    // Saving the loaded spellbook under its own name updates it; there is nothing else to lose.
+    // Saving the loaded spellbook under its own name updates it; there is
+    // nothing else to lose.
     const isOwnName = trimmedName === currentName;
 
     if (nameTaken && !isOwnName) {

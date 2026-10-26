@@ -1,7 +1,8 @@
 import type { GlossaryEntry } from "@/core/glossary/types";
 
-// The Codex PDF cuts a few definitions short, and has the odd typo. These fixes are copied by
-// hand from the Arena Rulebook glossary, or are the Codex text with the typo fixed.
+// The Codex PDF cuts a few definitions short, and has the odd typo. These fixes
+// are copied by hand from the Arena Rulebook glossary, or are the Codex text
+// with the typo fixed.
 
 export const GLOSSARY_CORRECTIONS: GlossaryEntry[] = [
   // The Codex stops at "See".
@@ -46,8 +47,8 @@ export const GLOSSARY_CORRECTIONS: GlossaryEntry[] = [
     definition:
       "This Object can cast spells during the Deployment Phase. If you control a Spawnpoint during the Planning phase, you may select a spell for it to cast during the Deployment Phase. The Spawnpoint may have restrictions on the types of spells you may choose. Place the spell face down near your Spawnpoint during the planning phase and tell your opponent that it is the Spawnpoint’s spell. Only your Spawnpoint may cast that spell during the Deployment Phase. The Spawnpoint must spend any mana that it has towards the casting cost first, with you making up the difference from your mana supply. The Spawnpoint is treated as the spell caster for all purposes, such as range, etc. You control all spells your Spawnpoint casts. If your Spawnpoint does not cast its prepared spell, the spell returns to your spell book at the end of the Deployment Phase.",
   },
-  // The Codex leaves a parenthesis open, misspells card names such as "Reupulse", and runs two
-  // card names together.
+  // The Codex leaves a parenthesis open, misspells card names such as
+  // "Reupulse", and runs two card names together.
   {
     term: "Swarm",
     definition:
@@ -55,7 +56,10 @@ export const GLOSSARY_CORRECTIONS: GlossaryEntry[] = [
   },
 ];
 
-/** The glossary with each corrected term's definition replaced. Throws on a correction that matches no term. */
+/**
+ * The glossary with each corrected term's definition replaced. Throws on a
+ * correction that matches no term.
+ */
 export const applyGlossaryCorrections = (
   entries: readonly GlossaryEntry[],
   corrections: readonly GlossaryEntry[],

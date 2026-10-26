@@ -27,10 +27,10 @@ import {
 import { clearWhiteCorners } from "./lib/whiteCorners";
 import { isLandscape, whiteFrameBox } from "./lib/whiteFrame";
 
-// Reads the OCTGN Mage Wars module, the community image pack and the Codex from raw-input/
-// and writes src/data/cards.json, src/data/glossary.json, src/data/officialSpellbooks.json
-// and public/cards/<code>.webp.
-// Run with `npm run data`. Reading the Codex needs `pdftohtml`, from poppler-utils.
+// Reads the OCTGN Mage Wars module, the community image pack and the Codex from
+// raw-input/ and writes src/data/cards.json, src/data/glossary.json,
+// src/data/officialSpellbooks.json and public/cards/<code>.webp. Run with `npm
+// run data`. Reading the Codex needs `pdftohtml`, from poppler-utils.
 
 const RAW_DIR = "raw-input";
 const MODULE_PATH = path.join(RAW_DIR, "mage-wars-3.1.4.1.nupkg");
@@ -165,7 +165,9 @@ const sortedByKey = <T>(record: Record<string, T>): Record<string, T> =>
     Object.entries(record).sort(([a], [b]) => a.localeCompare(b)),
   );
 
-/** The module's official spellbooks as mage id to card id counts, one per mage. */
+/**
+ * The module's official spellbooks as mage id to card id counts, one per mage.
+ */
 const readOfficialSpellbooks = async (
   cards: readonly Card[],
 ): Promise<Record<string, Record<string, number>>> => {
@@ -207,9 +209,9 @@ const imageFile = (cardId: string): string =>
   path.join(PUBLIC_DIR, cardImagePath(cardCode(cardId)));
 
 /**
- * Cuts the white or transparent frame some pack images have, and any hand measured blemish,
- * makes the white around scanned rounded corners transparent, then resizes to webp.
- * Returns whether the card is landscape.
+ * Cuts the white or transparent frame some pack images have, and any hand
+ * measured blemish, makes the white around scanned rounded corners transparent,
+ * then resizes to webp. Returns whether the card is landscape.
  */
 const writeFramelessImage = async (
   data: Uint8Array,
@@ -235,9 +237,9 @@ const writeFramelessImage = async (
 };
 
 /**
- * Converts the pack image of every wanted card id, rewriting existing ones so a change in
- * the conversion reaches them all. Returns the ids that got an image, each with whether it is
- * landscape.
+ * Converts the pack image of every wanted card id, rewriting existing ones so a
+ * change in the conversion reaches them all. Returns the ids that got an image,
+ * each with whether it is landscape.
  */
 const writeImages = async (
   wantedIds: ReadonlySet<string>,
@@ -298,7 +300,10 @@ const writeJson = async (filePath: string, data: unknown): Promise<void> => {
   execFileSync(BIOME_BIN, ["format", "--write", filePath], { stdio: "ignore" });
 };
 
-/** The Codex glossary, read through the XML output of pdftohtml, which keeps each run's font. */
+/**
+ * The Codex glossary, read through the XML output of pdftohtml, which keeps
+ * each run's font.
+ */
 const readGlossary = (): GlossaryEntry[] => {
   const xml = execFileSync(
     "pdftohtml",

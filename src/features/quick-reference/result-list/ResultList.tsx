@@ -44,8 +44,9 @@ const ResultGroup = ({ title, entries, query, onJump }: ResultGroupProps) => {
 };
 
 /**
- * Search results: terms matching by name, then by definition, or a way out when none do.
- * Memoized, so the back to top button coming or going does not render the results again.
+ * Search results: terms matching by name, then by definition, or a way out when
+ * none do. Memoized, so the back to top button coming or going does not render
+ * the results again.
  */
 export const ResultList = memo(
   ({ results, typed, query, onJump }: ResultListProps) => {

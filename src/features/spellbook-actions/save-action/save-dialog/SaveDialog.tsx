@@ -3,9 +3,14 @@ import { Button } from "@/components/button/Button";
 import { Dialog } from "@/components/dialog/Dialog";
 import styles from "./SaveDialog.module.css";
 
-/** Long enough for "Tourney 2026 Fire Wizard", short enough for the header line. */
+/**
+ * Long enough for "Tourney 2026 Fire Wizard", short enough for the header line.
+ */
 const NAME_MAX_LENGTH = 40;
-/** Saved spellbooks live in localStorage, so players are told they do not follow them around. */
+/**
+ * Saved spellbooks live in localStorage, so players are told they do not follow
+ * them around.
+ */
 const STORAGE_NOTE =
   "Saved in this browser only. To use it on another device, share its link.";
 

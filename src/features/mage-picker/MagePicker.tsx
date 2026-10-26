@@ -26,7 +26,8 @@ export const MagePicker = () => {
           />
         ))}
       </div>
-      {/* The list steps aside while the confirm asks, so only one dialog is open at a time. */}
+      {/* The list steps aside while the confirm asks, so only one dialog is
+          open at a time. */}
       <LoadDialog
         open={loadSaved.mage !== null && loadSaved.pendingLoad === null}
         title={`Saved ${loadSaved.mage?.name ?? ""} spellbooks`}

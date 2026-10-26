@@ -2,7 +2,8 @@ import type { Mage, School, Training } from "@/core/rules/types";
 
 // Arena mages, hand-authored from each "<Name> Stats" card in the OCTGN module
 // (MageSchoolFullTraining, MageSchoolOpposed, MageSchoolPartialTraining,
-// MageSubtypeTraining, MageTypeOpposed, MageComboTraining). Apprentice variants are left out.
+// MageSubtypeTraining, MageTypeOpposed, MageComboTraining). Apprentice variants
+// are left out.
 
 const ARENA_BUDGET = 120;
 // Every arena stats card in the module prints Channeling=10.
