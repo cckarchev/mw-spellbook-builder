@@ -38,7 +38,8 @@ Requires Node 24.21 or later (`.node-version`).
 - `src/features/`: screens and their components.
 - `src/components/`: shared UI primitives.
 - `src/layout/`: the app shell.
-- `src/theme/`: global styles, breakpoints and the app tokens.
+- `src/theme/`: global styles and the app tokens. Breakpoints are the shared
+  `@custom-media` queries from `@cckarchev/shared/breakpoints.css`.
 - `src/store/`: the spellbook store, which keeps the open spellbook in its mage's draft.
 - `scripts/`: the data pipeline.
 

@@ -1,10 +1,11 @@
+import { MEDIA_QUERY } from "@cckarchev/shared/tokens";
 import { useCallback, useSyncExternalStore } from "react";
 
 /**
- * Wide enough for the catalog and the spellbook side by side. Keep in step with
- * --desktop-up.
+ * Wide enough for the catalog and the spellbook side by side. The same query as
+ * --desktop-up in CSS.
  */
-export const DESKTOP_QUERY = "(min-width: 1024px)";
+export const DESKTOP_QUERY = MEDIA_QUERY.desktopUp;
 
 const NO_MATCH = false;
 
