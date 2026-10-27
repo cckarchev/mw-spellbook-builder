@@ -2,18 +2,23 @@
   "name": "mw-spellbook-builder",
   "version": "0.1.0",
   "private": true,
+  "description": "Phone-first spellbook builder for Mage Wars Arena.",
   "type": "module",
+  "engines": {
+    "node": ">=24.21.0"
+  },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b --noEmit && vite build",
+    "build": "vite build",
     "preview": "vite preview",
+    "deploy": "npm run verify && wrangler deploy",
+    "verify": "npm run check && npm run typecheck && npm test && npm run build",
+    "check": "biome check",
+    "check:fix": "biome check --write",
+    "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "biome check",
-    "lint:fix": "biome check --write",
-    "typecheck": "tsc -b --noEmit",
-    "data": "tsx scripts/buildData.ts",
-    "deploy": "npm run build && wrangler deploy"
+    "data": "tsx scripts/buildData.ts"
   },
   "dependencies": {
     "react": "^19.3.1",
@@ -39,6 +44,10 @@
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
     "vitest": "^5.0.5",
-    "wrangler": "4.153.0"
+    "wrangler": "^4.153.0"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "workerd": true
   }
 }

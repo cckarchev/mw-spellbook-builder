@@ -1,15 +1,22 @@
 Mage Wars Spellbook Builder
+===========================
 
-This is an unofficial, free fan project. It is not affiliated with, endorsed,
-sponsored or approved by Arcane Wonders.
-
-Mage Wars, the card names, card text and card images are trademarks and
-copyrights of Arcane Wonders. They are used here only to help players build
-their spellbooks, and remain the property of their owners.
-
-Third-party material:
-
+Credit
+------
 - Card data: the OCTGN Mage Wars module (mage-wars, from the OCTGN game feed).
 - Expansion names: the older set files from https://github.com/sIKE23/Mage-Wars
 - Card images: the community Mage Wars card image pack for OCTGN.
 - Glossary: the Mage Wars Codex.
+
+Fonts
+-----
+The interface fonts (Big Noodle Titling, Barlow and JetBrains Mono) are
+self-hosted through @cckarchev/shared, which carries their notices.
+
+Disclaimer
+----------
+This is an unofficial, free fan project. It is not affiliated with, endorsed,
+sponsored or approved by Arcane Wonders. Mage Wars, the card names, card text
+and card images are trademarks and copyrights of Arcane Wonders. They are used
+here only to help players build their spellbooks, and remain the property of
+their owners.
