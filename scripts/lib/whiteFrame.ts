@@ -32,22 +32,39 @@ const FRAME_SHARE = 0.5;
  */
 const EDGE_SHARE = 0.01;
 
+const RED_INDEX = 0;
+const GREEN_INDEX = 1;
+const BLUE_INDEX = 2;
 const ALPHA_INDEX = 3;
 const RGB_CHANNELS = 3;
 
+/** Where a pixel's first channel sits in the image data. */
+const pixelOffset = (image: RawImage, x: number, y: number): number =>
+  (y * image.width + x) * image.channels;
+
+/** The darkest of a pixel's red, green and blue. */
+export const darkestChannel = (
+  image: RawImage,
+  x: number,
+  y: number,
+): number => {
+  const offset = pixelOffset(image, x, y);
+  const red = image.data[offset + RED_INDEX];
+  const green = image.data[offset + GREEN_INDEX];
+  const blue = image.data[offset + BLUE_INDEX];
+
+  return Math.min(red, green, blue);
+};
+
 const isFramePixel = (image: RawImage, x: number, y: number): boolean => {
-  const offset = (y * image.width + x) * image.channels;
+  const offset = pixelOffset(image, x, y);
   const hasAlpha = image.channels > RGB_CHANNELS;
 
   if (hasAlpha && image.data[offset + ALPHA_INDEX] < CLEAR_MAX_ALPHA) {
     return true;
   }
 
-  const red = image.data[offset];
-  const green = image.data[offset + 1];
-  const blue = image.data[offset + 2];
-
-  return Math.min(red, green, blue) >= WHITE_MIN;
+  return darkestChannel(image, x, y) >= WHITE_MIN;
 };
 
 const isFrameLine = (pixels: boolean[]): boolean => {

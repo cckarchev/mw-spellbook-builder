@@ -1,6 +1,11 @@
 import { act, renderHook } from "@testing-library/react";
 import { stubMatchMedia } from "@/test/stubMatchMedia";
-import { DESKTOP_QUERY, useIsDesktop, useMediaQuery } from "./useMediaQuery";
+import {
+  DESKTOP_QUERY,
+  matchesMedia,
+  useIsDesktop,
+  useMediaQuery,
+} from "./useMediaQuery";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -57,5 +62,23 @@ describe("useIsDesktop", () => {
 
     expect(result.current).toBe(true);
     expect(queries).toContain("(min-width: 1024px)");
+  });
+});
+
+describe("matchesMedia", () => {
+  it("is false when matchMedia does not exist", () => {
+    vi.stubGlobal("matchMedia", undefined);
+
+    expect(matchesMedia(DESKTOP_QUERY)).toBe(false);
+  });
+
+  it("reports whether the query matches now", () => {
+    const { setMatches } = stubMatchMedia(true);
+
+    expect(matchesMedia(DESKTOP_QUERY)).toBe(true);
+
+    setMatches(false);
+
+    expect(matchesMedia(DESKTOP_QUERY)).toBe(false);
   });
 });

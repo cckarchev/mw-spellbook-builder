@@ -1,4 +1,9 @@
-import { isLandscape, type RawImage, whiteFrameBox } from "./whiteFrame";
+import {
+  darkestChannel,
+  isLandscape,
+  type RawImage,
+  whiteFrameBox,
+} from "./whiteFrame";
 
 const CHANNELS = 4;
 const FULL = 255;
@@ -144,5 +149,17 @@ describe("isLandscape", () => {
   it("tells a wall card, wider than tall, from a portrait one", () => {
     expect(isLandscape(landscapeBox)).toBe(true);
     expect(isLandscape(portraitBox)).toBe(false);
+  });
+});
+
+describe("darkestChannel", () => {
+  it("reads the darkest of a pixel's red, green and blue, ignoring alpha", () => {
+    const pixelColor = [FULL, LIGHT, DARK, 0];
+    const image = paint(SIZE, SIZE, (x, y) =>
+      x === 1 && y === 2 ? pixelColor : WHITE,
+    );
+
+    expect(darkestChannel(image, 1, 2)).toBe(DARK);
+    expect(darkestChannel(image, 0, 0)).toBe(FULL);
   });
 });

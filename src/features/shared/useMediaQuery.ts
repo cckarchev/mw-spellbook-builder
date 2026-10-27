@@ -15,6 +15,15 @@ const unsubscribeNothing = () => {
   // Nothing was subscribed without matchMedia.
 };
 
+/** Whether the media query matches right now. False without matchMedia. */
+export const matchesMedia = (query: string): boolean => {
+  if (!hasMatchMedia()) {
+    return NO_MATCH;
+  }
+
+  return window.matchMedia(query).matches;
+};
+
 /**
  * Whether the media query matches now, following it as the window changes.
  * False without matchMedia.
@@ -37,13 +46,7 @@ export const useMediaQuery = (query: string): boolean => {
     [query],
   );
 
-  const getSnapshot = (): boolean => {
-    if (!hasMatchMedia()) {
-      return NO_MATCH;
-    }
-
-    return window.matchMedia(query).matches;
-  };
+  const getSnapshot = (): boolean => matchesMedia(query);
 
   return useSyncExternalStore(subscribe, getSnapshot);
 };

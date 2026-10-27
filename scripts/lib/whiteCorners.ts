@@ -3,7 +3,7 @@
 // scans are not always straight, and any straight cut deep enough for the
 // corners would eat into the card's border.
 
-import type { CropBox, RawImage } from "./whiteFrame";
+import { type CropBox, darkestChannel, type RawImage } from "./whiteFrame";
 
 /**
  * Each of red, green and blue at least this bright is the white around a
@@ -34,16 +34,6 @@ interface Region {
   right: number;
   bottom: number;
 }
-
-/** The darkest of a pixel's red, green and blue. */
-const darkestChannel = (image: RawImage, x: number, y: number): number => {
-  const offset = (y * image.width + x) * image.channels;
-  const red = image.data[offset];
-  const green = image.data[offset + 1];
-  const blue = image.data[offset + 2];
-
-  return Math.min(red, green, blue);
-};
 
 interface Pixel {
   x: number;

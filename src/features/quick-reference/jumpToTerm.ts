@@ -1,11 +1,10 @@
 import { termAnchorId } from "@/core/reference/anchors";
+import { matchesMedia } from "@/features/shared/useMediaQuery";
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const FLASH_ATTRIBUTE = "data-flash";
 
-const prefersReducedMotion = (): boolean =>
-  typeof window.matchMedia === "function" &&
-  window.matchMedia(REDUCED_MOTION_QUERY).matches;
+const prefersReducedMotion = (): boolean => matchesMedia(REDUCED_MOTION_QUERY);
 
 /** Smooth scrolling, unless the player asks for less motion. */
 export const scrollBehavior = (): ScrollBehavior =>
