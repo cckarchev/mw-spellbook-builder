@@ -69,10 +69,11 @@ describe("App build screen", () => {
   it("keeps the search when the player comes back from the Spellbook tab", async () => {
     renderAppAt("/wizard");
 
-    await userEvent.type(
+    // One paste instead of typing, so the catalog filters once and not per key.
+    await userEvent.click(
       screen.getByRole("searchbox", { name: "Search cards" }),
-      "fireball",
     );
+    await userEvent.paste("fireball");
     await userEvent.click(screen.getByRole("tab", { name: "Spellbook" }));
     await userEvent.click(screen.getByRole("tab", { name: "Cards" }));
 
@@ -84,10 +85,11 @@ describe("App build screen", () => {
   it("starts with no filters for another mage", async () => {
     renderAppAt("/wizard");
 
-    await userEvent.type(
+    // One paste instead of typing, so the catalog filters once and not per key.
+    await userEvent.click(
       screen.getByRole("searchbox", { name: "Search cards" }),
-      "fireball",
     );
+    await userEvent.paste("fireball");
     cleanup();
     useSpellbookStore
       .getState()

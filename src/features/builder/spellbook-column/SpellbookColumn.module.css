@@ -12,7 +12,7 @@
 .tabs {
   position: sticky;
   top: 0;
-  z-index: var(--z-sticky);
+  z-index: var(--layer-bar);
   padding-block-start: var(--space-md);
   background: var(--color-bg-base);
 }

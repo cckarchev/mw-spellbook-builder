@@ -3,7 +3,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  z-index: var(--z-reference);
+  z-index: var(--layer-sheet);
   overflow-y: auto;
   overscroll-behavior: contain;
   background: var(--color-bg-base);
@@ -27,7 +27,7 @@
 .toolbar {
   position: sticky;
   top: 0;
-  z-index: var(--z-sticky);
+  z-index: var(--layer-bar);
   padding-block: var(--space-sm);
   background: var(--color-bg-base);
   border-bottom: var(--border-divider);
