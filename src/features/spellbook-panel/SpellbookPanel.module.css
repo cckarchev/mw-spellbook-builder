@@ -11,8 +11,8 @@
   padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-lg);
   color: var(--color-text-strong);
   font-size: var(--font-size-sm);
-  background: var(--color-bg-error);
-  border-inline-start: var(--border-width-strong) solid var(--color-error);
+  background: var(--color-surface-error);
+  border-inline-start: var(--border-width-thick) solid var(--color-error);
 }
 
 /* The view switch at the end of the row. */

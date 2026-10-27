@@ -9,10 +9,9 @@
 
 .title {
   font-family: var(--font-display);
-  font-size: var(--font-size-xxl);
+  font-size: var(--font-size-2xl);
   font-weight: normal;
-  letter-spacing: var(--tracking-caps);
-  line-height: var(--leading-tight);
+  line-height: var(--leading-solid);
 }
 
 /* Flex, not grid, so a last row that does not fill up is centered. */

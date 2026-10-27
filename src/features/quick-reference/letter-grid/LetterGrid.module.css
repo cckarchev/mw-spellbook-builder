@@ -10,7 +10,7 @@
  * shorter last row centered under the others.
  */
 .rows {
-  --letter-gap: var(--space-xxs);
+  --letter-gap: var(--space-2xs);
 
   display: flex;
   flex-wrap: wrap;

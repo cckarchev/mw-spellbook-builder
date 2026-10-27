@@ -5,7 +5,7 @@
   display: grid;
   place-items: center;
   padding: var(--page-gutter);
-  background: var(--color-bg-scrim);
+  background: var(--color-surface-scrim);
 }
 
 /* Covers the page behind the panel; a tap on it closes the dialog. */
@@ -44,8 +44,7 @@
   font-family: var(--font-display);
   font-size: var(--font-size-xl);
   font-weight: normal;
-  letter-spacing: var(--tracking-caps);
-  line-height: var(--leading-tight);
+  line-height: var(--leading-solid);
 }
 
 /* Pulled into the panel padding, so the X sits in the corner without pushing

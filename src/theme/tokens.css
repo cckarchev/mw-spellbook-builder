@@ -1,119 +1,29 @@
 /*
- * Design tokens: the single source of truth for every color, size and font in
- * the app. Components read them with var(--token). The palette follows the
- * cckarchev site (cckarchev-web/src/styles/theme.ts).
+ * App tokens. The palette, scales and fonts come from @cckarchev/shared
+ * (fonts.css and tokens.css, imported in main.tsx); this file only adds what
+ * is specific to this app. Components read them with var(--token).
  */
 @import "./breakpoints.css";
 
 :root {
-  /* RGB channels. Compose a color at any opacity with rgb(var(--rgb-x) / 0.5)
-     instead of hardcoding rgba() values. */
-  --rgb-text: 245 241 232;
-  --rgb-white: 255 255 255;
-  --rgb-black: 0 0 0;
-  --rgb-accent: 243 107 33;
-  --rgb-teal: 43 179 196;
-  --rgb-error: 222 100 86;
-
-  /* Backgrounds */
-  --color-bg-base: #0b0d0e;
-  --color-bg-surface: #121517;
-  --color-bg-tint: #1c2124;
-  /* Fill behind active accent controls, such as a selected filter chip. */
-  --color-bg-accent-tint: rgb(var(--rgb-accent) / 0.15);
   /* Fainter accent wash behind a whole row that is in the spellbook. */
-  --color-bg-selected: rgb(var(--rgb-accent) / 0.06);
-  /* Faint wash on every other row of a list, so long lists are easier to
-     follow. */
-  --color-bg-stripe: rgb(var(--rgb-white) / 0.06);
+  --color-bg-selected: rgb(var(--rgb-accent) / var(--alpha-5));
   /* Recessed well that frames a block inside a row, such as card details. */
-  --color-bg-inset: rgb(var(--rgb-black) / 0.25);
-  /* Backdrop that dims the page behind a modal dialog. */
-  --color-bg-scrim: rgb(var(--rgb-black) / 0.6);
+  --color-surface-inset: rgb(var(--rgb-black) / var(--alpha-20));
   /* Wash behind an error message. */
-  --color-bg-error: rgb(var(--rgb-error) / 0.12);
+  --color-surface-error: rgb(var(--rgb-rust-light) / var(--alpha-10));
 
-  /* Brand */
-  --color-accent: #f36b21;
-  --color-accent-ink: #0b0d0e;
-  --color-gold: #d9a441;
-
-  --color-text-strong: rgb(var(--rgb-text) / 1);
-  --color-text-body: rgb(var(--rgb-text) / 0.82);
-  --color-text-dim: rgb(var(--rgb-text) / 0.62);
-
-  --color-border-divider: rgb(var(--rgb-white) / 0.14);
-  --color-border-default: rgb(var(--rgb-white) / 0.22);
-  --color-border-hover: rgb(var(--rgb-white) / 0.34);
-  --color-border-focus: rgb(var(--rgb-teal) / 0.85);
-  --color-border-accent: rgb(var(--rgb-accent) / 0.7);
-
-  /* Disabled controls drop their color for a flat grey, text and edge alike. */
-  --color-disabled: rgb(var(--rgb-text) / 0.3);
-  --color-border-disabled: rgb(var(--rgb-white) / 0.1);
-
-  --border-width: 1px;
-  --border-width-strong: 2px;
-  --border-default: var(--border-width) solid var(--color-border-default);
-  --border-divider: var(--border-width) solid var(--color-border-divider);
-
-  /* Ghost / teal-outline interactive states, such as the ghost Button. */
-  --color-ghost-border: rgb(var(--rgb-teal) / 0.6);
-  --color-ghost-bg: rgb(var(--rgb-teal) / 0.1);
-
-  /* Semantic */
-  --color-error: #de6456;
-  --color-success: #46af73;
-
-  /* Stats charts: bars, their lighter tone, and the part charged above the
-     trained rate. */
-  --color-bar: rgb(var(--rgb-teal) / 0.75);
-  --color-bar-muted: rgb(var(--rgb-teal) / 0.4);
-  --color-warning: var(--color-gold);
-
-  /* 4px-based spacing scale. Names follow the font-size scale. */
-  --space-xxs: 4px;
-  --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 16px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-xxl: 48px;
+  /* Stats charts: bars and their lighter tone. */
+  --color-bar: rgb(var(--rgb-teal) / var(--alpha-70));
+  --color-bar-muted: rgb(var(--rgb-teal) / var(--alpha-40));
 
   /* Sharp corners everywhere, to match the parent site. */
   --radius: 0;
 
-  --font-size-sm: 14px;
-  --font-size-md: 16px;
-  --font-size-lg: 20px;
-  --font-size-xl: 28px;
-  --font-size-xxl: 40px;
-
-  --font-display: "Big Noodle Titling", "Oswald", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
-
-  --font-weight-semibold: 600;
-
-  --tracking-label: 0.2em;
-  --tracking-button: 0.12em;
-  --tracking-caps: 0.04em;
-
-  --leading-body: 1.5;
-  --leading-none: 1;
-  --leading-tight: 1.1;
-
-  --opacity-hover: 0.9;
-
-  /* Duration for every hover, expand and reveal transition. Dropped to zero
-     below for people who ask the system for reduced motion. */
-  --duration-fast: 0.12s;
   /* How long a jumped-to Quick reference entry stays highlighted. */
   --duration-flash: 1.2s;
 
-  --shadow-panel: 0 2px 8px rgb(var(--rgb-black) / 0.35);
-
-  --focus-ring: 2px solid var(--color-border-focus);
-  --focus-ring-offset: 2px;
+  --shadow-panel: 0 2px 8px rgb(var(--rgb-black) / var(--alpha-30));
 
   --layout-max-width: 1200px;
 
@@ -128,8 +38,6 @@
      tightest gutter, widened from the tablet breakpoint up, below. */
   --page-gutter: var(--space-md);
 
-  /* Smallest comfortable touch target. */
-  --touch-target: 44px;
   /* The round Quick reference button back to the top, larger than a touch
      target to stand out. */
   --back-to-top-size: 56px;
@@ -141,7 +49,7 @@
   --bar-label-width: 7.5em;
   --bar-value-width: 2.5em;
   --curve-height: 120px;
-  --curve-gap: var(--space-xxs);
+  --curve-gap: var(--space-2xs);
   --curve-count-height: 1.5em;
 
   /* Card art: the full card when a row opens, and the mage tiles.
@@ -199,6 +107,8 @@
   }
 }
 
+/* Every hover, expand and reveal transition drops to zero for people who ask
+   the system for reduced motion. */
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0s;

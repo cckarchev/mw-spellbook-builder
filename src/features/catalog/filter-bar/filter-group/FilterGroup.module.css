@@ -22,14 +22,14 @@
   background: none;
   border: none;
   font-size: var(--font-size-sm);
-  letter-spacing: var(--tracking-label);
+  letter-spacing: var(--tracking-lg);
   text-transform: uppercase;
 }
 
 .toggle::before {
   content: "▾";
   display: inline-block;
-  margin-inline-end: var(--space-xxs);
+  margin-inline-end: var(--space-2xs);
   transition: transform var(--duration-fast);
 }
 
@@ -49,5 +49,5 @@
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-xxs);
+  gap: var(--space-2xs);
 }

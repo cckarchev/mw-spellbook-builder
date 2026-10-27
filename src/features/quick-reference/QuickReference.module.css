@@ -52,8 +52,7 @@
   font-family: var(--font-display);
   font-size: var(--font-size-xl);
   font-weight: normal;
-  letter-spacing: var(--tracking-caps);
-  line-height: var(--leading-tight);
+  line-height: var(--leading-solid);
   text-transform: uppercase;
 }
 

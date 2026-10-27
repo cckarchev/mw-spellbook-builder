@@ -11,7 +11,7 @@
   border: var(--border-default);
   border-radius: var(--radius);
   font-size: var(--font-size-lg);
-  line-height: var(--leading-none);
+  line-height: var(--leading-solid);
 }
 
 .step:hover:not(:disabled, [aria-disabled="true"]) {

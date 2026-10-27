@@ -83,7 +83,7 @@
 }
 
 .definition {
-  margin-top: var(--space-xxs);
+  margin-top: var(--space-2xs);
   font-size: var(--font-size-md);
   line-height: var(--leading-body);
   color: var(--color-text-body);
@@ -91,7 +91,7 @@
 
 @keyframes flash {
   from {
-    background: var(--color-bg-accent-tint);
+    background: var(--color-surface-accent-tint);
   }
 
   to {

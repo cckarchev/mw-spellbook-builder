@@ -21,14 +21,13 @@
   gap: var(--space-sm);
   font-family: var(--font-display);
   font-size: var(--font-size-xl);
-  letter-spacing: var(--tracking-caps);
-  line-height: var(--leading-tight);
+  line-height: var(--leading-solid);
   text-decoration: none;
   text-transform: uppercase;
 }
 
 .logo {
-  height: var(--font-size-xxl);
+  height: var(--font-size-2xl);
 }
 
 .brand {

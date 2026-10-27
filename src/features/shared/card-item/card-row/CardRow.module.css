@@ -6,7 +6,7 @@
 
 /* Before the in-spellbook wash, which wins on the same specificity. */
 .row:nth-child(even) {
-  background: var(--color-bg-stripe);
+  background: var(--color-surface-faint);
 }
 
 .row[data-in-spellbook="true"] {
@@ -17,17 +17,17 @@
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  padding-block: var(--space-xxs);
+  padding-block: var(--space-2xs);
 }
 
 .summary {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--space-xxs);
+  gap: var(--space-2xs);
   min-width: 0;
   min-height: var(--touch-target);
-  padding: var(--space-xxs) var(--space-xs);
+  padding: var(--space-2xs) var(--space-xs);
   color: var(--color-text-strong);
   text-align: start;
   background: transparent;
@@ -65,7 +65,7 @@
   gap: var(--space-md);
   margin: 0 var(--space-xs) var(--space-sm);
   padding: var(--space-sm);
-  background: var(--color-bg-inset);
+  background: var(--color-surface-inset);
 }
 
 @media (--phone) {
@@ -97,7 +97,7 @@
 
 .facts {
   display: grid;
-  gap: var(--space-xxs);
+  gap: var(--space-2xs);
 }
 
 .fact {
@@ -116,7 +116,7 @@
 }
 
 .row[data-problem="true"] {
-  border-inline-start: var(--border-width-strong) solid var(--color-error);
+  border-inline-start: var(--border-width-thick) solid var(--color-error);
 }
 
 .problem {

@@ -6,7 +6,7 @@
   z-index: var(--z-popover);
   display: flex;
   flex-direction: column;
-  gap: var(--space-xxs);
+  gap: var(--space-2xs);
   width: max-content;
   max-width: min(var(--popup-width), var(--popup-max-width));
   padding: var(--space-sm);

@@ -53,7 +53,7 @@
 }
 
 .label {
-  padding-block-start: var(--space-xxs);
+  padding-block-start: var(--space-2xs);
   color: var(--color-text-dim);
   border-top: var(--border-default);
 }
@@ -69,12 +69,12 @@
     var(--curve-gap) /
     2
   );
-  border-inline-start: var(--border-width-strong) dashed var(--color-accent);
+  border-inline-start: var(--border-width-thick) dashed var(--color-accent);
 }
 
 .legend {
   display: inline-block;
   width: var(--space-md);
   vertical-align: middle;
-  border-top: var(--border-width-strong) dashed var(--color-accent);
+  border-top: var(--border-width-thick) dashed var(--color-accent);
 }
