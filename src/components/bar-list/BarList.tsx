@@ -1,9 +1,12 @@
-import styles from './BarList.module.css';
+import styles from "./BarList.module.css";
 
 export interface BarRow {
   label: string;
   value: number;
-  /** The part of the value drawn in the warning color, such as points above the trained rate. */
+  /**
+   * The part of the value drawn in the warning color, such as points above the
+   * trained rate.
+   */
   highlight?: number;
 }
 
@@ -17,7 +20,7 @@ const FULL_WIDTH_PERCENT = 100;
 
 const percentOf = (part: number, whole: number): string => {
   if (whole === 0) {
-    return '0%';
+    return "0%";
   }
 
   return `${(part / whole) * FULL_WIDTH_PERCENT}%`;

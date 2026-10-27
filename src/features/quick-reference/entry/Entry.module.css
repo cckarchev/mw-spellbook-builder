@@ -1,4 +1,5 @@
-/* Lands under the sticky toolbar when jumped to, and flashes so the eye finds it. */
+/* Lands under the sticky toolbar when jumped to, and flashes so the eye finds
+   it. */
 .entry {
   padding-block: var(--space-sm);
   scroll-margin-top: var(--reference-toolbar-height);
@@ -18,7 +19,8 @@
   animation: flash var(--duration-flash) ease-out;
 }
 
-/* The name on the left, the copy button on the right, centered on the name's first line. */
+/* The name on the left, the copy button on the right, centered on the name's
+   first line. */
 .term {
   display: flex;
   gap: var(--space-xs);
@@ -29,14 +31,15 @@
   color: var(--color-text-strong);
 }
 
-/* Reads as the heading it is; the # shows where the link is on hover or keyboard focus. */
+/* Reads as the heading it is; the # shows where the link is on hover or
+   keyboard focus. */
 .anchor {
   color: inherit;
   text-decoration: none;
 }
 
 .anchor::after {
-  content: ' #' / '';
+  content: " #" / "";
   color: var(--color-text-dim);
   opacity: 0;
   transition: opacity var(--duration-fast);
@@ -52,15 +55,16 @@
   outline-offset: var(--focus-ring-offset);
 }
 
-/* Always there, since phones have no hover, but dim so the list stays calm. Pulled up and to the
-   right so its touch area does not push the name down. */
+/* Always there, since phones have no hover, but dim so the list stays calm.
+   Pulled up and to the right so its touch area does not push the name down. */
 .copy {
   display: grid;
   flex: none;
   place-items: center;
   width: var(--touch-target);
   height: var(--touch-target);
-  margin: calc(-1 * var(--space-sm)) calc(-1 * var(--space-sm)) calc(-1 * var(--space-sm)) 0;
+  margin: calc(-1 * var(--space-sm)) calc(-1 * var(--space-sm))
+    calc(-1 * var(--space-sm)) 0;
   font-size: var(--font-size-md);
   color: var(--color-text-dim);
   background: none;

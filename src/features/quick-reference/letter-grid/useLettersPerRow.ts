@@ -1,8 +1,9 @@
-import { useLayoutEffect, useState } from 'react';
-import { lettersPerRow } from '@/core/reference/lettersPerRow';
+import { useLayoutEffect, useState } from "react";
+import { lettersPerRow } from "@/core/reference/lettersPerRow";
 
-// Read from the stylesheet: the narrowest a letter button gets, and the space between buttons.
-const CELL_PROPERTY = '--touch-target';
+// Read from the stylesheet: the narrowest a letter button gets, and the space
+// between buttons.
+const CELL_PROPERTY = "--touch-target";
 const NO_LENGTH = 0;
 
 const lengthOf = (value: string): number => {
@@ -12,8 +13,9 @@ const lengthOf = (value: string): number => {
 };
 
 /**
- * How many letters go in each row of the element given to `ref`, so the rows come out even at
- * its current width. Measured before paint, so the grid never shows uneven rows first.
+ * How many letters go in each row of the element given to `ref`, so the rows
+ * come out even at its current width. Measured before paint, so the grid never
+ * shows uneven rows first.
  */
 export const useLettersPerRow = (count: number) => {
   const [element, setElement] = useState<HTMLElement | null>(null);

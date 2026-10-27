@@ -1,7 +1,11 @@
-import type { Spellbook } from './types';
+import type { Spellbook } from "./types";
 
-/** Whether a spellbook holds at least one card; a spellbook with only a mage counts as empty. */
-export const hasCards = (spellbook: Spellbook): boolean => Object.keys(spellbook.counts).length > 0;
+/**
+ * Whether a spellbook holds at least one card; a spellbook with only a mage
+ * counts as empty.
+ */
+export const hasCards = (spellbook: Spellbook): boolean =>
+  Object.keys(spellbook.counts).length > 0;
 
 /** Copies of every card in the spellbook. */
 export const copyCount = (spellbook: Spellbook): number =>
@@ -10,19 +14,26 @@ export const copyCount = (spellbook: Spellbook): number =>
 /** The same mage and copies, in any order. */
 export const sameSpellbook = (first: Spellbook, second: Spellbook): boolean => {
   const firstEntries = Object.entries(first.counts);
-  const sameCardCount = firstEntries.length === Object.keys(second.counts).length;
-  const sameCopies = firstEntries.every(([cardId, count]) => second.counts[cardId] === count);
+  const sameCardCount =
+    firstEntries.length === Object.keys(second.counts).length;
+  const sameCopies = firstEntries.every(
+    ([cardId, count]) => second.counts[cardId] === count,
+  );
 
   return first.mageId === second.mageId && sameCardCount && sameCopies;
 };
 
 /** A new spellbook for the mage, with no cards yet. */
-export const emptySpellbook = (mageId: string): Spellbook => ({ mageId, counts: {} });
+export const emptySpellbook = (mageId: string): Spellbook => ({
+  mageId,
+  counts: {},
+});
 
 /**
- * Whether the spellbook would lose work if replaced. `saved` is the saved copy of the spellbook's
- * name, null when it has no name: then any card counts as unsaved work. `official` is the mage's
- * official spellbook, if any: a spellbook equal to it loses nothing, since it can be loaded again.
+ * Whether the spellbook would lose work if replaced. `saved` is the saved copy
+ * of the spellbook's name, null when it has no name: then any card counts as
+ * unsaved work. `official` is the mage's official spellbook, if any: a
+ * spellbook equal to it loses nothing, since it can be loaded again.
  */
 export const hasUnsavedChanges = (
   spellbook: Spellbook,

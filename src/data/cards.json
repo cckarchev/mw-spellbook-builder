@@ -1506,7 +1506,13 @@
         "level": 3
       }
     ],
-    "traits": ["Spawnpoint", "Zone Exclusive", "Flame +2", "Epic", "Warlord Only"],
+    "traits": [
+      "Spawnpoint",
+      "Zone Exclusive",
+      "Flame +2",
+      "Epic",
+      "Warlord Only"
+    ],
     "onlyFor": "Warlord",
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
@@ -2004,7 +2010,13 @@
         "level": 1
       }
     ],
-    "traits": ["Regenerate 2", "Living", "Flame +2", "Hydro Immunity", "Extendable"],
+    "traits": [
+      "Regenerate 2",
+      "Living",
+      "Flame +2",
+      "Hydro Immunity",
+      "Extendable"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -5804,7 +5816,14 @@
         "level": 5
       }
     ],
-    "traits": ["Slow", "Burnproof", "Lightning -2", "Tough -2", "Nonliving", "Unmovable"],
+    "traits": [
+      "Slow",
+      "Burnproof",
+      "Lightning -2",
+      "Tough -2",
+      "Nonliving",
+      "Unmovable"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
@@ -6477,7 +6496,14 @@
         "level": 2
       }
     ],
-    "traits": ["Zone Exclusive", "Regenerate 2", "Unique", "Flame +2", "Hydro Immunity", "Living"],
+    "traits": [
+      "Zone Exclusive",
+      "Regenerate 2",
+      "Unique",
+      "Flame +2",
+      "Hydro Immunity",
+      "Living"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -6828,7 +6854,13 @@
         "level": 6
       }
     ],
-    "traits": ["Upkeep +1", "Hydro +2", "Incorporeal", "Nonliving", "Flame Immunity"],
+    "traits": [
+      "Upkeep +1",
+      "Hydro +2",
+      "Incorporeal",
+      "Nonliving",
+      "Flame Immunity"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Lost Grimoire",
@@ -7584,7 +7616,13 @@
         "level": 2
       }
     ],
-    "traits": ["Aegis 2", "Nonliving", "Dissipate 5", "Forcemaster Only", "Unique"],
+    "traits": [
+      "Aegis 2",
+      "Nonliving",
+      "Dissipate 5",
+      "Forcemaster Only",
+      "Unique"
+    ],
     "onlyFor": "Forcemaster",
     "format": "academy",
     "expansion": "Core Set",
@@ -8144,7 +8182,13 @@
         "level": 1
       }
     ],
-    "traits": ["Legendary", "Lightning Immunity", "Psychic Immunity", "Incorporeal", "Nonliving"],
+    "traits": [
+      "Legendary",
+      "Lightning Immunity",
+      "Psychic Immunity",
+      "Incorporeal",
+      "Nonliving"
+    ],
     "onlyFor": null,
     "format": "academy",
     "expansion": "Mage Wars Academy: Elementalist",
@@ -8279,7 +8323,13 @@
         "level": 6
       }
     ],
-    "traits": ["Zone Exclusive", "Flame Immunity", "Hydro 3", "Epic", "Warlock Only"],
+    "traits": [
+      "Zone Exclusive",
+      "Flame Immunity",
+      "Hydro 3",
+      "Epic",
+      "Warlock Only"
+    ],
     "onlyFor": "Warlock",
     "format": "arena",
     "expansion": "Core Set",
@@ -10258,7 +10308,13 @@
         "level": 1
       }
     ],
-    "traits": ["Melting 1", "Nonliving", "Frost Immunity", "Psychic Immunity", "Flame +2"],
+    "traits": [
+      "Melting 1",
+      "Nonliving",
+      "Frost Immunity",
+      "Psychic Immunity",
+      "Flame +2"
+    ],
     "onlyFor": null,
     "format": "academy",
     "expansion": "Core Set",
@@ -10536,7 +10592,14 @@
         "level": 5
       }
     ],
-    "traits": ["Upkeep +1", "Invisible", "Incorporeal", "Nonliving", "Forcemaster Only", "Epic"],
+    "traits": [
+      "Upkeep +1",
+      "Invisible",
+      "Incorporeal",
+      "Nonliving",
+      "Forcemaster Only",
+      "Epic"
+    ],
     "onlyFor": "Forcemaster",
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
@@ -10563,7 +10626,14 @@
         "level": 3
       }
     ],
-    "traits": ["Slow", "Unmovable", "Lightning +2", "Burnproof", "Nonliving", "Psychic Immunity"],
+    "traits": [
+      "Slow",
+      "Unmovable",
+      "Lightning +2",
+      "Burnproof",
+      "Nonliving",
+      "Psychic Immunity"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Forcemaster vs Warlord",
@@ -12199,7 +12269,14 @@
         "level": 2
       }
     ],
-    "traits": ["Armor -X", "Frost +X", "Nonliving", "Psychic Immunity", "Slow", "Uncontainable"],
+    "traits": [
+      "Armor -X",
+      "Frost +X",
+      "Nonliving",
+      "Psychic Immunity",
+      "Slow",
+      "Uncontainable"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Lost Grimoire",
@@ -12392,7 +12469,13 @@
         "level": 1
       }
     ],
-    "traits": ["Zone Exclusive", "Regenerate 2", "Living", "Flame +2", "Hydro Immunity"],
+    "traits": [
+      "Zone Exclusive",
+      "Regenerate 2",
+      "Living",
+      "Flame +2",
+      "Hydro Immunity"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -13110,7 +13193,14 @@
         "level": 3
       }
     ],
-    "traits": ["Aegis 1", "Flying", "Melee +X", "Regenerate X", "Legendary", "Holy Mage Only"],
+    "traits": [
+      "Aegis 1",
+      "Flying",
+      "Melee +X",
+      "Regenerate X",
+      "Legendary",
+      "Holy Mage Only"
+    ],
     "onlyFor": "Holy Mage",
     "format": "arena",
     "expansion": "Paladin vs Siren",
@@ -13353,7 +13443,13 @@
         "level": 2
       }
     ],
-    "traits": ["Regenerate 2", "Living", "Legendary", "Flame +2", "Hydro Immunity"],
+    "traits": [
+      "Regenerate 2",
+      "Living",
+      "Legendary",
+      "Flame +2",
+      "Hydro Immunity"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -14349,7 +14445,13 @@
         "level": 4
       }
     ],
-    "traits": ["Spawnpoint", "Zone Exclusive", "Incorporeal", "Epic", "Warlock Only"],
+    "traits": [
+      "Spawnpoint",
+      "Zone Exclusive",
+      "Incorporeal",
+      "Epic",
+      "Warlock Only"
+    ],
     "onlyFor": "Warlock",
     "format": "arena",
     "expansion": "Core Set",
@@ -15251,7 +15353,13 @@
         "level": 3
       }
     ],
-    "traits": ["Rooted", "Uproot 1", "Regenerate 1", "Hydro Immunity", "Flame +2"],
+    "traits": [
+      "Rooted",
+      "Uproot 1",
+      "Regenerate 1",
+      "Hydro Immunity",
+      "Flame +2"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -17015,7 +17123,14 @@
         "level": 1
       }
     ],
-    "traits": ["Spawnpoint", "Regenerate 2", "Living", "Flame +2", "Hydro Immunity", "Druid Only"],
+    "traits": [
+      "Spawnpoint",
+      "Regenerate 2",
+      "Living",
+      "Flame +2",
+      "Hydro Immunity",
+      "Druid Only"
+    ],
     "onlyFor": "Druid",
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -19454,7 +19569,14 @@
         "level": 7
       }
     ],
-    "traits": ["Unstoppable", "Burnproof", "Psychic Immunity", "Nonliving", "Warlord Only", "Epic"],
+    "traits": [
+      "Unstoppable",
+      "Burnproof",
+      "Psychic Immunity",
+      "Nonliving",
+      "Warlord Only",
+      "Epic"
+    ],
     "onlyFor": "Warlord",
     "format": "arena",
     "expansion": "Forged in Fire",
@@ -20330,7 +20452,13 @@
         "level": 3
       }
     ],
-    "traits": ["Hydro Immunity", "Nonliving", "Resilient", "Burnproof", "Frost +2"],
+    "traits": [
+      "Hydro Immunity",
+      "Nonliving",
+      "Resilient",
+      "Burnproof",
+      "Frost +2"
+    ],
     "onlyFor": null,
     "format": "academy",
     "expansion": "Core Set",
@@ -21597,7 +21725,12 @@
         "level": 1
       }
     ],
-    "traits": ["Extendable", "Lightning Immunity", "Flame Immunity", "Hydro +2"],
+    "traits": [
+      "Extendable",
+      "Lightning Immunity",
+      "Flame Immunity",
+      "Hydro +2"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Forged in Fire",
@@ -21786,7 +21919,13 @@
         "level": 1
       }
     ],
-    "traits": ["Regenerate 2", "Living", "Flame +2", "Hydro Immunity", "Extendable"],
+    "traits": [
+      "Regenerate 2",
+      "Living",
+      "Flame +2",
+      "Hydro Immunity",
+      "Extendable"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -21902,7 +22041,14 @@
         "level": 6
       }
     ],
-    "traits": ["Burnproof", "Frost +3", "Hydro Immunity", "Nonliving", "Resilient", "Unstoppable"],
+    "traits": [
+      "Burnproof",
+      "Frost +3",
+      "Hydro Immunity",
+      "Nonliving",
+      "Resilient",
+      "Unstoppable"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Paladin vs Siren",
@@ -22562,7 +22708,13 @@
         "level": 3
       }
     ],
-    "traits": ["Bloodthirsty +2", "Lumbering", "Resilient", "Psychic Immunity", "Nonliving"],
+    "traits": [
+      "Bloodthirsty +2",
+      "Lumbering",
+      "Resilient",
+      "Psychic Immunity",
+      "Nonliving"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Core Set",
@@ -22589,7 +22741,13 @@
         "level": 1
       }
     ],
-    "traits": ["Bloodthirsty +1", "Slow", "Resilient", "Psychic Immunity", "Nonliving"],
+    "traits": [
+      "Bloodthirsty +1",
+      "Slow",
+      "Resilient",
+      "Psychic Immunity",
+      "Nonliving"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",
@@ -22643,7 +22801,13 @@
         "level": 2
       }
     ],
-    "traits": ["Bloodthirsty +1", "Lumbering", "Resilient", "Psychic Immunity", "Nonliving"],
+    "traits": [
+      "Bloodthirsty +1",
+      "Lumbering",
+      "Resilient",
+      "Psychic Immunity",
+      "Nonliving"
+    ],
     "onlyFor": null,
     "format": "arena",
     "expansion": "Druid vs Necromancer",

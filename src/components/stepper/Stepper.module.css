@@ -14,7 +14,7 @@
   line-height: var(--leading-none);
 }
 
-.step:hover:not(:disabled, [aria-disabled='true']) {
+.step:hover:not(:disabled, [aria-disabled="true"]) {
   border-color: var(--color-border-hover);
 }
 
@@ -24,7 +24,7 @@
 }
 
 .step:disabled,
-.step[aria-disabled='true'] {
+.step[aria-disabled="true"] {
   color: var(--color-disabled);
   border-color: var(--color-border-disabled);
   cursor: not-allowed;

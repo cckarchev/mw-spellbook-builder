@@ -1,7 +1,10 @@
 const ICON_SIZE = 24;
 const VIEW_BOX = `0 0 ${ICON_SIZE} ${ICON_SIZE}`;
 
-/** A card with text lines: the stats card. Takes the text color and the font size. */
+/**
+ * A card with text lines: the stats card. Takes the text color and the font
+ * size.
+ */
 export const StatsIcon = () => (
   <svg
     width="1em"

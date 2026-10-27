@@ -1,4 +1,4 @@
-import { cardCode } from '@/core/catalog/cardImage';
+import { cardCode } from "@/core/catalog/cardImage";
 import {
   type Card,
   type CardType,
@@ -6,31 +6,32 @@ import {
   SCHOOLS,
   type School,
   type SchoolPart,
-} from '@/core/rules/types';
-import type { RawCard } from './readModule';
+} from "@/core/rules/types";
+import type { RawCard } from "./readModule";
 
-const UNKNOWN_EXPANSION = 'Unknown';
-const MAGE_SUBTYPE = 'Mage';
+const UNKNOWN_EXPANSION = "Unknown";
+const MAGE_SUBTYPE = "Mage";
 
 const TYPES = new Map<string, CardType>([
-  ['Attack', 'Attack'],
-  ['Conjuration', 'Conjuration'],
-  ['Conjuration-Wall', 'Conjuration'],
-  ['Conjuration-Terrain', 'Conjuration'],
+  ["Attack", "Attack"],
+  ["Conjuration", "Conjuration"],
+  ["Conjuration-Wall", "Conjuration"],
+  ["Conjuration-Terrain", "Conjuration"],
   // Misspelled in the module data.
-  ['Conjuration-Terrrain', 'Conjuration'],
-  ['Creature', 'Creature'],
-  ['Enchantment', 'Enchantment'],
-  ['Equipment', 'Equipment'],
-  ['Incantation', 'Incantation'],
+  ["Conjuration-Terrrain", "Conjuration"],
+  ["Creature", "Creature"],
+  ["Enchantment", "Enchantment"],
+  ["Equipment", "Equipment"],
+  ["Incantation", "Incantation"],
 ]);
 
-const AND_SEPARATOR = '+';
-const OR_SEPARATOR = '/';
+const AND_SEPARATOR = "+";
+const OR_SEPARATOR = "/";
 const SCHOOL_SEPARATOR_PATTERN = /[+/]/;
-// Bullets separate traits, but some cards break the line between two traits instead.
+// Bullets separate traits, but some cards break the line between two traits
+// instead.
 const TRAIT_SEPARATOR = /[•\n]/;
-const SUBTYPE_SEPARATOR = ',';
+const SUBTYPE_SEPARATOR = ",";
 const ONLY_TRAIT_PATTERN = /^(.+) Only$/;
 
 const splitList = (text: string, separator: string | RegExp): string[] =>
@@ -39,9 +40,13 @@ const splitList = (text: string, separator: string | RegExp): string[] =>
     .map((item) => item.trim())
     .filter((item) => item.length > 0);
 
-const isSchool = (name: string): name is School => (SCHOOLS as readonly string[]).includes(name);
+const isSchool = (name: string): name is School =>
+  (SCHOOLS as readonly string[]).includes(name);
 
-const readSchools = (schoolText: string, levelText: string): SchoolPart[] | null => {
+const readSchools = (
+  schoolText: string,
+  levelText: string,
+): SchoolPart[] | null => {
   const names = splitList(schoolText, SCHOOL_SEPARATOR_PATTERN);
   const levels = splitList(levelText, SCHOOL_SEPARATOR_PATTERN).map(Number);
   const hasParts = names.length > 0;
@@ -71,29 +76,33 @@ const readOnlyFor = (traits: readonly string[]): string | null => {
   return null;
 };
 
-/** A spell card for the catalog, or null for anything that does not go in a spellbook. */
+/**
+ * A spell card for the catalog, or null for anything that does not go in a
+ * spellbook.
+ */
 export const normalizeCard = (
   raw: RawCard,
   format: Format,
   expansion: string | undefined,
 ): Card | null => {
-  const property = (name: string): string => raw.properties[name] ?? '';
-  const type = TYPES.get(property('Type'));
-  const subtypes = splitList(property('Subtype'), SUBTYPE_SEPARATOR);
+  const property = (name: string): string => raw.properties[name] ?? "";
+  const type = TYPES.get(property("Type"));
+  const subtypes = splitList(property("Subtype"), SUBTYPE_SEPARATOR);
 
   if (!type || subtypes.includes(MAGE_SUBTYPE)) {
     return null;
   }
 
-  const schoolText = property('School');
-  const schools = readSchools(schoolText, property('Level'));
+  const schoolText = property("School");
+  const schools = readSchools(schoolText, property("Level"));
 
   if (!schools) {
     return null;
   }
 
-  const isOrCard = schoolText.includes(OR_SEPARATOR) && !schoolText.includes(AND_SEPARATOR);
-  const traits = splitList(property('Traits'), TRAIT_SEPARATOR);
+  const isOrCard =
+    schoolText.includes(OR_SEPARATOR) && !schoolText.includes(AND_SEPARATOR);
+  const traits = splitList(property("Traits"), TRAIT_SEPARATOR);
 
   return {
     id: raw.id,
@@ -101,19 +110,19 @@ export const normalizeCard = (
     name: raw.name,
     type,
     subtypes,
-    schoolMode: isOrCard ? 'or' : 'and',
+    schoolMode: isOrCard ? "or" : "and",
     schools,
     traits,
     onlyFor: readOnlyFor(traits),
     format,
     expansion: expansion ?? UNKNOWN_EXPANSION,
-    manaCost: property('Cost'),
-    action: property('Action'),
-    range: property('Range'),
-    target: property('Target'),
-    effect: property('Effect'),
-    attackBar: property('Attack Bar'),
-    abilityBar: property('Ability Bar'),
+    manaCost: property("Cost"),
+    action: property("Action"),
+    range: property("Range"),
+    target: property("Target"),
+    effect: property("Effect"),
+    attackBar: property("Attack Bar"),
+    abilityBar: property("Ability Bar"),
     image: null,
     landscape: false,
   };

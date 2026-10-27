@@ -48,7 +48,8 @@
   line-height: var(--leading-tight);
 }
 
-/* Pulled into the panel padding, so the X sits in the corner without pushing the title down. */
+/* Pulled into the panel padding, so the X sits in the corner without pushing
+   the title down. */
 .close {
   display: grid;
   flex: none;

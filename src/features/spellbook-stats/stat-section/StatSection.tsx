@@ -1,5 +1,5 @@
-import { type ReactNode, useId } from 'react';
-import styles from './StatSection.module.css';
+import { type ReactNode, useId } from "react";
+import styles from "./StatSection.module.css";
 
 interface StatSectionProps {
   title: string;

@@ -1,14 +1,18 @@
-import { CURRENT_MAGE_KEY, DRAFT_PREFIX, LEGACY_SPELLBOOK_KEY } from '@/core/persistence/drafts';
-import { loadSavedSpellbook } from '@/core/persistence/savedSpellbooks';
-import type { Spellbook } from '@/core/rules/types';
-import { canAddCopy } from '@/core/rules/validateSpellbook';
-import { encodeSpellbook } from '@/core/share-link/spellbookCodec';
-import { cards, magesById } from '@/data/catalog';
-import { createSpellbookStore } from './useSpellbookStore';
+import {
+  CURRENT_MAGE_KEY,
+  DRAFT_PREFIX,
+  LEGACY_SPELLBOOK_KEY,
+} from "@/core/persistence/drafts";
+import { loadSavedSpellbook } from "@/core/persistence/savedSpellbooks";
+import type { Spellbook } from "@/core/rules/types";
+import { canAddCopy } from "@/core/rules/validateSpellbook";
+import { encodeSpellbook } from "@/core/share-link/spellbookCodec";
+import { cards, magesById } from "@/data/catalog";
+import { createSpellbookStore } from "./useSpellbookStore";
 
-const WIZARD_ID = 'wizard';
-const WARLOCK_ID = 'warlock';
-const NAME = 'Tourney';
+const WIZARD_ID = "wizard";
+const WARLOCK_ID = "warlock";
+const NAME = "Tourney";
 const ADD_ATTEMPTS = 10;
 const LOADED_COPIES = 2;
 
@@ -38,8 +42,8 @@ beforeEach(() => {
   localStorage.clear();
 });
 
-describe('useSpellbookStore copies', () => {
-  it('adds copies until canAddCopy is false, then ignores addCopy', () => {
+describe("useSpellbookStore copies", () => {
+  it("adds copies until canAddCopy is false, then ignores addCopy", () => {
     const store = createWizardStore();
     const wizard = magesById.get(WIZARD_ID);
 
@@ -55,7 +59,7 @@ describe('useSpellbookStore copies', () => {
     expect(wizard && canAddCopy(spellbook, anyMageCard, wizard)).toBe(false);
   });
 
-  it('ignores addCopy when no mage is chosen', () => {
+  it("ignores addCopy when no mage is chosen", () => {
     const store = createSpellbookStore();
 
     store.getState().addCopy(anyMageCard.id);
@@ -63,7 +67,7 @@ describe('useSpellbookStore copies', () => {
     expect(store.getState().spellbook.counts).toEqual({});
   });
 
-  it('removeCopy at 1 deletes the key', () => {
+  it("removeCopy at 1 deletes the key", () => {
     const store = createWizardStore();
 
     store.getState().addCopy(anyMageCard.id);
@@ -73,12 +77,14 @@ describe('useSpellbookStore copies', () => {
   });
 });
 
-describe('useSpellbookStore spellbook changes', () => {
-  it('starts empty', () => {
-    expect(createSpellbookStore().getState().spellbook).toEqual(EMPTY_SPELLBOOK);
+describe("useSpellbookStore spellbook changes", () => {
+  it("starts empty", () => {
+    expect(createSpellbookStore().getState().spellbook).toEqual(
+      EMPTY_SPELLBOOK,
+    );
   });
 
-  it('loadSpellbook replaces the spellbook and its name', () => {
+  it("loadSpellbook replaces the spellbook and its name", () => {
     const store = createSpellbookStore();
     const loaded: Spellbook = {
       mageId: WIZARD_ID,
@@ -95,7 +101,7 @@ describe('useSpellbookStore spellbook changes', () => {
     expect(store.getState().name).toBeNull();
   });
 
-  it('save stores the spellbook under the name, names it, and bumps the saved revision', () => {
+  it("save stores the spellbook under the name, names it, and bumps the saved revision", () => {
     const store = createWizardStore();
 
     store.getState().addCopy(anyMageCard.id);
@@ -109,15 +115,15 @@ describe('useSpellbookStore spellbook changes', () => {
     expect(store.getState().savedRevision).toBe(savedRevision + 1);
   });
 
-  it('save reports a failed write and leaves the name and saved revision alone', () => {
+  it("save reports a failed write and leaves the name and saved revision alone", () => {
     const store = createWizardStore();
 
     store.getState().addCopy(anyMageCard.id);
 
     const { savedRevision } = store.getState();
 
-    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
-      throw new Error('quota');
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("quota");
     });
 
     const saved = store.getState().save(NAME);
@@ -129,19 +135,22 @@ describe('useSpellbookStore spellbook changes', () => {
     expect(store.getState().savedRevision).toBe(savedRevision);
   });
 
-  it('clear empties the spellbook, keeps the mage and drops the name', () => {
+  it("clear empties the spellbook, keeps the mage and drops the name", () => {
     const store = createWizardStore();
 
     store.getState().addCopy(anyMageCard.id);
     store.getState().save(NAME);
     store.getState().clear();
 
-    expect(store.getState().spellbook).toEqual({ mageId: WIZARD_ID, counts: {} });
+    expect(store.getState().spellbook).toEqual({
+      mageId: WIZARD_ID,
+      counts: {},
+    });
     expect(store.getState().name).toBeNull();
   });
 });
 
-describe('useSpellbookStore openMage', () => {
+describe("useSpellbookStore openMage", () => {
   it("keeps the previous mage's spellbook as its draft and restores it on return", () => {
     const store = createWizardStore();
 
@@ -152,7 +161,10 @@ describe('useSpellbookStore openMage', () => {
 
     store.getState().openMage(WARLOCK_ID);
 
-    expect(store.getState().spellbook).toEqual({ mageId: WARLOCK_ID, counts: {} });
+    expect(store.getState().spellbook).toEqual({
+      mageId: WARLOCK_ID,
+      counts: {},
+    });
     expect(store.getState().name).toBeNull();
 
     store.getState().openMage(WIZARD_ID);
@@ -161,7 +173,7 @@ describe('useSpellbookStore openMage', () => {
     expect(store.getState().name).toBe(NAME);
   });
 
-  it('keeps the spellbook when the mage is the same', () => {
+  it("keeps the spellbook when the mage is the same", () => {
     const store = createWizardStore();
 
     store.getState().addCopy(anyMageCard.id);
@@ -174,7 +186,7 @@ describe('useSpellbookStore openMage', () => {
   });
 });
 
-describe('useSpellbookStore persistence', () => {
+describe("useSpellbookStore persistence", () => {
   it("survives a store re-create through the mage's draft", () => {
     const first = createWizardStore();
 
@@ -187,19 +199,24 @@ describe('useSpellbookStore persistence', () => {
     expect(second.getState().name).toBe(NAME);
   });
 
-  it('starts from the spellbook kept before there was a draft per mage', () => {
-    const legacy: Spellbook = { mageId: WIZARD_ID, counts: { [anyMageCard.id]: 1 } };
+  it("starts from the spellbook kept before there was a draft per mage", () => {
+    const legacy: Spellbook = {
+      mageId: WIZARD_ID,
+      counts: { [anyMageCard.id]: 1 },
+    };
 
     localStorage.setItem(LEGACY_SPELLBOOK_KEY, encodeSpellbook(legacy));
 
     expect(createSpellbookStore().getState().spellbook).toEqual(legacy);
   });
 
-  it('starts empty when storage holds garbage', () => {
-    localStorage.setItem(LEGACY_SPELLBOOK_KEY, 'not a spellbook');
+  it("starts empty when storage holds garbage", () => {
+    localStorage.setItem(LEGACY_SPELLBOOK_KEY, "not a spellbook");
     localStorage.setItem(CURRENT_MAGE_KEY, WIZARD_ID);
-    localStorage.setItem(DRAFT_PREFIX + WIZARD_ID, 'not a draft');
+    localStorage.setItem(DRAFT_PREFIX + WIZARD_ID, "not a draft");
 
-    expect(createSpellbookStore().getState().spellbook).toEqual(EMPTY_SPELLBOOK);
+    expect(createSpellbookStore().getState().spellbook).toEqual(
+      EMPTY_SPELLBOOK,
+    );
   });
 });

@@ -1,8 +1,8 @@
-@import './tokens.css';
+@import "./tokens.css";
 
 @font-face {
-  font-family: 'Big Noodle Titling';
-  src: url('/fonts/big-noodle-titling.woff2') format('woff2');
+  font-family: "Big Noodle Titling";
+  src: url("/fonts/big-noodle-titling.woff2") format("woff2");
   font-display: swap;
 }
 
@@ -25,7 +25,8 @@ body {
   min-height: 100dvh;
 }
 
-/* Browsers give buttons their own smaller font size; take the surrounding one. */
+/* Browsers give buttons their own smaller font size; take the surrounding
+   one. */
 button {
   font-family: inherit;
   font-size: inherit;

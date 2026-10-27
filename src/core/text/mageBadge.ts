@@ -1,10 +1,13 @@
-import { plural } from './plural';
+import { plural } from "./plural";
 
-const DRAFT_LABEL = 'Draft';
-const DESCRIPTION_SEPARATOR = ', ';
+const DRAFT_LABEL = "Draft";
+const DESCRIPTION_SEPARATOR = ", ";
 
 export interface MageBadge {
-  /** How many spellbooks the mage has saved; with none, the badge marks the draft instead. */
+  /**
+   * How many spellbooks the mage has saved; with none, the badge marks the
+   * draft instead.
+   */
   savedCount: number;
   /** What the badge means, for screen readers: "Draft, 3 saved spellbooks". */
   description: string;
@@ -13,8 +16,14 @@ export interface MageBadge {
   hasSaved: boolean;
 }
 
-/** The badge on a mage tile: how many spellbooks the mage has saved, and whether it has a draft. */
-export const mageBadge = (hasDraft: boolean, savedCount: number): MageBadge | null => {
+/**
+ * The badge on a mage tile: how many spellbooks the mage has saved, and whether
+ * it has a draft.
+ */
+export const mageBadge = (
+  hasDraft: boolean,
+  savedCount: number,
+): MageBadge | null => {
   const hasSaved = savedCount > 0;
 
   if (!(hasDraft || hasSaved)) {
@@ -28,7 +37,7 @@ export const mageBadge = (hasDraft: boolean, savedCount: number): MageBadge | nu
   }
 
   if (hasSaved) {
-    parts.push(plural(savedCount, 'saved spellbook', 'saved spellbooks'));
+    parts.push(plural(savedCount, "saved spellbook", "saved spellbooks"));
   }
 
   return {

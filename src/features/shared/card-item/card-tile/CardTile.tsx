@@ -1,13 +1,28 @@
-import { memo } from 'react';
-import { CardStepper } from '../CardStepper';
-import type { CardEntryProps } from '../cardEntryProps';
-import { ZoomableImage } from '../zoomable-image/ZoomableImage';
-import styles from './CardTile.module.css';
+import { memo } from "react";
+import { CardStepper } from "../CardStepper";
+import type { CardEntryProps } from "../cardEntryProps";
+import { ZoomableImage } from "../zoomable-image/ZoomableImage";
+import styles from "./CardTile.module.css";
 
-/** A card image with its points and a stepper, for the grid view. Tapping the image enlarges it. */
+/**
+ * A card image with its points and a stepper, for the grid view. Tapping the
+ * image enlarges it.
+ */
 export const CardTile = memo(
-  ({ card, count, points, blockedReason, problem = null, onAdd, onRemove }: CardEntryProps) => (
-    <li className={styles.tile} data-in-spellbook={count > 0} data-problem={problem !== null}>
+  ({
+    card,
+    count,
+    points,
+    blockedReason,
+    problem = null,
+    onAdd,
+    onRemove,
+  }: CardEntryProps) => (
+    <li
+      className={styles.tile}
+      data-in-spellbook={count > 0}
+      data-problem={problem !== null}
+    >
       <div className={styles.art} data-landscape={card.landscape}>
         <div className={styles.frame}>
           {card.image ? (
@@ -30,7 +45,9 @@ export const CardTile = memo(
         onAdd={onAdd}
         onRemove={onRemove}
       />
-      {problem === null ? null : <span className={styles.problem}>{problem}</span>}
+      {problem === null ? null : (
+        <span className={styles.problem}>{problem}</span>
+      )}
     </li>
   ),
 );

@@ -1,14 +1,19 @@
-import { useState } from 'react';
-import { LONG_TOAST_DURATION_MS, useToastStore } from '@/components/toast/useToastStore';
-import { loadSavedSpellbook } from '@/core/persistence/savedSpellbooks';
-import { useSpellbookStore } from '@/store/useSpellbookStore';
+import { useState } from "react";
+import {
+  LONG_TOAST_DURATION_MS,
+  useToastStore,
+} from "@/components/toast/useToastStore";
+import { loadSavedSpellbook } from "@/core/persistence/savedSpellbooks";
+import { useSpellbookStore } from "@/store/useSpellbookStore";
 
-const EMPTY_NAME_ERROR = 'Enter a name for this spellbook.';
-const SAVE_FAILED = 'Could not save. This browser is not letting the site store data.';
+const EMPTY_NAME_ERROR = "Enter a name for this spellbook.";
+const SAVE_FAILED =
+  "Could not save. This browser is not letting the site store data.";
 
 /**
- * The Save dialog's state: the draft name, its error, and the overwrite question.
- * `onSaved` runs after a save, to close the dialog; a save the browser would not store shows a toast.
+ * The Save dialog's state: the draft name, its error, and the overwrite
+ * question. `onSaved` runs after a save, to close the dialog; a save the
+ * browser would not store shows a toast.
  */
 export const useSaveSpellbook = (onSaved: () => void) => {
   const spellbook = useSpellbookStore((state) => state.spellbook);
@@ -16,7 +21,7 @@ export const useSaveSpellbook = (onSaved: () => void) => {
   const save = useSpellbookStore((state) => state.save);
   const showToast = useToastStore((state) => state.show);
 
-  const [draftName, setDraftName] = useState('');
+  const [draftName, setDraftName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [confirmingOverwrite, setConfirmingOverwrite] = useState(false);
 
@@ -24,7 +29,7 @@ export const useSaveSpellbook = (onSaved: () => void) => {
 
   /** Starts a fresh form from the spellbook's current name. */
   const reset = () => {
-    setDraftName(currentName ?? '');
+    setDraftName(currentName ?? "");
     setError(null);
     setConfirmingOverwrite(false);
   };
@@ -46,15 +51,17 @@ export const useSaveSpellbook = (onSaved: () => void) => {
   };
 
   const requestSave = () => {
-    if (trimmedName === '') {
+    if (trimmedName === "") {
       setError(EMPTY_NAME_ERROR);
 
       return;
     }
 
     const { mageId } = spellbook;
-    const nameTaken = mageId !== null && loadSavedSpellbook(mageId, trimmedName) !== null;
-    // Saving the loaded spellbook under its own name updates it; there is nothing else to lose.
+    const nameTaken =
+      mageId !== null && loadSavedSpellbook(mageId, trimmedName) !== null;
+    // Saving the loaded spellbook under its own name updates it; there is
+    // nothing else to lose.
     const isOwnName = trimmedName === currentName;
 
     if (nameTaken && !isOwnName) {

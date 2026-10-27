@@ -1,4 +1,5 @@
-/* Each group opens with a band, so the name matches and the definition matches read apart. */
+/* Each group opens with a band, so the name matches and the definition matches
+   read apart. */
 .group {
   margin-top: var(--space-lg);
 }

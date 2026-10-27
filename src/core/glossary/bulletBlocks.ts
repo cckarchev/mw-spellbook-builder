@@ -1,6 +1,6 @@
-import type { TextRange } from '@/core/reference/matchRanges';
+import type { TextRange } from "@/core/reference/matchRanges";
 
-const BULLET = '•';
+const BULLET = "•";
 const LEADING_SPACE = /^\s*/;
 const TRAILING_SPACE = /\s*$/;
 
@@ -10,7 +10,10 @@ export interface BulletBlocks {
   items: TextRange[];
 }
 
-/** The range of a piece of text, starting at `start`, without the spaces around it. */
+/**
+ * The range of a piece of text, starting at `start`, without the spaces around
+ * it.
+ */
 const trimmedRange = (piece: string, start: number): TextRange => {
   const leading = piece.match(LEADING_SPACE)?.[0].length ?? 0;
   const trailing = piece.match(TRAILING_SPACE)?.[0].length ?? 0;
@@ -20,8 +23,9 @@ const trimmedRange = (piece: string, start: number): TextRange => {
 };
 
 /**
- * Splits a definition at its "•" bullets, which the Codex runs inline: the text before the first
- * one is the intro, and each one after starts an item. Empty items are dropped.
+ * Splits a definition at its "•" bullets, which the Codex runs inline: the text
+ * before the first one is the intro, and each one after starts an item. Empty
+ * items are dropped.
  */
 export const bulletBlocks = (text: string): BulletBlocks => {
   const ranges: TextRange[] = [];

@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { QUERY_PARAM } from '@/core/routing/referencePath';
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { QUERY_PARAM } from "@/core/routing/referencePath";
 
-const NO_QUERY = '';
+const NO_QUERY = "";
 // Long enough to write the address once per pause in typing, not once per key.
 const WRITE_DELAY_MS = 250;
 
@@ -19,15 +19,19 @@ const searchFor = (query: string): string => {
 };
 
 /**
- * The search as the player types it, kept in the field's own state so no key is lost, and
- * written to the address after a pause so it survives a reload. Each write replaces the history
- * entry, so Back still leaves the Quick reference in one step, and keeps the navigation state,
- * which holds the screen underneath.
+ * The search as the player types it, kept in the field's own state so no key is
+ * lost, and written to the address after a pause so it survives a reload. Each
+ * write replaces the history entry, so Back still leaves the Quick reference in
+ * one step, and keeps the navigation state, which holds the screen underneath.
  */
-export const useReferenceQuery = (): [query: string, setQuery: (next: string) => void] => {
+export const useReferenceQuery = (): [
+  query: string,
+  setQuery: (next: string) => void,
+] => {
   const location = useLocation();
   const navigate = useNavigate();
-  const addressQuery = new URLSearchParams(location.search).get(QUERY_PARAM) ?? NO_QUERY;
+  const addressQuery =
+    new URLSearchParams(location.search).get(QUERY_PARAM) ?? NO_QUERY;
   const [query, setQuery] = useState(addressQuery);
   const { state } = location;
 

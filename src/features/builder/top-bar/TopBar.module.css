@@ -1,0 +1,32 @@
+/*
+ * The summary and the actions share one line when they fit. When they do not,
+ * the actions wrap to a line of their own under the points, at the end.
+ */
+.topBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--space-lg);
+}
+
+/* Starts at its natural width, so the line wraps before the mage name gets cut,
+   then fills the line. */
+.summary {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Save, load and clear, then share, in one row on every tab. */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-inline-start: auto;
+  padding-block-end: var(--space-sm);
+}
+
+.divider {
+  align-self: stretch;
+  margin-inline: var(--space-xxs);
+  border-inline-start: var(--border-default);
+}

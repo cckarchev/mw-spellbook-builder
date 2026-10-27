@@ -1,19 +1,27 @@
-// Makes the white around a scanned card's rounded corners transparent, so the corners look
-// like those of the cards that come cut out. Nothing is cropped: scans are not always straight,
-// and any straight cut deep enough for the corners would eat into the card's border.
+// Makes the white around a scanned card's rounded corners transparent, so the
+// corners look like those of the cards that come cut out. Nothing is cropped:
+// scans are not always straight, and any straight cut deep enough for the
+// corners would eat into the card's border.
 
-import type { CropBox, RawImage } from './whiteFrame';
+import type { CropBox, RawImage } from "./whiteFrame";
 
-/** Each of red, green and blue at least this bright is the white around a corner. */
+/**
+ * Each of red, green and blue at least this bright is the white around a
+ * corner.
+ */
 const CORNER_WHITE_MIN = 240;
 /**
- * The one pixel ring past the white this bright is the soft edge where it meets the card. Only
- * that ring: a corner of light grey stone with no white is the card itself.
+ * The one pixel ring past the white this bright is the soft edge where it meets
+ * the card. Only that ring: a corner of light grey stone with no white is the
+ * card itself.
  */
 const SOFT_EDGE_MIN = 200;
 /** A rounded corner fits in a square of this share of the shorter side. */
 const CORNER_REGION_SHARE = 0.06;
-/** White over more than this share of a corner's square is the art itself, such as a pale sky. */
+/**
+ * White over more than this share of a corner's square is the art itself, such
+ * as a pale sky.
+ */
 const MAX_FILL_SHARE = 0.5;
 
 const ALPHA_INDEX = 3;
@@ -50,13 +58,21 @@ const neighbors = (pixel: Pixel): Pixel[] => [
 ];
 
 const isInRegion = (region: Region, x: number, y: number): boolean =>
-  x >= region.left && x <= region.right && y >= region.top && y <= region.bottom;
+  x >= region.left &&
+  x <= region.right &&
+  y >= region.top &&
+  y <= region.bottom;
 
 /**
- * The pixels of the white reaching in from a corner, as indexes into the image, or none when
- * the white fills too much of the corner's square to be a rounded corner.
+ * The pixels of the white reaching in from a corner, as indexes into the image,
+ * or none when the white fills too much of the corner's square to be a rounded
+ * corner.
  */
-const cornerFill = (image: RawImage, start: Pixel, region: Region): number[] => {
+const cornerFill = (
+  image: RawImage,
+  start: Pixel,
+  region: Region,
+): number[] => {
   const regionWidth = region.right - region.left + 1;
   const regionHeight = region.bottom - region.top + 1;
   const maxFill = regionWidth * regionHeight * MAX_FILL_SHARE;
@@ -101,16 +117,22 @@ const cornerFill = (image: RawImage, start: Pixel, region: Region): number[] => 
   return [...filled, ...softEdge];
 };
 
-/** A copy of the image with the white of each of the box's corners made transparent. */
+/**
+ * A copy of the image with the white of each of the box's corners made
+ * transparent.
+ */
 export const clearWhiteCorners = (image: RawImage, box: CropBox): RawImage => {
   const hasAlpha = image.channels > ALPHA_INDEX;
 
   if (!hasAlpha) {
-    throw new Error('clearWhiteCorners needs an image with an alpha channel');
+    throw new Error("clearWhiteCorners needs an image with an alpha channel");
   }
 
   const shorterSide = Math.min(box.width, box.height);
-  const regionSize = Math.max(MIN_REGION, Math.round(shorterSide * CORNER_REGION_SHARE));
+  const regionSize = Math.max(
+    MIN_REGION,
+    Math.round(shorterSide * CORNER_REGION_SHARE),
+  );
   const reach = regionSize - 1;
   const right = box.left + box.width - 1;
   const bottom = box.top + box.height - 1;
@@ -122,7 +144,10 @@ export const clearWhiteCorners = (image: RawImage, box: CropBox): RawImage => {
   const corners = [
     { start: { x: box.left, y: box.top }, region: { ...leftEdge, ...topEdge } },
     { start: { x: right, y: box.top }, region: { ...rightEdge, ...topEdge } },
-    { start: { x: box.left, y: bottom }, region: { ...leftEdge, ...bottomEdge } },
+    {
+      start: { x: box.left, y: bottom },
+      region: { ...leftEdge, ...bottomEdge },
+    },
     { start: { x: right, y: bottom }, region: { ...rightEdge, ...bottomEdge } },
   ];
   const data = new Uint8Array(image.data);

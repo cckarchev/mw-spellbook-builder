@@ -1,12 +1,15 @@
-import type { Card } from '@/core/rules/types';
-import type { CountRow } from './types';
+import type { Card } from "@/core/rules/types";
+import type { CountRow } from "./types";
 
 export interface CardCopies {
   card: Card;
   count: number;
 }
 
-/** Copies per label, where a card may carry several labels and counts once in each. */
+/**
+ * Copies per label, where a card may carry several labels and counts once in
+ * each.
+ */
 export const tally = (
   copies: CardCopies[],
   labelsOf: (card: Card) => string[],
@@ -35,5 +38,10 @@ export const rowsByCount = (counts: Map<string, number>): CountRow[] =>
     .sort(byCountThenLabel);
 
 /** Non-zero rows in the given label order. */
-export const rowsInOrder = (counts: Map<string, number>, order: string[]): CountRow[] =>
-  order.map((label) => ({ label, count: counts.get(label) ?? 0 })).filter((row) => row.count > 0);
+export const rowsInOrder = (
+  counts: Map<string, number>,
+  order: string[],
+): CountRow[] =>
+  order
+    .map((label) => ({ label, count: counts.get(label) ?? 0 }))
+    .filter((row) => row.count > 0);

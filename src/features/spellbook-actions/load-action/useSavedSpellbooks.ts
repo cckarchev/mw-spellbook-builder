@@ -1,20 +1,27 @@
-import { useState } from 'react';
-import { type SavedSpellbook, savedSpellbooks } from '@/core/persistence/savedSpellbooks';
-import type { Spellbook } from '@/core/rules/types';
-import { officialSpellbook } from '@/data/officialSpellbooks';
-import { useSpellbookStatus } from '@/store/useSpellbookStatus';
-import { useSpellbookStore } from '@/store/useSpellbookStore';
-import { useDeleteSavedSpellbook } from './useDeleteSavedSpellbook';
+import { useState } from "react";
+import {
+  type SavedSpellbook,
+  savedSpellbooks,
+} from "@/core/persistence/savedSpellbooks";
+import type { Spellbook } from "@/core/rules/types";
+import { officialSpellbook } from "@/data/officialSpellbooks";
+import { useSpellbookStatus } from "@/store/useSpellbookStatus";
+import { useSpellbookStore } from "@/store/useSpellbookStore";
+import { useDeleteSavedSpellbook } from "./useDeleteSavedSpellbook";
 
-/** A spellbook to load and the name it carries once loaded; null for the official spellbook. */
+/**
+ * A spellbook to load and the name it carries once loaded; null for the
+ * official spellbook.
+ */
 interface LoadChoice {
   spellbook: Spellbook;
   name: string | null;
 }
 
 /**
- * The mage's saved spellbooks and official spellbook for the Load dialog, with loading and
- * deleting them behind their confirms. `onLoaded` runs after a spellbook replaces the current one.
+ * The mage's saved spellbooks and official spellbook for the Load dialog, with
+ * loading and deleting them behind their confirms. `onLoaded` runs after a
+ * spellbook replaces the current one.
  */
 export const useSavedSpellbooks = (onLoaded: () => void) => {
   const spellbook = useSpellbookStore((state) => state.spellbook);
@@ -26,12 +33,16 @@ export const useSavedSpellbooks = (onLoaded: () => void) => {
   const [pendingLoad, setPendingLoad] = useState<LoadChoice | null>(null);
 
   const readSaved = () => {
-    setSaved(spellbook.mageId === null ? [] : savedSpellbooks(spellbook.mageId));
+    setSaved(
+      spellbook.mageId === null ? [] : savedSpellbooks(spellbook.mageId),
+    );
   };
 
   const deletion = useDeleteSavedSpellbook(readSaved);
 
-  /** Re-reads the saved and official spellbooks and drops any pending confirm. */
+  /**
+   * Re-reads the saved and official spellbooks and drops any pending confirm.
+   */
   const refresh = () => {
     readSaved();
     setOfficial(officialSpellbook(spellbook.mageId));
@@ -56,10 +67,16 @@ export const useSavedSpellbooks = (onLoaded: () => void) => {
   };
 
   const requestLoad = (savedSpellbook: SavedSpellbook) => {
-    requestChoice({ spellbook: savedSpellbook.spellbook, name: savedSpellbook.name });
+    requestChoice({
+      spellbook: savedSpellbook.spellbook,
+      name: savedSpellbook.name,
+    });
   };
 
-  /** The official spellbook loads unnamed: saving it later makes the player's own copy. */
+  /**
+   * The official spellbook loads unnamed: saving it later makes the player's
+   * own copy.
+   */
   const requestLoadOfficial = (officialToLoad: Spellbook) => {
     requestChoice({ spellbook: officialToLoad, name: null });
   };

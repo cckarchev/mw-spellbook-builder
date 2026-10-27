@@ -1,12 +1,15 @@
-import { bulletBlocks } from '@/core/glossary/bulletBlocks';
-import type { GlossaryEntry } from '@/core/glossary/types';
-import { type MarkedSegment, markSegments } from '@/core/reference/markSegments';
-import { matchRanges } from '@/core/reference/matchRanges';
-import { sliceSegments } from '@/core/reference/sliceSegments';
-import { BulletList } from '@/features/shared/glossary-text/bullet-list/BulletList';
-import { MarkedText } from '../marked-text/MarkedText';
-import { linkedSegments } from './linkedSegments';
-import styles from './ReferenceText.module.css';
+import { bulletBlocks } from "@/core/glossary/bulletBlocks";
+import type { GlossaryEntry } from "@/core/glossary/types";
+import {
+  type MarkedSegment,
+  markSegments,
+} from "@/core/reference/markSegments";
+import { matchRanges } from "@/core/reference/matchRanges";
+import { sliceSegments } from "@/core/reference/sliceSegments";
+import { BulletList } from "@/features/shared/glossary-text/bullet-list/BulletList";
+import { MarkedText } from "../marked-text/MarkedText";
+import { linkedSegments } from "./linkedSegments";
+import styles from "./ReferenceText.module.css";
 
 interface ReferenceTextProps {
   entry: GlossaryEntry;
@@ -30,14 +33,22 @@ const SegmentRun = ({ segments, onJump }: SegmentRunProps) => {
     const target = segment.entry;
     const text = <MarkedText parts={segment.parts} />;
 
-    offset += segment.parts.reduce((length, part) => length + part.text.length, 0);
+    offset += segment.parts.reduce(
+      (length, part) => length + part.text.length,
+      0,
+    );
 
     if (!target) {
       return <span key={key}>{text}</span>;
     }
 
     return (
-      <button key={key} type="button" className={styles.term} onClick={() => onJump(target.term)}>
+      <button
+        key={key}
+        type="button"
+        className={styles.term}
+        onClick={() => onJump(target.term)}
+      >
         {text}
       </button>
     );
@@ -45,8 +56,8 @@ const SegmentRun = ({ segments, onJump }: SegmentRunProps) => {
 };
 
 /**
- * A definition whose terms jump to their own entries, with the search matches highlighted. The
- * Codex's inline "•" bullets become a list under the intro.
+ * A definition whose terms jump to their own entries, with the search matches
+ * highlighted. The Codex's inline "•" bullets become a list under the intro.
  */
 export const ReferenceText = ({ entry, query, onJump }: ReferenceTextProps) => {
   const segments = linkedSegments(entry);
@@ -63,7 +74,10 @@ export const ReferenceText = ({ entry, query, onJump }: ReferenceTextProps) => {
       <BulletList>
         {items.map((item) => (
           <li key={item.start}>
-            <SegmentRun segments={sliceSegments(marked, item)} onJump={onJump} />
+            <SegmentRun
+              segments={sliceSegments(marked, item)}
+              onJump={onJump}
+            />
           </li>
         ))}
       </BulletList>

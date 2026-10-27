@@ -1,16 +1,29 @@
-import { hasCards, hasUnsavedChanges } from '@/core/rules/spellbookChanges';
-import type { Spellbook } from '@/core/rules/types';
-import { decodeSpellbook, encodeSpellbook } from '@/core/share-link/spellbookCodec';
-import { officialSpellbook } from '@/data/officialSpellbooks';
-import { savedCopy } from './savedSpellbooks';
-import { readStored, readStoredJson, removeStored, writeStored } from './storage';
+import { hasCards, hasUnsavedChanges } from "@/core/rules/spellbookChanges";
+import type { Spellbook } from "@/core/rules/types";
+import {
+  decodeSpellbook,
+  encodeSpellbook,
+} from "@/core/share-link/spellbookCodec";
+import { officialSpellbook } from "@/data/officialSpellbooks";
+import { savedCopy } from "./savedSpellbooks";
+import {
+  readStored,
+  readStoredJson,
+  removeStored,
+  writeStored,
+} from "./storage";
 
-export const DRAFT_PREFIX = 'mw-spellbook-builder:draft:';
-export const CURRENT_MAGE_KEY = 'mw-spellbook-builder:current-mage';
-/** Where the one spellbook in progress lived before there was a draft per mage. */
-export const LEGACY_SPELLBOOK_KEY = 'mw-spellbook-builder:current';
+export const DRAFT_PREFIX = "mw-spellbook-builder:draft:";
+export const CURRENT_MAGE_KEY = "mw-spellbook-builder:current-mage";
+/**
+ * Where the one spellbook in progress lived before there was a draft per mage.
+ */
+export const LEGACY_SPELLBOOK_KEY = "mw-spellbook-builder:current";
 
-/** The spellbook in progress for one mage, and the name of the saved spellbook it came from. */
+/**
+ * The spellbook in progress for one mage, and the name of the saved spellbook
+ * it came from.
+ */
 export interface Draft {
   spellbook: Spellbook;
   name: string | null;
@@ -23,14 +36,14 @@ interface StoredDraft {
 }
 
 const isStoredDraft = (value: unknown): value is StoredDraft => {
-  if (typeof value !== 'object' || value === null) {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
 
   const { b, n } = value as Record<string, unknown>;
-  const hasValidName = typeof n === 'string' || n === null;
+  const hasValidName = typeof n === "string" || n === null;
 
-  return typeof b === 'string' && hasValidName;
+  return typeof b === "string" && hasValidName;
 };
 
 /** The mage's draft, or null when there is none or it cannot be read. */
@@ -50,7 +63,10 @@ export const readDraft = (mageId: string): Draft | null => {
   return { spellbook: decoded.spellbook, name: parsed.n };
 };
 
-/** Stores the draft under its spellbook's mage; an empty unnamed spellbook leaves nothing behind. */
+/**
+ * Stores the draft under its spellbook's mage; an empty unnamed spellbook
+ * leaves nothing behind.
+ */
 export const writeDraft = ({ spellbook, name }: Draft): void => {
   const { mageId } = spellbook;
 
@@ -72,8 +88,8 @@ export const writeDraft = ({ spellbook, name }: Draft): void => {
 };
 
 /**
- * Whether the mage's draft holds work that neither its saved copy nor the mage's official
- * spellbook has, and would be lost if replaced.
+ * Whether the mage's draft holds work that neither its saved copy nor the
+ * mage's official spellbook has, and would be lost if replaced.
  */
 export const hasUnsavedDraft = (mageId: string): boolean => {
   const draft = readDraft(mageId);
@@ -87,7 +103,8 @@ export const hasUnsavedDraft = (mageId: string): boolean => {
   return hasUnsavedChanges(draft.spellbook, saved, officialSpellbook(mageId));
 };
 
-export const readCurrentMageId = (): string | null => readStored(CURRENT_MAGE_KEY);
+export const readCurrentMageId = (): string | null =>
+  readStored(CURRENT_MAGE_KEY);
 
 export const writeCurrentMageId = (mageId: string): void => {
   writeStored(CURRENT_MAGE_KEY, mageId);

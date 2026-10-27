@@ -1,5 +1,6 @@
-/* The menu hangs from the button, so the wrap is what it is placed against. It lines up with
-   the button's end, so a button at the end of a row keeps its menu on screen. */
+/* The menu hangs from the button, so the wrap is what it is placed against. It
+   lines up with the button's end, so a button at the end of a row keeps its
+   menu on screen. */
 .wrap {
   position: relative;
 }

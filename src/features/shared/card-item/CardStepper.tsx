@@ -1,6 +1,6 @@
-import { Stepper } from '@/components/stepper/Stepper';
-import { maxCopies } from '@/core/rules/copyLimit';
-import type { Card } from '@/core/rules/types';
+import { Stepper } from "@/components/stepper/Stepper";
+import { maxCopies } from "@/core/rules/copyLimit";
+import type { Card } from "@/core/rules/types";
 
 interface CardStepperProps {
   card: Card;
@@ -12,7 +12,13 @@ interface CardStepperProps {
 }
 
 /** The − copies + control of a card, capped at its copy limit. */
-export const CardStepper = ({ card, count, blockedReason, onAdd, onRemove }: CardStepperProps) => (
+export const CardStepper = ({
+  card,
+  count,
+  blockedReason,
+  onAdd,
+  onRemove,
+}: CardStepperProps) => (
   <Stepper
     value={count}
     max={maxCopies(card)}

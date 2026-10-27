@@ -1,7 +1,7 @@
-import type { ReactNode } from 'react';
-import { Button } from '@/components/button/Button';
-import { Dialog } from '@/components/dialog/Dialog';
-import styles from './ConfirmDialog.module.css';
+import type { ReactNode } from "react";
+import { Button } from "@/components/button/Button";
+import { Dialog } from "@/components/dialog/Dialog";
+import styles from "./ConfirmDialog.module.css";
 
 interface ConfirmDialogProps {
   open: boolean;
@@ -17,7 +17,7 @@ export const ConfirmDialog = ({
   open,
   title,
   body,
-  confirmLabel = 'Confirm',
+  confirmLabel = "Confirm",
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) => (

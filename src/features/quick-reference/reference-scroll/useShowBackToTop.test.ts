@@ -1,5 +1,5 @@
-import { act, renderHook } from '@testing-library/react';
-import { BACK_TO_TOP_AFTER, useShowBackToTop } from './useShowBackToTop';
+import { act, renderHook } from "@testing-library/react";
+import { BACK_TO_TOP_AFTER, useShowBackToTop } from "./useShowBackToTop";
 
 const STEP = 10;
 const FAR_DOWN = BACK_TO_TOP_AFTER + STEP;
@@ -9,13 +9,13 @@ const FURTHER_STILL = FURTHER + STEP;
 const scrollTo = (element: HTMLElement, top: number) => {
   act(() => {
     element.scrollTop = top;
-    element.dispatchEvent(new Event('scroll'));
+    element.dispatchEvent(new Event("scroll"));
   });
 };
 
-describe('useShowBackToTop', () => {
-  it('renders again only when the back to top button comes or goes', () => {
-    const element = document.createElement('div');
+describe("useShowBackToTop", () => {
+  it("renders again only when the back to top button comes or goes", () => {
+    const element = document.createElement("div");
     const scroller = { current: element };
     let renders = 0;
     const { result } = renderHook(() => {

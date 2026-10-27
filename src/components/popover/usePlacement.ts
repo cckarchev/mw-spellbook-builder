@@ -1,5 +1,5 @@
-import { type RefObject, useLayoutEffect, useState } from 'react';
-import { type Placement, placePopover } from '@/core/layout/placePopover';
+import { type RefObject, useLayoutEffect, useState } from "react";
+import { type Placement, placePopover } from "@/core/layout/placePopover";
 
 // In px, matching --space-xs and --space-xxs.
 const VIEWPORT_GUTTER = 8;
@@ -10,7 +10,10 @@ interface PopoverRefs {
   popoverRef: RefObject<HTMLDivElement | null>;
 }
 
-/** Where the open popover goes, kept next to its button while the page scrolls or resizes. */
+/**
+ * Where the open popover goes, kept next to its button while the page scrolls
+ * or resizes.
+ */
 export const usePlacement = (
   isOpen: boolean,
   { anchorRef, popoverRef }: PopoverRefs,
@@ -44,12 +47,12 @@ export const usePlacement = (
     };
 
     place();
-    window.addEventListener('resize', place);
-    window.addEventListener('scroll', place, true);
+    window.addEventListener("resize", place);
+    window.addEventListener("scroll", place, true);
 
     return () => {
-      window.removeEventListener('resize', place);
-      window.removeEventListener('scroll', place, true);
+      window.removeEventListener("resize", place);
+      window.removeEventListener("scroll", place, true);
     };
   }, [isOpen, anchorRef, popoverRef]);
 

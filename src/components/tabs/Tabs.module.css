@@ -28,7 +28,7 @@
   outline-offset: calc(-1 * var(--focus-ring-offset));
 }
 
-.tab[aria-selected='true'] {
+.tab[aria-selected="true"] {
   color: var(--color-text-strong);
   border-bottom-color: var(--color-accent);
 }

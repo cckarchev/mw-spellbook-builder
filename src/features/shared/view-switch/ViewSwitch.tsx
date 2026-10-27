@@ -1,10 +1,13 @@
-import { Segmented, type SegmentedOption } from '@/components/segmented/Segmented';
-import type { ViewMode } from './useViewMode';
-import { GridIcon, ListIcon } from './ViewIcons';
+import {
+  Segmented,
+  type SegmentedOption,
+} from "@/components/segmented/Segmented";
+import type { ViewMode } from "./useViewMode";
+import { GridIcon, ListIcon } from "./ViewIcons";
 
 const VIEWS: SegmentedOption<ViewMode>[] = [
-  { value: 'list', label: 'List', icon: <ListIcon /> },
-  { value: 'grid', label: 'Grid', icon: <GridIcon /> },
+  { value: "list", label: "List", icon: <ListIcon /> },
+  { value: "grid", label: "Grid", icon: <GridIcon /> },
 ];
 
 interface ViewSwitchProps {

@@ -23,7 +23,8 @@
   transition: color var(--duration-fast);
 }
 
-/* The icon is the hint that the name opens the stats card, so it stays quiet. */
+/* The icon is the hint that the name opens the stats card, so it stays
+   quiet. */
 .mageButton svg {
   font-size: var(--font-size-lg);
   color: var(--color-text-dim);
@@ -56,13 +57,13 @@
   text-transform: uppercase;
 }
 
-.header[data-state='valid'] .state {
+.header[data-state="valid"] .state {
   color: var(--color-success);
 }
 
-.header[data-state='over'] .points,
-.header[data-state='over'] .state,
-.header[data-state='invalid'] .state {
+.header[data-state="over"] .points,
+.header[data-state="over"] .state,
+.header[data-state="invalid"] .state {
   color: var(--color-error);
 }
 

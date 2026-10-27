@@ -1,8 +1,9 @@
-import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
-import { Button } from '@/components/button/Button';
-import styles from './ActionButton.module.css';
+import type { ButtonHTMLAttributes, ReactNode, Ref } from "react";
+import { Button } from "@/components/button/Button";
+import styles from "./ActionButton.module.css";
 
-interface ActionButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+interface ActionButtonProps
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
   icon: ReactNode;
   label: string;
   primary?: boolean;
@@ -11,7 +12,10 @@ interface ActionButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>
   ref?: Ref<HTMLButtonElement>;
 }
 
-/** A small icon button; the label shows beside the icon above phone width, and as a tooltip. */
+/**
+ * A small icon button; the label shows beside the icon above phone width, and
+ * as a tooltip.
+ */
 export const ActionButton = ({
   icon,
   label,
@@ -20,7 +24,7 @@ export const ActionButton = ({
   ...rest
 }: ActionButtonProps) => (
   <Button
-    variant={primary ? 'primary' : 'ghost'}
+    variant={primary ? "primary" : "ghost"}
     size="small"
     className={styles.action}
     aria-label={label}

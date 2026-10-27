@@ -1,4 +1,5 @@
-/* A wide gap and a band per letter, so each letter's terms read as a section of their own. */
+/* A wide gap and a band per letter, so each letter's terms read as a section of
+   their own. */
 .group {
   margin-top: var(--space-lg);
 }

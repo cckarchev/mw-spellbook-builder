@@ -3,18 +3,21 @@ export interface LegacySet {
   cardIds: string[];
 }
 
-const CORE_SET = 'Core Set';
+const CORE_SET = "Core Set";
 
 const RENAMES = new Map<string, string>([
-  ['Core', CORE_SET],
-  ['Mage Wars Arena Final Release', CORE_SET],
-  ['Lost Grimore', 'Lost Grimoire'],
+  ["Core", CORE_SET],
+  ["Mage Wars Arena Final Release", CORE_SET],
+  ["Lost Grimore", "Lost Grimoire"],
 ]);
 
-const DROPPED_SETS = new Set(['Gameboards']);
-const PLAYTEST_PREFIX = 'Playtest:';
+const DROPPED_SETS = new Set(["Gameboards"]);
+const PLAYTEST_PREFIX = "Playtest:";
 
-/** The display name of a legacy OCTGN set, or null for sets that are not an expansion. */
+/**
+ * The display name of a legacy OCTGN set, or null for sets that are not an
+ * expansion.
+ */
 export const expansionName = (setName: string): string | null => {
   if (DROPPED_SETS.has(setName) || setName.startsWith(PLAYTEST_PREFIX)) {
     return null;
@@ -23,8 +26,13 @@ export const expansionName = (setName: string): string | null => {
   return RENAMES.get(setName) ?? setName;
 };
 
-/** Card id to expansion. When a card is in several sets, the first one listed wins. */
-export const buildExpansionMap = (sets: readonly LegacySet[]): Map<string, string> => {
+/**
+ * Card id to expansion. When a card is in several sets, the first one listed
+ * wins.
+ */
+export const buildExpansionMap = (
+  sets: readonly LegacySet[],
+): Map<string, string> => {
   const map = new Map<string, string>();
 
   for (const set of sets) {

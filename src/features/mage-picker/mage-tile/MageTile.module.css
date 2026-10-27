@@ -26,7 +26,7 @@
   outline-offset: var(--focus-ring-offset);
 }
 
-.tile[aria-current='true'] {
+.tile[aria-current="true"] {
   background: var(--color-bg-selected);
   border-color: var(--color-border-accent);
 }
@@ -48,8 +48,8 @@
   text-align: center;
 }
 
-/* Floats over the top right corner of the image. Scoped to .wrap so it beats the button reset
-   in MageStats whatever order the stylesheets load in. */
+/* Floats over the top right corner of the image. Scoped to .wrap so it beats
+   the button reset in MageStats whatever order the stylesheets load in. */
 .wrap > .stats {
   position: absolute;
   top: var(--space-xs);
@@ -67,15 +67,17 @@
     box-shadow var(--duration-fast);
 }
 
-/* The accent tint sits over the dark fill, so the image never shows through brighter. */
+/* The accent tint sits over the dark fill, so the image never shows through
+   brighter. */
 .wrap > .stats:hover {
   color: var(--color-accent);
   border-color: var(--color-border-accent);
   box-shadow: inset 0 0 0 100vmax var(--color-bg-accent-tint);
 }
 
-/* Floats over the top left corner of the image, the same height as the stats button opposite:
-   the count of saved spellbooks, in the accent color while the mage has a draft. */
+/* Floats over the top left corner of the image, the same height as the stats
+   button opposite: the count of saved spellbooks, in the accent color while the
+   mage has a draft. */
 .badge {
   position: absolute;
   top: var(--space-xs);
@@ -105,7 +107,7 @@
   height: 0.75em;
 }
 
-.badge[data-draft='true'] {
+.badge[data-draft="true"] {
   color: var(--color-accent);
 }
 

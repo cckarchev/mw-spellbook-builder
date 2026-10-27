@@ -1,4 +1,4 @@
-import { foldedOnce } from './foldText';
+import { foldedOnce } from "./foldText";
 
 /** A stretch of a text, from `start` up to but not including `end`. */
 export interface TextRange {
@@ -8,9 +8,12 @@ export interface TextRange {
 
 const NOT_FOUND = -1;
 
-/** Where an already folded query appears in a text, in the text's own indices, without overlaps. */
+/**
+ * Where an already folded query appears in a text, in the text's own indices,
+ * without overlaps.
+ */
 export const matchRanges = (text: string, query: string): TextRange[] => {
-  if (query === '') {
+  if (query === "") {
     return [];
   }
 

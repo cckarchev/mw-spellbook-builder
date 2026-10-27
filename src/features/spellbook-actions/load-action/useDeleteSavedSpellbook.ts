@@ -1,8 +1,11 @@
-import { useState } from 'react';
-import { deleteSavedSpellbook } from '@/core/persistence/savedSpellbooks';
-import { useSpellbookStore } from '@/store/useSpellbookStore';
+import { useState } from "react";
+import { deleteSavedSpellbook } from "@/core/persistence/savedSpellbooks";
+import { useSpellbookStore } from "@/store/useSpellbookStore";
 
-/** Deleting one of the mage's saved spellbooks behind its confirm. `onDeleted` runs after each delete. */
+/**
+ * Deleting one of the mage's saved spellbooks behind its confirm. `onDeleted`
+ * runs after each delete.
+ */
 export const useDeleteSavedSpellbook = (onDeleted: () => void) => {
   const spellbook = useSpellbookStore((state) => state.spellbook);
   const currentName = useSpellbookStore((state) => state.name);
@@ -17,7 +20,8 @@ export const useDeleteSavedSpellbook = (onDeleted: () => void) => {
 
     deleteSavedSpellbook(spellbook.mageId, pendingDelete);
 
-    // The spellbook stays, as a draft that no longer comes from a saved spellbook.
+    // The spellbook stays, as a draft that no longer comes from a saved
+    // spellbook.
     if (pendingDelete === currentName) {
       loadSpellbook(spellbook, null);
     }

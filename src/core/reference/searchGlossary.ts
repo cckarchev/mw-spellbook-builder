@@ -1,5 +1,5 @@
-import type { GlossaryEntry } from '@/core/glossary/types';
-import { foldedOnce } from './foldText';
+import type { GlossaryEntry } from "@/core/glossary/types";
+import { foldedOnce } from "./foldText";
 
 export interface GlossarySearch {
   byName: GlossaryEntry[];
@@ -9,14 +9,15 @@ export interface GlossarySearch {
 const folded = (text: string): string => foldedOnce(text).folded;
 
 /**
- * Entries matching an already folded query: names that start with it, then names that contain
- * it, then the rest whose definition contains it. Each group keeps the input order.
+ * Entries matching an already folded query: names that start with it, then
+ * names that contain it, then the rest whose definition contains it. Each group
+ * keeps the input order.
  */
 export const searchGlossary = (
   entries: readonly GlossaryEntry[],
   query: string,
 ): GlossarySearch => {
-  if (query === '') {
+  if (query === "") {
     return { byName: [], byDefinition: [] };
   }
 

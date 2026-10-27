@@ -1,4 +1,4 @@
-@import '@/theme/breakpoints.css';
+@import "@/theme/breakpoints.css";
 
 .section {
   display: flex;
@@ -9,17 +9,21 @@
   list-style: none;
 }
 
-.rows[data-layout='grid'] {
+.rows[data-layout="grid"] {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--card-tile-min-width), 1fr));
+  grid-template-columns: repeat(
+      auto-fill,
+      minmax(var(--card-tile-min-width), 1fr)
+    );
   gap: var(--space-xs);
   padding-block: var(--space-xs);
 }
 
-/* Two across on a phone, the most that leaves room for each stepper. A zero minimum keeps
-   the columns from growing past the screen to fit their content. */
+/* Two across on a phone, the most that leaves room for each stepper. A zero
+   minimum keeps the columns from growing past the screen to fit their
+   content. */
 @media (--phone) {
-  .rows[data-layout='grid'] {
+  .rows[data-layout="grid"] {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

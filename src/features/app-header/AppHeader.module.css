@@ -1,4 +1,4 @@
-@import '@/theme/breakpoints.css';
+@import "@/theme/breakpoints.css";
 
 .header {
   display: flex;
@@ -6,8 +6,8 @@
   justify-content: space-between;
   gap: var(--space-sm);
   /*
-   * The content alone holds a touch target, padding aside, so the header keeps its height
-   * without the Quick reference button too.
+   * The content alone holds a touch target, padding aside, so the header keeps
+   * its height without the Quick reference button too.
    */
   box-sizing: content-box;
   min-height: var(--touch-target);

@@ -1,8 +1,11 @@
-import { useEffect } from 'react';
-import styles from './Toast.module.css';
-import { useToastStore } from './useToastStore';
+import { useEffect } from "react";
+import styles from "./Toast.module.css";
+import { useToastStore } from "./useToastStore";
 
-/** Shows the toast message at the bottom of the screen for a moment. Mounted once, at the app root. */
+/**
+ * Shows the toast message at the bottom of the screen for a moment. Mounted
+ * once, at the app root.
+ */
 export const Toast = () => {
   const message = useToastStore((state) => state.message);
   const durationMs = useToastStore((state) => state.durationMs);
@@ -22,8 +25,9 @@ export const Toast = () => {
     };
   }, [showId, durationMs, hide]);
 
-  // The live region stays in the page while empty, so screen readers announce what lands in it.
-  // Keyed by showId, a repeated message is new content and gets announced again.
+  // The live region stays in the page while empty, so screen readers announce
+  // what lands in it. Keyed by showId, a repeated message is new content and
+  // gets announced again.
   return (
     <div className={styles.region} role="status">
       {message === null ? null : (

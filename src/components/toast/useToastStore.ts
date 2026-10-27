@@ -1,8 +1,11 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 export const TOAST_DURATION_MS = 2500;
 
-/** For a message the player has to read and act on, such as a failure with a way out. */
+/**
+ * For a message the player has to read and act on, such as a failure with a way
+ * out.
+ */
 export const LONG_TOAST_DURATION_MS = 6000;
 
 interface ToastStore {

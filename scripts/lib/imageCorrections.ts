@@ -1,21 +1,25 @@
-import type { CropBox } from './whiteFrame';
+import type { CropBox } from "./whiteFrame";
 
-// A few pack images have a blemish at an edge that is neither white nor a frame, so the
-// automatic cut leaves it. These cuts are measured by hand on the pack image, in its own pixels.
+// A few pack images have a blemish at an edge that is neither white nor a
+// frame, so the automatic cut leaves it. These cuts are measured by hand on the
+// pack image, in its own pixels.
 
-type Side = 'top' | 'bottom' | 'left' | 'right';
+type Side = "top" | "bottom" | "left" | "right";
 
 type ImageCut = Partial<Record<Side, number>>;
 
 /** Pixels to cut from each side of a card's pack image, by card id. */
 export const IMAGE_CUTS: Record<string, ImageCut> = {
   // Forcemaster: a light grey line along the top of the scan.
-  '7f88625f-591b-41ef-861d-4a89a4a57f24': { top: 1 },
+  "7f88625f-591b-41ef-861d-4a89a4a57f24": { top: 1 },
 };
 
 const NO_CUT = 0;
 
-/** The box with the hand measured cut of a card taken off, or the same box when it has none. */
+/**
+ * The box with the hand measured cut of a card taken off, or the same box when
+ * it has none.
+ */
 export const cutImageBox = (box: CropBox, cardId: string): CropBox => {
   const cut = IMAGE_CUTS[cardId];
 

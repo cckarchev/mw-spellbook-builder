@@ -1,16 +1,19 @@
-import { type ReactNode, type RefObject, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import styles from './Popover.module.css';
-import { useDismiss } from './useDismiss';
-import { usePlacement } from './usePlacement';
+import { type ReactNode, type RefObject, useRef } from "react";
+import { createPortal } from "react-dom";
+import styles from "./Popover.module.css";
+import { useDismiss } from "./useDismiss";
+import { usePlacement } from "./usePlacement";
 
 interface PopoverProps {
   id: string;
   isOpen: boolean;
   /** The button the popover opens next to. */
   anchorRef: RefObject<HTMLButtonElement | null>;
-  /** 'dialog' for content opened on purpose, 'status' for a message about what was just tapped. */
-  role: 'dialog' | 'status';
+  /**
+   * 'dialog' for content opened on purpose, 'status' for a message about what
+   * was just tapped.
+   */
+  role: "dialog" | "status";
   label?: string;
   onClose: () => void;
   children: ReactNode;
@@ -38,9 +41,12 @@ export const Popover = ({
     return null;
   }
 
-  const style = placement ? { left: placement.left, top: placement.top } : undefined;
+  const style = placement
+    ? { left: placement.left, top: placement.top }
+    : undefined;
   // A status message is read out as it appears; only a dialog is named.
-  const roleProps = role === 'dialog' ? { role, 'aria-label': label } : { role };
+  const roleProps =
+    role === "dialog" ? { role, "aria-label": label } : { role };
 
   return createPortal(
     <div

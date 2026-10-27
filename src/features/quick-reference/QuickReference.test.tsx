@@ -1,29 +1,45 @@
-import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { MemoryRouter, useLocation, useNavigationType } from 'react-router-dom';
-import { App } from '@/App';
-import { groupByType } from '@/core/catalog/groupByType';
-import { letterAnchorId, termAnchorId } from '@/core/reference/anchors';
-import { glossary } from '@/data/glossary';
-import { APP_NAME } from '@/features/app-header/AppHeader';
-import { useOpenTermStore } from '@/features/shared/glossary-text/useOpenTermStore';
-import { smallSpellbook } from '@/features/shared/testSpellbooks';
-import { useSpellbookStore } from '@/store/useSpellbookStore';
-import { resetAppState } from '@/test/renderAppAt';
-import { BACK_TO_TOP_AFTER } from './reference-scroll/useShowBackToTop';
-import { letterGroups } from './sortedGlossary';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter, useLocation, useNavigationType } from "react-router-dom";
+import { App } from "@/App";
+import { groupByType } from "@/core/catalog/groupByType";
+import { letterAnchorId, termAnchorId } from "@/core/reference/anchors";
+import { glossary } from "@/data/glossary";
+import { APP_NAME } from "@/features/app-header/AppHeader";
+import { useOpenTermStore } from "@/features/shared/glossary-text/useOpenTermStore";
+import { smallSpellbook } from "@/features/shared/testSpellbooks";
+import { useSpellbookStore } from "@/store/useSpellbookStore";
+import { resetAppState } from "@/test/renderAppAt";
+import { BACK_TO_TOP_AFTER } from "./reference-scroll/useShowBackToTop";
+import { letterGroups } from "./sortedGlossary";
 
-// Counts the catalog renders behind the Quick reference, through a call each one makes.
-vi.mock('@/core/catalog/groupByType', async (importOriginal) => {
-  const original = await importOriginal<typeof import('@/core/catalog/groupByType')>();
+// Counts the catalog renders behind the Quick reference, through a call each
+// one makes.
+vi.mock("@/core/catalog/groupByType", async (importOriginal) => {
+  const original =
+    await importOriginal<typeof import("@/core/catalog/groupByType")>();
 
   return { ...original, groupByType: vi.fn(original.groupByType) };
 });
 
-const TITLE = 'Quick reference';
-const SEARCH_LABEL = 'Search terms and rules';
+// The open reference holds the whole glossary, some 6000 nodes, so every role
+// query inside it takes a few hundred milliseconds. A test here runs up to 2.5s
+// on a full suite run and past the 5s default when the machine is busy.
+const QUICK_REFERENCE_TEST_TIMEOUT_MS = 15_000;
+
+vi.setConfig({ testTimeout: QUICK_REFERENCE_TEST_TIMEOUT_MS });
+
+const TITLE = "Quick reference";
+const SEARCH_LABEL = "Search terms and rules";
 const SCROLLED_FAR = BACK_TO_TOP_AFTER * 2;
-const DESTROYED_PATH = '/reference#term-destroyed';
+const DESTROYED_PATH = "/reference#term-destroyed";
 
 /** Shows how the last navigation changed the history, for the test to read. */
 const NavigationProbe = () => {
@@ -46,20 +62,20 @@ const renderAt = (path: string) => {
   );
 };
 
-const navigation = () => screen.getByRole('status', { name: 'Navigation' });
+const navigation = () => screen.getByRole("status", { name: "Navigation" });
 
-const reference = () => screen.queryByRole('dialog', { name: TITLE });
+const reference = () => screen.queryByRole("dialog", { name: TITLE });
 
 const openReference = async () => {
-  await userEvent.click(screen.getByRole('link', { name: TITLE }));
+  await userEvent.click(screen.getByRole("link", { name: TITLE }));
 };
 
-const openDialog = () => screen.getByRole('dialog', { name: TITLE });
+const openDialog = () => screen.getByRole("dialog", { name: TITLE });
 
 const clickBack = async () => {
-  const dialog = screen.getByRole('dialog', { name: TITLE });
+  const dialog = screen.getByRole("dialog", { name: TITLE });
 
-  await userEvent.click(within(dialog).getByRole('button', { name: 'Back' }));
+  await userEvent.click(within(dialog).getByRole("button", { name: "Back" }));
 };
 
 const scrollIntoView = vi.fn();
@@ -72,9 +88,9 @@ beforeEach(() => {
   useOpenTermStore.setState({ openId: null });
 });
 
-describe('QuickReference', () => {
-  it('opens over the builder and comes back to the same tab', async () => {
-    renderAt('/wizard/spellbook');
+describe("QuickReference navigation", () => {
+  it("opens over the builder and comes back to the same tab", async () => {
+    renderAt("/wizard/spellbook");
 
     await openReference();
 
@@ -83,63 +99,76 @@ describe('QuickReference', () => {
     await clickBack();
 
     expect(reference()).not.toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole("tab", { name: "Spellbook" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
   });
 
-  it('keeps the screen underneath inert while open', async () => {
-    renderAt('/wizard/spellbook');
-    const panel = screen.getByRole('tabpanel');
+  it("closes on Escape", async () => {
+    renderAt("/wizard");
 
     await openReference();
-
-    expect(panel.closest('[inert]')).not.toBeNull();
-  });
-
-  it('closes on Escape', async () => {
-    renderAt('/wizard');
-
-    await openReference();
-    await userEvent.keyboard('{Escape}');
+    await userEvent.keyboard("{Escape}");
 
     expect(reference()).not.toBeInTheDocument();
   });
 
-  it('goes to the picker from a direct open, replacing the entry', async () => {
-    renderAt('/reference');
+  it("goes to the picker from a direct open, replacing the entry", async () => {
+    renderAt("/reference");
 
     await clickBack();
 
     expect(reference()).not.toBeInTheDocument();
-    expect(screen.getByRole('status', { name: 'Navigation' })).toHaveTextContent('REPLACE /');
+    expect(
+      screen.getByRole("status", { name: "Navigation" }),
+    ).toHaveTextContent("REPLACE /");
   });
 
-  it('leaves Back as the only way out on screen, with no second reference button', async () => {
-    renderAt('/wizard');
+  it("leaves Back as the only way out on screen, with no second reference button", async () => {
+    renderAt("/wizard");
 
     await openReference();
     const dialog = openDialog();
 
-    expect(within(dialog).queryByRole('link', { name: TITLE })).not.toBeInTheDocument();
-    expect(within(dialog).getByRole('link', { name: APP_NAME })).toBeInTheDocument();
+    expect(
+      within(dialog).queryByRole("link", { name: TITLE }),
+    ).not.toBeInTheDocument();
+    expect(
+      within(dialog).getByRole("link", { name: APP_NAME }),
+    ).toBeInTheDocument();
   });
+});
 
-  it('moves focus to the title on open and back to the header button on close', async () => {
-    renderAt('/wizard');
-    const headerButton = screen.getByRole('link', { name: TITLE });
+describe("QuickReference focus and layering", () => {
+  it("keeps the screen underneath inert while open", async () => {
+    renderAt("/wizard/spellbook");
+    const panel = screen.getByRole("tabpanel");
 
     await openReference();
 
-    expect(screen.getByRole('heading', { level: 1, name: TITLE })).toHaveFocus();
+    expect(panel.closest("[inert]")).not.toBeNull();
+  });
+
+  it("moves focus to the title on open and back to the header button on close", async () => {
+    renderAt("/wizard");
+    const headerButton = screen.getByRole("link", { name: TITLE });
+
+    await openReference();
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: TITLE }),
+    ).toHaveFocus();
 
     await clickBack();
 
     expect(headerButton).toHaveFocus();
   });
 
-  it('closes an open glossary popover underneath on open', async () => {
-    renderAt('/wizard');
+  it("closes an open glossary popover underneath on open", async () => {
+    renderAt("/wizard");
     act(() => {
-      useOpenTermStore.setState({ openId: 'some-term' });
+      useOpenTermStore.setState({ openId: "some-term" });
     });
 
     await openReference();
@@ -148,28 +177,32 @@ describe('QuickReference', () => {
   });
 });
 
-describe('QuickReference list', () => {
-  it('lists every term under its letter', () => {
-    renderAt('/reference');
+describe("QuickReference list", () => {
+  it("lists every term under its letter", () => {
+    renderAt("/reference");
     const dialog = openDialog();
-    const letterHeadings = within(dialog).getAllByRole('heading', { level: 2 });
+    const letterHeadings = within(dialog).getAllByRole("heading", { level: 2 });
 
     expect(letterHeadings.map((heading) => heading.textContent)).toEqual(
       letterGroups.map((group) => group.letter),
     );
-    expect(within(dialog).getByRole('status')).toHaveTextContent(`${glossary.length} terms`);
+    expect(within(dialog).getByRole("status")).toHaveTextContent(
+      `${glossary.length} terms`,
+    );
   });
 
-  it('links a term inside a definition once and jumps to it', async () => {
-    renderAt('/reference');
-    const bashed = document.getElementById(termAnchorId('Bashed'));
-    const target = document.getElementById(termAnchorId('Passage Blocked'));
+  it("links a term inside a definition once and jumps to it", async () => {
+    renderAt("/reference");
+    const bashed = document.getElementById(termAnchorId("Bashed"));
+    const target = document.getElementById(termAnchorId("Passage Blocked"));
 
     if (!(bashed && target)) {
-      throw new Error('missing entries');
+      throw new Error("missing entries");
     }
 
-    const links = within(bashed).getAllByRole('button', { name: 'Passage Blocked' });
+    const links = within(bashed).getAllByRole("button", {
+      name: "Passage Blocked",
+    });
 
     expect(links).toHaveLength(1);
 
@@ -179,249 +212,295 @@ describe('QuickReference list', () => {
   });
 });
 
-const searchField = () => within(openDialog()).getByRole('searchbox', { name: SEARCH_LABEL });
+const searchField = () =>
+  within(openDialog()).getByRole("searchbox", { name: SEARCH_LABEL });
 
 const search = async (query: string) => {
   await userEvent.type(searchField(), query);
 };
 
-describe('QuickReference search', () => {
-  it('shows name matches before definition matches, highlighted', async () => {
-    renderAt('/reference');
+describe("QuickReference search", () => {
+  it("shows name matches before definition matches, highlighted", async () => {
+    renderAt("/reference");
 
-    await search('burn');
+    await search("burn");
 
-    const byName = within(openDialog()).getByRole('region', { name: /In the name/ });
-    const firstTerm = within(byName).getAllByRole('term')[0];
+    const byName = within(openDialog()).getByRole("region", {
+      name: /In the name/,
+    });
+    const firstTerm = within(byName).getAllByRole("term")[0];
 
     expect(firstTerm).toHaveTextContent(/^Burn$/);
     expect(
-      within(openDialog()).getByRole('region', { name: /In the definition/ }),
+      within(openDialog()).getByRole("region", { name: /In the definition/ }),
     ).toBeInTheDocument();
-    expect(firstTerm?.querySelector('mark')).toHaveTextContent('Burn');
+    expect(firstTerm?.querySelector("mark")).toHaveTextContent("Burn");
   });
 });
 
-describe('QuickReference over the builder', () => {
-  it('leaves the catalog underneath alone while the address catches up', async () => {
-    renderAt('/wizard');
+describe("QuickReference over the builder", () => {
+  it("leaves the catalog underneath alone while the address catches up", async () => {
+    renderAt("/wizard");
     await openReference();
     const catalogRenders = vi.mocked(groupByType).mock.calls.length;
 
-    await search('bu');
+    await search("bu");
     await waitFor(() => {
-      expect(navigation()).toHaveTextContent('?q=bu');
+      expect(navigation()).toHaveTextContent("?q=bu");
     });
 
     expect(vi.mocked(groupByType).mock.calls.length).toBe(catalogRenders);
   });
 });
 
-describe('QuickReference search details', () => {
-  it('counts the results of each group', async () => {
-    renderAt('/reference');
+describe("QuickReference search results", () => {
+  it("counts the results of each group", async () => {
+    renderAt("/reference");
 
-    await search('bashed');
+    await search("bashed");
 
-    const heading = within(openDialog()).getByRole('heading', { name: 'In the name 1 result' });
+    const heading = within(openDialog()).getByRole("heading", {
+      name: "In the name 1 result",
+    });
 
     expect(heading).toBeInTheDocument();
   });
 
-  it('keeps what was typed while the address catches up', async () => {
-    renderAt('/reference');
-
-    await search('bu');
-
-    expect(searchField()).toHaveValue('bu');
-    expect(navigation()).not.toHaveTextContent('?q=');
-    await waitFor(() => {
-      expect(navigation()).toHaveTextContent('REPLACE /reference?q=bu');
-    });
-  });
-
-  it('goes back to the top of the list when the search changes', async () => {
-    renderAt('/reference');
+  it("goes back to the top of the list when the search changes", async () => {
+    renderAt("/reference");
     const dialog = openDialog();
 
-    Object.defineProperty(dialog, 'scrollTop', { value: SCROLLED_FAR, writable: true });
-    await search('bu');
+    Object.defineProperty(dialog, "scrollTop", {
+      value: SCROLLED_FAR,
+      writable: true,
+    });
+    await search("bu");
 
     expect(dialog.scrollTop).toBe(0);
   });
 
-  it('says when nothing matches', async () => {
-    renderAt('/reference');
+  it("says when nothing matches", async () => {
+    renderAt("/reference");
 
-    await search('zzzz');
+    await search("zzzz");
 
-    expect(within(openDialog()).getByText('No term matches “zzzz”.')).toBeInTheDocument();
-    expect(within(openDialog()).getByRole('status')).toHaveTextContent('No matches');
-  });
-
-  it('keeps the screen underneath while typing', async () => {
-    renderAt('/wizard/spellbook');
-
-    await openReference();
-    await search('burn');
-    await clickBack();
-
-    expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
-    expect(screen.getByRole('status', { name: 'Navigation' })).toHaveTextContent(
-      'POP /wizard/spellbook',
+    expect(
+      within(openDialog()).getByText("No term matches “zzzz”."),
+    ).toBeInTheDocument();
+    expect(within(openDialog()).getByRole("status")).toHaveTextContent(
+      "No matches",
     );
-  });
-
-  it('opens with the query from the address', () => {
-    renderAt('/reference?q=burn');
-
-    expect(searchField()).toHaveValue('burn');
-  });
-
-  it('clears the search when a term is tapped', async () => {
-    renderAt('/reference');
-
-    await search('bashed');
-    const bashed = within(openDialog()).getByRole('region', { name: /In the name/ });
-
-    await userEvent.click(within(bashed).getByRole('button', { name: 'Passage Blocked' }));
-
-    expect(searchField()).toHaveValue('');
-    expect(scrollIntoView.mock.contexts).toContain(
-      document.getElementById(termAnchorId('Passage Blocked')),
-    );
-  });
-
-  it('clears from the clear button', async () => {
-    renderAt('/reference');
-
-    await search('burn');
-    await userEvent.click(within(openDialog()).getByRole('button', { name: 'Clear search' }));
-
-    expect(searchField()).toHaveValue('');
-    expect(within(openDialog()).getByRole('status')).toHaveTextContent(`${glossary.length} terms`);
   });
 });
 
-describe('QuickReference letters and back to top', () => {
-  const letterNav = () =>
-    within(openDialog()).queryByRole('navigation', { name: 'Jump to letter' });
+describe("QuickReference search input", () => {
+  it("opens with the query from the address", () => {
+    renderAt("/reference?q=burn");
 
-  it('jumps to a letter', async () => {
-    renderAt('/reference');
+    expect(searchField()).toHaveValue("burn");
+  });
+
+  it("keeps what was typed while the address catches up", async () => {
+    renderAt("/reference");
+
+    await search("bu");
+
+    expect(searchField()).toHaveValue("bu");
+    expect(navigation()).not.toHaveTextContent("?q=");
+    await waitFor(() => {
+      expect(navigation()).toHaveTextContent("REPLACE /reference?q=bu");
+    });
+  });
+
+  it("keeps the screen underneath while typing", async () => {
+    renderAt("/wizard/spellbook");
+
+    await openReference();
+    await search("burn");
+    await clickBack();
+
+    expect(screen.getByRole("tab", { name: "Spellbook" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    expect(
+      screen.getByRole("status", { name: "Navigation" }),
+    ).toHaveTextContent("POP /wizard/spellbook");
+  });
+
+  it("clears the search when a term is tapped", async () => {
+    renderAt("/reference");
+
+    await search("bashed");
+    const bashed = within(openDialog()).getByRole("region", {
+      name: /In the name/,
+    });
+
+    await userEvent.click(
+      within(bashed).getByRole("button", { name: "Passage Blocked" }),
+    );
+
+    expect(searchField()).toHaveValue("");
+    expect(scrollIntoView.mock.contexts).toContain(
+      document.getElementById(termAnchorId("Passage Blocked")),
+    );
+  });
+
+  it("clears from the clear button", async () => {
+    renderAt("/reference");
+
+    await search("burn");
+    await userEvent.click(
+      within(openDialog()).getByRole("button", { name: "Clear search" }),
+    );
+
+    expect(searchField()).toHaveValue("");
+    expect(within(openDialog()).getByRole("status")).toHaveTextContent(
+      `${glossary.length} terms`,
+    );
+  });
+});
+
+describe("QuickReference letters and back to top", () => {
+  const letterNav = () =>
+    within(openDialog()).queryByRole("navigation", { name: "Jump to letter" });
+
+  it("jumps to a letter", async () => {
+    renderAt("/reference");
     const nav = letterNav();
 
     if (!nav) {
-      throw new Error('missing letters');
+      throw new Error("missing letters");
     }
 
-    await userEvent.click(within(nav).getByRole('button', { name: 'C' }));
+    await userEvent.click(within(nav).getByRole("button", { name: "C" }));
 
-    expect(scrollIntoView.mock.contexts).toContain(document.getElementById(letterAnchorId('C')));
+    expect(scrollIntoView.mock.contexts).toContain(
+      document.getElementById(letterAnchorId("C")),
+    );
   });
 
-  it('hides the letters while searching', async () => {
-    renderAt('/reference');
+  it("hides the letters while searching", async () => {
+    renderAt("/reference");
 
-    await userEvent.type(within(openDialog()).getByRole('searchbox'), 'burn');
+    await userEvent.type(within(openDialog()).getByRole("searchbox"), "burn");
 
     expect(letterNav()).not.toBeInTheDocument();
   });
 
-  it('goes back to the top and into the search', async () => {
+  it("goes back to the top and into the search", async () => {
     const scrollTo = vi.fn();
 
     Element.prototype.scrollTo = scrollTo;
-    renderAt('/reference');
+    renderAt("/reference");
     const dialog = openDialog();
 
-    Object.defineProperty(dialog, 'scrollTop', { value: SCROLLED_FAR, configurable: true });
+    Object.defineProperty(dialog, "scrollTop", {
+      value: SCROLLED_FAR,
+      configurable: true,
+    });
     fireEvent.scroll(dialog);
 
-    await userEvent.click(within(dialog).getByRole('button', { name: 'Back to top' }));
+    await userEvent.click(
+      within(dialog).getByRole("button", { name: "Back to top" }),
+    );
 
     expect(scrollTo).toHaveBeenCalledWith(expect.objectContaining({ top: 0 }));
-    expect(within(dialog).getByRole('searchbox')).toHaveFocus();
+    expect(within(dialog).getByRole("searchbox")).toHaveFocus();
   });
 });
 
-describe('QuickReference term links', () => {
+describe("QuickReference term links", () => {
   const destroyedEntry = () => {
-    const entry = document.getElementById(termAnchorId('Destroyed'));
+    const entry = document.getElementById(termAnchorId("Destroyed"));
 
     if (!entry) {
-      throw new Error('missing entry');
+      throw new Error("missing entry");
     }
 
     return entry;
   };
 
-  const termLink = (term: string) => within(openDialog()).getByRole('link', { name: term });
+  const termLink = (term: string) =>
+    within(openDialog()).getByRole("link", { name: term });
 
-  it('opens a shared link at its term', () => {
+  it("opens a shared link at its term", () => {
     renderAt(DESTROYED_PATH);
 
     expect(scrollIntoView.mock.contexts).toContain(destroyedEntry());
     expect(destroyedEntry()).toHaveFocus();
   });
 
-  it('puts a tapped term in the address and keeps the screen underneath', async () => {
-    renderAt('/wizard/spellbook');
+  it("puts a tapped term in the address and keeps the screen underneath", async () => {
+    renderAt("/wizard/spellbook");
     await openReference();
 
-    await userEvent.click(termLink('Destroyed'));
+    await userEvent.click(termLink("Destroyed"));
 
     expect(navigation()).toHaveTextContent(`REPLACE ${DESTROYED_PATH}`);
     expect(scrollIntoView.mock.contexts).toContain(destroyedEntry());
 
     await clickBack();
 
-    expect(screen.getByRole('tab', { name: 'Spellbook' })).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole("tab", { name: "Spellbook" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
   });
 
-  it('clears the search when a found term is tapped', async () => {
-    renderAt('/reference');
-    await search('destroyed');
+  it("clears the search when a found term is tapped", async () => {
+    renderAt("/reference");
+    await search("destroyed");
 
-    await userEvent.click(termLink('Destroyed'));
+    await userEvent.click(termLink("Destroyed"));
 
-    expect(searchField()).toHaveValue('');
+    expect(searchField()).toHaveValue("");
     expect(navigation()).toHaveTextContent(`REPLACE ${DESTROYED_PATH}`);
     expect(scrollIntoView.mock.contexts).toContain(destroyedEntry());
   });
 
-  it('copies the link straight to a term', async () => {
+  it("copies the link straight to a term", async () => {
     const user = userEvent.setup();
-    renderAt('/reference');
+    renderAt("/reference");
 
-    await user.click(within(openDialog()).getByRole('button', { name: 'Copy link to Destroyed' }));
+    await user.click(
+      within(openDialog()).getByRole("button", {
+        name: "Copy link to Destroyed",
+      }),
+    );
 
-    expect(await navigator.clipboard.readText()).toBe(`${window.location.origin}${DESTROYED_PATH}`);
-    expect(screen.getByText('Link copied')).toBeInTheDocument();
+    expect(await navigator.clipboard.readText()).toBe(
+      `${window.location.origin}${DESTROYED_PATH}`,
+    );
+    expect(screen.getByText("Link copied")).toBeInTheDocument();
   });
 });
 
-describe('QuickReference bulleted definitions', () => {
-  it('lists the bulleted items under the intro, highlighting a search match inside one', async () => {
-    renderAt('/reference');
-    await search('deactivate this glyph and gain');
+describe("QuickReference bulleted definitions", () => {
+  it("lists the bulleted items under the intro, highlighting a search match inside one", async () => {
+    renderAt("/reference");
+    await search("deactivate this glyph and gain");
 
-    const glyphs = document.getElementById(termAnchorId('Elemental Glyphs (Elementalist)'));
+    const glyphs = document.getElementById(
+      termAnchorId("Elemental Glyphs (Elementalist)"),
+    );
 
     if (!glyphs) {
-      throw new Error('missing entry');
+      throw new Error("missing entry");
     }
 
-    const items = within(glyphs).getAllByRole('listitem');
+    const items = within(glyphs).getAllByRole("listitem");
 
-    expect(items.map((item) => item.textContent?.split(':')[0])).toEqual([
-      'Air',
-      'Earth',
-      'Fire',
-      'Water',
+    expect(items.map((item) => item.textContent?.split(":")[0])).toEqual([
+      "Air",
+      "Earth",
+      "Fire",
+      "Water",
     ]);
     expect(
-      within(items[1] as HTMLElement).getByText(/deactivate this Glyph and gain/),
-    ).toHaveProperty('tagName', 'MARK');
+      within(items[1] as HTMLElement).getByText(
+        /deactivate this Glyph and gain/,
+      ),
+    ).toHaveProperty("tagName", "MARK");
   });
 });

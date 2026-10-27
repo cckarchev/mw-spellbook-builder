@@ -1,6 +1,6 @@
-import { cardCost } from '@/core/rules/cardCost';
-import type { Card, CardType, Mage, Spellbook } from '@/core/rules/types';
-import { groupByType } from './groupByType';
+import { cardCost } from "@/core/rules/cardCost";
+import type { Card, CardType, Mage, Spellbook } from "@/core/rules/types";
+import { groupByType } from "./groupByType";
 
 interface SpellbookEntry {
   card: Card;
@@ -18,7 +18,10 @@ export interface SpellbookGroup {
   points: number;
 }
 
-/** The spellbook's cards grouped by type, with points per card and per group. Unknown cards are skipped. */
+/**
+ * The spellbook's cards grouped by type, with points per card and per group.
+ * Unknown cards are skipped.
+ */
 export const spellbookGroups = (
   spellbook: Spellbook,
   mage: Mage,
@@ -38,7 +41,11 @@ export const spellbookGroups = (
 
   return groupByType(entries).map((group) => ({
     type: group.type,
-    entries: group.items.map(({ card, count, points }) => ({ card, count, points })),
+    entries: group.items.map(({ card, count, points }) => ({
+      card,
+      count,
+      points,
+    })),
     copies: group.items.reduce((sum, entry) => sum + entry.count, 0),
     points: group.items.reduce((sum, entry) => sum + entry.points, 0),
   }));

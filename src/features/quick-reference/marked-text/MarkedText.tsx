@@ -1,5 +1,5 @@
-import type { MarkedPart } from '@/core/reference/markSegments';
-import styles from './MarkedText.module.css';
+import type { MarkedPart } from "@/core/reference/markSegments";
+import styles from "./MarkedText.module.css";
 
 interface MarkedTextProps {
   parts: readonly MarkedPart[];

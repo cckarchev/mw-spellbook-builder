@@ -1,9 +1,13 @@
-import { schoolCharges, TRAINED_MULTIPLIER, totalLevel } from '@/core/rules/cardCost';
-import type { Card, Mage, School, Spellbook } from '@/core/rules/types';
-import { attackStatsOf } from './attackStats';
-import { manaCurveOf, manaSourcesOf } from './manaCurve';
-import { type CardCopies, rowsByCount, rowsInOrder, tally } from './rows';
-import type { BookStats, SchoolPoints } from './types';
+import {
+  schoolCharges,
+  TRAINED_MULTIPLIER,
+  totalLevel,
+} from "@/core/rules/cardCost";
+import type { Card, Mage, School, Spellbook } from "@/core/rules/types";
+import { attackStatsOf } from "./attackStats";
+import { manaCurveOf, manaSourcesOf } from "./manaCurve";
+import { type CardCopies, rowsByCount, rowsInOrder, tally } from "./rows";
+import type { BookStats, SchoolPoints } from "./types";
 
 const HIGHEST_SINGLE_LEVEL = 4;
 const TOP_LEVEL_LABEL = `Level ${HIGHEST_SINGLE_LEVEL + 1}+`;
@@ -11,12 +15,17 @@ const TOP_LEVEL_LABEL = `Level ${HIGHEST_SINGLE_LEVEL + 1}+`;
 const levelName = (level: number): string => `Level ${level}`;
 
 const LEVEL_ORDER = [
-  ...Array.from({ length: HIGHEST_SINGLE_LEVEL }, (_, index) => levelName(index + 1)),
+  ...Array.from({ length: HIGHEST_SINGLE_LEVEL }, (_, index) =>
+    levelName(index + 1),
+  ),
   TOP_LEVEL_LABEL,
 ];
-const ACTION_ORDER = ['Quick', 'Full'];
+const ACTION_ORDER = ["Quick", "Full"];
 
-const knownCopies = (spellbook: Spellbook, cardsById: ReadonlyMap<string, Card>): CardCopies[] => {
+const knownCopies = (
+  spellbook: Spellbook,
+  cardsById: ReadonlyMap<string, Card>,
+): CardCopies[] => {
   const copies: CardCopies[] = [];
 
   for (const [cardId, count] of Object.entries(spellbook.counts)) {
@@ -43,7 +52,8 @@ const levelLabel = (card: Card): string => {
 };
 
 /** All the points a school was charged, at the trained rate and above it. */
-export const schoolTotal = (row: SchoolPoints): number => row.trainedPoints + row.extraRatePoints;
+export const schoolTotal = (row: SchoolPoints): number =>
+  row.trainedPoints + row.extraRatePoints;
 
 const schoolPointsOf = (copies: CardCopies[], mage: Mage): SchoolPoints[] => {
   const bySchool = new Map<School, SchoolPoints>();
@@ -69,10 +79,16 @@ const schoolPointsOf = (copies: CardCopies[], mage: Mage): SchoolPoints[] => {
 
   return [...bySchool.values()]
     .filter((row) => schoolTotal(row) > 0)
-    .sort((a, b) => schoolTotal(b) - schoolTotal(a) || a.school.localeCompare(b.school));
+    .sort(
+      (a, b) =>
+        schoolTotal(b) - schoolTotal(a) || a.school.localeCompare(b.school),
+    );
 };
 
-/** Every stat of the Stats view, per copy, skipping card ids the catalog does not have. */
+/**
+ * Every stat of the Stats view, per copy, skipping card ids the catalog does
+ * not have.
+ */
 export const spellbookStats = (
   spellbook: Spellbook,
   mage: Mage,
@@ -87,7 +103,10 @@ export const spellbookStats = (
   const schools = schoolPointsOf(copies, mage);
 
   const cardCount = copies.reduce((sum, { count }) => sum + count, 0);
-  const untrainedPoints = schools.reduce((sum, row) => sum + row.extraRatePoints, 0);
+  const untrainedPoints = schools.reduce(
+    (sum, row) => sum + row.extraRatePoints,
+    0,
+  );
 
   return {
     cardCount,

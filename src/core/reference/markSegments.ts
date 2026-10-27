@@ -1,6 +1,6 @@
-import type { TextSegment } from '@/core/glossary/findTerms';
-import type { GlossaryEntry } from '@/core/glossary/types';
-import type { TextRange } from './matchRanges';
+import type { TextSegment } from "@/core/glossary/findTerms";
+import type { GlossaryEntry } from "@/core/glossary/types";
+import type { TextRange } from "./matchRanges";
 
 /** A piece of a segment, highlighted or not. */
 export interface MarkedPart {
@@ -17,15 +17,25 @@ export interface MarkedSegment {
 const isMarked = (position: number, ranges: readonly TextRange[]): boolean =>
   ranges.some((range) => range.start <= position && position < range.end);
 
-/** The positions inside `[start, end)` where a range starts or ends, plus both edges. */
-const cutsWithin = (start: number, end: number, ranges: readonly TextRange[]): number[] => {
+/**
+ * The positions inside `[start, end)` where a range starts or ends, plus both
+ * edges.
+ */
+const cutsWithin = (
+  start: number,
+  end: number,
+  ranges: readonly TextRange[],
+): number[] => {
   const edges = ranges.flatMap((range) => [range.start, range.end]);
   const inside = edges.filter((edge) => edge > start && edge < end);
 
   return [...new Set([start, ...inside, end])].sort((a, b) => a - b);
 };
 
-/** Splits each segment at highlight edges, so a highlight can fall inside or across a term. */
+/**
+ * Splits each segment at highlight edges, so a highlight can fall inside or
+ * across a term.
+ */
 export const markSegments = (
   segments: readonly TextSegment[],
   ranges: readonly TextRange[],

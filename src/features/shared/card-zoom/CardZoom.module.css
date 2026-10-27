@@ -1,4 +1,5 @@
-/* Wide enough for the card at the full width of its image, plus the panel padding. */
+/* Wide enough for the card at the full width of its image, plus the panel
+   padding. */
 .dialog {
   --dialog-width: calc(var(--card-zoom-width) + 2 * var(--space-lg));
 }
@@ -11,6 +12,6 @@
   border-radius: var(--card-radius);
 }
 
-.image[data-landscape='true'] {
+.image[data-landscape="true"] {
   aspect-ratio: var(--card-aspect-landscape);
 }

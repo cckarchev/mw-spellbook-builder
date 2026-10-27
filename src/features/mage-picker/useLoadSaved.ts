@@ -1,15 +1,18 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { hasUnsavedDraft } from '@/core/persistence/drafts';
-import { type SavedSpellbook, savedSpellbooks } from '@/core/persistence/savedSpellbooks';
-import { builderPath } from '@/core/routing/builderPath';
-import type { Mage } from '@/core/rules/types';
-import { useSpellbookStore } from '@/store/useSpellbookStore';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { hasUnsavedDraft } from "@/core/persistence/drafts";
+import {
+  type SavedSpellbook,
+  savedSpellbooks,
+} from "@/core/persistence/savedSpellbooks";
+import { builderPath } from "@/core/routing/builderPath";
+import type { Mage } from "@/core/rules/types";
+import { useSpellbookStore } from "@/store/useSpellbookStore";
 
 /**
- * Loading a mage's saved spellbook straight from the picker: the list of one mage's saved
- * spellbooks, and a confirm when loading one would replace unsaved work in that mage's draft.
- * A loaded spellbook opens on the Spellbook tab.
+ * Loading a mage's saved spellbook straight from the picker: the list of one
+ * mage's saved spellbooks, and a confirm when loading one would replace unsaved
+ * work in that mage's draft. A loaded spellbook opens on the Spellbook tab.
  */
 export const useLoadSaved = () => {
   const navigate = useNavigate();
@@ -37,7 +40,7 @@ export const useLoadSaved = () => {
 
     loadSpellbook(savedSpellbook.spellbook, savedSpellbook.name);
     close();
-    navigate(builderPath(mage.name, 'spellbook'));
+    navigate(builderPath(mage.name, "spellbook"));
   };
 
   const requestLoad = (savedSpellbook: SavedSpellbook) => {
@@ -62,5 +65,14 @@ export const useLoadSaved = () => {
     setPendingLoad(null);
   };
 
-  return { mage, saved, pendingLoad, open, close, requestLoad, confirmLoad, cancelLoad };
+  return {
+    mage,
+    saved,
+    pendingLoad,
+    open,
+    close,
+    requestLoad,
+    confirmLoad,
+    cancelLoad,
+  };
 };

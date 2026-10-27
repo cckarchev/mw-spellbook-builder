@@ -1,4 +1,5 @@
-/* A layer of its own over the whole screen, scrolling apart from the page underneath. */
+/* A layer of its own over the whole screen, scrolling apart from the page
+   underneath. */
 .overlay {
   position: fixed;
   inset: 0;
@@ -9,9 +10,10 @@
 }
 
 /*
- * The same column and gutter as the app's own pages. Always a pixel taller than the layer, so
- * the layer can always scroll: with few results, a swipe would otherwise scroll the page
- * underneath, and the player would come back to a different place.
+ * The same column and gutter as the app's own pages. Always a pixel taller than
+ * the layer, so the layer can always scroll: with few results, a swipe would
+ * otherwise scroll the page underneath, and the player would come back to a
+ * different place.
  */
 .page {
   min-height: calc(100% + 1px);
@@ -20,7 +22,8 @@
   padding-inline: var(--page-gutter);
 }
 
-/* The title and the search, always in reach while the list scrolls under them. */
+/* The title and the search, always in reach while the list scrolls under
+   them. */
 .toolbar {
   position: sticky;
   top: 0;

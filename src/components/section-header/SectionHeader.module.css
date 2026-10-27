@@ -29,13 +29,13 @@
 }
 
 .title::before {
-  content: '▾';
+  content: "▾";
   display: inline-block;
   margin-inline-end: var(--space-xs);
   transition: transform var(--duration-fast);
 }
 
-.toggle[aria-expanded='false'] .title::before {
+.toggle[aria-expanded="false"] .title::before {
   transform: rotate(-90deg);
 }
 

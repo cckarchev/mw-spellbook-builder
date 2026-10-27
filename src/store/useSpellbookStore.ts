@@ -1,36 +1,46 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 import {
   migrateLegacySpellbook,
   readCurrentMageId,
   readDraft,
   writeCurrentMageId,
   writeDraft,
-} from '@/core/persistence/drafts';
-import { saveSpellbook } from '@/core/persistence/savedSpellbooks';
-import { emptySpellbook } from '@/core/rules/spellbookChanges';
-import type { Spellbook } from '@/core/rules/types';
-import { canAddCopy } from '@/core/rules/validateSpellbook';
-import { cardsById, spellbookMage } from '@/data/catalog';
+} from "@/core/persistence/drafts";
+import { saveSpellbook } from "@/core/persistence/savedSpellbooks";
+import { emptySpellbook } from "@/core/rules/spellbookChanges";
+import type { Spellbook } from "@/core/rules/types";
+import { canAddCopy } from "@/core/rules/validateSpellbook";
+import { cardsById, spellbookMage } from "@/data/catalog";
 
 interface SpellbookStore {
-  /** The spellbook being built, kept as its mage's draft so it survives a reload and a mage switch. */
+  /**
+   * The spellbook being built, kept as its mage's draft so it survives a reload
+   * and a mage switch.
+   */
   spellbook: Spellbook;
-  /** The name of the saved spellbook this one was saved as or loaded from, null for none. */
+  /**
+   * The name of the saved spellbook this one was saved as or loaded from, null
+   * for none.
+   */
   name: string | null;
   /**
-   * Goes up on every save. A save can leave the spellbook and its name as they were, so this is
-   * what tells readers of the saved copy to read it again.
+   * Goes up on every save. A save can leave the spellbook and its name as they
+   * were, so this is what tells readers of the saved copy to read it again.
    */
   savedRevision: number;
   /** Adds one copy, unless the + control would be disabled for it. */
   addCopy: (cardId: string) => void;
   removeCopy: (cardId: string) => void;
-  /** Switches to the mage's draft, or a new spellbook for it; the current spellbook stays as its draft. */
+  /**
+   * Switches to the mage's draft, or a new spellbook for it; the current
+   * spellbook stays as its draft.
+   */
   openMage: (mageId: string) => void;
   loadSpellbook: (spellbook: Spellbook, name?: string | null) => void;
   /**
-   * Saves the spellbook under the name, replacing a saved spellbook with that name, and names it.
-   * False, with nothing changed, when storage would not keep it.
+   * Saves the spellbook under the name, replacing a saved spellbook with that
+   * name, and names it. False, with nothing changed, when storage would not
+   * keep it.
    */
   save: (name: string) => boolean;
   /** Empties the spellbook and drops its name; the mage stays. */
@@ -53,7 +63,10 @@ const readInitialState = (): InitialState => {
   return draft ?? { spellbook: noSpellbook(), name: null };
 };
 
-const withoutCard = (counts: Spellbook['counts'], cardId: string): Spellbook['counts'] => {
+const withoutCard = (
+  counts: Spellbook["counts"],
+  cardId: string,
+): Spellbook["counts"] => {
   const remaining = { ...counts };
 
   delete remaining[cardId];
@@ -77,7 +90,12 @@ export const createSpellbookStore = () => {
 
       const count = spellbook.counts[cardId] ?? 0;
 
-      set({ spellbook: { ...spellbook, counts: { ...spellbook.counts, [cardId]: count + 1 } } });
+      set({
+        spellbook: {
+          ...spellbook,
+          counts: { ...spellbook.counts, [cardId]: count + 1 },
+        },
+      });
     },
 
     removeCopy: (cardId) => {

@@ -1,14 +1,16 @@
-import { useId, useState } from 'react';
-import { Chip } from '@/components/chip/Chip';
-import { matchesText } from '@/core/catalog/textSearch';
-import type { FilterValue } from '../../useCatalogFilters';
-import styles from './FilterGroup.module.css';
+import { useId, useState } from "react";
+import { Chip } from "@/components/chip/Chip";
+import { matchesText } from "@/core/catalog/textSearch";
+import type { FilterValue } from "../../useCatalogFilters";
+import styles from "./FilterGroup.module.css";
 
 interface FilterGroupProps {
   title: string;
   options: FilterValue[];
   selected: FilterValue[];
-  /** Narrows the chips to the values that match it. Selected chips always show. */
+  /**
+   * Narrows the chips to the values that match it. Selected chips always show.
+   */
   query: string;
   /** Whether the chips start shown. A query shows them anyway. */
   defaultExpanded?: boolean;
@@ -40,7 +42,7 @@ export const FilterGroup = ({
   }
 
   const expanded = searching || open;
-  const selectedNote = selected.length > 0 ? ` (${selected.length})` : '';
+  const selectedNote = selected.length > 0 ? ` (${selected.length})` : "";
 
   return (
     <fieldset className={styles.group}>

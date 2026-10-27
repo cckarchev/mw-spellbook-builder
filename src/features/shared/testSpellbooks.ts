@@ -1,14 +1,14 @@
-import type { Mage, Spellbook } from '@/core/rules/types';
-import { magesById } from '@/data/catalog';
-import { useSpellbookStore } from '@/store/useSpellbookStore';
+import type { Mage, Spellbook } from "@/core/rules/types";
+import { magesById } from "@/data/catalog";
+import { useSpellbookStore } from "@/store/useSpellbookStore";
 
 // Test fixtures for the builder screens, built on the real catalog.
 
-export const FIREBALL = 'd8562a1d-6a95-4ca4-99aa-91c5ca769a33';
-export const LIGHTNING_BOLT = '9217f8a0-e46d-401e-b8b6-477100eaba54';
-export const MANA_CRYSTAL = '9efdd1ac-d30c-4773-9ccd-f916470f4861';
-const ALFIYA = '05102a2c-509c-41c1-a751-787f4c499f40';
-const WATER_ELEMENTAL = 'b9ced997-b7fb-4cef-9f57-7264f3fea633';
+export const FIREBALL = "d8562a1d-6a95-4ca4-99aa-91c5ca769a33";
+export const LIGHTNING_BOLT = "9217f8a0-e46d-401e-b8b6-477100eaba54";
+export const MANA_CRYSTAL = "9efdd1ac-d30c-4773-9ccd-f916470f4861";
+const ALFIYA = "05102a2c-509c-41c1-a751-787f4c499f40";
+const WATER_ELEMENTAL = "b9ced997-b7fb-4cef-9f57-7264f3fea633";
 
 const FIREBALL_COPIES = 3;
 const BOLT_COPIES = 2;
@@ -19,10 +19,10 @@ const ELEMENTAL_COPIES = 3;
 const FIREBALL_OVER_LIMIT = 5;
 
 const wizardOrThrow = (): Mage => {
-  const wizard = magesById.get('wizard');
+  const wizard = magesById.get("wizard");
 
   if (!wizard) {
-    throw new Error('The catalog has no Wizard');
+    throw new Error("The catalog has no Wizard");
   }
 
   return wizard;
@@ -30,16 +30,25 @@ const wizardOrThrow = (): Mage => {
 
 export const wizard = wizardOrThrow();
 
-const wizardSpellbook = (counts: Spellbook['counts']): Spellbook => ({ mageId: wizard.id, counts });
+const wizardSpellbook = (counts: Spellbook["counts"]): Spellbook => ({
+  mageId: wizard.id,
+  counts,
+});
 
-/** 18 / 120: Fireball 3 x 4 (Fire, untrained), Lightning Bolt 2 x 2, Mana Crystal 2 x 1. */
+/**
+ * 18 / 120: Fireball 3 x 4 (Fire, untrained), Lightning Bolt 2 x 2, Mana
+ * Crystal 2 x 1.
+ */
 export const smallSpellbook = wizardSpellbook({
   [FIREBALL]: FIREBALL_COPIES,
   [LIGHTNING_BOLT]: BOLT_COPIES,
   [MANA_CRYSTAL]: CRYSTAL_COPIES,
 });
 
-/** 122 / 120: the small spellbook with 4 Lightning Bolts, 4 Alfiya (16 each) and 3 Water Elementals (12 each). */
+/**
+ * 122 / 120: the small spellbook with 4 Lightning Bolts, 4 Alfiya (16 each) and
+ * 3 Water Elementals (12 each).
+ */
 export const overBudgetSpellbook = wizardSpellbook({
   [FIREBALL]: FIREBALL_COPIES,
   [LIGHTNING_BOLT]: BOLT_LIMIT,
@@ -48,7 +57,9 @@ export const overBudgetSpellbook = wizardSpellbook({
   [WATER_ELEMENTAL]: ELEMENTAL_COPIES,
 });
 
-/** The small spellbook with 5 Fireballs: 26 / 120, one problem (max 4 copies). */
+/**
+ * The small spellbook with 5 Fireballs: 26 / 120, one problem (max 4 copies).
+ */
 export const tooManyCopiesSpellbook = wizardSpellbook({
   [FIREBALL]: FIREBALL_OVER_LIMIT,
   [LIGHTNING_BOLT]: BOLT_COPIES,
@@ -61,8 +72,14 @@ export const overWithProblemSpellbook = {
   counts: { ...overBudgetSpellbook.counts, [FIREBALL]: FIREBALL_OVER_LIMIT },
 };
 
-/** Empties the app's spellbook store and its storage, for a test to start from no spellbook. */
+/**
+ * Empties the app's spellbook store and its storage, for a test to start from
+ * no spellbook.
+ */
 export const resetSpellbookStore = () => {
   localStorage.clear();
-  useSpellbookStore.setState({ spellbook: { mageId: null, counts: {} }, name: null });
+  useSpellbookStore.setState({
+    spellbook: { mageId: null, counts: {} },
+    name: null,
+  });
 };

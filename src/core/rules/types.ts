@@ -1,24 +1,24 @@
 export type School =
-  | 'Air'
-  | 'Arcane'
-  | 'Dark'
-  | 'Earth'
-  | 'Fire'
-  | 'Holy'
-  | 'Mind'
-  | 'Nature'
-  | 'War'
-  | 'Water';
+  | "Air"
+  | "Arcane"
+  | "Dark"
+  | "Earth"
+  | "Fire"
+  | "Holy"
+  | "Mind"
+  | "Nature"
+  | "War"
+  | "Water";
 
 export type CardType =
-  | 'Attack'
-  | 'Conjuration'
-  | 'Creature'
-  | 'Enchantment'
-  | 'Equipment'
-  | 'Incantation';
+  | "Attack"
+  | "Conjuration"
+  | "Creature"
+  | "Enchantment"
+  | "Equipment"
+  | "Incantation";
 
-export type Format = 'arena' | 'academy';
+export type Format = "arena" | "academy";
 
 export interface SchoolPart {
   school: School;
@@ -28,13 +28,19 @@ export interface SchoolPart {
 export interface Card {
   /** OCTGN GUID. */
   id: string;
-  /** First 8 hex chars of the id, unique across the catalog; used in share links. */
+  /**
+   * First 8 hex chars of the id, unique across the catalog; used in share
+   * links.
+   */
   code: string;
   name: string;
   type: CardType;
   subtypes: string[];
-  /** `+` in the source data is "and" (every part counts), `/` is "or" (pick one). */
-  schoolMode: 'and' | 'or';
+  /**
+   * `+` in the source data is "and" (every part counts), `/` is "or" (pick
+   * one).
+   */
+  schoolMode: "and" | "or";
   schools: SchoolPart[];
   traits: string[];
   /** From an "X Only" trait, such as 'Warlock' or 'Dark Mage'. */
@@ -47,7 +53,10 @@ export interface Card {
   range: string;
   target: string;
   effect: string;
-  /** The printed attack lines, such as 'Ranged | Flame | 6d6 | ...'. Empty when none. */
+  /**
+   * The printed attack lines, such as 'Ranged | Flame | 6d6 | ...'. Empty when
+   * none.
+   */
   attackBar: string;
   /** The printed ability lines of creatures and conjurations that have them. */
   abilityBar: string;
@@ -98,14 +107,14 @@ export interface Spellbook {
 }
 
 export const SCHOOLS: readonly School[] = [
-  'Air',
-  'Arcane',
-  'Dark',
-  'Earth',
-  'Fire',
-  'Holy',
-  'Mind',
-  'Nature',
-  'War',
-  'Water',
+  "Air",
+  "Arcane",
+  "Dark",
+  "Earth",
+  "Fire",
+  "Holy",
+  "Mind",
+  "Nature",
+  "War",
+  "Water",
 ];

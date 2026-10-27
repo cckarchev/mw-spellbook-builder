@@ -1,7 +1,10 @@
 const FOCUSABLE =
   'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
-/** Moves Tab from the last focusable element to the first, and Shift+Tab the other way. */
+/**
+ * Moves Tab from the last focusable element to the first, and Shift+Tab the
+ * other way.
+ */
 export const trapTab = (event: KeyboardEvent, panel: HTMLElement) => {
   const focusable = [...panel.querySelectorAll<HTMLElement>(FOCUSABLE)];
   const first = focusable[0];

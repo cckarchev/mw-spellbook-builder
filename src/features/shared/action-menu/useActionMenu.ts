@@ -1,18 +1,28 @@
-import { type KeyboardEvent, useCallback, useEffect, useId, useRef, useState } from 'react';
-import { useDismiss } from '@/components/popover/useDismiss';
+import {
+  type KeyboardEvent,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
+import { useDismiss } from "@/components/popover/useDismiss";
 
 const FIRST = 0;
 const ITEM_SELECTOR = '[role="menuitem"]';
-const MOVE_KEYS = new Set(['ArrowDown', 'ArrowUp', 'Home', 'End']);
+const MOVE_KEYS = new Set(["ArrowDown", "ArrowUp", "Home", "End"]);
 
-/** Where an arrow, Home or End key moves the focus from the current item, wrapping at both ends. */
+/**
+ * Where an arrow, Home or End key moves the focus from the current item,
+ * wrapping at both ends.
+ */
 const nextIndex = (key: string, current: number, last: number): number => {
   switch (key) {
-    case 'ArrowDown':
+    case "ArrowDown":
       return current === last ? FIRST : current + 1;
-    case 'ArrowUp':
+    case "ArrowUp":
       return current <= FIRST ? last : current - 1;
-    case 'Home':
+    case "Home":
       return FIRST;
     default:
       return last;
@@ -28,8 +38,9 @@ const focusItem = (menu: HTMLElement, key: string) => {
 };
 
 /**
- * A menu button's open state and keyboard: the menu opens on its first item, the arrow keys
- * move through the items, and Escape, Tab, a tap outside or picking an item close it.
+ * A menu button's open state and keyboard: the menu opens on its first item,
+ * the arrow keys move through the items, and Escape, Tab, a tap outside or
+ * picking an item close it.
  */
 export const useActionMenu = () => {
   const menuId = useId();
@@ -46,7 +57,9 @@ export const useActionMenu = () => {
 
   useEffect(() => {
     if (isOpen) {
-      popupRef.current?.querySelector<HTMLButtonElement>(ITEM_SELECTOR)?.focus();
+      popupRef.current
+        ?.querySelector<HTMLButtonElement>(ITEM_SELECTOR)
+        ?.focus();
     }
   }, [isOpen]);
 
@@ -61,7 +74,7 @@ export const useActionMenu = () => {
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Tab') {
+    if (event.key === "Tab") {
       close();
 
       return;
