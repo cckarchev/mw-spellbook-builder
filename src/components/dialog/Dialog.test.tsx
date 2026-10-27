@@ -1,5 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { Dialog } from "./Dialog";
 
 const renderDialog = () => {
@@ -11,6 +12,22 @@ const renderDialog = () => {
         <button type="button">Last</button>
       </Dialog>
     </>,
+  );
+};
+
+/** A button that opens a Dialog, which holds its own open state. */
+const OpenerAndDialog = () => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)}>
+        Open
+      </button>
+      <Dialog open={open} title="Pick one" onClose={() => setOpen(false)}>
+        <button type="button">First</button>
+      </Dialog>
+    </>
   );
 };
 
@@ -36,6 +53,18 @@ describe("Dialog", () => {
     await userEvent.tab({ shift: true });
 
     expect(screen.getByRole("button", { name: "Last" })).toHaveFocus();
+  });
+
+  it("gives the focus back to the button that opened it when it closes", async () => {
+    render(<OpenerAndDialog />);
+
+    const opener = screen.getByRole("button", { name: "Open" });
+
+    await userEvent.click(opener);
+    await userEvent.keyboard("{Escape}");
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(opener).toHaveFocus();
   });
 });
 

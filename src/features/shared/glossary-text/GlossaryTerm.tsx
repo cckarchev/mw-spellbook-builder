@@ -35,6 +35,9 @@ export const GlossaryTerm = ({ text, entry }: GlossaryTermProps) => {
         className={styles.term}
         aria-expanded={isOpen}
         aria-controls={isOpen ? id : undefined}
+        // The popover renders at the end of the page, far from the term, so a
+        // screen reader reads the definition as the term's description.
+        aria-describedby={isOpen ? id : undefined}
         onClick={() => toggle(id)}
       >
         {text}

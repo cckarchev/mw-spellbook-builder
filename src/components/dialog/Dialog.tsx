@@ -38,8 +38,8 @@ const focusFirst = (panel: HTMLElement) => {
 };
 
 /**
- * A modal panel over a dimmed page that keeps the focus inside. Renders nothing
- * while closed.
+ * A modal panel over a dimmed page that keeps the focus inside, and gives it
+ * back to whatever had it when the dialog closes. Renders nothing while closed.
  */
 export const Dialog = ({
   open,
@@ -62,6 +62,9 @@ export const Dialog = ({
       return;
     }
 
+    // Read before the panel takes the focus, to hand the focus back on close.
+    const opener = document.activeElement;
+
     if (panelRef.current) {
       focusFirst(panelRef.current);
     }
@@ -80,6 +83,10 @@ export const Dialog = ({
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+
+      if (opener instanceof HTMLElement) {
+        opener.focus({ preventScroll: true });
+      }
     };
   }, [open]);
 

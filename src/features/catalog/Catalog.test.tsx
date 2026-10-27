@@ -143,7 +143,11 @@ describe("Catalog rows", () => {
 
     await userEvent.click(add);
 
-    expect(screen.getByRole("status")).toHaveTextContent("Max 4 copies");
+    // Each stepper value is a status too, so the reason is found by its text.
+    expect(screen.getByText(/Max 4 copies/)).toHaveRole("status");
+    expect(add).toHaveAccessibleDescription(
+      expect.stringContaining("Max 4 copies"),
+    );
     expect(onAdd).not.toHaveBeenCalled();
   });
 
@@ -162,7 +166,7 @@ describe("Catalog rows", () => {
     );
     await userEvent.click(document.body);
 
-    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Max 4 copies/)).not.toBeInTheDocument();
   });
 
   it("adds a copy with +", async () => {

@@ -54,6 +54,11 @@ describe("GlossaryText", () => {
       definitionOf("Stun"),
     );
     expect(stun).toHaveAttribute("aria-expanded", "true");
+    // The popover sits at the end of the page, so a screen reader reads the
+    // definition as the term's description.
+    expect(stun).toHaveAccessibleDescription(
+      expect.stringContaining(definitionOf("Stun")),
+    );
 
     await userEvent.click(stun);
 
