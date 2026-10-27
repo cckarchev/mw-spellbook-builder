@@ -82,15 +82,6 @@
 
   --popup-width: 320px;
   --popup-max-width: calc(100vw - 2 * var(--space-xs));
-
-  /* Stacking layers, lowest first. */
-  --z-sticky: 40;
-  --z-dialog: 100;
-  --z-popover: 110;
-  /* The Quick reference covers popovers underneath, and toasts still show over
-     it. */
-  --z-reference: 115;
-  --z-toast: 120;
 }
 
 @media (--tablet-up) {

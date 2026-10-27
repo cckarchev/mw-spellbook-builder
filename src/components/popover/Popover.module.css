@@ -3,7 +3,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: var(--z-popover);
+  z-index: var(--layer-popover);
   display: flex;
   flex-direction: column;
   gap: var(--space-2xs);

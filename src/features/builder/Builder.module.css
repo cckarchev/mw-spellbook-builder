@@ -8,7 +8,7 @@
 .sticky {
   position: sticky;
   top: 0;
-  z-index: var(--z-sticky);
+  z-index: var(--layer-bar);
   margin-inline: calc(-1 * var(--page-gutter));
   padding-inline: var(--page-gutter);
   background: var(--color-bg-base);
