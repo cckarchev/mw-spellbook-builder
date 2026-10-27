@@ -4,17 +4,45 @@ A phone-first spellbook builder for Mage Wars Arena, made for the cckarchev club
 
 It is a static site with no backend, live at [mw-spellbook-builder.cckarchev.ar](https://mw-spellbook-builder.cckarchev.ar). Everything is kept in the browser's `localStorage`: each mage has its own draft, saved on every change, and its own named spellbooks, saved from the actions under the spellbook header.
 
+## Stack
+
+- **React 19** + **TypeScript**
+- **Vite** (dev server + build)
+- **CSS Modules**, styled with the club's shared tokens (see Design system)
+- **Zustand** for state (`src/store/`) and **React Router** for routing
+- **Vitest** + **React Testing Library** for tests, and **Biome** for lint and format, from the shared preset in [`@cckarchev/shared`](https://github.com/cckarchev/cck-shared)
+- **[Cloudflare Workers](https://workers.cloudflare.com)** with static assets, via Wrangler, deploy
+
 ## Commands
 
-| Command             | What it does                                                                 |
-| ------------------- | ---------------------------------------------------------------------------- |
-| `npm run dev`       | Starts the dev server                                                        |
-| `npm test`          | Runs the tests once (`npm run test:watch` keeps them running)                |
-| `npm run lint`      | Checks lint and formatting with Biome (`npm run lint:fix` fixes what it can) |
-| `npm run typecheck` | Type checks the app and the scripts                                          |
-| `npm run build`     | Type checks and builds the site into `dist/`                                 |
-| `npm run data`      | Regenerates the card data and images (see below)                             |
-| `npm run deploy`    | Builds and deploys the site to Cloudflare (see below)                        |
+Requires Node 24.21 or later (`.node-version`).
+
+| Command              | What it does                                        |
+| :------------------- | :-------------------------------------------------- |
+| `npm install`        | Install dependencies                                |
+| `npm run dev`        | Dev server at `localhost:5173`                      |
+| `npm run build`      | Production build to `dist/`                         |
+| `npm run preview`    | Preview the local build                             |
+| `npm run verify`     | Check, type check, test and build, as CI does       |
+| `npm run deploy`     | `verify`, then deploy with Wrangler (manual deploy) |
+| `npm run check`      | Biome lint and format check                         |
+| `npm run check:fix`  | Biome lint and format with autofix                  |
+| `npm run typecheck`  | Type check the app and the scripts                  |
+| `npm test`           | Run the unit tests (Vitest)                         |
+| `npm run test:watch` | Run the unit tests in watch mode                    |
+| `npm run data`       | Regenerate the card data and images (see below)     |
+
+## Project layout
+
+- `src/core/`: pure logic with its tests (rules, catalog search, share link, text export, drafts and saved spellbooks).
+- `src/features/`: screens and their components.
+- `src/components/`: shared UI primitives.
+- `src/layout/`: the app shell.
+- `src/theme/`: global styles, breakpoints and the app tokens.
+- `src/store/`: the spellbook store, which keeps the open spellbook in its mage's draft.
+- `scripts/`: the data pipeline.
+
+Imports inside one area are relative; imports that leave it use the `@/` alias for `src/`.
 
 ## Card data
 
@@ -44,16 +72,12 @@ Point costs follow the module's spellbook validator (`SpellbookValidator.py`), w
 
 The site runs on Cloudflare Workers as static assets only, with no Worker script. `wrangler.jsonc` serves `dist/`, falls back to `index.html` for the app's routes, and attaches the custom domain `mw-spellbook-builder.cckarchev.ar`.
 
-`npm run deploy` builds and uploads it with the project's own Wrangler. Log in once with `npx wrangler login` on an account that holds the `cckarchev.ar` zone.
+`npm run deploy` verifies, builds and uploads it with the project's own Wrangler. Log in once with `npx wrangler login` on an account that holds the `cckarchev.ar` zone.
 
-## Legal
+## Design system
+
+The UI follows the club's design system: dark-only theme, sharp corners, orange accent over a near-black base. The palette, scales and fonts come from [`@cckarchev/shared`](https://github.com/cckarchev/cck-shared) (`fonts.css` and `tokens.css`, imported in `src/main.tsx`). `src/theme/tokens.css` only adds the tokens specific to this app.
+
+## Disclaimer
 
 This is an unofficial fan project, not affiliated with or endorsed by Arcane Wonders. Mage Wars and its card content belong to their owners. See [NOTICE](NOTICE) for the full notice and the sources of the card data; the app shows the same notice from the About link in its footer.
-
-## Code layout
-
-- `src/core/`: pure logic with its tests (rules, catalog search, share link, text export, drafts and saved spellbooks).
-- `src/features/`: screens and their components.
-- `src/components/`: shared UI primitives.
-- `src/store/`: the spellbook store, which keeps the open spellbook in its mage's draft.
-- `scripts/`: the data pipeline.
