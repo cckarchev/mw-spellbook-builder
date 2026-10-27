@@ -1,7 +1,7 @@
 import { type RefObject, useLayoutEffect, useState } from "react";
 import { type Placement, placePopover } from "@/core/layout/placePopover";
 
-// In px, matching --space-xs and --space-xxs.
+// In px, matching --space-xs and --space-2xs.
 const VIEWPORT_GUTTER = 8;
 const ANCHOR_GAP = 4;
 

@@ -1,6 +1,6 @@
 .list {
   display: grid;
-  gap: var(--space-xxs);
+  gap: var(--space-2xs);
   margin-top: var(--space-xs);
   padding-left: var(--space-lg);
   list-style: disc;

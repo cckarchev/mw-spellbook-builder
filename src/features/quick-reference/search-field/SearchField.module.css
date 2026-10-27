@@ -1,7 +1,7 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xxs);
+  gap: var(--space-2xs);
 }
 
 /* The label at the left and the count at the right, both above the field. */

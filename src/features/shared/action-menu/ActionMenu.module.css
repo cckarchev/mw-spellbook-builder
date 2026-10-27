@@ -7,13 +7,13 @@
 
 .menu {
   position: absolute;
-  top: calc(100% + var(--space-xxs));
+  top: calc(100% + var(--space-2xs));
   right: 0;
   z-index: var(--z-popover);
   display: flex;
   flex-direction: column;
   min-width: max-content;
-  padding-block: var(--space-xxs);
+  padding-block: var(--space-2xs);
   background: var(--color-bg-surface);
   border: var(--border-default);
   border-radius: var(--radius);
@@ -36,7 +36,7 @@
 
 .item:hover,
 .item:focus-visible {
-  background: var(--color-ghost-bg);
+  background: var(--color-secondary-tint);
 }
 
 .item:focus-visible {

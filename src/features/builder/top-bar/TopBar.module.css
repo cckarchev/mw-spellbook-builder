@@ -27,6 +27,6 @@
 
 .divider {
   align-self: stretch;
-  margin-inline: var(--space-xxs);
+  margin-inline: var(--space-2xs);
   border-inline-start: var(--border-default);
 }

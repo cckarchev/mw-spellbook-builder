@@ -16,11 +16,11 @@
   padding: var(--space-xs) var(--space-sm);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
-  letter-spacing: var(--tracking-label);
+  letter-spacing: var(--tracking-lg);
   text-transform: uppercase;
   color: var(--color-text-strong);
   background: var(--color-bg-tint);
-  border-left: var(--border-width-strong) solid var(--color-accent);
+  border-left: var(--border-width-thick) solid var(--color-accent);
 }
 
 /* Lowercase and plain, so it reads as a count rather than part of the title. */

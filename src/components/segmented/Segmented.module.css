@@ -34,7 +34,7 @@
 
 .segment[aria-pressed="true"] {
   color: var(--color-text-strong);
-  background: var(--color-bg-accent-tint);
+  background: var(--color-surface-accent-tint);
 }
 
 /* An icon segment is a square touch target, with the icon bigger than label

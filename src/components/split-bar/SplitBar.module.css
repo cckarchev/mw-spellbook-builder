@@ -1,12 +1,12 @@
 .split {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xxs);
+  gap: var(--space-2xs);
 }
 
 .bar {
   display: flex;
-  gap: var(--border-width-strong);
+  gap: var(--border-width-thick);
   height: var(--bar-thickness);
 }
 
