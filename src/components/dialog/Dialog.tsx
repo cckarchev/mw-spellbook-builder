@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
+import { useEscapeKey } from "../useEscapeKey";
 import { CloseIcon } from "./CloseIcon";
 import styles from "./Dialog.module.css";
 import { trapTab } from "./trapTab";
@@ -51,11 +52,8 @@ export const Dialog = ({
 }: DialogProps) => {
   const titleId = useId();
   const panelRef = useRef<HTMLDivElement>(null);
-  // Read through a ref, so a new onClose from a re-render does not refocus the
-  // first button.
-  const onCloseRef = useRef(onClose);
 
-  onCloseRef.current = onClose;
+  useEscapeKey(open, onClose);
 
   useEffect(() => {
     if (!open) {
@@ -70,10 +68,6 @@ export const Dialog = ({
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onCloseRef.current();
-      }
-
       if (event.key === "Tab" && panelRef.current) {
         trapTab(event, panelRef.current);
       }
