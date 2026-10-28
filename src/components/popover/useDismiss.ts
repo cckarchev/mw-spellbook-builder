@@ -1,4 +1,5 @@
 import { type RefObject, useEffect } from "react";
+import { useEscapeKey } from "../useEscapeKey";
 
 interface DismissRefs {
   /** The button that opened the popup, which gets the focus back on Escape. */
@@ -15,6 +16,11 @@ export const useDismiss = (
   { anchorRef, popupRef }: DismissRefs,
   onClose: () => void,
 ): void => {
+  useEscapeKey(isOpen, () => {
+    onClose();
+    anchorRef.current?.focus();
+  });
+
   useEffect(() => {
     if (!isOpen) {
       return;
@@ -33,19 +39,10 @@ export const useDismiss = (
       }
     };
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-        anchorRef.current?.focus();
-      }
-    };
-
     document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, anchorRef, popupRef, onClose]);
 };
